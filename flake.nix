@@ -58,7 +58,7 @@
         specialArgs = {inherit inputs outputs;};
         modules = [
 
-	  # disko.nixosModules.disko
+	  #  disko.nixosModules.disko
 	  ./disko-config.nix
           {
             disko.enableConfig = false;
