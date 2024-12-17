@@ -57,12 +57,12 @@
       nixos = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
-
-	  #  disko.nixosModules.disko
+	  disko.nixosModules.disko
 	  ./disko-config.nix
           {
             disko.enableConfig = false;
           }
+
           # > Our main nixos configuration file <
           ./nixos/configuration.nix
         ];
