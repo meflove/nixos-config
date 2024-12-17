@@ -63,8 +63,9 @@
             disko.enableConfig = false;
           }
 
-          # > Our main nixos configuration file <
+          # > Our main nixos configuration and hardware files <
           ./nixos/configuration.nix
+	  ./nixos/hardware-configuration.nix
         ];
       };
     };
