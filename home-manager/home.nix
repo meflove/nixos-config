@@ -19,6 +19,7 @@
     # You can also split up your configuration and import pieces of it here:
     ./wm/hypr.nix
     ./shell/fish.nix
+    ./stuff/git.nix
   ];
 
   nixpkgs = {

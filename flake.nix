@@ -57,14 +57,15 @@
       nixos = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
-          # > Our main nixos configuration file <
-          ./nixos/configuration.nix
+
 	  disko.nixosModules.disko
 	  ./disko-config.nix
           {
             disko.enableConfig = false;
 	    disko.devices.main.device = nixpkgs.lib.mkForce "/dev/vda";
           }
+          # > Our main nixos configuration file <
+          ./nixos/configuration.nix
         ];
       };
     };

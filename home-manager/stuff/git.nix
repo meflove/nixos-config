@@ -4,4 +4,4 @@
       userName  = "meflove";
       userEmail = "meflov3r@gmail.com";
     };
-};
+}
