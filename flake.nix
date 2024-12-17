@@ -12,17 +12,12 @@
     # Home manager
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Disko
-    disko.url = "github:nix-community/disko/latest";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = {
     self,
     nixpkgs,
     home-manager,
-    disko,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -57,12 +52,6 @@
       nixos = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         modules = [
-	  disko.nixosModules.disko
-	  ./disko-config.nix
-          {
-            disko.enableConfig = false;
-          }
-
           # > Our main nixos configuration and hardware files <
           ./nixos/configuration.nix
 	  ./nixos/hardware-configuration.nix
