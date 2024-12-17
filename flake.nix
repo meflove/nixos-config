@@ -62,7 +62,6 @@
 	  ./disko-config.nix
           {
             disko.enableConfig = false;
-	    disko.devices.main.device = nixpkgs.lib.mkForce "/dev/vda";
           }
           # > Our main nixos configuration file <
           ./nixos/configuration.nix
