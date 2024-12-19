@@ -45,12 +45,13 @@
     config = {
       # Disable if you don't want unfree packages
       allowUnfree = true;
-    };
-  };
 
   xdg = {
     enable = true;
   };
+    };
+  };
+
 
   # TODO: Set your username
   home = {
