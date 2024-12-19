@@ -75,6 +75,15 @@
   # FIXME: Add the rest of your current configuration
   programs.fish.enable = true;
 
+  config.home.environment.sessionVariables = rec {
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_CONFIG_DIRS = "/etc/xdg";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_DIRS = "/usr/local/share/:/usr/share/";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
+  };
+
   # TODO: Set your hostname
   networking.hostName = "nixos";
 
@@ -91,15 +100,6 @@
       openssh.authorizedKeys.keys = [
         # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
       ];
-
-      environment.sessionVariables = rec {
-        XDG_CACHE_HOME = "$HOME/.cache";
-        XDG_CONFIG_DIRS = "/etc/xdg";
-        XDG_CONFIG_HOME = "$HOME/.config";
-        XDG_DATA_DIRS = "/usr/local/share/:/usr/share/";
-        XDG_DATA_HOME = "$HOME/.local/share";
-        XDG_STATE_HOME = "$HOME/.local/state";
-      };
 
       # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
       extraGroups = [ "wheel" ];
