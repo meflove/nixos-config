@@ -48,6 +48,10 @@
     };
   };
 
+  xdg = {
+    enable = true;
+  };
+
   # TODO: Set your username
   home = {
     username = "meflove";
