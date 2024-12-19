@@ -74,6 +74,9 @@
 
   # FIXME: Add the rest of your current configuration
   programs.fish.enable = true;
+
+  xdg.enable = true;
+
   # TODO: Set your hostname
   networking.hostName = "nixos";
 
@@ -91,7 +94,6 @@
         # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
       ];
 
-      xdg.enable = true;
 
       # TODO: Be sure to add any other groups you need (such as networkmanager, audio, docker, etc)
       extraGroups = [ "wheel" ];
