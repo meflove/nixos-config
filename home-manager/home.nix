@@ -18,7 +18,9 @@
     # You can also split up your configuration and import pieces of it here:
     ./wm/Hyprland/hypr.nix
     ./shell/fish.nix
-    ./stuff/git.nix
+    ./stuff
+    ./widgets/ags.nix
+    ./terms
   ];
 
   nixpkgs = {

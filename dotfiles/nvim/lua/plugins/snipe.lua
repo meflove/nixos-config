@@ -17,7 +17,7 @@ return {
   config = function()
     local snipe = require("snipe")
     snipe.setup({
-      ui = { position = "center", },
+      ui = { position = "center" },
       hints = {
         -- Charaters to use for hints
         -- make sure they don't collide with the navigation keymaps
@@ -28,8 +28,10 @@ return {
       navigate = {
         -- In case you changed your mind, provide a keybind that lets you
         -- cancel the snipe and close the window.
-        cancel_snipe = "<esc>",
-        -- cancel_snipe = "q",
+        cancel_snipe = {
+          "<esc>",
+          "q",
+        },
 
         -- Remove "j" and "k" from your dictionary to navigate easier to delete
         -- Close the buffer under the cursor
