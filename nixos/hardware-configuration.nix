@@ -5,56 +5,64 @@
 
 {
   imports =
-    [ (modulesPath + "/profiles/qemu-guest.nix")
+    [
+      (modulesPath + "/profiles/qemu-guest.nix")
     ];
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/efi";
-  
+
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
+    {
+      device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
       fsType = "btrfs";
       options = [ "subvol=rootfs" ];
     };
 
   fileSystems."/efi" =
-    { device = "/dev/disk/by-uuid/58E9-FBB9";
+    {
+      device = "/dev/disk/by-uuid/58E9-FBB9";
       fsType = "vfat";
       options = [ "fmask=0022" "dmask=0022" ];
     };
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
+    {
+      device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
       fsType = "btrfs";
       options = [ "subvol=home" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
+    {
+      device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
       fsType = "btrfs";
       options = [ "subvol=nix" ];
     };
 
   fileSystems."/tmp" =
-    { device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
+    {
+      device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
       fsType = "btrfs";
       options = [ "subvol=tmp" ];
     };
 
   fileSystems."/var/cache" =
-    { device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
+    {
+      device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
       fsType = "btrfs";
       options = [ "subvol=cache" ];
     };
 
   fileSystems."/var/log" =
-    { device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
+    {
+      device = "/dev/disk/by-uuid/5ed39a60-73bb-4384-b4de-3bbb88105c0f";
       fsType = "btrfs";
       options = [ "subvol=log" ];
     };
@@ -75,7 +83,7 @@
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
 
@@ -102,7 +110,7 @@
     open = false;
 
     # Enable the Nvidia settings menu,
-        # accessible via `nvidia-settings`.
+    # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.

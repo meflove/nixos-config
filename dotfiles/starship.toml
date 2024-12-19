@@ -1,0 +1,265 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# =============================================================================================
+# New starship config
+# Minimal starship config
+# inspired by https://github.com/max397574/dotfiles/blob/main/starship.toml
+
+add_newline = true
+
+format = "$all"
+right_format = """$time$battery"""
+
+command_timeout = 999999
+
+[username]
+style_user = "fg:red bg:black"
+format = "[](fg:black bg:none)[  $user]($style)[](fg:black bg:none)"
+show_always = true
+
+[hostname]
+ssh_only = false
+format = "[](fg:black bg:none)[󰌢  $hostname]($style)[](fg:black bg:none)"
+trim_at = "-"
+style = "fg:green bg:black"
+disabled = false
+
+[battery]
+full_symbol = "󰁹 "
+charging_symbol = "󰂄 "
+discharging_symbol = "󱟤 "
+unknown_symbol = "󰂑 "
+disabled = false
+format = " [](fg:black bg:none)[$symbol ]($style)[$percentage]($style)[](fg:black bg:none)"
+
+[[battery.display]]
+style = "fg:red bg:black"
+threshold=100
+
+[character]
+success_symbol = "[❯](green)"
+error_symbol = "[❯](red)"
+vicmd_symbol = "[](bold green)"
+
+[cmd_duration]
+format = "[](bg:none fg:black)[  $duration]($style)[](bg:none fg:black)"
+style = "fg:yellow bg:black"
+
+[directory]
+format = "[](bg:none fg:black)[󰉋  ]($style)[$path]($style)[](bg:none fg:black) [( [$read_only]($read_only_style))](bg:none fg:bold black)"
+style = "fg:cyan bg:black"
+read_only_style = "fg:red bg:black"
+read_only = "⨯ read"
+
+[package]
+format = "[](bg:black fg:black)[$symbol $version]($style)[](bg:black fg:black) "
+style = "fg:cyan bg:black"
+symbol = "Ξ"
+
+[git_branch]
+format = "[](fg:black)[$symbol $branch]($style)[](fg:black) "
+style = "fg:purple bg:black"
+symbol = " "
+
+[git_status]
+format="[](fg:black)[ ]($style)[$modified]($style)[$untracked]($style)[$staged]($style)[$renamed]($style)[](fg:black) "
+style = "fg:blue bg:black"
+conflicted = "="
+ahead =	"⇡${count} "
+behind = "⇣${count} "
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
+untracked = "?${count} "
+modified = "!${count} "
+staged = "+${count} "
+renamed = "»${count} "
+deleted = "✘${count} "
+disabled = false
+
+[time]
+style="fg:purple bg:black"
+format = "[](fg:black)[ ]($style)[$time]($style)[](fg:black) "
+time_format = "%R"
+disabled = false
+
+[nodejs]
+format = "[](fg:black)[$symbol $version]($style)[](fg:black) "
+style = "fg:green bg:black"
+symbol = " "
+
+[lua]
+format = "[](fg:black)[$symbol $version]($style)[](fg:black) "
+style = "fg:blue bg:black"
+symbol = " "
+
+[rust]
+format = "[](fg:black)[$symbol $version]($style)[](fg:black) "
+style = "fg:red bg:black"
+symbol = " "
+
+[python]
+format = "[](fg:black)[$symbol $version]($style)[](fg:black) "
+style = "bg:black fg:yellow"
+symbol = " "
+
+[conda]
+format = "[](fg:black)[$symbol $version]($style)[](fg:black) "
+style = "bg:black fg:yellow"
+symbol = "  "
+
+[java]
+format = "[](fg:black)[$symbol $version]($style)[](fg:black) "
+style = "bg:black fg:yellow"
+symbol = "  "
+
+[c]
+format = "[](fg:black)[$symbol $version]($style)[](fg:black) "
+style = "bg:black fg:yellow"
+symbol = "  "
+
+[aws]
+symbol = "  "
+
+[buf]
+symbol = " "
+
+# [c]
+# symbol = " "
+
+# [conda]
+# symbol = " "
+
+[crystal]
+symbol = " "
+
+[dart]
+symbol = " "
+
+[docker_context]
+symbol = " "
+
+[elixir]
+symbol = " "
+
+[elm]
+symbol = " "
+
+[fennel]
+symbol = " "
+
+[fossil_branch]
+symbol = " "
+
+[git_commit]
+tag_symbol = '  '
+
+[golang]
+symbol = " "
+
+[guix_shell]
+symbol = " "
+
+[haskell]
+symbol = " "
+
+[haxe]
+symbol = " "
+
+[hg_branch]
+symbol = " "
+
+[julia]
+symbol = " "
+
+[kotlin]
+symbol = " "
+
+[memory_usage]
+symbol = "󰍛 "
+
+[meson]
+symbol = "󰔷 "
+
+[nim]
+symbol = "󰆥 "
+
+[nix_shell]
+symbol = " "
+
+[ocaml]
+symbol = " "
+
+[os.symbols]
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+Arch = " "
+Artix = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
+
+[perl]
+symbol = " "
+
+[php]
+symbol = " "
+
+[pijul_channel]
+symbol = " "
+
+
+[rlang]
+symbol = "󰟔 "
+
+[ruby]
+symbol = " "
+
+[scala]
+symbol = " "
+
+[swift]
+symbol = " "
+
+[zig]
+symbol = " "
+
+[gradle]
+symbol = " "
+
+# MY CONFIG ENDS
