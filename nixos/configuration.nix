@@ -75,7 +75,7 @@
   # FIXME: Add the rest of your current configuration
   programs.fish.enable = true;
 
-  config.home.environment.sessionVariables = rec {
+  home.environment.sessionVariables = rec {
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_CONFIG_DIRS = "/etc/xdg";
     XDG_CONFIG_HOME = "$HOME/.config";
