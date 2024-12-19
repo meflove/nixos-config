@@ -1,3 +1,5 @@
+{ config, ... }:
+
 {
   programs.ags.enable = true;
 

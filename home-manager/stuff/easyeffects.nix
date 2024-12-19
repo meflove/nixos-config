@@ -1,3 +1,5 @@
+{ config, ... }:
+
 {
   programs.easyeffects.enable = true;
 
