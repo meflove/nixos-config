@@ -75,7 +75,9 @@
   # FIXME: Add the rest of your current configuration
   programs.fish.enable = true;
 
-  xdg.enable = true;
+  xdg = {
+    enable = true;
+  };
 
   # TODO: Set your hostname
   networking.hostName = "nixos";
