@@ -28,7 +28,7 @@
       fi
     fi
     
-    echo ''  
+    echo \'\'  
   '';
 }
 
