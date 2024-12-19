@@ -7,7 +7,7 @@
   home.sessionVariables.NIXOS_OZONE_WL = "1";
 
   # config
-  home.file."${config.xdg.configHome}/hypr" = {
+  home.file."${xdg.configHome}/hypr" = {
     source = ../../../dotfiles/hypr;
     recursive = true;
   };

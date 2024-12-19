@@ -1,7 +1,7 @@
 {
   programs.starship.enable = true;
 
-  home.file."${config.xdg.configHome}/starship" = {
+  home.file."${xdg.configHome}/starship" = {
     source = ../../dotfiles/fastfetch;
     recursive = true;
   };

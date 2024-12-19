@@ -1,7 +1,7 @@
 {
   programs.kitty.enable = true;
 
-  home.file."${config.xdg.configHome}/kitty" = {
+  home.file."${xdg.configHome}/kitty" = {
     source = ../../dotfiles/kitty;
     recursive = true;
   };
