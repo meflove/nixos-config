@@ -10,7 +10,7 @@
     XDG_STATE_HOME = "$HOME/.local/state";
   };
 
-  home.file."${xdg.configHome}/fish" = {
+  home.file."${config.xdg.configHome}/fish" = {
     source = ../../dotfiles/fish;
     recursive = true;
   };

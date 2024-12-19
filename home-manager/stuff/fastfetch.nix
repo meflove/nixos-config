@@ -1,7 +1,7 @@
 {
   programs.fastfetch.enable = true;
 
-  home.file."${xdg.configHome}/easyeffects" = {
+  home.file."${config.xdg.configHome}/easyeffects" = {
     source = ../../dotfiles/fastfetch;
     recursive = true;
   };

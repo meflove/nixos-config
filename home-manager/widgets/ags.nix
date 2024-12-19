@@ -8,7 +8,7 @@
     accountsservice
   ];
 
-  home.file."${xdg.configHome}/ags" = {
+  home.file."${config.xdg.configHome}/ags" = {
     source = ../../dotfiles/ags;
     recursive = true;
   };
