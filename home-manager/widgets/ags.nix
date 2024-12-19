@@ -1,7 +1,8 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 
 {
-  programs.ags.enable = true;
+  programs.ags = {
+    enable = true;
 
   # additional packages to add to gjs's runtime
   extraPackages = with pkgs; [
@@ -9,6 +10,7 @@
     webkitgtk
     accountsservice
   ];
+  };
 
   home.file."${config.xdg.configHome}/ags" = {
     source = ../../dotfiles/ags;
