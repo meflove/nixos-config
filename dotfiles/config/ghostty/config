@@ -1,0 +1,32 @@
+# Theme
+config-file = ghostty-theme
+
+# Font
+font-family = "JetBrainsMono NF SemiBold" 
+font-size = 12
+
+# Use the colors from my configuration for the window theme:
+window-theme = ghostty
+gtk-adwaita = false
+
+# Use a simple titlebar:
+gtk-titlebar = false
+
+# Let me close stuff in peace:
+confirm-close-surface = false
+
+# Shaders
+
+# Cursor
+cursor-style = block
+mouse-scroll-multiplier = "0.5"
+shell-integration-features = no-cursor
+# link = xdg-open
+link-url = true
+
+# Padding 
+window-padding-x = 9
+window-padding-y = 9
+
+# Update notify
+auto-update = check
