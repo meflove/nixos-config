@@ -45,10 +45,10 @@
         },
         "convolver#0": {
             "autogain": true,
-            "bypass": true,
+            "bypass": false,
             "input-gain": -4.0,
             "ir-width": 100,
-            "kernel-path": "/home/sergio/.config/easyeffects/irs/Accudio ((48kHz Z.E.)) Earpods HIFI.irs",
+            "kernel-name": "Accudio ((48kHz Z.E.)) Earpods HIFI",
             "output-gain": 0.0
         },
         "crossfeed#0": {

@@ -38,7 +38,7 @@ env_editor_confirm() {
   fi
 }
 
-NOTIFY=no
+NOTIFY=yes
 CURSOR=
 FREEZE=
 WAIT=no

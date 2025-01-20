@@ -10,7 +10,7 @@ return {
     },
     -- lock compat to tagged versions, if you've also locked blink.cmp to tagged versions
     -- use a release tag to download pre-built binaries
-    version = "v0.*",
+    version = "*",
     -- OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
     -- build = 'cargo build --release',
     -- If you use nix, you can build from source using latest nightly rust with:
@@ -25,24 +25,11 @@ return {
       -- see the "default configuration" section below for full documentation on how to define
       -- your own keymap.
       keymap = { preset = "super-tab" },
-      snippets = {
-        expand = function(snippet)
-          require("luasnip").lsp_expand(snippet)
-        end,
-        active = function(filter)
-          if filter and filter.direction then
-            return require("luasnip").jumpable(filter.direction)
-          end
-          return require("luasnip").in_snippet()
-        end,
-        jump = function(direction)
-          require("luasnip").jump(direction)
-        end,
-      },
+      snippets = { preset = "luasnip" },
 
       sources = {
         -- remember to enable your providers here
-        default = { "lsp", "path", "luasnip", "buffer", "lazydev" },
+        default = { "lsp", "path", "snippets", "buffer", "lazydev" },
         providers = {
           lazydev = {
             name = "LazyDev",

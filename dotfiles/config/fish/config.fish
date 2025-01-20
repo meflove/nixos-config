@@ -15,12 +15,14 @@ end
 
 fish_default_key_bindings
 
+source $__fish_config_dir/functions/magic-enter-cmd.fish
+
 starship init fish | source
 # if test -f ~/.cache/ags/user/generated/terminal/sequences.txt
 #     cat ~/.cache/ags/user/generated/terminal/sequences.txt
 # end
 
-alias visudo='EDITOR="nvim -u NONE" command sudo visudo'
+alias visudo='EDITOR=nvim command sudo visudo'
 alias se=sudoedit
 alias pamcan=pacman
 alias m=micro
@@ -29,17 +31,20 @@ alias py=python
 alias g=git
 alias p=paru
 alias cls="clear && fastfetch"
+alias c="clear && fastfetch"
 alias venv="python -m venv venv && source venv/bin/activate.fish"
 alias ls='eza --icons=always --color=always -a1 --level 1'
 alias ll='eza --icons=always --color=always -alh --git'
+alias tree='ls --tree --level 1000'
 alias du=dust
 alias df=duf
+alias th=ad
 alias ip='ip -color=auto'
 alias grep='grep --color=auto'
 alias cat=bat
+alias catt='command cat'
 alias icat="kitten icat"
-alias diff="kitty +kitten diff"
-alias clip="kitty +kitten clipboard"
+alias diff="delta"
 # alias ssh="kitty +kitten ssh"
 alias ytdlp="cd /home/meflove/Yt-DLP/ && yt-dlp -f 'bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -S vcodec:h264"
 alias ipv4="ip addr show | grep 'inet ' | grep -v '127.0.0.1' | cut -d' ' -f6 | cut -d/ -f1"
@@ -55,6 +60,7 @@ alias Holes='sudo netstat -tupln'
 
 abbr mkdir 'mkdir -p'
 abbr rm 'rm -r'
+abbr cp 'cp -r'
 
 source ~/.config/fish/themes/tokyo-night-moon.fish
 
@@ -71,8 +77,12 @@ end
 fzf_configure_bindings --variables=
 fish_add_path /home/user/.spicetify
 
-export LIBVIRT_DEFAULT_URI=\"qemu:///system\"
+export LIBVIRT_DEFAULT_URI="qemu:///system"
 set -xU MANPAGER 'less -R --use-color -Dd+r -Du+b'
 set -xU MANROFFOPT '-P -c'
 
 export EDITOR=nvim
+export SUDO_PROMPT="$(tput setaf 1 bold)Password:$(tput sgr0) "
+
+# Created by `pipx` on 2025-01-14 11:42:19
+set PATH $PATH /home/meflove/.local/bin

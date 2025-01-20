@@ -7,7 +7,7 @@ set -l orange ff966c
 set -l yellow ffc777
 set -l green c3e88d
 set -l purple fca7ea
-set -l cyan 86e1fc
+set -l cyan 86e1fc --bold
 set -l pink c099ff
 
 # Syntax Highlighting Colors
