@@ -12,8 +12,13 @@
     ];
   };
 
-  home.file."${config.xdg.configHome}/ags" = {
-    source = ../../dotfiles/ags;
+  home.file."/home/meflove/.config/ags" = {
+    source = "../../dotfiles/config/ags";
     recursive = true;
   };
+
+  # home.file."${config.xdg.configHome}" = {
+  #   source = ../../dotfiles/config/starship.toml;
+  #   recursive = true;
+  # };
 }

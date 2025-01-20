@@ -14,13 +14,14 @@
 
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
-
+    inputs.ags.homeManagerModules.default
+    
     # You can also split up your configuration and import pieces of it here:
-    ./wm/Hyprland/hypr.nix
-    ./shell/fish.nix
+    # ./wm/Hyprland/hypr.nix
+    # ./shell/fish.nix
     ./stuff
-    ./widgets/ags.nix
-    ./terms
+    # ./widgets/ags.nix
+    # ./terms
   ];
 
   nixpkgs = {
@@ -57,11 +58,16 @@
   home = {
     username = "meflove";
     homeDirectory = "/home/meflove";
+
   };
 
+    home.file."${config.xdg.configHome}" = {
+  source = ../dotfiles/config;
+  recursive = true;
+};
   # Add stuff for your user as you see fit:
   programs.neovim.enable = true;
-  # home.packages = with pkgs; [ steam ];
+  # home.packages = with pkgs; [ ags ];
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
@@ -69,6 +75,9 @@
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
+  
+  # pkgs
+  # programs.ags.enable = true;
 
   # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   home.stateVersion = "24.11";
