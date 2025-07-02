@@ -7,10 +7,11 @@ font-family-bold = "JetBrainsMono NF Bold"
 font-family-italic = "JetBrainsMono NF SemiBold Italic"
 font-family-bold-italic = "JetBrainsMono NF Bold Italic"
 font-size = 12
+adjust-cell-height = 15%
 
 # Use the colors from my configuration for the window theme:
 window-theme = ghostty
-gtk-adwaita = false
+window-colorspace = "display-p3"
 
 # Use a simple titlebar:
 gtk-titlebar = false
@@ -24,6 +25,7 @@ confirm-close-surface = false
 cursor-style = block
 mouse-scroll-multiplier = "0.5"
 shell-integration-features = no-cursor
+
 # link = true
 link-url = true
 

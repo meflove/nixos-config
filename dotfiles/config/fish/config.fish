@@ -1,88 +1,130 @@
-# Hyprland at login
-if status is-login
-    if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
+# ====== Настройки при входе в систему ======
+if status --is-login
+    if test (tty) = /dev/tty1
         mkdir -p ~/.cache
-        exec Hyprland >~/.cache/hyprland.log
+        exec Hyprland >~/.cache/hyprland.log || exec zsh
+    else
+        exec zsh
     end
 end
 
-status is-interactive; and begin
-    set fish_greeting
-    set fish_tmux_default_session_name meflove
-    set fish_tmux_autostart_once false
-    set fish_tmux_autostart true
-end
-
+# ====== Сочетания клавиш ======
 fish_default_key_bindings
 
-source $__fish_config_dir/functions/magic-enter-cmd.fish
+# ====== Интерактивные настройки ======
+if status is-interactive
+    # Основные настройки
+    set fish_greeting
+    source ~/.config/fish/functions/_init_autin.fish
 
-starship init fish | source
-# if test -f ~/.cache/ags/user/generated/terminal/sequences.txt
-#     cat ~/.cache/ags/user/generated/terminal/sequences.txt
-# end
+    # Zellij
+    export ZELLIJ_CONFIG_DIR=$HOME/.config/zellij
 
-alias visudo='EDITOR=nvim command sudo visudo'
-alias se=sudoedit
-alias pamcan=pacman
-alias m=micro
-alias n=nvim
-alias py=python
-alias g=git
-alias p=paru
-alias cls="clear && fastfetch"
-alias c="clear && fastfetch"
-alias venv="python -m venv venv && source venv/bin/activate.fish"
+    # # Автозапуск Zellij в Ghostty
+    if [ "$TERM" = xterm-ghostty ]
+        set ZELLIJ_AUTO_ATTACH true
+        eval (zellij setup --generate-auto-start fish | string collect)
+    end
+end
+
+# ====== Псевдонимы (aliases) ======
+# ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Системные утилиты ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
 alias ls='eza --icons=always --color=always -a1 --level 1'
 alias ll='eza --icons=always --color=always -alh --git'
+# alias rm=rmt
 alias tree='ls --tree --level 1000'
+alias less='less -R'
 alias du=dust
 alias df=duf
-alias th=ad
 alias ip='ip -color=auto'
 alias grep='grep --color=auto'
 alias cat=bat
 alias catt='command cat'
-alias icat="kitten icat"
-alias diff="delta"
-# alias ssh="kitty +kitten ssh"
-alias ytdlp="cd /home/meflove/Yt-DLP/ && yt-dlp -f 'bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' -S vcodec:h264"
-alias ipv4="ip addr show | grep 'inet ' | grep -v '127.0.0.1' | cut -d' ' -f6 | cut -d/ -f1"
-alias ipv6="ip addr show | grep 'inet6 ' | cut -d ' ' -f6 | sed -n '2p'"
-alias hmmm='paru -Sy &> /dev/null && paru -Qu'
-alias brn='curl wttr.in/barnaul | head -n -1'
+alias Holes='sudo netstat -tupln'
 alias err='journalctl -b -p err'
+alias syslog_emerg='sudo dmesg --level=emerg,alert,crit'
+
+# ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+alias n=nvim
+alias nv="NVIM_APPNAME='nvim-NvChad' nvim"
+alias m=micro
+alias py=python
+alias dif="delta"
+alias th=ad
+alias ssh="ggh"
+alias nzo="search_with_zoxide"
+alias zigup="command sudo zigup --install-dir /home/meflove/.zig"
+
+# ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Управление пакетами ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+alias p="socks_proxy=127.0.0.1:2080 socks5_proxy=127.0.0.1:2080 http_proxy=127.0.0.1:2080 https_proxy=127.0.0.1:2080 paru"
+alias pamcan=pacman
+alias hmmm='paru -Sy &> /dev/null && paru -Qu'
 alias pkglist='pacman -Qs --color=always | less -R'
 alias pacman-fzf-local="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
 alias pacman-fzf-remote="pacman -Slq | fzf --preview 'pacman -Si {}' --layout=reverse"
+
+# ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Git и инструменты ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+alias g=git
+alias icat="kitten icat" # Просмотр изображений в терминале
+alias fman="compgen -c | fzf | xargs man"
+
+# ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Сеть и интернет ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+alias ipv4="ip addr show | grep 'inet ' | grep -v '127.0.0.1' | cut -d' ' -f6 | cut -d/ -f1"
+alias ipv6="ip addr show | grep 'inet6 ' | cut -d ' ' -f6 | sed -n '2p'"
 alias PublicIP='curl ifconfig.me && echo ""'
-alias Holes='sudo netstat -tupln'
+alias brn='curl wttr.in/barnaul | head -n -1'
 
+# ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Мультимедиа ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+alias ytdlp="cd /home/meflove/Yt-DLP/ && yt-dlp \
+  -f 'bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best' \
+  -S vcodec:h264"
+
+# ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Управление терминалом ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+alias cls="clear && fastfetch"
+alias c="clear && fastfetch" # Дублирует cls
+
+# ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Sudo и безопасность ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
+alias visudo='EDITOR=nvim command sudo visudo'
+alias se=sudoedit
+
+# ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Сокращения команд ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
 abbr mkdir 'mkdir -p'
-abbr rm 'rm -r'
+abbr rm 'rm -rf'
 abbr cp 'cp -r'
+abbr makepkg 'makepkg -sric --skipinteg'
 
-source ~/.config/fish/themes/tokyo-night-moon.fish
-
-# Created by `pipx` on 2024-06-20 14:14:50
-set PATH $PATH /home/user/.local/bin
-zoxide init fish | source
-
-# pnpm
-set -gx PNPM_HOME "/home/user/.local/share/pnpm"
-if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
-end
-# pnpm end
-fzf_configure_bindings --variables=
-fish_add_path /home/user/.spicetify
-
-export LIBVIRT_DEFAULT_URI="qemu:///system"
-set -xU MANPAGER 'less -R --use-color -Dd+r -Du+b'
-set -xU MANROFFOPT '-P -c'
-
+# ====== Переменные окружения ======
 export EDITOR=nvim
 export SUDO_PROMPT="$(tput setaf 1 bold)Password:$(tput sgr0) "
+export LIBVIRT_DEFAULT_URI="qemu:///system"
+export TERM="xterm-256color"
+export RIP_GRAVEYARD="~/.local/share/Trash"
+export no_proxy="127.0.0.1"
+export SPACEFISH_USER_SHOW="always"
+export GDK_BACKEND="wayland"
 
-# Created by `pipx` on 2025-01-14 11:42:19
+# ====== Настройки путей ======
+fish_add_path /home/meflove/.cargo/bin/ $HOME/.ZAP_D/webdriver/linux/64
+
+# Pipx
 set PATH $PATH /home/meflove/.local/bin
+
+# npm
+export npm_config_prefix="$HOME/.local"
+
+# ====== Дополнительные функции ======
+
+source $__fish_config_dir/functions/magic-enter-cmd.fish
+source $__fish_config_dir/themes/tokyo-night-moon.fish
+
+# Starship prompt
+# starship init fish | source
+
+# Automatically set Wayland vars for root sessions
+if test (id -u) -eq 0
+    set -gx XDG_RUNTIME_DIR /run/user/1000
+    set -gx WAYLAND_DISPLAY wayland-1
+end
+
+# Zoxide (быстрый переход по директориям)
+zoxide init fish | source

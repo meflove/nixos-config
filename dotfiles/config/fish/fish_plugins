@@ -1,9 +1,11 @@
 jorgebucaran/fisher
-patrickf1/fzf.fish
-patrickf1/colored_man_pages.fish
 franciscolourenco/done
 jorgebucaran/spark.fish
 jorgebucaran/autopair.fish
 nickeb96/puffer-fish
-budimanjojo/tmux.fish
 mattmc3/magic-enter.fish
+orefalo/grc
+kpbaks/zellij.fish
+jorgebucaran/nvm.fish
+jorgebucaran/fishtape
+matchai/spacefish

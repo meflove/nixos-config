@@ -10,8 +10,8 @@
   "theme.bar.opacity": 0,
   "theme.bar.buttons.enableBorders": true,
   "bar.customModules.updates.pollingInterval": 1440000,
-  "menus.dashboard.shortcuts.left.shortcut1.command": "floorp",
-  "menus.dashboard.shortcuts.left.shortcut1.tooltip": "Floorp",
+  "menus.dashboard.shortcuts.left.shortcut1.command": "zen-twilight",
+  "menus.dashboard.shortcuts.left.shortcut1.tooltip": "Zen Browser",
   "menus.dashboard.shortcuts.left.shortcut2.command": "spotify-launcher",
   "menus.dashboard.shortcuts.left.shortcut3.command": "equibop",
   "bar.layouts": {
@@ -21,13 +21,16 @@
         "windowtitle"
       ],
       "middle": [
+        "ram",
+        "cpu",
         "media",
         "workspaces",
         "clock"
       ],
       "right": [
+        "systray",
+        "kbinput",
         "volume",
-        "clock",
         "notifications"
       ]
     },
@@ -63,7 +66,7 @@
       "color": "#2EBCD8"
     },
     "3": {
-      "icon": "󰙯",
+      "icon": "",
       "color": "#5865F2"
     },
     "4": {
@@ -94,13 +97,13 @@
   "theme.bar.menus.monochrome": false,
   "wallpaper.enable": true,
   "wallpaper.image": "/home/meflove/Images/wallpaper.jpg",
-  "wallpaper.pywal": true,
+  "wallpaper.pywal": false,
   "theme.matugen": false,
   "theme.matugen_settings.mode": "dark",
   "theme.matugen_settings.scheme_type": "expressive",
   "theme.matugen_settings.variation": "standard_1",
   "theme.matugen_settings.contrast": 0,
-  "theme.bar.transparent": false,
+  "theme.bar.transparent": true,
   "theme.bar.buttons.monochrome": false,
   "bar.customModules.cava.bars": 10,
   "theme.bar.menus.menu.power.scaling": 100,
@@ -332,7 +335,7 @@
   "theme.bar.menus.text": "#c0caf5",
   "theme.bar.menus.border.color": "#414868",
   "theme.bar.menus.cards": "#24283b",
-  "theme.bar.menus.background": "#1a1b26",
+  "theme.bar.menus.background": "#222336",
   "theme.bar.buttons.modules.power.icon_background": "#f7768e",
   "theme.bar.buttons.modules.power.icon": "#f7768e",
   "theme.bar.buttons.modules.power.background": "#272a3d",
@@ -479,5 +482,12 @@
   "theme.bar.buttons.modules.cava.border": "#73daca",
   "theme.bar.buttons.borderSize": "0.08em",
   "bar.customModules.ram.pollingInterval": 2000,
-  "bar.customModules.cpu.pollingInterval": 2000
+  "bar.customModules.cpu.pollingInterval": 2000,
+  "theme.osd.margins": "7px 7px 7px 7px",
+  "bar.customModules.hypridle.onIcon": "󰒳",
+  "bar.customModules.hypridle.offIcon": "󰒲",
+  "theme.bar.menus.card_radius": "0.4em",
+  "bar.customModules.storage.paths": [
+    "/"
+  ]
 }
