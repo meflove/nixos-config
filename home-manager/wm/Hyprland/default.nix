@@ -1,15 +1,8 @@
 { config, lib, pkgs, ... }:
 
-let
-  cfg = config.wayland.windowManager.hyprland;
-in
-{
-  options.wayland.windowManager.hyprland = {
-    enable = lib.mkEnableOption "Hyprland window manager";
-  };
 
-  config = lib.mkIf cfg.enable {
-    # Enable Hyprland in Home Manager
+{
+  config = {
     wayland.windowManager.hyprland = {
       enable = true;
       package = pkgs.hyprland;
@@ -28,7 +21,6 @@ in
         monitor = [
           "DP-1,2560x1440@144,1920x0,1,vrr,1"
           "HDMI-A-1,1920x1080@60,0x360,1"
-          # "HDMI-A-1,1920x1080@60,1920x0,1,mirror,eDP-1" # HDMI port: mirror display. To see device name, use `hyprctl monitors`
         ];
 
         input = {
