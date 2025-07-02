@@ -229,269 +229,269 @@ in
           # Other
           exec = easyeffects --gapplication-service
         '';
+
+        # Keybinds
+        bind = [
+          # Essentials for beginners
+          "Super, T, exec, ghostty" # Launch kitty (terminal)
+          "Super, Return, exec, ghostty" # [hidden] # In case you're from i3 or its Wayland clone
+          ", Super, exec, true" # Open app launcher
+          "Alt+Super, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh" # Change wallpaper
+          # Actions
+          # Screenshot, Record, OCR, Color picker, Clipboard history
+          "Super, V, exec, pkill fuzzel || cliphist list | fuzzel --match-mode fzf --dmenu | cliphist decode | wl-copy" # Clipboard history >> clipboard
+          "Super, Period, exec, pkill fuzzel || ~/.local/bin/fuzzel-emoji" # Pick emoji >> clipboard
+          "Ctrl+Shift+Alt, Delete, exec, pkill wlogout || wlogout -p layer-shell" # [hidden]
+          ",Print, exec, ~/.config/ags/scripts/grimblast.sh --freeze copy area" # Screen snip
+          "Super+Shift+Alt, S, exec, grim -g \"$(slurp)\" - | swappy -f -" # Screen snip >> edit
+          # OCR
+          "Super+Ctrl,T,exec,grim -g \"$(slurp $SLURP_ARGS)\" \"tmp.png\" && tesseract -l eng \"tmp.png\" - | wl-copy && rm \"tmp.png\"" # Screen snip to text >> clipboard
+          "Ctrl+Super+Shift,S,exec,grim -g \"$(slurp $SLURP_ARGS)\" \"tmp.png\" && tesseract \"tmp.png\" - | wl-copy && rm \"tmp.png\"" # [hidden]
+          # Color picker
+          "Super+Shift, C, exec, hyprpicker -ar" # Pick color (Hex) >> clipboard
+          # Fullscreen screenshot
+          # "bindl=,Print,exec,grim - | wl-copy" # Screenshot >> clipboard
+          "Ctrl+Shift,Print, exec, mkdir -p ~/Images/Screenshots && ~/.config/ags/scripts/grimblast.sh copysave screen ~/Pictures/Screenshots/Screenshot_\"$(date '+%Y-%m-%d_%H.%M.%S')\".png" # Screenshot >> clipboard & file
+          # Session
+          "Super, X, exec, bash ~/.config/rofi/powermenu.sh"
+          "Super, G, exec, pkill rofi || rofi -show calc -modi calc -no-show-match -no-sort -theme \"${config.xdg.configHome}/rofi/launchers/type-6/style-10.rasi\""
+          "Super, L, exec, hyprlock" # Lock
+          "Super+Shift, L, exec, loginctl lock-session" # [hidden]
+          "bindl, Super+Shift, L, exec, sleep 0.1 && systemctl suspend || loginctl suspend" # Suspend system (using bindl here)
+          "Ctrl+Shift+Alt+Super, Delete, exec, systemctl poweroff || loginctl poweroff" # [hidden] Power off
+
+          # Window management
+          # Focusing
+          "Super, Left, movefocus, l" # [hidden]
+          "Super, Right, movefocus, r" # [hidden]
+          "Super, Up, movefocus, u" # [hidden]
+          "Super, Down, movefocus, d" # [hidden]
+          "Super, BracketLeft, movefocus, l" # [hidden]
+          "Super, BracketRight, movefocus, r" # [hidden]
+          "bindm, Super, mouse:272, movewindow"
+          "bindm, Super, mouse:273, resizewindow"
+          "Super, Q, killactive,"
+          "Super+Shift+Alt, Q, exec, hyprctl kill" # Pick and kill a window
+          # Window arrangement
+          "Super+Shift, Left, movewindow, l" # [hidden]
+          "Super+Shift, Right, movewindow, r" # [hidden]
+          "Super+Shift, Up, movewindow, u" # [hidden]
+          "Super+Shift, Down, movewindow, d" # [hidden]
+          # Window split ratio
+          "binde, Super, Minus, splitratio, -0.1" # [hidden]
+          "binde, Super, Equal, splitratio, +0.1" # [hidden]
+          "binde, Super, Semicolon, splitratio, -0.1" # [hidden]
+          "binde, Super, Apostrophe, splitratio, +0.1" # [hidden]
+          # Positioning mode
+          "Super+Alt, Space, togglefloating,"
+          "Super+Alt, F, fullscreenstate, 0 3" # Toggle fake fullscreen
+          "Super, F, fullscreen, 0"
+          "Super, D, fullscreen, 1"
+
+          # Workspace navigation
+          # Switching
+          "Super, 1, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 1" # [hidden]
+          "Super, 2, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 2" # [hidden]
+          "Super, 3, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 3" # [hidden]
+          "Super, 4, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 4" # [hidden]
+          "Super, 5, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 5" # [hidden]
+          "Super, 6, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 6" # [hidden]
+          "Super, 7, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 7" # [hidden]
+          "Super, 8, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 8" # [hidden]
+          "Super, 9, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 9" # [hidden]
+          "Super, 0, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 10" # [hidden]
+
+          "Ctrl+Super, Right, workspace, +1" # [hidden]
+          "Ctrl+Super, Left, workspace, -1" # [hidden]
+          "Super, mouse_up, workspace, +1" # [hidden]
+          "Super, mouse_down, workspace, -1" # [hidden]
+          "Ctrl+Super, mouse_up, workspace, +1" # [hidden]
+          "Ctrl+Super, mouse_down, workspace, -1" # [hidden]
+          "Super, Page_Down, workspace, +1" # [hidden]
+          "Super, Page_Up, workspace, -1" # [hidden]
+          "Ctrl+Super, Page_Down, workspace, +1" # [hidden]
+          "Ctrl+Super, Page_Up, workspace, -1" # [hidden]
+          # Special
+          "Super, S, togglespecialworkspace,"
+          "Super, mouse:275, togglespecialworkspace,"
+
+          # Workspace management
+          # Move window to workspace Super + Alt + [0-9]
+          "Super+Alt, 1, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 1" # [hidden]
+          "Super+Alt, 2, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 2" # [hidden]
+          "Super+Alt, 3, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 3" # [hidden]
+          "Super+Alt, 4, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 4" # [hidden]
+          "Super+Alt, 5, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 5" # [hidden]
+          "Super+Alt, 6, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 6" # [hidden]
+          "Super+Alt, 7, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 7" # [hidden]
+          "Super+Alt, 8, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 8" # [hidden]
+          "Super+Alt, 9, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 9" # [hidden]
+          "Super+Alt, 0, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 10" # [hidden]
+
+          "Ctrl+Super+Shift, Up, movetoworkspacesilent, special" # [hidden]
+
+          "Ctrl+Super+Shift, Right, movetoworkspace, +1" # [hidden]
+          "Ctrl+Super+Shift, Left, movetoworkspace, -1" # [hidden]
+          "Ctrl+Super, BracketLeft, workspace, -1" # [hidden]
+          "Ctrl+Super, BracketRight, workspace, +1" # [hidden]
+          "Ctrl+Super, Up, workspace, -5" # [hidden]
+          "Ctrl+Super, Down, workspace, +5" # [hidden]
+          "Super+Shift, mouse_down, movetoworkspace, -1" # [hidden]
+          "Super+Shift, mouse_up, movetoworkspace, +1" # [hidden]
+          "Super+Alt, mouse_down, movetoworkspace, -1" # [hidden]
+          "Super+Alt, mouse_up, movetoworkspace, +1" # [hidden]
+          "Super+Alt, Page_Down, movetoworkspace, +1" # [hidden]
+          "Super+Alt, Page_Up, movetoworkspace, -1" # [hidden]
+          "Super+Shift, Page_Down, movetoworkspace, +1" # [hidden]
+          "Super+Shift, Page_Up, movetoworkspace, -1" # [hidden]
+          "Super+Alt, S, movetoworkspacesilent, special"
+          "Super, P, pin"
+
+          "Ctrl+Super, S, togglespecialworkspace," # [hidden]
+          "Alt, Tab, cyclenext" # [hidden] sus keybind
+          "Alt, Tab, bringactivetotop," # [hidden] bring it to the top
+
+          # Widgets
+          "bindr, Ctrl+Super, R, exec, hyprpanel" # Restart widgets
+          "bindr, Ctrl+Super+Alt, R, exec, hyprctl reload; killall ags ydotool; ags &" # [hidden]
+          "bindir, Super, Super_L, exec, pkill rofi || rofi -show drun -config ${config.xdg.configHome}/rofi/launchers/type-6/style-10.rasi" # Toggle overview/launcher
+          # "bindir, Super, Super_L, exec, pkill otter-launcher || \"$HOME/.config/otter-launcher/otter-toggle-hyprland\"" # Toggle overview/launcher
+          # "Super, Slash, exec, bash ~/.config/rofi/rofi_keybinds.sh" # Show cheatsheet
+
+          # Testing
+          # "SuperAlt, f12, exec, notify-send \"Hyprland version: $(hyprctl version | head -2 | tail -1 | cut -f2 -d ' ')\" \"owo\" -a 'Hyprland keybind'"
+          # "Super+Alt, f12, exec, notify-send \"Millis since epoch\" \"$(date +%s%N | cut -b1-13)\" -a 'Hyprland keybind'"
+          "Super+Alt, f12, exec, notify-send 'Test notification' \"Here's a really long message to test truncation and wrapping\\nYou can middle click or flick this notification to dismiss it!\" -a 'Shell' -A \"Test1=I got it!\" -A \"Test2=Another action\" -t 5000" # [hidden]
+          "Super+Alt, Equal, exec, notify-send \"Urgent notification\" \"Ah hell no\" -u critical -a 'Hyprland keybind'" # [hidden]
+
+          # Media
+          "bindl, Super+Shift, N, exec, playerctl next || playerctl position `bc <<< \"100 * $(playerctl metadata mpris:length) / 1000000 / 100\"`" # Next track
+          "Super+Shift+Alt, mouse:275, exec, playerctl previous" # [hidden]
+          "Super+Shift+Alt, mouse:276, exec, playerctl next || playerctl position `bc <<< \"100 * $(playerctl metadata mpris:length) / 1000000 / 100\"`" # [hidden]
+          "bindl, Super+Shift, B, exec, playerctl previous" # Previous track
+          "bindl, Super+Shift, P, exec, playerctl play-pause" # Play/pause media
+
+          # Apps
+          "Super, T, exec, ghostty" # Launch kitty (terminal)
+          "Super, Z, exec, Zed" # Launch Zed (editor)
+          "Super, C, exec, ghostty -e nvim" # Launch NeoVim (editor)
+          "Super, E, exec, nemo" # Launch Nautilus (file manager)
+          "Super+Alt, E, exec, thunar" # [hidden]
+          "Super, W, exec, zen-browser" # [hidden] Let's not give people (more) reason to shit on my rice
+          "Ctrl+Super, W, exec, firefox" # Launch Firefox (browser)
+          "Super+Shift, W, exec, wps" # Launch WPS Office
+          "Super, I, exec, XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center" # Launch GNOME Settings
+          "Ctrl+Super, V, exec, pavucontrol" # Launch pavucontrol (volume mixer)
+          "Ctrl+Super+Shift, V, exec, easyeffects" # Launch EasyEffects (equalizer & other audio effects)
+          "Ctrl+Shift, Escape, exec, gnome-system-monitor" # Launch GNOME System monitor
+          "Ctrl+Super, Slash, exec, pkill anyrun || anyrun" # Toggle fallback launcher: anyrun
+          "Super+Alt, Slash, exec, pkill anyrun || fuzzel" # Toggle fallback launcher: fuzzel
+          "Super+Shift, T, exec, ayugram-desktop" # Launch Ayugram
+          "Super+Shift, D, exec, equibop" # Launch Discord
+          "Super, S, exec, spotify-launcher" # Launch Spotify
+          "Super, K, exec, ghostty -e calcurse" # Launch calendar
+
+          # Cursed stuff
+          "Ctrl+Super, Backslash, resizeactive, exact 640 480" # [hidden]
+        ];
+
+        # Window rules
+        windowRules = [
+          "opacity 0.89 override 0.89 override, title:^(.*)$" # Applies transparency to EVERY WINDOW
+          "float, title:^(blueberry.py)$"
+          "float, title:^(steam)$"
+          "float, title:^(guifetch)$" # FlafyDev/guifetch
+          "tile, class:(dev.warp.Warp)"
+          "tile, title:^([Pp]icture[-\\s]?[Ii]n[-\\s]?[Pp]icture)(.*)$"
+          "center, title:^(Open File)(.*)$"
+          "center, title:^(Select a File)(.*)$"
+          "center, title:^(Choose wallpaper)(.*)$"
+          "center, title:^(Open Folder)(.*)$"
+          "center, title:^(Save As)(.*)$"
+          "center, title:^(Library)(.*)$"
+          "center, title:^(File Upload)(.*)$"
+          "center, title:^(Extract)(.*)$"
+          "center, title:^(Wine configuration)(.*)$"
+          "center, title:^(Blobdrop)(.*)$"
+          "float, title:^(Blobdrop)(.*)$"
+          "center, class:^(com.example.otter-launcher)$"
+          "float, class:^(com.example.otter-launcher)$"
+          "center, title:^(otter-launcher)$"
+          "float, title:^(otter-launcher)$"
+
+          # Picture-in-Picture
+          "keepaspectratio, title:^(Picture(-| )in(-| )[Pp]icture)$"
+          "move 73% 72%,title:^(Picture(-| )in(-| )[Pp]icture)$"
+          "size 25%, title:^(Picture(-| )in(-| )[Pp]icture)$"
+          "float, title:^(Picture(-| )in(-| )[Pp]icture)$"
+          "pin, title:^(Picture(-| )in(-| )[Pp]icture)$"
+
+          # Dialogs
+          "float,title:^(Open File)(.*)$"
+          "float,title:^(Select a File)(.*)$"
+          "float,title:^(Choose wallpaper)(.*)$"
+          "float,title:^(Open Folder)(.*)$"
+          "float,title:^(Save As)(.*)$"
+          "float,title:^(Library)(.*)$"
+          "float,title:^(File Upload)(.*)$"
+          "float,title:^(Extract)(.*)$"
+          # Tearing
+          "immediate,title:^(.*\\.exe)$"
+          "immediate,class:(steam_app)"
+
+          # No shadow for tiled windows
+          "noshadow,floating:0"
+        ];
+
+        # Layer rules
+        layerRules = [
+          "xray 1, .*"
+          # "noanim, .*"
+          "noanim, walker"
+          "noanim, selection"
+          "noanim, overview"
+          "noanim, anyrun"
+          "noanim, indicator.*"
+          "noanim, osk"
+          "noanim, hyprpicker"
+          "blur, shell:*"
+          "ignorealpha 0.6, shell:*"
+
+          "noanim, noanim"
+          "blur, gtk-layer-shell"
+          "ignorezero, gtk-layer-shell"
+          "blur, launcher"
+          "ignorealpha 0.5, launcher"
+          "blur, notifications"
+          "ignorealpha 0.69, notifications"
+
+          # ags
+          "animation slide left, sideleft.*"
+          "animation slide right, sideright.*"
+          "blur, session"
+
+          "blur, bar"
+          "ignorealpha 0.6, bar"
+          "blur, corner.*"
+          "ignorealpha 0.6, corner.*"
+          "blur, dock"
+          "ignorealpha 0.6, dock"
+          "blur, indicator.*"
+          "ignorealpha 0.6, indicator.*"
+          "blur, overview"
+          "ignorealpha 0.6, overview"
+          "blur, cheatsheet"
+          "ignorealpha 0.6, cheatsheet"
+          "blur, sideright"
+          "ignorealpha 0.6, sideright"
+          "blur, sideleft"
+          "ignorealpha 0.6, sideleft"
+          "blur, indicator*"
+          "ignorealpha 0.6, indicator*"
+          "blur, osk"
+          "ignorealpha 0.6, osk"
+        ];
       };
-
-      # Keybinds
-      bind = [
-        # Essentials for beginners
-        "Super, T, exec, ghostty" # Launch kitty (terminal)
-        "Super, Return, exec, ghostty" # [hidden] # In case you're from i3 or its Wayland clone
-        ", Super, exec, true" # Open app launcher
-        "Alt+Super, T, exec, ~/.config/ags/scripts/color_generation/switchwall.sh" # Change wallpaper
-        # Actions
-        # Screenshot, Record, OCR, Color picker, Clipboard history
-        "Super, V, exec, pkill fuzzel || cliphist list | fuzzel --match-mode fzf --dmenu | cliphist decode | wl-copy" # Clipboard history >> clipboard
-        "Super, Period, exec, pkill fuzzel || ~/.local/bin/fuzzel-emoji" # Pick emoji >> clipboard
-        "Ctrl+Shift+Alt, Delete, exec, pkill wlogout || wlogout -p layer-shell" # [hidden]
-        ",Print, exec, ~/.config/ags/scripts/grimblast.sh --freeze copy area" # Screen snip
-        "Super+Shift+Alt, S, exec, grim -g \"$(slurp)\" - | swappy -f -" # Screen snip >> edit
-        # OCR
-        "Super+Ctrl,T,exec,grim -g \"$(slurp $SLURP_ARGS)\" \"tmp.png\" && tesseract -l eng \"tmp.png\" - | wl-copy && rm \"tmp.png\"" # Screen snip to text >> clipboard
-        "Ctrl+Super+Shift,S,exec,grim -g \"$(slurp $SLURP_ARGS)\" \"tmp.png\" && tesseract \"tmp.png\" - | wl-copy && rm \"tmp.png\"" # [hidden]
-        # Color picker
-        "Super+Shift, C, exec, hyprpicker -ar" # Pick color (Hex) >> clipboard
-        # Fullscreen screenshot
-        # "bindl=,Print,exec,grim - | wl-copy" # Screenshot >> clipboard
-        "Ctrl+Shift,Print, exec, mkdir -p ~/Images/Screenshots && ~/.config/ags/scripts/grimblast.sh copysave screen ~/Pictures/Screenshots/Screenshot_\"$(date '+%Y-%m-%d_%H.%M.%S')\".png" # Screenshot >> clipboard & file
-        # Session
-        "Super, X, exec, bash ~/.config/rofi/powermenu.sh"
-        "Super, G, exec, pkill rofi || rofi -show calc -modi calc -no-show-match -no-sort -theme \"${config.xdg.configHome}/rofi/launchers/type-6/style-10.rasi\""
-        "Super, L, exec, hyprlock" # Lock
-        "Super+Shift, L, exec, loginctl lock-session" # [hidden]
-        "bindl, Super+Shift, L, exec, sleep 0.1 && systemctl suspend || loginctl suspend" # Suspend system (using bindl here)
-        "Ctrl+Shift+Alt+Super, Delete, exec, systemctl poweroff || loginctl poweroff" # [hidden] Power off
-
-        # Window management
-        # Focusing
-        "Super, Left, movefocus, l" # [hidden]
-        "Super, Right, movefocus, r" # [hidden]
-        "Super, Up, movefocus, u" # [hidden]
-        "Super, Down, movefocus, d" # [hidden]
-        "Super, BracketLeft, movefocus, l" # [hidden]
-        "Super, BracketRight, movefocus, r" # [hidden]
-        "bindm, Super, mouse:272, movewindow"
-        "bindm, Super, mouse:273, resizewindow"
-        "Super, Q, killactive,"
-        "Super+Shift+Alt, Q, exec, hyprctl kill" # Pick and kill a window
-        # Window arrangement
-        "Super+Shift, Left, movewindow, l" # [hidden]
-        "Super+Shift, Right, movewindow, r" # [hidden]
-        "Super+Shift, Up, movewindow, u" # [hidden]
-        "Super+Shift, Down, movewindow, d" # [hidden]
-        # Window split ratio
-        "binde, Super, Minus, splitratio, -0.1" # [hidden]
-        "binde, Super, Equal, splitratio, +0.1" # [hidden]
-        "binde, Super, Semicolon, splitratio, -0.1" # [hidden]
-        "binde, Super, Apostrophe, splitratio, +0.1" # [hidden]
-        # Positioning mode
-        "Super+Alt, Space, togglefloating,"
-        "Super+Alt, F, fullscreenstate, 0 3" # Toggle fake fullscreen
-        "Super, F, fullscreen, 0"
-        "Super, D, fullscreen, 1"
-
-        # Workspace navigation
-        # Switching
-        "Super, 1, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 1" # [hidden]
-        "Super, 2, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 2" # [hidden]
-        "Super, 3, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 3" # [hidden]
-        "Super, 4, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 4" # [hidden]
-        "Super, 5, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 5" # [hidden]
-        "Super, 6, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 6" # [hidden]
-        "Super, 7, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 7" # [hidden]
-        "Super, 8, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 8" # [hidden]
-        "Super, 9, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 9" # [hidden]
-        "Super, 0, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh workspace 10" # [hidden]
-
-        "Ctrl+Super, Right, workspace, +1" # [hidden]
-        "Ctrl+Super, Left, workspace, -1" # [hidden]
-        "Super, mouse_up, workspace, +1" # [hidden]
-        "Super, mouse_down, workspace, -1" # [hidden]
-        "Ctrl+Super, mouse_up, workspace, +1" # [hidden]
-        "Ctrl+Super, mouse_down, workspace, -1" # [hidden]
-        "Super, Page_Down, workspace, +1" # [hidden]
-        "Super, Page_Up, workspace, -1" # [hidden]
-        "Ctrl+Super, Page_Down, workspace, +1" # [hidden]
-        "Ctrl+Super, Page_Up, workspace, -1" # [hidden]
-        # Special
-        "Super, S, togglespecialworkspace,"
-        "Super, mouse:275, togglespecialworkspace,"
-
-        # Workspace management
-        # Move window to workspace Super + Alt + [0-9]
-        "Super+Alt, 1, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 1" # [hidden]
-        "Super+Alt, 2, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 2" # [hidden]
-        "Super+Alt, 3, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 3" # [hidden]
-        "Super+Alt, 4, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 4" # [hidden]
-        "Super+Alt, 5, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 5" # [hidden]
-        "Super+Alt, 6, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 6" # [hidden]
-        "Super+Alt, 7, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 7" # [hidden]
-        "Super+Alt, 8, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 8" # [hidden]
-        "Super+Alt, 9, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 9" # [hidden]
-        "Super+Alt, 0, exec, ~/.config/ags/scripts/hyprland/workspace_action.sh movetoworkspacesilent 10" # [hidden]
-
-        "Ctrl+Super+Shift, Up, movetoworkspacesilent, special" # [hidden]
-
-        "Ctrl+Super+Shift, Right, movetoworkspace, +1" # [hidden]
-        "Ctrl+Super+Shift, Left, movetoworkspace, -1" # [hidden]
-        "Ctrl+Super, BracketLeft, workspace, -1" # [hidden]
-        "Ctrl+Super, BracketRight, workspace, +1" # [hidden]
-        "Ctrl+Super, Up, workspace, -5" # [hidden]
-        "Ctrl+Super, Down, workspace, +5" # [hidden]
-        "Super+Shift, mouse_down, movetoworkspace, -1" # [hidden]
-        "Super+Shift, mouse_up, movetoworkspace, +1" # [hidden]
-        "Super+Alt, mouse_down, movetoworkspace, -1" # [hidden]
-        "Super+Alt, mouse_up, movetoworkspace, +1" # [hidden]
-        "Super+Alt, Page_Down, movetoworkspace, +1" # [hidden]
-        "Super+Alt, Page_Up, movetoworkspace, -1" # [hidden]
-        "Super+Shift, Page_Down, movetoworkspace, +1" # [hidden]
-        "Super+Shift, Page_Up, movetoworkspace, -1" # [hidden]
-        "Super+Alt, S, movetoworkspacesilent, special"
-        "Super, P, pin"
-
-        "Ctrl+Super, S, togglespecialworkspace," # [hidden]
-        "Alt, Tab, cyclenext" # [hidden] sus keybind
-        "Alt, Tab, bringactivetotop," # [hidden] bring it to the top
-
-        # Widgets
-        "bindr, Ctrl+Super, R, exec, hyprpanel" # Restart widgets
-        "bindr, Ctrl+Super+Alt, R, exec, hyprctl reload; killall ags ydotool; ags &" # [hidden]
-        "bindir, Super, Super_L, exec, pkill rofi || rofi -show drun -config ${config.xdg.configHome}/rofi/launchers/type-6/style-10.rasi" # Toggle overview/launcher
-        # "bindir, Super, Super_L, exec, pkill otter-launcher || \"$HOME/.config/otter-launcher/otter-toggle-hyprland\"" # Toggle overview/launcher
-        # "Super, Slash, exec, bash ~/.config/rofi/rofi_keybinds.sh" # Show cheatsheet
-
-        # Testing
-        # "SuperAlt, f12, exec, notify-send \"Hyprland version: $(hyprctl version | head -2 | tail -1 | cut -f2 -d ' ')\" \"owo\" -a 'Hyprland keybind'"
-        # "Super+Alt, f12, exec, notify-send \"Millis since epoch\" \"$(date +%s%N | cut -b1-13)\" -a 'Hyprland keybind'"
-        "Super+Alt, f12, exec, notify-send 'Test notification' \"Here's a really long message to test truncation and wrapping\\nYou can middle click or flick this notification to dismiss it!\" -a 'Shell' -A \"Test1=I got it!\" -A \"Test2=Another action\" -t 5000" # [hidden]
-        "Super+Alt, Equal, exec, notify-send \"Urgent notification\" \"Ah hell no\" -u critical -a 'Hyprland keybind'" # [hidden]
-
-        # Media
-        "bindl, Super+Shift, N, exec, playerctl next || playerctl position `bc <<< \"100 * $(playerctl metadata mpris:length) / 1000000 / 100\"`" # Next track
-        "Super+Shift+Alt, mouse:275, exec, playerctl previous" # [hidden]
-        "Super+Shift+Alt, mouse:276, exec, playerctl next || playerctl position `bc <<< \"100 * $(playerctl metadata mpris:length) / 1000000 / 100\"`" # [hidden]
-        "bindl, Super+Shift, B, exec, playerctl previous" # Previous track
-        "bindl, Super+Shift, P, exec, playerctl play-pause" # Play/pause media
-
-        # Apps
-        "Super, T, exec, ghostty" # Launch kitty (terminal)
-        "Super, Z, exec, Zed" # Launch Zed (editor)
-        "Super, C, exec, ghostty -e nvim" # Launch NeoVim (editor)
-        "Super, E, exec, nemo" # Launch Nautilus (file manager)
-        "Super+Alt, E, exec, thunar" # [hidden]
-        "Super, W, exec, zen-browser" # [hidden] Let's not give people (more) reason to shit on my rice
-        "Ctrl+Super, W, exec, firefox" # Launch Firefox (browser)
-        "Super+Shift, W, exec, wps" # Launch WPS Office
-        "Super, I, exec, XDG_CURRENT_DESKTOP=\"gnome\" gnome-control-center" # Launch GNOME Settings
-        "Ctrl+Super, V, exec, pavucontrol" # Launch pavucontrol (volume mixer)
-        "Ctrl+Super+Shift, V, exec, easyeffects" # Launch EasyEffects (equalizer & other audio effects)
-        "Ctrl+Shift, Escape, exec, gnome-system-monitor" # Launch GNOME System monitor
-        "Ctrl+Super, Slash, exec, pkill anyrun || anyrun" # Toggle fallback launcher: anyrun
-        "Super+Alt, Slash, exec, pkill anyrun || fuzzel" # Toggle fallback launcher: fuzzel
-        "Super+Shift, T, exec, ayugram-desktop" # Launch Ayugram
-        "Super+Shift, D, exec, equibop" # Launch Discord
-        "Super, S, exec, spotify-launcher" # Launch Spotify
-        "Super, K, exec, ghostty -e calcurse" # Launch calendar
-
-        # Cursed stuff
-        "Ctrl+Super, Backslash, resizeactive, exact 640 480" # [hidden]
-      ];
-
-      # Window rules
-      windowRules = [
-        "opacity 0.89 override 0.89 override, title:^(.*)$" # Applies transparency to EVERY WINDOW
-        "float, title:^(blueberry.py)$"
-        "float, title:^(steam)$"
-        "float, title:^(guifetch)$" # FlafyDev/guifetch
-        "tile, class:(dev.warp.Warp)"
-        "tile, title:^([Pp]icture[-\\s]?[Ii]n[-\\s]?[Pp]icture)(.*)$"
-        "center, title:^(Open File)(.*)$"
-        "center, title:^(Select a File)(.*)$"
-        "center, title:^(Choose wallpaper)(.*)$"
-        "center, title:^(Open Folder)(.*)$"
-        "center, title:^(Save As)(.*)$"
-        "center, title:^(Library)(.*)$"
-        "center, title:^(File Upload)(.*)$"
-        "center, title:^(Extract)(.*)$"
-        "center, title:^(Wine configuration)(.*)$"
-        "center, title:^(Blobdrop)(.*)$"
-        "float, title:^(Blobdrop)(.*)$"
-        "center, class:^(com.example.otter-launcher)$"
-        "float, class:^(com.example.otter-launcher)$"
-        "center, title:^(otter-launcher)$"
-        "float, title:^(otter-launcher)$"
-
-        # Picture-in-Picture
-        "keepaspectratio, title:^(Picture(-| )in(-| )[Pp]icture)$"
-        "move 73% 72%,title:^(Picture(-| )in(-| )[Pp]icture)$"
-        "size 25%, title:^(Picture(-| )in(-| )[Pp]icture)$"
-        "float, title:^(Picture(-| )in(-| )[Pp]icture)$"
-        "pin, title:^(Picture(-| )in(-| )[Pp]icture)$"
-
-        # Dialogs
-        "float,title:^(Open File)(.*)$"
-        "float,title:^(Select a File)(.*)$"
-        "float,title:^(Choose wallpaper)(.*)$"
-        "float,title:^(Open Folder)(.*)$"
-        "float,title:^(Save As)(.*)$"
-        "float,title:^(Library)(.*)$"
-        "float,title:^(File Upload)(.*)$"
-        "float,title:^(Extract)(.*)$"
-        # Tearing
-        "immediate,title:^(.*\\.exe)$"
-        "immediate,class:(steam_app)"
-
-        # No shadow for tiled windows
-        "noshadow,floating:0"
-      ];
-
-      # Layer rules
-      layerRules = [
-        "xray 1, .*"
-        # "noanim, .*"
-        "noanim, walker"
-        "noanim, selection"
-        "noanim, overview"
-        "noanim, anyrun"
-        "noanim, indicator.*"
-        "noanim, osk"
-        "noanim, hyprpicker"
-        "blur, shell:*"
-        "ignorealpha 0.6, shell:*"
-
-        "noanim, noanim"
-        "blur, gtk-layer-shell"
-        "ignorezero, gtk-layer-shell"
-        "blur, launcher"
-        "ignorealpha 0.5, launcher"
-        "blur, notifications"
-        "ignorealpha 0.69, notifications"
-
-        # ags
-        "animation slide left, sideleft.*"
-        "animation slide right, sideright.*"
-        "blur, session"
-
-        "blur, bar"
-        "ignorealpha 0.6, bar"
-        "blur, corner.*"
-        "ignorealpha 0.6, corner.*"
-        "blur, dock"
-        "ignorealpha 0.6, dock"
-        "blur, indicator.*"
-        "ignorealpha 0.6, indicator.*"
-        "blur, overview"
-        "ignorealpha 0.6, overview"
-        "blur, cheatsheet"
-        "ignorealpha 0.6, cheatsheet"
-        "blur, sideright"
-        "ignorealpha 0.6, sideright"
-        "blur, sideleft"
-        "ignorealpha 0.6, sideleft"
-        "blur, indicator*"
-        "ignorealpha 0.6, indicator*"
-        "blur, osk"
-        "ignorealpha 0.6, osk"
-      ];
     };
 
     # Hypridle configuration
@@ -662,7 +662,7 @@ in
     # Ensure these paths are correct relative to your flake root or where you store your dotfiles
     home.file."${config.xdg.configHome}/ags/scripts/color_generation/switchwall.sh".source = ../../../dotfiles/config/ags/scripts/color_generation/switchwall.sh;
     home.file."${config.xdg.configHome}/rofi/powermenu.sh".source = ../../../dotfiles/config/rofi/powermenu.sh;
-    home.file."${config.xdg.configHome}/rofi/launchers/type-6/style-10.rasi".source = ../../../dotfiles/config/rofi/launchers/type-6/style-10.rasi; # Corrected path for the file itself
+    home.file."${config.xdg.configHome}/rofi/launchers/type-6/style-10.rasi".source = ../../../dotfiles/config/rofi/launchers/type-6/style-10.rasi;
     home.file."${config.xdg.configHome}/ags/scripts/grimblast.sh".source = ../../../dotfiles/config/ags/scripts/grimblast.sh;
     home.file."${config.xdg.configHome}/ags/scripts/hyprland/workspace_action.sh".source = ../../../dotfiles/config/ags/scripts/hyprland/workspace_action.sh;
     home.file."${config.xdg.dataHome}/bin/fuzzel-emoji".source = ../../../dotfiles/local/bin/fuzzel-emoji;
