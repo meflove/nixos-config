@@ -2,14 +2,8 @@
 
 let
   cfg = config.wayland.windowManager.hyprland;
-  # Helper to convert Hyprland config sections to NixOS options
-  mkOption = type: default: description: {
-    inherit type description default;
-  };
 in
 {
-  wayland.windowManager.hyprland.enable = true;
-
   options.wayland.windowManager.hyprland = {
     enable = lib.mkEnableOption "Hyprland window manager";
   };
@@ -21,11 +15,15 @@ in
       package = pkgs.hyprland;
       xwayland.enable = true; # Enable XWayland for compatibility
 
-      # Import color definitions
-      extraConfig = builtins.readFile ./colors.nix;
-
-      # General configuration
+      # Main Hyprland settings
       settings = {
+        # Source your custom config files for colors and other specific settings
+        # These files will be placed by home.file below
+        source = [
+          "${config.xdg.configHome}/hypr/mocha.conf"
+          "${config.xdg.configHome}/hypr/colors.conf"
+        ];
+
         # MONITOR CONFIG
         monitor = [
           "DP-1,2560x1440@144,1920x0,1,vrr,1"
@@ -51,7 +49,6 @@ in
         };
 
         binds = {
-          # focus_window_on_workspace_c# For Auto-run stuff see execs.confhange = true
           scroll_event_delay = 0;
         };
 
@@ -72,8 +69,10 @@ in
           gaps_workspaces = 50;
           border_size = 5;
 
-          "col.active_border" = "rgba(0DB7D4FF)";
-          "col.inactive_border" = "rgba(31313600)";
+          # These are defined in colors.conf, but if you want to override here, you can.
+          # For now, relying on colors.conf being sourced.
+          # "col.active_border" = "rgba(0DB7D4FF)";
+          # "col.inactive_border" = "rgba(31313600)";
 
           resize_on_border = true;
           no_focus_fallback = true;
@@ -161,6 +160,75 @@ in
             gesture_positive = false;
           };
         };
+
+        # OpenGL settings
+        opengl = {
+          nvidia_anti_flicker = true;
+        };
+
+        # Environment variables and exec-once commands from env.conf and execs.conf
+        # Combined into a single extraConfig block
+        extraConfig = ''
+          # ######### Input method ##########
+          # See https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland
+          env = QT_IM_MODULE, fcitx
+          env = XMODIFIERS, @im=fcitx
+          # env = GTK_IM_MODULE, wayland   # Crashes electron apps in xwayland
+          # env = GTK_IM_MODULE, fcitx     # My Gtk apps no longer require this to work with fcitx5 hmm
+          env = SDL_IM_MODULE, fcitx
+          env = GLFW_IM_MODULE, ibus
+          env = INPUT_METHOD, fcitx
+
+          # ############ Themes #############
+          env = QT_QPA_PLATFORM, wayland
+          env = QT_QPA_PLATFORMTHEME, qt5ct
+          # env = QT_STYLE_OVERRIDE,kvantum
+          env = WLR_NO_HARDWARE_CURSORS, 1
+
+          # ######## Screen tearing #########
+          # env = WLR_DRM_NO_ATOMIC, 1
+
+          # ############ Others #############
+          env = LIBVA_DRIVER_NAME,nvidia
+          env = XDG_SESSION_TYPE,wayland
+          env = GBM_BACKEND,nvidia-drm
+          env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+          env = WLR_RENDERER,vulkan
+          cursor {
+              no_hardware_cursors = true
+              default_monitor = DP-1
+          }
+          env = NVD_BACKEND,direct
+          env = ELECTRON_OZONE_PLATFORM_HINT,wayland
+
+          # Bar, wallpaper
+          exec-once = swww-daemon --format xrgb
+          exec-once = /usr/lib/geoclue-2.0/demos/agent &
+          exec-once = hyprpanel
+
+          # Input method
+          exec-once = fcitx5
+
+          # Core components (authentication, lock screen, notification daemon)
+          exec-once = gnome-keyring-daemon --start --components=secrets
+          exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1
+          exec-once = dbus-update-activation-environment --all
+          exec-once = sleep 1 && dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP # Some fix idk
+          exec-once = hyprpm update
+
+          # Clipboard: history
+          # exec-once = wl-paste --watch cliphist store &
+          exec-once = wl-paste --type text --watch cliphist store
+          exec-once = wl-paste --type image --watch cliphist store
+
+          # Cursor
+          exec-once = hyprctl setcursor Bibata-Modern-Classic 20
+          exec-once = gsettings set org.gnome.desktop.interface cursor-size 20
+          exec-once = gsettings set org.gnome.desktop.interface cursor-theme Bibata-Modern-Classic
+
+          # Other
+          exec = easyeffects --gapplication-service
+        '';
       };
 
       # Keybinds
@@ -187,10 +255,10 @@ in
         "Ctrl+Shift,Print, exec, mkdir -p ~/Images/Screenshots && ~/.config/ags/scripts/grimblast.sh copysave screen ~/Pictures/Screenshots/Screenshot_\"$(date '+%Y-%m-%d_%H.%M.%S')\".png" # Screenshot >> clipboard & file
         # Session
         "Super, X, exec, bash ~/.config/rofi/powermenu.sh"
-        "Super, G, exec, pkill rofi || rofi -show calc -modi calc -no-show-match -no-sort -theme \"$HOME/.config/rofi/launchers/type-6/style-10.rasi\""
+        "Super, G, exec, pkill rofi || rofi -show calc -modi calc -no-show-match -no-sort -theme \"${config.xdg.configHome}/rofi/launchers/type-6/style-10.rasi\""
         "Super, L, exec, hyprlock" # Lock
         "Super+Shift, L, exec, loginctl lock-session" # [hidden]
-        "Super+Shift, L, exec, sleep 0.1 && systemctl suspend || loginctl suspend" # Suspend system
+        "bindl, Super+Shift, L, exec, sleep 0.1 && systemctl suspend || loginctl suspend" # Suspend system (using bindl here)
         "Ctrl+Shift+Alt+Super, Delete, exec, systemctl poweroff || loginctl poweroff" # [hidden] Power off
 
         # Window management
@@ -201,8 +269,8 @@ in
         "Super, Down, movefocus, d" # [hidden]
         "Super, BracketLeft, movefocus, l" # [hidden]
         "Super, BracketRight, movefocus, r" # [hidden]
-        "Super, mouse:272, movewindow"
-        "Super, mouse:273, resizewindow"
+        "bindm, Super, mouse:272, movewindow"
+        "bindm, Super, mouse:273, resizewindow"
         "Super, Q, killactive,"
         "Super+Shift+Alt, Q, exec, hyprctl kill" # Pick and kill a window
         # Window arrangement
@@ -211,10 +279,10 @@ in
         "Super+Shift, Up, movewindow, u" # [hidden]
         "Super+Shift, Down, movewindow, d" # [hidden]
         # Window split ratio
-        "Super, Minus, splitratio, -0.1" # [hidden]
-        "Super, Equal, splitratio, +0.1" # [hidden]
-        "Super, Semicolon, splitratio, -0.1" # [hidden]
-        "Super, Apostrophe, splitratio, +0.1" # [hidden]
+        "binde, Super, Minus, splitratio, -0.1" # [hidden]
+        "binde, Super, Equal, splitratio, +0.1" # [hidden]
+        "binde, Super, Semicolon, splitratio, -0.1" # [hidden]
+        "binde, Super, Apostrophe, splitratio, +0.1" # [hidden]
         # Positioning mode
         "Super+Alt, Space, togglefloating,"
         "Super+Alt, F, fullscreenstate, 0 3" # Toggle fake fullscreen
@@ -285,10 +353,10 @@ in
         "Alt, Tab, bringactivetotop," # [hidden] bring it to the top
 
         # Widgets
-        "Ctrl+Super, R, exec, hyprpanel" # Restart widgets
-        "Ctrl+Super+Alt, R, exec, hyprctl reload; killall ags ydotool; ags &" # [hidden]
-        "Super, Super_L, exec, pkill rofi || rofi -show drun -config ~/.config/rofi/configsbspwm.rasi" # Toggle overview/launcher
-        # "Super, Super_L, exec, pkill otter-launcher || \"$HOME/.config/otter-launcher/otter-toggle-hyprland\"" # Toggle overview/launcher
+        "bindr, Ctrl+Super, R, exec, hyprpanel" # Restart widgets
+        "bindr, Ctrl+Super+Alt, R, exec, hyprctl reload; killall ags ydotool; ags &" # [hidden]
+        "bindir, Super, Super_L, exec, pkill rofi || rofi -show drun -config ${config.xdg.configHome}/rofi/configsbspwm.rasi" # Toggle overview/launcher
+        # "bindir, Super, Super_L, exec, pkill otter-launcher || \"$HOME/.config/otter-launcher/otter-toggle-hyprland\"" # Toggle overview/launcher
         # "Super, Slash, exec, bash ~/.config/rofi/rofi_keybinds.sh" # Show cheatsheet
 
         # Testing
@@ -298,11 +366,11 @@ in
         "Super+Alt, Equal, exec, notify-send \"Urgent notification\" \"Ah hell no\" -u critical -a 'Hyprland keybind'" # [hidden]
 
         # Media
-        "Super+Shift, N, exec, playerctl next || playerctl position `bc <<< \"100 * $(playerctl metadata mpris:length) / 1000000 / 100\"`" # Next track
+        "bindl, Super+Shift, N, exec, playerctl next || playerctl position `bc <<< \"100 * $(playerctl metadata mpris:length) / 1000000 / 100\"`" # Next track
         "Super+Shift+Alt, mouse:275, exec, playerctl previous" # [hidden]
         "Super+Shift+Alt, mouse:276, exec, playerctl next || playerctl position `bc <<< \"100 * $(playerctl metadata mpris:length) / 1000000 / 100\"`" # [hidden]
-        "Super+Shift, B, exec, playerctl previous" # Previous track
-        "Super+Shift, P, exec, playerctl play-pause" # Play/pause media
+        "bindl, Super+Shift, B, exec, playerctl previous" # Previous track
+        "bindl, Super+Shift, P, exec, playerctl play-pause" # Play/pause media
 
         # Apps
         "Super, T, exec, ghostty" # Launch ghostty (terminal)
@@ -424,77 +492,6 @@ in
         "blur, osk"
         "ignorealpha 0.6, osk"
       ];
-
-      # Environment variables
-      extraConfig = ''
-        # ######### Input method ##########
-        # See https://fcitx-im.org/wiki/Using_Fcitx_5_on_Wayland
-        env = QT_IM_MODULE, fcitx
-        env = XMODIFIERS, @im=fcitx
-        # env = GTK_IM_MODULE, wayland   # Crashes electron apps in xwayland
-        # env = GTK_IM_MODULE, fcitx     # My Gtk apps no longer require this to work with fcitx5 hmm
-        env = SDL_IM_MODULE, fcitx
-        env = GLFW_IM_MODULE, ibus
-        env = INPUT_METHOD, fcitx
-
-        # ############ Themes #############
-        env = QT_QPA_PLATFORM, wayland
-        env = QT_QPA_PLATFORMTHEME, qt5ct
-        # env = QT_STYLE_OVERRIDE,kvantum
-        env = WLR_NO_HARDWARE_CURSORS, 1
-
-        # ######## Screen tearing #########
-        # env = WLR_DRM_NO_ATOMIC, 1
-
-        # ############ Others #############
-        env = LIBVA_DRIVER_NAME,nvidia
-        env = XDG_SESSION_TYPE,wayland
-        env = GBM_BACKEND,nvidia-drm
-        env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-        env = WLR_RENDERER,vulkan
-        cursor {
-            no_hardware_cursors = true
-            default_monitor = DP-1
-        }
-        env = NVD_BACKEND,direct
-        env = ELECTRON_OZONE_PLATFORM_HINT,wayland
-
-        # OpenGL
-        opengl {
-            nvidia_anti_flicker = true
-        }
-      '';
-
-      # Exec-once commands
-      extraConfig = ''
-        # Bar, wallpaper
-        exec-once = swww-daemon --format xrgb
-        exec-once = /usr/lib/geoclue-2.0/demos/agent &
-        exec-once = hyprpanel
-
-        # Input method
-        exec-once = fcitx5
-
-        # Core components (authentication, lock screen, notification daemon)
-        exec-once = gnome-keyring-daemon --start --components=secrets
-        exec-once = /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1
-        exec-once = dbus-update-activation-environment --all
-        exec-once = sleep 1 && dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP # Some fix idk
-        exec-once = hyprpm update
-
-        # Clipboard: history
-        # exec-once = wl-paste --watch cliphist store &
-        exec-once = wl-paste --type text --watch cliphist store
-        exec-once = wl-paste --type image --watch cliphist store
-
-        # Cursor
-        exec-once = hyprctl setcursor Bibata-Modern-Classic 20
-        exec-once = gsettings set org.gnome.desktop.interface cursor-size 20
-        exec-once = gsettings set org.gnome.desktop.interface cursor-theme Bibata-Modern-Classic
-
-        # Other
-        exec = easyeffects --gapplication-service
-      '';
     };
 
     # Hypridle configuration
@@ -523,15 +520,13 @@ in
     programs.hyprlock = {
       enable = true;
       settings = {
-        # Source mocha.conf for colors
+        # Source your custom mocha.conf for colors in hyprlock
         source = "${config.xdg.configHome}/hypr/mocha.conf";
 
-        # Define variables from mocha.conf
-        # These should be defined in mocha.conf and sourced.
-        # For NixOS, we might need to explicitly define them or ensure mocha.conf is correctly sourced.
-        # For now, let's assume mocha.conf is correctly placed and sourced by hyprlock.
-        # If hyprlock doesn't pick up variables from sourced files in NixOS,
-        # you might need to define them here or pass them as environment variables.
+        # Define variables from mocha.conf that hyprlock uses directly
+        # Note: Hyprlock typically expects these to be defined in sourced files
+        # or as environment variables. If it doesn't pick them up,
+        # you might need to hardcode the RGB values here or ensure mocha.conf is correctly parsed by hyprlock.
         accent = "$mauve";
         accentAlpha = "$mauveAlpha";
         font = "JetBrainsMono Nerd Font";
@@ -637,30 +632,30 @@ in
       playerctl
       nemo # or thunar
       firefox
-      wps-office # if available in nixpkgs or an overlay
+      # wps-office # if available in nixpkgs or an overlay (check if this package exists)
       gnome.gnome-control-center
       pavucontrol
       easyeffects
       gnome-system-monitor
       anyrun
       fuzzel
-      ayugram-desktop # if available
-      discord # if available
-      spotify # if available
+      # ayugram-desktop # if available
+      # discord # if available
+      # spotify # if available
       calcurse
       bc # for playerctl calculations
     ];
 
     # Manage dotfiles for scripts and other configurations
-    home.file."${config.xdg.configHome}/hypr/mocha.conf".source = ./mocha.conf;
-    home.file."${config.xdg.configHome}/hypr/colors.conf".source = ./colors.conf; # This is likely redundant if colors are in default.nix
-    home.file."${config.xdg.configHome}/ags/scripts/color_generation/switchwall.sh".source = ../../../dotfiles/config/ags/scripts/color_generation/switchwall.sh; # Adjust path as needed
-    home.file."${config.xdg.configHome}/rofi/powermenu.sh".source = ../../../dotfiles/config/rofi/powermenu.sh; # Adjust path as needed
-    home.file."${config.xdg.configHome}/rofi/configsbspwm.rasi".source = ../../../dotfiles/config/rofi/configsbspwm.rasi; # Adjust path as needed
-    home.file."${config.xdg.configHome}/ags/scripts/grimblast.sh".source = ../../../dotfiles/config/ags/scripts/grimblast.sh; # Adjust path as needed
-    home.file."${config.xdg.configHome}/ags/scripts/hyprland/workspace_action.sh".source = ../../../dotfiles/config/ags/scripts/hyprland/workspace_action.sh; # Adjust path as needed
-    home.file."${config.xdg.dataHome}/bin/fuzzel-emoji".source = ../../../dotfiles/local/bin/fuzzel-emoji; # Adjust path as needed
+    # These paths are relative to the flake root, assuming home-manager/wm/Hyprland/default.nix is at that depth
+    home.file."${config.xdg.configHome}/hypr/mocha.conf".source = ../../../dotfiles/config/hypr/mocha.conf;
+    home.file."${config.xdg.configHome}/hypr/colors.conf".source = ../../../dotfiles/config/hypr/hyprland/colors.conf;
+    # Ensure these paths are correct relative to your flake root or where you store your dotfiles
+    home.file."${config.xdg.configHome}/ags/scripts/color_generation/switchwall.sh".source = ../../../dotfiles/config/ags/scripts/color_generation/switchwall.sh;
+    home.file."${config.xdg.configHome}/rofi/powermenu.sh".source = ../../../dotfiles/config/rofi/powermenu.sh;
+    home.file."${config.xdg.configHome}/rofi/configsbspwm.rasi".source = ../../../dotfiles/config/rofi/launchers/type-6/style-10.rasi; # Corrected path based on keybinds.conf
+    home.file."${config.xdg.configHome}/ags/scripts/grimblast.sh".source = ../../../dotfiles/config/ags/scripts/grimblast.sh;
+    home.file."${config.xdg.configHome}/ags/scripts/hyprland/workspace_action.sh".source = ../../../dotfiles/config/ags/scripts/hyprland/workspace_action.sh;
+    home.file."${config.xdg.dataHome}/bin/fuzzel-emoji".source = ../../../dotfiles/local/bin/fuzzel-emoji;
   };
 }
-
-
