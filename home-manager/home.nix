@@ -15,9 +15,9 @@
     # Or modules exported from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModules.default
     inputs.ags.homeManagerModules.default
-    
+
     # You can also split up your configuration and import pieces of it here:
-    # ./wm/Hyprland/hypr.nix
+    ./wm/Hyprland/default.nix
     # ./shell/fish.nix
     ./stuff
     # ./widgets/ags.nix
@@ -61,10 +61,10 @@
 
   };
 
-    home.file."${config.xdg.configHome}" = {
-  source = ../dotfiles/config;
-  recursive = true;
-};
+  home.file."${config.xdg.configHome}" = {
+    source = ../dotfiles/config;
+    recursive = true;
+  };
   # Add stuff for your user as you see fit:
   programs.neovim.enable = true;
   # home.packages = with pkgs; [ ags ];
@@ -75,7 +75,7 @@
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
-  
+
   # pkgs
   # programs.ags.enable = true;
 
