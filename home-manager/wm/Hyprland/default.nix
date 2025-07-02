@@ -355,7 +355,7 @@ in
         # Widgets
         "bindr, Ctrl+Super, R, exec, hyprpanel" # Restart widgets
         "bindr, Ctrl+Super+Alt, R, exec, hyprctl reload; killall ags ydotool; ags &" # [hidden]
-        "bindir, Super, Super_L, exec, pkill rofi || rofi -show drun -config ${config.xdg.configHome}/rofi/configsbspwm.rasi" # Toggle overview/launcher
+        "bindir, Super, Super_L, exec, pkill rofi || rofi -show drun -config ${config.xdg.configHome}/rofi/launchers/type-6/style-10.rasi" # Toggle overview/launcher
         # "bindir, Super, Super_L, exec, pkill otter-launcher || \"$HOME/.config/otter-launcher/otter-toggle-hyprland\"" # Toggle overview/launcher
         # "Super, Slash, exec, bash ~/.config/rofi/rofi_keybinds.sh" # Show cheatsheet
 
@@ -373,7 +373,7 @@ in
         "bindl, Super+Shift, P, exec, playerctl play-pause" # Play/pause media
 
         # Apps
-        "Super, T, exec, ghostty" # Launch ghostty (terminal)
+        "Super, T, exec, ghostty" # Launch kitty (terminal)
         "Super, Z, exec, Zed" # Launch Zed (editor)
         "Super, C, exec, ghostty -e nvim" # Launch NeoVim (editor)
         "Super, E, exec, nemo" # Launch Nautilus (file manager)
@@ -497,23 +497,32 @@ in
     # Hypridle configuration
     services.hypridle = {
       enable = true;
-      timeout = [
-        {
-          timeout = 180; # 3mins
-          command = "loginctl lock-session";
+      # Use the 'settings' option to provide the raw hypridle.conf content
+      settings = ''
+        $lock_cmd = pidof hyprlock || hyprlock
+        $suspend_cmd = pidof steam || systemctl suspend || loginctl suspend # fuck nvidia
+
+        general {
+            lock_cmd = $lock_cmd
+            before_sleep_cmd = loginctl lock-session
         }
-        {
-          timeout = 240; # 4mins
-          command = "hyprctl dispatch dpms off";
-          onResume = "hyprctl dispatch dpms on";
+
+        listener {
+            timeout = 180 # 3mins
+            on-timeout = loginctl lock-session
         }
-        {
-          timeout = 540; # 9mins
-          command = "pidof steam || systemctl suspend || loginctl suspend"; # fuck nvidia
+
+        listener {
+            timeout = 240 # 4mins
+            on-timeout = hyprctl dispatch dpms off
+            on-resume = hyprctl dispatch dpms on
         }
-      ];
-      beforeSleep = "loginctl lock-session";
-      lockCommand = "pidof hyprlock || hyprlock";
+
+        listener {
+            timeout = 540 # 9mins
+            on-timeout = $suspend_cmd
+        }
+      '';
     };
 
     # Hyprlock configuration
@@ -648,12 +657,12 @@ in
 
     # Manage dotfiles for scripts and other configurations
     # These paths are relative to the flake root, assuming home-manager/wm/Hyprland/default.nix is at that depth
-    home.file."${config.xdg.configHome}/hypr/mocha.conf".source = ../../../dotfiles/config/hypr/mocha.conf;
-    home.file."${config.xdg.configHome}/hypr/colors.conf".source = ../../../dotfiles/config/hypr/hyprland/colors.conf;
+    home.file."${config.xdg.configHome}/hypr/mocha.conf".source = ../../../mocha.conf;
+    home.file."${config.xdg.configHome}/hypr/colors.conf".source = ../../../colors.conf;
     # Ensure these paths are correct relative to your flake root or where you store your dotfiles
     home.file."${config.xdg.configHome}/ags/scripts/color_generation/switchwall.sh".source = ../../../dotfiles/config/ags/scripts/color_generation/switchwall.sh;
     home.file."${config.xdg.configHome}/rofi/powermenu.sh".source = ../../../dotfiles/config/rofi/powermenu.sh;
-    home.file."${config.xdg.configHome}/rofi/configsbspwm.rasi".source = ../../../dotfiles/config/rofi/launchers/type-6/style-10.rasi; # Corrected path based on keybinds.conf
+    home.file."${config.xdg.configHome}/rofi/launchers/type-6/style-10.rasi".source = ../../../dotfiles/config/rofi/launchers/type-6/style-10.rasi; # Corrected path for the file itself
     home.file."${config.xdg.configHome}/ags/scripts/grimblast.sh".source = ../../../dotfiles/config/ags/scripts/grimblast.sh;
     home.file."${config.xdg.configHome}/ags/scripts/hyprland/workspace_action.sh".source = ../../../dotfiles/config/ags/scripts/hyprland/workspace_action.sh;
     home.file."${config.xdg.dataHome}/bin/fuzzel-emoji".source = ../../../dotfiles/local/bin/fuzzel-emoji;
