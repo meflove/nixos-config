@@ -86,9 +86,10 @@
         system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
-          { services.spice-vdagentd.enable = true; } # Для копирования/вставки в Virt-manager [9]
-          self.modules.nixos.hyprland # Теперь это будет работать
-          self.modules.nixos.disko
+          ./hosts/vm/default.nix
+          # { services.spice-vdagentd.enable = true; } # Для копирования/вставки в Virt-manager [9]
+          # self.modules.nixos.hyprland # Теперь это будет работать
+          # self.modules.nixos.disko
         ];
       };
     };
