@@ -16,46 +16,54 @@
             type = "gpt";
             partitions = {
               ESP = {
-                priority = 1;
-                name = "ESP";
-                start = "1M";
-                end = "1024M";
-                type = "EF00";
+                size = "1G"; # Минимум 512M, 1G рекомендуется для гибкости
+                type = "EF00"; # Тип раздела EFI System Partition
                 content = {
                   type = "filesystem";
                   format = "vfat";
-                  mountpoint = "/efi";
+                  mountpoint = "/efi"; # Точка монтирования EFI
+                  mountOptions = [ "umask=0077" ];
                 };
               };
-              root = {
-                size = "100%";
+              btrfs = {
+                size = "100%"; # Использовать оставшееся пространство для Btrfs
                 content = {
-                  type = "btrfs";
-                  extraArgs = [ "-f" ]; # Перезаписать существующий раздел
+                  type = "btrfs"; # Важно: используйте тип "btrfs" для поддержки подтомов
+                  extraArgs = [ "-f" ]; # Принудительное создание файловой системы
                   subvolumes = {
-                    "/rootfs" = {
-                      mountOptions = [ "compress=zstd" ];
+                    "/root" = {
                       mountpoint = "/";
+                      # Параметры монтирования для основного монтирования Btrfs (применяются ко всей файловой системе)
+                      mountOptions = [ "compress-force=zstd:3" "noatime" "space_cache=v2" "nodiscard" ];
                     };
                     "/home" = {
-                      mountOptions = [ "compress=zstd" ];
                       mountpoint = "/home";
-                    };
-                    "/log" = {
-                      mountOptions = [ "compress=zstd" ];
-                      mountpoint = "/var/log";
-                    };
-                    "/cache" = {
-                      mountOptions = [ "compress=zstd" ];
-                      mountpoint = "/var/cache";
-                    };
-                    "/tmp" = {
-                      mountOptions = [ "compress=zstd" ];
-                      mountpoint = "/tmp";
+                      # Параметры монтирования для /home (нет необходимости повторять общесистемные параметры)
+                      mountOptions = [ "noatime" ]; # noatime применяется для каждой точки монтирования
                     };
                     "/nix" = {
-                      mountOptions = [ "compress=zstd" "noatime" ];
                       mountpoint = "/nix";
+                      mountOptions = [ "noatime" ]; # noatime применяется для каждой точки монтирования
+                    };
+                    "/var/log" = {
+                      mountpoint = "/var/log";
+                      mountOptions = [ "noatime" ];
+                    };
+                    "/var/cache" = {
+                      mountpoint = "/var/cache";
+                      mountOptions = [ "noatime" ];
+                    };
+                    "/.snapshots" = {
+                      mountpoint = "/.snapshots";
+                      mountOptions = [ "noatime" ];
+                    };
+                    "srv" = {
+                      mountpoint = "/srv";
+                      mountOptions = [ "noatime" ];
+                    };
+                    "tmp" = {
+                      mountpoint = "/tmp";
+                      mountOptions = [ "noatime" ];
                     };
                   };
                 };
@@ -65,6 +73,5 @@
         };
       };
     };
-  };
-}
+  }
 
