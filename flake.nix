@@ -68,6 +68,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           { services.spice-vdagentd.enable = true; } # Для копирования/вставки в Virt-manager [9]
+          ./hosts/vm/default.nix
         ];
       };
     };
