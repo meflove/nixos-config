@@ -61,22 +61,21 @@
 
     diskoConfigurations = {
       # Конфигурация диска для ВМ.
-      # Это набор модулей NixOS, который будет оценен disko.
-      vmDisk = {
-        imports = [
+      vmDisk = disko.lib.evalModules {
+        specialArgs = { inherit inputs; };
+        modules = [
           self.modules.nixos.disko
+          { myConfig.disk.targetDevice = "/dev/vda"; }
         ];
-        # Здесь мы устанавливаем опцию `myConfig.disk.targetDevice`,
-        # которую ваш модуль `disko.nix` должен определять и использовать.
-        myConfig.disk.targetDevice = "/dev/vda";
       };
 
       # Конфигурация диска для физического ПК
-      pcDisk = {
-        imports = [
+      pcDisk = disko.lib.evalModules {
+        specialArgs = { inherit inputs; };
+        modules = [
           self.modules.nixos.disko
+          { myConfig.disk.targetDevice = "/dev/nvme0n1"; }
         ];
-        myConfig.disk.targetDevice = "/dev/nvme0n1";
       };
     };
 
