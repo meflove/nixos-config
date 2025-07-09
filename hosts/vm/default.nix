@@ -17,7 +17,7 @@
   time.timeZone = "Europe/Moscow";
 
   # Языковые настройки
-  i1n.defaultLocale = "ru_RU.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
 
   # Включение XWayland для совместимости со старыми приложениями
   programs.xwayland.enable = true;
