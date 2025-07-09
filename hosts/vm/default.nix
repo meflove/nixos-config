@@ -46,7 +46,7 @@
     { services.spice-vdagentd.enable = true; }
     # Профиль QEMU Guest для оптимизации [10]
     inputs.nixpkgs.nixosModules.qemu-guest
-    pkgs.nixosModules.qemu-guest
+    # pkgs.nixosModules.qemu-guest
 
     # Модуль Disko для декларативной разметки диска [2]
     inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
