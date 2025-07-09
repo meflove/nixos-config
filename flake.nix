@@ -46,16 +46,16 @@
     # и homeConfigurations (пользовательские конфигурации Home Manager).
     modules = {
       nixos = {
-        hyprland = import./modules/nixos/hyprland.nix;
-        nvidia = import./modules/nixos/nvidia.nix;
-        bluetooth = import./modules/nixos/bluetooth.nix;
-        wifi = import./modules/nixos/wifi.nix;
-        disko = import./modules/nixos/disko.nix;
-        secureboot = import./modules/nixos/secureboot.nix;
+        hyprland = import ./modules/nixos/hyprland.nix;
+        nvidia = import ./modules/nixos/nvidia.nix;
+        bluetooth = import ./modules/nixos/bluetooth.nix;
+        wifi = import ./modules/nixos/wifi.nix;
+        disko = import ./modules/nixos/disko.nix;
+        secureboot = import ./modules/nixos/secureboot.nix;
       };
       home-manager = {
-        fish = import./modules/home-manager/fish.nix;
-        ghostty = import./modules/home-manager/ghostty.nix;
+        fish = import ./modules/home-manager/fish.nix;
+        ghostty = import ./modules/home-manager/ghostty.nix;
       };
     };
 
