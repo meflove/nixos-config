@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   # Включение Wayland и Hyprland
-  wayland.windowManager.hyprland = {
+  programs.hyprland = {
     enable = true;
     package = pkgs.hyprland;
     xwayland.enable = true; # Важно для совместимости с X11 приложениями [14]
