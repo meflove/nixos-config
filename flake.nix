@@ -81,7 +81,7 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./users/common/default.nix
-          ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
+          # ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
         ];
       };
 
@@ -90,7 +90,7 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./users/common/default.nix
-          ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
+          # ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
         ];
       };
     };
