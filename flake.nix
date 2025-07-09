@@ -59,6 +59,35 @@
       };
     };
 
+    diskoConfigurations = {
+      # Конфигурация диска для ВМ
+      vmDisk = disko.lib.diskoConfig {
+        # Импортируем ваш модуль disko.nix
+        imports = [
+          self.modules.nixos.disko
+        ];
+        # Передаем специальный аргумент, чтобы установить targetDevice для этого diskoConfig
+        # Этот 'config' будет доступен внутри вашего modules/nixos/disko.nix как 'config'
+        specialArgs = {
+          config = {
+            myConfig.disk.targetDevice = "/dev/vda"; # Указываем целевой диск для этой конфигурации disko
+          };
+        };
+      };
+
+      # Вы можете добавить pcDisk аналогично, если захотите запускать disko для ПК отдельно
+      pcDisk = disko.lib.diskoConfig {
+        imports = [
+          self.modules.nixos.disko
+        ];
+        specialArgs = {
+          config = {
+            myConfig.disk.targetDevice = "/dev/nvme0n1"; # Пример для физического ПК
+          };
+        };
+      };
+    };
+
     nixosConfigurations = {
       # Конфигурация для физического ПК
       nixos-pc = nixpkgs.lib.nixosSystem {
