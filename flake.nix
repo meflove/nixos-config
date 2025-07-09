@@ -1,83 +1,98 @@
 {
-  description = "Your new nix config";
+  description = "Моя модульная конфигурация NixOS";
 
   inputs = {
-    # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    # You can access packages and modules from different nixpkgs revs
-    # at the same time. Here's an working example:
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
-    # Also see the 'unstable-packages' overlay at 'overlays/default.nix'.
+    # Основной источник пакетов NixOS. Используем нестабильную ветку для доступа к свежим пакетам и функциям.
+    # Если требуется большая стабильность, можно использовать "nixos-23.11" или "nixos-24.05".
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # Home manager
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    # Home Manager для управления пользовательской конфигурацией.
+    # Важно, чтобы home-manager использовал тот же nixpkgs, что и основной flake,
+    # чтобы избежать проблем с несовместимостью пакетов.
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    # Hyprpanel
-    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
-    hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
+    # Disko для декларативного управления разметкой дисков и файловыми системами.
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Hyprland - Wayland композитор. Интегрируем его как отдельный input.
+    hyprland.url = "github:hyprwm/Hyprland";
+    # Убедимся, что Hyprland также следует за нашим nixpkgs
+    hyprland.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Модуль Home Manager для терминала Ghostty.
+    ghostty = {
+      url = "github:clo4/ghostty-hm-module";
+      inputs.nixpkgs.follows = "nixpkgs"; # Ghostty HM модуль также должен следовать nixpkgs
+    };
+
+    # Lanzaboote для Secure Boot и UKI.
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Дополнительные инпуты могут быть добавлены по мере необходимости,
+    # например, для sops-nix (управление секретами), impermanence (персистентность).
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , home-manager
-    , hyprpanel
-    , ...
-    } @ inputs:
-    let
-      inherit (self) outputs;
-      # Supported systems for your flake packages, shell, etc.
-      systems = [
-        "x86_64-linux"
-      ];
-      # This is a function that generates an attribute by calling a function you
-      # pass to it, with each system as an argument
-      forAllSystems = nixpkgs.lib.genAttrs systems;
-    in
-    {
-      # Your custom packages
-      # Accessible through 'nix build', 'nix shell', etc
-      packages = forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
-      # Formatter for your nix files, available through 'nix fmt'
-      # Other options beside 'alejandra' include 'nixpkgs-fmt'
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-
-      # Your custom packages and modifications, exported as overlays
-      overlays = import ./overlays { inherit inputs; };
-      # Reusable nixos modules you might want to export
-      # These are usually stuff you would upstream into nixpkgs
-      nixosModules = import ./modules/nixos;
-      # Reusable home-manager modules you might want to export
-      # These are usually stuff you would upstream into home-manager
-      homeManagerModules = import ./modules/home-manager;
-
-      # NixOS configuration entrypoint
-      # Available through 'nixos-rebuild --flake .#your-hostname'
-      nixosConfigurations = {
-        # FIXME replace with your hostname
-        nixos = nixpkgs.lib.nixosSystem {
-          specialArgs = { inherit inputs outputs; };
-          modules = [
-            # > Our main nixos configuration and hardware files <
-            ./nixos/configuration.nix
-            ./nixos/hardware-configuration.nix
-          ];
-        };
+  outputs = { self, nixpkgs, home-manager, disko, hyprland, ghostty, lanzaboote, ... }@inputs: {
+    # Здесь будут определены nixosConfigurations (системные конфигурации)
+    # и homeConfigurations (пользовательские конфигурации Home Manager).
+    nixosConfigurations = {
+      # Конфигурация для физического ПК
+      nixos-pc = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          ./hosts/nixos-pc/default.nix
+          ./hosts/pc/hardware-configuration.nix
+          # Импорт общих системных модулей
+          ./modules/nixos/hyprland.nix
+          ./modules/nixos/nvidia.nix
+          ./modules/nixos/bluetooth.nix
+          ./modules/nixos/wifi.nix
+          ./modules/nixos/disko-pc.nix
+          ./modules/nixos/disko-vm.nix
+          ./modules/nixos/secureboot.nix
+        ];
       };
 
-      # Standalone home-manager configuration entrypoint
-      # Available through 'home-manager --flake .#your-username@your-hostname'
-      homeConfigurations = {
-        # FIXME replace with your username@hostname
-        "meflove@nixos" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-          extraSpecialArgs = { inherit inputs outputs; };
-          modules = [
-            # > Our main home-manager configuration file <
-            ./home-manager/home.nix
-          ];
-        };
+      # Конфигурация для виртуальной машины
+      vm = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [
+          { services.spice-vdagentd.enable = true; } # Для копирования/вставки в Virt-manager [9]
+          # Профиль QEMU Guest для оптимизации [10]
+          inputs.nixpkgs.nixosModules.qemu-guest
+        ];
       };
     };
+
+    homeConfigurations = {
+      # Пользовательская конфигурация для ПК
+      "angeldust@pc" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./users/common/default.nix
+          ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
+        ];
+      };
+
+      # Пользовательская конфигурация для ВМ
+      "angeldust@vm" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./users/common/default.nix
+          ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
+        ];
+      };
+    };
+  };
 }
