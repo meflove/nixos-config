@@ -44,6 +44,21 @@
   outputs = { self, nixpkgs, home-manager, disko, hyprland, lanzaboote, ... }@inputs: {
     # Здесь будут определены nixosConfigurations (системные конфигурации)
     # и homeConfigurations (пользовательские конфигурации Home Manager).
+    modules = {
+      nixos = {
+        hyprland = import./modules/nixos/hyprland.nix;
+        nvidia = import./modules/nixos/nvidia.nix;
+        bluetooth = import./modules/nixos/bluetooth.nix;
+        wifi = import./modules/nixos/wifi.nix;
+        disko = import./modules/nixos/disko.nix;
+        secureboot = import./modules/nixos/secureboot.nix;
+      };
+      home-manager = {
+        fish = import./modules/home-manager/fish.nix;
+        ghostty = import./modules/home-manager/ghostty.nix;
+      };
+    };
+
     nixosConfigurations = {
       # Конфигурация для физического ПК
       nixos-pc = nixpkgs.lib.nixosSystem {
@@ -53,12 +68,12 @@
           ./hosts/nixos-pc/default.nix
           ./hosts/pc/hardware-configuration.nix
           # Импорт общих системных модулей
-          ./modules/nixos/hyprland.nix
-          ./modules/nixos/nvidia.nix
-          ./modules/nixos/bluetooth.nix
-          ./modules/nixos/wifi.nix
-          ./modules/nixos/disko.nix
-          ./modules/nixos/secureboot.nix
+          self.modules.nixos.hyprland # Теперь это будет работать
+          self.modules.nixos.nvidia
+          self.modules.nixos.bluetooth
+          self.modules.nixos.wifi
+          self.modules.nixos.disko
+          self.modules.nixos.secureboot
         ];
       };
 
@@ -68,7 +83,8 @@
         specialArgs = { inherit inputs; };
         modules = [
           { services.spice-vdagentd.enable = true; } # Для копирования/вставки в Virt-manager [9]
-          ./hosts/vm/default.nix
+          self.modules.nixos.hyprland # Теперь это будет работать
+          self.modules.nixos.disko
         ];
       };
     };
