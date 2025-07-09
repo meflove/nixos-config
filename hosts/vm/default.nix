@@ -7,6 +7,9 @@
   boot.loader.efi.efiSysMountPoint = "/efi";
   boot.loader.efi.canTouchEfiVariables = true;
 
+  # Добавляем необходимые драйверы для виртуальной машины в initrd
+  boot.initrd.availableKernelModules = [ "virtio_pci" "virtio_mmio" "virtio_blk" ];
+
   services.qemuGuest.enable = true; # Включает QEMU Guest Agent [8, 9]
   services.spice-vdagentd.enable = true; # Включает Spice VDAgent для копирования/вставки [9]
 
