@@ -26,10 +26,10 @@
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     # Модуль Home Manager для терминала Ghostty.
-    ghostty = {
-      url = "github:clo4/ghostty-hm-module";
-      inputs.nixpkgs.follows = "nixpkgs"; # Ghostty HM модуль также должен следовать nixpkgs
-    };
+    # ghostty = {
+    #   url = "github:clo4/ghostty-hm-module";
+    #   inputs.nixpkgs.follows = "nixpkgs"; # Ghostty HM модуль также должен следовать nixpkgs
+    # };
 
     # Lanzaboote для Secure Boot и UKI.
     lanzaboote = {
@@ -41,7 +41,7 @@
     # например, для sops-nix (управление секретами), impermanence (персистентность).
   };
 
-  outputs = { self, nixpkgs, home-manager, disko, hyprland, ghostty, lanzaboote, ... }@inputs: {
+  outputs = { self, nixpkgs, home-manager, disko, hyprland, lanzaboote, ... }@inputs: {
     # Здесь будут определены nixosConfigurations (системные конфигурации)
     # и homeConfigurations (пользовательские конфигурации Home Manager).
     nixosConfigurations = {
@@ -57,8 +57,7 @@
           ./modules/nixos/nvidia.nix
           ./modules/nixos/bluetooth.nix
           ./modules/nixos/wifi.nix
-          ./modules/nixos/disko-pc.nix
-          ./modules/nixos/disko-vm.nix
+          ./modules/nixos/disko.nix
           ./modules/nixos/secureboot.nix
         ];
       };
@@ -69,8 +68,6 @@
         specialArgs = { inherit inputs; };
         modules = [
           { services.spice-vdagentd.enable = true; } # Для копирования/вставки в Virt-manager [9]
-          # Профиль QEMU Guest для оптимизации [10]
-          inputs.nixpkgs.nixosModules.qemu-guest
         ];
       };
     };
