@@ -61,7 +61,7 @@
 
     diskoConfigurations = {
       # Конфигурация диска для ВМ.
-      vmDisk = disko.lib.evalModules {
+      vmDisk = nixpkgs.lib.evalModules {
         specialArgs = { inherit inputs; };
         modules = [
           self.modules.nixos.disko
@@ -70,7 +70,7 @@
       };
 
       # Конфигурация диска для физического ПК
-      pcDisk = disko.lib.evalModules {
+      pcDisk = nixpkgs.lib.evalModules {
         specialArgs = { inherit inputs; };
         modules = [
           self.modules.nixos.disko
