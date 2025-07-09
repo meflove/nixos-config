@@ -59,19 +59,9 @@
       };
     };
 
-    diskoConfigurations = {
-      # Конфигурация диска для ВМ.
-      vmDisk = {
-        imports = [ self.modules.nixos.disko ];
-        myConfig.disk.targetDevice = "/dev/vda";
-      };
-
-      # Конфигурация диска для физического ПК
-      pcDisk = {
-        imports = [ self.modules.nixos.disko ];
-        myConfig.disk.targetDevice = "/dev/nvme0n1";
-      };
-    };
+    # Disko-конфигурации для использования с утилитой disko
+    diskoConfigurations.vmDisk = import ./hosts/vm/vm-disk.nix;
+    diskoConfigurations.pcDisk = import ./hosts/pc/pc-disk.nix;
 
     nixosConfigurations = {
       # Конфигурация для физического ПК
