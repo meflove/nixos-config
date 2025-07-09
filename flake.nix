@@ -61,7 +61,7 @@
 
     # Disko-конфигурации для использования с утилитой disko
     diskoConfigurations.vmDisk = import ./hosts/vm/vm-disk.nix;
-    diskoConfigurations.pcDisk = import ./hosts/pc/pc-disk.nix;
+    diskoConfigurations.pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
 
     nixosConfigurations = {
       # Конфигурация для физического ПК
@@ -70,14 +70,6 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/nixos-pc/default.nix
-          ./hosts/pc/hardware-configuration.nix
-          # Импорт общих системных модулей
-          self.modules.nixos.hyprland # Теперь это будет работать
-          self.modules.nixos.nvidia
-          self.modules.nixos.bluetooth
-          self.modules.nixos.wifi
-          self.modules.nixos.disko
-          self.modules.nixos.secureboot
         ];
       };
 

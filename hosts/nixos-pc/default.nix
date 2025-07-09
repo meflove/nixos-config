@@ -47,7 +47,7 @@
     inputs.self.modules.nixos.nvidia
     inputs.self.modules.nixos.bluetooth
     inputs.self.modules.nixos.wifi
-    inputs.self.modules.nixos.disko-pc
+    inputs.self.modules.nixos.disko
     inputs.self.modules.nixos.secureboot
   ];
 
