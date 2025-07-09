@@ -61,22 +61,22 @@
 
     diskoConfigurations = {
       # Конфигурация диска для ВМ.
-      vmDisk = nixpkgs.lib.evalModules {
+      vmDisk = (nixpkgs.lib.evalModules {
         specialArgs = { inherit inputs; };
         modules = [
           self.modules.nixos.disko
           { myConfig.disk.targetDevice = "/dev/vda"; }
         ];
-      };
+      }).config;
 
       # Конфигурация диска для физического ПК
-      pcDisk = nixpkgs.lib.evalModules {
+      pcDisk = (nixpkgs.lib.evalModules {
         specialArgs = { inherit inputs; };
         modules = [
           self.modules.nixos.disko
           { myConfig.disk.targetDevice = "/dev/nvme0n1"; }
         ];
-      };
+      }).config;
     };
 
     nixosConfigurations = {
