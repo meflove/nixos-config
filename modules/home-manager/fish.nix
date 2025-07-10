@@ -24,30 +24,30 @@
       # }
     ];
     # Добавление функций Fish
-    functions = {
-      # Пример функции для отображения, что вы находитесь в nix-shell [15]
-      fish_prompt = ''
-        set -l nix_shell_info (
-          if test -n "$IN_NIX_SHELL"
-            echo -n "<nix-shell> "
-          end
-        )
-        echo -n -s "$nix_shell_info ~>"
-      '';
-      # Другие пользовательские функции, например, для окружений
-      # pythonEnv = {
-      #   description = "start a nix-shell with the given python packages";
-      #   body = ''
-      #     if set -q argv
-      #       set argv $argv[2.. -1]
-      #     end
-      #     for el in $argv
-      #       set ppkgs $ppkgs "python"$pythonVersion"Packages. $el"
-      #     end
-      #     nix-shell -p $ppkgs
-      #   '';
-      # };
-    };
+    # functions = {
+    #   # Пример функции для отображения, что вы находитесь в nix-shell [15]
+    #   fish_prompt = ''
+    #     set -l nix_shell_info (
+    #       if test -n "$IN_NIX_SHELL"
+    #         echo -n "<nix-shell> "
+    #       end
+    #     )
+    #     echo -n -s "$nix_shell_info ~>"
+    #   '';
+    # Другие пользовательские функции, например, для окружений
+    # pythonEnv = {
+    #   description = "start a nix-shell with the given python packages";
+    #   body = ''
+    #     if set -q argv
+    #       set argv $argv[2.. -1]
+    #     end
+    #     for el in $argv
+    #       set ppkgs $ppkgs "python"$pythonVersion"Packages. $el"
+    #     end
+    #     nix-shell -p $ppkgs
+    #   '';
+    # };
+    # };
   };
 
   # Чтобы fish completions из Nixpkgs работали, также включите fish на системном уровне,
