@@ -26,10 +26,6 @@
     hyprland.inputs.nixpkgs.follows = "nixpkgs";
 
     # Модуль Home Manager для терминала Ghostty.
-    # ghostty = {
-    #   url = "github:clo4/ghostty-hm-module";
-    #   inputs.nixpkgs.follows = "nixpkgs"; # Ghostty HM модуль также должен следовать nixpkgs
-    # };
 
     # Lanzaboote для Secure Boot и UKI.
     lanzaboote = {

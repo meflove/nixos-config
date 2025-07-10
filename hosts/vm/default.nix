@@ -31,7 +31,7 @@
   # SSH
   services.openssh = {
     enable = true;
-    passwordAuthentication = true; # Recommended for security
+    passwordAuthentication = false; # Recommended for security
   };
 
   # Настройка пользователя
@@ -47,7 +47,6 @@
     vim
     wget
     curl
-    ghostty
   ];
 
   # Импорт общих модулей NixOS, применимых к ВМ
