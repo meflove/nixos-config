@@ -62,9 +62,7 @@
     users = {
       "angeldust" = {
         imports = [
-          ../../modules/home-manager/hyprland.nix
-          ../../modules/home-manager/ghostty.nix
-          ../../modules/home-manager/fish.nix
+          ../../users/common/default.nix
         ];
       };
     };

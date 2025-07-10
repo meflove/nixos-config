@@ -4,6 +4,7 @@
   imports = [
     inputs.self.modules.home-manager.fish
     inputs.self.modules.home-manager.ghostty
+    inputs.self.modules.home-manager.hyprland # Добавляем Hyprland
   ];
 
   # Общие настройки Home Manager

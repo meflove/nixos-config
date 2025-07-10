@@ -65,7 +65,6 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/nixos-pc/default.nix
-          ./modules/nixos/hyprland.nix
         ];
       };
 
@@ -75,10 +74,6 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/vm/default.nix
-          ./modules/nixos/hyprland.nix
-          # { services.spice-vdagentd.enable = true; } # Для копирования/вставки в Virt-manager [9]
-          # self.modules.nixos.hyprland # Теперь это будет работать
-          # self.modules.nixos.disko
         ];
       };
     };

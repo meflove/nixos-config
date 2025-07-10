@@ -48,14 +48,20 @@
   imports = [
     # Модуль Disko для декларативной разметки диска [2]
     inputs.disko.nixosModules.disko, # Импортируем основной модуль Disko
-    inputs.self.diskoConfigurations.pcDisk, # Импортируем нашу конфигурацию диска из flake
-
-    # Модули из директории modules/nixos
-
-    ../../modules/home-manager/fish.nix
-    ../../modules/home-manager/ghostty.nix
-    ../../modules/home-manager/hyprland.nix
+    inputs.self.diskoConfigurations.pcDisk # Импортируем нашу конфигурацию диска из flake
   ];
+
+  # Конфигурация Home Manager
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      "angeldust" = {
+        imports = [
+          ../../users/common/default.nix
+        ];
+      };
+    };
+  };
 
   # Установите имя хоста
   networking.hostName = "nixos-pc";
