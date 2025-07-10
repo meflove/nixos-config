@@ -21,12 +21,12 @@
 
     # Управление dotfiles (пример)
     # home.file.".config/my-app/config.conf".source =./files/my-app-config.conf;
-
-    # Настройки для XDG Base Directory Specification
-    # Это помогает организовать файлы конфигурации в ~/.config, ~/.local/share и т.д.
-    xdg.enable = true;
-    xdg.configFile."mimeapps.list".source = "${config.xdg.configHome}/mimeapps.list";
   };
+
+  # Настройки для XDG Base Directory Specification
+  # Это помогает организовать файлы конфигурации в ~/.config, ~/.local/share и т.д.
+  xdg.enable = true;
+  xdg.configFile."mimeapps.list".source = "${config.xdg.configHome}/mimeapps.list";
 
   # Настройка Git (пример)
   programs.git = {
