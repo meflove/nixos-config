@@ -52,6 +52,7 @@
         fish = import ./modules/home-manager/fish.nix;
         ghostty = import ./modules/home-manager/ghostty.nix;
         hyprland = import ./modules/home-manager/hyprland.nix;
+        programs = import ./modules/home-manager/programs.nix; # Добавляем новый модуль
       };
     };
 
