@@ -20,6 +20,12 @@
   # Включение fish на системном уровне
   programs.fish.enable = true;
 
+  # SSH
+  services.openssh = {
+    enable = true;
+    passwordAuthentication = true; # Recommended for security
+  };
+
   # Настройка пользователя
   users.users.angeldust = {
     isNormalUser = true;
