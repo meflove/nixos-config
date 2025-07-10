@@ -29,23 +29,23 @@
   xdg.configFile."mimeapps.list".source = "${config.xdg.configHome}/mimeapps.list";
 
   # Настройка Git (пример)
-  programs.git = {
-    enable = true;
-    userName = "meflove";
-    userEmail = "meflov3r@gmail.com";
-  };
+  # programs.git = {
+  #   enable = true;
+  #   userName = "meflove";
+  #   userEmail = "meflov3r@gmail.com";
+  # };
 
   # Настройка GnuPG (пример)
   programs.gnupg.enable = true;
 
   # Настройка SSH (пример)
-  programs.ssh.enable = true;
-  programs.ssh.matchBlocks = {
-    "github.com" = {
-      user = "git";
-      identityFile = "~/.ssh/id_ed25519";
-    };
-  };
+  # programs.ssh.enable = true;
+  # programs.ssh.matchBlocks = {
+  #   "github.com" = {
+  #     user = "git";
+  #     identityFile = "~/.ssh/id_ed25519";
+  #   };
+  # };
 
   # Установите версию Home Manager. Это помогает избежать проблем при обновлении Home Manager.
   # Вы можете обновить Home Manager, не меняя это значение.
