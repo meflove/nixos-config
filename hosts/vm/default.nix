@@ -54,10 +54,21 @@
     # Модуль Disko для декларативной разметки диска [2]
     inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
     inputs.self.modules.nixos.disko # Импортируем наш кастомный disko.nix, который определяет разметку
-    ../../modules/home-manager/hyprland.nix
-    ../../modules/home-manager/ghostty.nix
-    ../../modules/home-manager/fish.nix
   ];
+
+  # Конфигурация Home Manager
+  home-manager = {
+    extraSpecialArgs = { inherit inputs; };
+    users = {
+      "angeldust" = {
+        imports = [
+          ../../modules/home-manager/hyprland.nix
+          ../../modules/home-manager/ghostty.nix
+          ../../modules/home-manager/fish.nix
+        ];
+      };
+    };
+  };
 
   # Установите имя хоста
   networking.hostName = "vm";
