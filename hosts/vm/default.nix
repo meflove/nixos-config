@@ -47,6 +47,7 @@
     vim
     wget
     curl
+    ghostty
   ];
 
   # Импорт общих модулей NixOS, применимых к ВМ
