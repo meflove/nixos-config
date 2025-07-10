@@ -4,26 +4,23 @@
     enable = true;
     # package = null; # Ghostty пока не в nixpkgs
 
-    # Настройки Ghostty
     settings = {
       theme = "catppuccin-mocha";
       font-size = 10;
-      #... другие настройки Ghostty
-    };
+      
+      # Привязки клавиш
+      keybindings = {
+        "super+c" = "copy_to_clipboard";
+        "super+v" = "paste_from_clipboard";
+        "super+shift+h" = "goto_split:left";
+        "super+shift+j" = "goto_split:bottom";
+        "super+shift+k" = "goto_split:top";
+        "super+shift+l" = "goto_split:right";
+        "ctrl+page_up" = "jump_to_prompt:-1";
+      };
 
-    # Привязки клавиш
-    keybindings = {
-      "super+c" = "copy_to_clipboard";
-      "super+v" = "paste_from_clipboard";
-      "super+shift+h" = "goto_split:left";
-      "super+shift+j" = "goto_split:bottom";
-      "super+shift+k" = "goto_split:top";
-      "super+shift+l" = "goto_split:right";
-      "ctrl+page_up" = "jump_to_prompt:-1";
-      #...
+      # Интеграция с оболочкой
+      "shell-integration" = "fish";
     };
-
-    # Интеграция с Fish
-    enableFishIntegration = true;
   };
 }
