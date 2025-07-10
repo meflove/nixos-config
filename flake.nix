@@ -77,6 +77,7 @@
         modules = [
           ./hosts/vm/default.nix
           ./modules/nixos/hyprland.nix
+          ./modules/nixos/ghostty.nix
           # { services.spice-vdagentd.enable = true; } # Для копирования/вставки в Virt-manager [9]
           # self.modules.nixos.hyprland # Теперь это будет работать
           # self.modules.nixos.disko

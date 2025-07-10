@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
   programs.ghostty = {
-    enable = true;
+    enable = null;
     # package = null; # По умолчанию null, так как Ghostty пока не в nixpkgs [17]
     # Если Ghostty будет установлен вручную или через другой метод,
     # этот модуль будет управлять только конфигурационным файлом.
