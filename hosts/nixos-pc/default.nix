@@ -47,8 +47,8 @@
   # Импорт общих модулей NixOS
   imports = [
     # Модуль Disko для декларативной разметки диска [2]
-    inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
-    inputs.self.modules.nixos.disko # Импортируем наш кастомный disko.nix, который определяет разметку
+    inputs.disko.nixosModules.disko, # Импортируем основной модуль Disko
+    inputs.self.diskoConfigurations.pcDisk, # Импортируем нашу конфигурацию диска из flake
 
     # Модули из директории modules/nixos
 

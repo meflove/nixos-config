@@ -46,7 +46,6 @@
         nvidia = import ./modules/nixos/nvidia.nix;
         bluetooth = import ./modules/nixos/bluetooth.nix;
         wifi = import ./modules/nixos/wifi.nix;
-        disko = import ./modules/nixos/disko.nix;
         secureboot = import ./modules/nixos/secureboot.nix;
       };
       home-manager = {
