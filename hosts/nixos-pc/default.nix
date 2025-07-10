@@ -52,9 +52,9 @@
 
     # Модули из директории modules/nixos
 
-    ./modules/home-manager/fish.nix
-    ./modules/home-manager/ghostty.nix
-    ./modules/home-manager/hyprland.nix
+    ../../modules/home-manager/fish.nix
+    ../../modules/home-manager/ghostty.nix
+    ../../modules/home-manager/hyprland.nix
   ];
 
   # Установите имя хоста
