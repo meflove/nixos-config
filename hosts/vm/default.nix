@@ -1,5 +1,7 @@
 { config, pkgs, inputs, ... }:
 {
+  myConfig.disk.targetDevice = "/dev/vda";
+
   # Загрузчик: systemd-boot для UEFI систем
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.efiSysMountPoint = "/efi";
