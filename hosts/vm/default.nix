@@ -54,6 +54,7 @@
     # Модуль Disko для декларативной разметки диска [2]
     inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
     inputs.self.diskoConfigurations.vmDisk # Импортируем нашу конфигурацию диска из flake
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   # Конфигурация Home Manager
