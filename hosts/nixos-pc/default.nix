@@ -40,15 +40,15 @@
 
   # Импорт общих модулей NixOS
   imports = [
-    # Аппаратная конфигурация (генерируется nixos-generate-config)
-    ./hardware-configuration.nix
+    # Модуль Disko для декларативной разметки диска [2]
+    inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
+    inputs.self.modules.nixos.disko # Импортируем наш кастомный disko.nix, который определяет разметку
+
     # Модули из директории modules/nixos
-    inputs.self.modules.nixos.hyprland
-    inputs.self.modules.nixos.nvidia
-    inputs.self.modules.nixos.bluetooth
-    inputs.self.modules.nixos.wifi
-    inputs.self.modules.nixos.disko
-    inputs.self.modules.nixos.secureboot
+
+    ./modules/home-manager/fish.nix
+    ./modules/home-manager/ghostty.nix
+    ./modules/home-manager/hyprland.nix
   ];
 
   # Установите имя хоста

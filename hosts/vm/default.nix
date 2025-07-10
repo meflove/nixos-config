@@ -1,7 +1,5 @@
 { config, pkgs, inputs, ... }:
 {
-  myConfig.disk.targetDevice = "/dev/vda";
-
   # Загрузчик: systemd-boot для UEFI систем
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.efiSysMountPoint = "/efi";
@@ -45,17 +43,12 @@
 
   # Импорт общих модулей NixOS, применимых к ВМ
   imports = [
-    { services.qemuGuest.enable = true; }
-    { services.spice-vdagentd.enable = true; }
-    # Профиль QEMU Guest для оптимизации [10]
-    # inputs.nixpkgs.nixosModules.qemu-guest
-    # pkgs.nixosModules.qemu-guest
-
     # Модуль Disko для декларативной разметки диска [2]
     inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
     inputs.self.modules.nixos.disko # Импортируем наш кастомный disko.nix, который определяет разметку
-
-    inputs.self.modules.nixos.hyprland
+    ./modules/home-manager/hyprland.nix
+    ./modules/home-manager/ghostty.nix
+    ./modules/home-manager/fish.nix
   ];
 
   # Установите имя хоста
