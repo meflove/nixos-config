@@ -1,39 +1,27 @@
 { config, pkgs, lib, inputs, ... }:
 
 let
-  # Путь к вашим dotfiles
-  dotfilesDir = ../../dotfiles;
+  # Список папок в dotfiles/config, которые нужно связать
+  configDirs = [
+    "ags", "easyeffects", "fastfetch", "fish", "ghostty", "hypr",
+    "hyprpanel", "kitty", "nvim", "tmux", "zellij"
+  ];
 
-  # Функция для рекурсивного поиска файлов и создания атрибутов
-  mapDirectory = dir:
-    let
-      items = builtins.readDir dir;
-      files = lib.attrsets.mapAttrs' (name: type:
-        if type == "regular" then
-          lib.attrsets.nameValuePair name (dir + "/${name}")
-        else
-          lib.attrsets.nameValuePair name null
-      ) items;
-      dirs = lib.attrsets.mapAttrs' (name: type:
-        if type == "directory" then
-          lib.attrsets.nameValuePair name (mapDirectory (dir + "/${name}"))
-        else
-          lib.attrsets.nameValuePair name null
-      ) items;
-    in
-      files // lib.mapAttrs (name: value: lib.mapAttrs (n: v: "${name}/${v}") value) dirs;
-
-  # Создаем атрибуты для xdg.configFile
-  configFiles = lib.mapAttrs'
-    (name: value: lib.attrsets.nameValuePair name { source = value; })
-    (lib.filterAttrs (n: v: v != null) (lib.attrsets.collapse (mapDirectory (dotfilesDir + "/config"))));
+  # Автоматически создаем атрибуты для xdg.configFile
+  configLinks = lib.listToAttrs (map (dir: {
+    name = dir;
+    value = {
+      source = ../../dotfiles/config/${dir};
+      recursive = true;
+    };
+  }) configDirs);
 
 in
 {
-  # Импорт всех модулей Home Manager
+  # Импортируем модули, чтобы программы были установлены и активированы
   imports = [
     inputs.self.modules.home-manager.fish
-    # inputs.self.modules.home-manager.ghostty # Отключено, так как управляется файлом
+    inputs.self.modules.home-manager.ghostty
     inputs.self.modules.home-manager.hyprland
     inputs.self.modules.home-manager.programs
   ];
@@ -44,15 +32,25 @@ in
     homeDirectory = "/home/angeldust";
     stateVersion = "25.05";
 
+    # Устанавливаем программы, у которых нет специальных модулей
+    # или чьи модули мы не используем для конфигурации
     packages = with pkgs; [
       htop
       fastfetch
+      kitty
+      neovim
+      tmux
+      zellij
+      ags # Предполагая, что пакет называется 'ags'
+      easyeffects
+      # hyprpanel - может быть частью hyprland или отдельным пакетом
     ];
   };
 
   # Настройки для XDG Base Directory Specification
   xdg = {
     enable = true;
-    configFile = configFiles;
+    # Управляем конфигурациями через символические ссылки на папки
+    configFile = configLinks;
   };
 }
