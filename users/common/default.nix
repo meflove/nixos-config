@@ -19,10 +19,10 @@ let
 in
 {
   imports = [
-    ../modules/home-manager/fish.nix
-    ../modules/home-manager/ghostty.nix
-    ../modules/home-manager/hyprland.nix
-    ../modules/home-manager/programs.nix
+    ../../modules/home-manager/fish.nix
+    ../../modules/home-manager/ghostty.nix
+    ../../modules/home-manager/hyprland.nix
+    ../../modules/home-manager/programs.nix
   ];
 
   # Общие настройки Home Manager
