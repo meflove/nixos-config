@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, ... }:
 {
   programs.ghostty = {
     enable = true;
@@ -7,23 +7,18 @@
     settings = {
       theme = "catppuccin-mocha";
       font-size = 10;
-      
-      # Привязки клавиш
-      keybindings = lib.mkOption {
-        type = lib.types.attrsOf lib.types.str;
-        default = {
-          "super+c" = "copy_to_clipboard";
-          "super+v" = "paste_from_clipboard";
-          "super+shift+h" = "goto_split:left";
-          "super+shift+j" = "goto_split:bottom";
-          "super+shift+k" = "goto_split:top";
-          "super+shift+l" = "goto_split:right";
-          "ctrl+page_up" = "jump_to_prompt:-1";
-        };
-      };
-
-      # Интеграция с оболочкой
       "shell-integration" = "fish";
+    };
+
+    # Привязки клавиш определены отдельно
+    keybindings = {
+      "super+c" = "copy_to_clipboard";
+      "super+v" = "paste_from_clipboard";
+      "super+shift+h" = "goto_split:left";
+      "super+shift+j" = "goto_split:bottom";
+      "super+shift+k" = "goto_split:top";
+      "super+shift+l" = "goto_split:right";
+      "ctrl+page_up" = "jump_to_prompt:-1";
     };
   };
 }
