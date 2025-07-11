@@ -3,8 +3,8 @@
 let
   # Список папок в dotfiles/config, которые нужно связать
   configDirs = [
-    "ags", "easyeffects", "fastfetch", "fish", "ghostty", "hypr",
-    "hyprpanel", "kitty", "nvim", "tmux", "zellij"
+    "ags" "easyeffects" "fastfetch" "fish" "ghostty" "hypr"
+    "hyprpanel" "kitty" "nvim" "tmux" "zellij"
   ];
 
   # Автоматически создаем атрибуты для xdg.configFile
