@@ -18,12 +18,11 @@ let
 
 in
 {
-  # Импортируем модули, чтобы программы были установлены и активированы
   imports = [
-    inputs.self.modules.home-manager.fish
-    inputs.self.modules.home-manager.ghostty
-    inputs.self.modules.home-manager.hyprland
-    inputs.self.modules.home-manager.programs
+    ../modules/home-manager/fish.nix
+    ../modules/home-manager/ghostty.nix
+    ../modules/home-manager/hyprland.nix
+    ../modules/home-manager/programs.nix
   ];
 
   # Общие настройки Home Manager

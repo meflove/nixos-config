@@ -62,9 +62,7 @@
     extraSpecialArgs = { inherit inputs; };
     users = {
       "angeldust" = {
-        imports = [
-          ../../users/common/default.nix
-        ];
+        imports = [ ../../users/common/default.nix ];
       };
     };
   };

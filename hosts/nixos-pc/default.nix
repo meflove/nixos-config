@@ -48,7 +48,8 @@
   imports = [
     # Модуль Disko для декларативной разметки диска [2]
     inputs.disko.nixosModules.disko, # Импортируем основной модуль Disko
-    inputs.self.diskoConfigurations.pcDisk # Импортируем нашу конфигурацию диска из flake
+    inputs.self.diskoConfigurations.pcDisk, # Импортируем нашу конфигурацию диска из flake
+    inputs.home-manager.nixosModules.home-manager
   ];
 
   # Конфигурация Home Manager
@@ -56,9 +57,7 @@
     extraSpecialArgs = { inherit inputs; };
     users = {
       "angeldust" = {
-        imports = [
-          ../../users/common/default.nix
-        ];
+        imports = [ ../../users/common/default.nix ];
       };
     };
   };
