@@ -37,6 +37,6 @@
   # Настройки для XDG Base Directory Specification
   xdg = {
     enable = true;
-    configFile."mimeapps.list".source = "${config.xdg.configHome}/mimeapps.list";
+    # configFile."mimeapps.list".source = "${config.xdg.configHome}/mimeapps.list";
   };
 }
