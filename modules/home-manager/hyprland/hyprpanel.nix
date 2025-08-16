@@ -1,8 +1,9 @@
-{
+{ inputs, pkgs, ... }: {
 
   programs.hyprpanel = {
     enable = true;
     systemd.enable = true;
+    package = inputs.hyprpanel.packages.${pkgs.system}.default;
 
     settings = {
       tear = true;

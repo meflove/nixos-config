@@ -11,7 +11,7 @@ let
 in {
   imports = [ ./hypridle.nix ./hyprlock.nix ./hyprpanel.nix ];
 
-  home.packages = with pkgs; [ grim slurp ];
+  home.packages = with pkgs; [ grim grimblast slurp hyprpicker libnotify ];
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -35,9 +35,13 @@ in {
       inputs.hypr-dynamic-cursors.packages.${pkgs.system}.hypr-dynamic-cursors
     ];
   };
-  xdg.portal = {
+
+  xdg = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    xdgOpenUsePortal = true;
+    portal = {
+      enable = true;
+      extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+      xdgOpenUsePortal = true;
+    };
   };
 }

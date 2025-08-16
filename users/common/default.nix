@@ -31,7 +31,5 @@
 
   };
 
-  # Настройки для XDG Base Directory Specification
-  xdg.enable = true;
 }
 
