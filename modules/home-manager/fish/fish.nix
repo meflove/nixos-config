@@ -26,9 +26,7 @@
       end
     '';
 
-    # Декларативное управление плагинами
     plugins = with pkgs.fishPlugins; [
-      # Плагины из вашего fish_plugins
       {
         name = "done";
         src = done.src;
@@ -44,12 +42,11 @@
       {
         name = "puffer";
         src = puffer.src;
-      } # Замените хеш на актуальный, если нужно
+      }
       {
         name = "grc";
         src = grc.src;
-      } # Замените хеш
-      # { name = "zellij"; src = zellij.src; }
+      }
       {
         name = "nvm";
         src = nvm.src;
@@ -59,13 +56,24 @@
         src = fishtape.src;
       }
       {
-        name = "fifc";
-        src = fifc.src;
-      } # Замените хеш
+        name = "forgit";
+        src = forgit.src;
+      }
+      {
+        name = "fish-you-should-use";
+        src = fish-you-should-use.src;
+      }
+      {
+        name = "colored-man-pages";
+        src = colored-man-pages.src;
+      }
 
+      # {
+      #   name = "fifc";
+      #   src = fifc.src;
+      # }
     ];
 
-    # Псевдонимы (aliases) и сокращения (abbr)
     shellAliases = {
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Системные утилиты ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
       p = "paru";
@@ -103,6 +111,7 @@
 
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Git и инструменты ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
       g = "git";
+      gitignore = "curl -sL https://www.gitignore.io/api/$argv";
       icat = "kitten icat";
       fman = "compgen -c | fzf | xargs man";
 
@@ -131,18 +140,13 @@
     };
 
     # Функции
-    functions = {
-      # Тема Tokyo Night Moon
-      # fish_prompt = pkgs.lib.strings.fileContents ../../dotfiles/config/fish/themes/tokyo-night-moon.fish;
-
-      # Ваши кастомные функции
-      # magic-enter-cmd = pkgs.lib.strings.fileContents ../../dotfiles/config/fish/functions/magic-enter-cmd.fish;
-      # search_with_zoxide = pkgs.lib.strings.fileContents ../../dotfiles/config/fish/functions/search_with_zoxide.fish;
-    };
+    functions = import ./magic-enter.nix;
 
     # Код, который выполняется при запуске оболочки
     shellInit = ''
       source $__fish_config_dir/themes/tokyo-night-moon.fish
+
+      __magic-enter
 
       # Atuin
       set -x ATUIN_NOBIND true
@@ -163,7 +167,6 @@
 
       # Starship
       starship init fish | source # Раскомментируйте, если используете Starship вместо темы
-
     '';
   };
 

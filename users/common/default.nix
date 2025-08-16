@@ -1,7 +1,7 @@
 { config, pkgs, lib, inputs, ... }: {
   imports = [
     inputs.zen-browser.homeModules.beta
-    ../../modules/home-manager/fish.nix
+    ../../modules/home-manager/fish/fish.nix
     ../../modules/home-manager/ghostty.nix
     ../../modules/home-manager/hyprland.nix
     ../../modules/home-manager/programs.nix
