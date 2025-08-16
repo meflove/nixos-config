@@ -109,7 +109,7 @@
           displayTimeTooltip = true;
           displayTime = true;
           hideAuthor = false;
-          hideAlbum = false;
+          hideAlbum = true;
         };
         transition = "crossfade";
       };
