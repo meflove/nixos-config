@@ -105,6 +105,7 @@
     git
     gnumake
     uv
+    sd
 
     # Libs
     python313Packages.gpustat
