@@ -1,6 +1,5 @@
-{ config, pkgs, ... }:
-{
-  # Настройка Git
+{ ... }: {
+
   programs.git = {
     enable = true;
     userName = "meflove";
@@ -8,9 +7,7 @@
   };
 
   # Настройка GnuPG
-  programs.gpg = {
-    enable = true;
-  };
+  programs.gpg = { enable = true; };
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;

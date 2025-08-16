@@ -1,20 +1,22 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   # Включаем и настраиваем Fish
   programs.starship.enable = true;
-  
+
   programs.fish = {
     enable = true;
-    # Убираем стандартное приветствие
+
+    generateCompletions = true;
+
     interactiveShellInit = ''
       set fish_greeting
-      fastfetch
 
       # Zellij
       export ZELLIJ_CONFIG_DIR=$HOME/.config/zellij
       if [ "$TERM" = xterm-ghostty ]
           set ZELLIJ_AUTO_ATTACH true
           eval (zellij setup --generate-auto-start fish | string collect)
+
+          fastfetch
       end
 
       # Wayland vars for root
@@ -27,16 +29,40 @@
     # Декларативное управление плагинами
     plugins = with pkgs.fishPlugins; [
       # Плагины из вашего fish_plugins
-      { name = "done"; src = done.src; }
-      { name = "spark"; src = spark.src; }
-      { name = "autopair"; src = autopair.src; }
-      { name = "puffer"; src = puffer.src; } # Замените хеш на актуальный, если нужно
-      { name = "grc"; src = grc.src; } # Замените хеш
+      {
+        name = "done";
+        src = done.src;
+      }
+      {
+        name = "spark";
+        src = spark.src;
+      }
+      {
+        name = "autopair";
+        src = autopair.src;
+      }
+      {
+        name = "puffer";
+        src = puffer.src;
+      } # Замените хеш на актуальный, если нужно
+      {
+        name = "grc";
+        src = grc.src;
+      } # Замените хеш
       # { name = "zellij"; src = zellij.src; }
-      { name = "nvm"; src = nvm.src; }
-      { name = "fishtape"; src = fishtape.src; }
-      { name = "fifc"; src = fifc.src; } # Замените хеш
-      
+      {
+        name = "nvm";
+        src = nvm.src;
+      }
+      {
+        name = "fishtape";
+        src = fishtape.src;
+      }
+      {
+        name = "fifc";
+        src = fifc.src;
+      } # Замените хеш
+
     ];
 
     # Псевдонимы (aliases) и сокращения (abbr)
@@ -58,7 +84,13 @@
       err = "journalctl -b -p err";
       syslog_emerg = "sudo dmesg --level=emerg,alert,crit";
       watch = "viddy";
-      
+      # nrs =
+      #   "sudo nixos-rebuild switch --log-format internal-json -v --flake .#nixos-pc &| nom --json";
+      # hms =
+      #   "home-manager switch --log-format internal-json -v --flake .#angeldust &| nom --json";
+      nrs = "nh os switch .";
+      hms = "nh home switch .";
+
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
       n = "nvim";
       m = "micro";
@@ -68,18 +100,19 @@
       ssh = "ggh";
       nzo = "search_with_zoxide";
       zigup = "command sudo zigup --install-dir /home/meflove/.zig";
-      
+
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Git и инструменты ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
       g = "git";
       icat = "kitten icat";
       fman = "compgen -c | fzf | xargs man";
-      
+
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Сеть и интернет ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-      ipv4 = "ip addr show | grep 'inet ' | grep -v '127.0.0.1' | cut -d' ' -f6 | cut -d/ -f1";
+      ipv4 =
+        "ip addr show | grep 'inet ' | grep -v '127.0.0.1' | cut -d' ' -f6 | cut -d/ -f1";
       ipv6 = "ip addr show | grep 'inet6 ' | cut -d ' ' -f6 | sed -n '2p'";
       PublicIP = "curl ifconfig.me && echo ''";
       brn = "curl wttr.in/barnaul | head -n -1";
-      
+
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Управление терминалом ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
       cls = "clear && fastfetch";
       c = "clear && fastfetch";
@@ -88,7 +121,7 @@
       visudo = "EDITOR=nvim command sudo visudo";
       se = "sudoedit";
     };
-    
+
     shellAbbrs = {
       mkdir = "mkdir -p";
       rm = "rm -rf";
@@ -101,7 +134,7 @@
     functions = {
       # Тема Tokyo Night Moon
       # fish_prompt = pkgs.lib.strings.fileContents ../../dotfiles/config/fish/themes/tokyo-night-moon.fish;
-      
+
       # Ваши кастомные функции
       # magic-enter-cmd = pkgs.lib.strings.fileContents ../../dotfiles/config/fish/functions/magic-enter-cmd.fish;
       # search_with_zoxide = pkgs.lib.strings.fileContents ../../dotfiles/config/fish/functions/search_with_zoxide.fish;
@@ -109,6 +142,8 @@
 
     # Код, который выполняется при запуске оболочки
     shellInit = ''
+      source $__fish_config_dir/themes/tokyo-night-moon.fish
+
       # Atuin
       set -x ATUIN_NOBIND true
       atuin init fish | source
@@ -137,7 +172,6 @@
     EDITOR = "nvim";
     SUDO_PROMPT = "$(tput setaf 1 bold)Password:$(tput sgr0) ";
     LIBVIRT_DEFAULT_URI = "qemu:///system";
-    TERM = "xterm-256color";
     RIP_GRAVEYARD = "~/.local/share/Trash";
     no_proxy = "127.0.0.1";
     SPACEFISH_USER_SHOW = "always";

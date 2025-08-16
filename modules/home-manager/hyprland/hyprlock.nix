@@ -1,15 +1,12 @@
 # /home/meflove/git/nixos-config/modules/home-manager/hyprland/hyprlock.nix
 {
   programs.hyprlock = {
-    enable = false;
-    settings = let
-      colors = import ./colors.nix;
+    enable = true;
+    settings = let colors = import ./colors.nix;
     in {
-      general = {
-        hide_cursor = true;
-      };
+      general = { hide_cursor = true; };
       background = {
-        path = "$HOME/.config/background";
+        path = "$HOME/Images/wallpaper/lock_screen.png";
         blur_passes = 3;
         color = "rgb(${colors.base})";
       };
@@ -24,7 +21,7 @@
           valign = "top";
         }
         {
-          text = "cmd[update:43200000] date +\"%A, %d %B %Y\"";
+          text = ''cmd[update:43200000] date +"%A, %d %B %Y"'';
           color = "rgb(${colors.text})";
           font_size = 25;
           font_family = "JetBrainsMono Nerd Font";
@@ -43,7 +40,7 @@
         }
       ];
       image = {
-        path = "$HOME/.face";
+        # path = "$HOME/Images/wallpaper/lock_screen.png";
         size = 100;
         border_color = "rgb(${colors.mauve})";
         position = "0, 75";
@@ -51,7 +48,7 @@
         valign = "center";
       };
       "input-field" = {
-        size = "300, 60";
+        size = "400, 70";
         outline_thickness = 4;
         dots_size = 0.2;
         dots_spacing = 0.2;
@@ -60,7 +57,9 @@
         inner_color = "rgb(${colors.surface0})";
         font_color = "rgb(${colors.text})";
         fade_on_empty = false;
-        placeholder_text = "<span foreground=\"#${colors.text}Alpha\"><i>󰌾 Logged in as </i><span foreground=\"#${colors.mauve}Alpha\">$USER</span></span>";
+        # placeholder_text = ''
+        #   <span foreground="#${colors.text}Alpha"><i>󰌾 Logged in as angeldus</i><span foreground="#${colors.mauve}Alpha">$USER</span></span>'';
+        placeholder_text = "Password...";
         hide_input = false;
         check_color = "rgb(${colors.mauve})";
         fail_color = "rgb(${colors.red})";

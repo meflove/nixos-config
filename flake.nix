@@ -2,21 +2,21 @@
   description = "Моя модульная конфигурация NixOS";
 
   inputs = {
-    # Основной источник пакетов NixOS. Используем нестабильную ветку для доступа к свежим пакетам и функциям.
-    # Если требуется большая стабильность, можно использовать "nixos-23.11" или "nixos-24.05".
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
 
-    # Home Manager для управления пользовательской конфигурацией.
-    # Важно, чтобы home-manager использовал тот же nixpkgs, что и основной flake,
-    # чтобы избежать проблем с несовместимостью пакетов.
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Disko для декларативного управления разметкой дисков и файловыми системами.
     disko = {
       url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -24,6 +24,28 @@
       url = "github:hyprwm/Hyprland";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hyprpanel = {
+      url = "github:Jas-SinghFSU/HyprPanel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
+
+    hypr-dynamic-cursors = {
+      url = "github:VirtCode/hypr-dynamic-cursors";
+      inputs.hyprland.follows = "hyprland";
+    };
+
+    otter-launcher = {
+      url = "github:kuokuo123/otter-launcher";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixos-hardware = { url = "github:NixOS/nixos-hardware/master"; };
 
     # Lanzaboote для Secure Boot и UKI.
     lanzaboote = {
@@ -40,53 +62,56 @@
     # например, для sops-nix (управление секретами), impermanence (персистентность).
   };
 
-  outputs =
-    { self, nixpkgs, home-manager, disko, hyprland, lanzaboote, ... }@inputs: {
-      # Здесь будут определены nixosConfigurations (системные конфигурации)
-      # и homeConfigurations (пользовательские конфигурации Home Manager).
+  outputs = { self, nixpkgs, chaotic, home-manager, disko, rust-overlay
+    , hyprland, hyprpanel, hyprland-plugins, hypr-dynamic-cursors
+    , otter-launcher, nixos-hardware, lanzaboote, zen-browser, ... }@inputs: {
 
-      # Disko-конфигурации для использования с утилитой disko
       diskoConfigurations.vmDisk = import ./hosts/vm/vm-disk.nix;
       diskoConfigurations.pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
 
       nixosConfigurations = {
-        # Конфигурация для физического ПК
         nixos-pc = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/nixos-pc/default.nix ];
+          modules = [
+            ./hosts/nixos-pc/default.nix
+            nixos-hardware.nixosModules.common-cpu-intel-cpu-only
+            chaotic.nixosModules.default
+          ];
         };
 
-        # Конфигурация для виртуальной машины
         vm = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [ ./hosts/vm/default.nix ];
         };
       };
-    };
-    homeConfigurations = {
-      # Пользовательская конфигурация для ПК
-      "angeldust" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = { inherit inputs; };
-        modules = [
-          { home.username = "angeldust"; home.homeDirectory = "/home/angeldust"; }
-          ./users/common/default.nix
-          # ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
-        ];
-      };
 
-      # Пользовательская конфигурация для ВМ
-      "angeldust-vm" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = { inherit inputs; };
-        modules = [
-          { home.username = "angeldust"; home.homeDirectory = "/home/angeldust"; }
-          ./users/common/default.nix
-          # ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
-        ];
+      homeConfigurations = {
+        "angeldust" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs; };
+          modules = [
+            {
+              home.username = "angeldust";
+              home.homeDirectory = "/home/angeldust";
+            }
+            ./users/common/default.nix
+          ];
+        };
+
+        "angeldust-vm" = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          extraSpecialArgs = { inherit inputs; };
+          modules = [
+            {
+              home.username = "angeldust";
+              home.homeDirectory = "/home/angeldust";
+            }
+            ./users/common/default.nix
+            # ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
+          ];
+        };
       };
     };
-  };
 }

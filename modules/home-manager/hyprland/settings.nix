@@ -1,9 +1,7 @@
 # /home/meflove/git/nixos-config/modules/home-manager/hyprland/settings.nix
 { pkgs, ... }:
-let
-  colors = import ./colors.nix;
-in
-{
+let colors = import ./colors.nix;
+in {
   "general" = {
     gaps_in = 5;
     gaps_out = 12;
@@ -23,7 +21,8 @@ in
     animate_manual_resizes = false;
     animate_mouse_windowdragging = false;
     enable_swallow = false;
-    swallow_regex = "(foot|kitty|allacritty|Alacritty|ghostty|Ghostty|com.mitchellh.ghostty|tmux)";
+    swallow_regex =
+      "(foot|kitty|allacritty|Alacritty|ghostty|Ghostty|com.mitchellh.ghostty|tmux)";
     disable_hyprland_logo = true;
     force_default_wallpaper = 0;
     new_window_takes_over_fullscreen = 2;
@@ -38,7 +37,7 @@ in
     numlock_by_default = true;
     repeat_delay = 250;
     repeat_rate = 35;
-    
+
     touchpad = {
       natural_scroll = true;
       disable_while_typing = true;
@@ -119,52 +118,28 @@ in
 
   "dwindle" = {
     preserve_split = true;
-    smart_split = true;
+    smart_split = false;
     smart_resizing = true;
   };
 
-  "opengl" = {
-    nvidia_anti_flicker = true;
-  };
+  "opengl" = { nvidia_anti_flicker = true; };
 
   "cursor" = {
     no_hardware_cursors = true;
-    # default_monitor = "DP-1";
+    default_monitor = "DP-1";
   };
 
-  "debug" = {
-    disable_logs = false;
-  };
+  "debug" = { disable_logs = false; };
 
   "plugin" = {
-    hyprbars = {
-      bar_text_font = "Rubik, Geist, AR One Sans, Reddit Sans, Inter, Roboto, Ubuntu, Noto Sans, sans-serif";
-      bar_height = 30;
-      bar_padding = 10;
-      bar_button_padding = 5;
-      bar_precedence_over_border = true;
-      bar_part_of_window = true;
-      bar_color = "rgba(131315FF)";
-      "col.text" = "rgba(E5E1E3FF)";
-      "hyprbars-button" = [
-        "rgb(E5E1E3), 13, 󰖭, hyprctl dispatch killactive"
-        "rgb(E5E1E3), 13, 󰖯, hyprctl dispatch fullscreen 1"
-        "rgb(E5E1E3), 13, 󰖰, hyprctl dispatch movetoworkspacesilent special"
-      ];
-    };
-    hyprexpo = {
-      columns = 3;
-      gap_size = 5;
-      bg_col = "rgb(000000)";
-      workspace_method = "first 1";
-      enable_gesture = false;
-      gesture_distance = 300;
-      gesture_positive = false;
+    dynamic-cursors = {
+      enabled = true;
+      mode = "stretch";
     };
   };
 
-  # "monitorv2" = [
-  #   "DP-1, highres@highrr, 1920x0, 1, vrr, 1, bitdepth, 10"
-  #   "HDMI-A-1, highres@highrr, 0x360, 1"
-  # ];
+  "monitor" = [
+    "DP-1, highres@highrr, 1920x0, 1, vrr, 1, bitdepth, 10"
+    "HDMI-A-1, highres@highrr, 0x360, 1"
+  ];
 }

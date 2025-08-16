@@ -1,5 +1,4 @@
-{ config, pkgs, inputs, ... }:
-{
+{ config, pkgs, inputs, ... }: {
   # Загрузчик: systemd-boot для UEFI систем
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.efiSysMountPoint = "/efi";
@@ -7,12 +6,15 @@
 
   # Включение экспериментальных функций Nix (для flakes)
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.system-features =
+    [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+  nix.settings.auto-optimise-store = true;
 
-  # Установка системной временной зоны
-  time.timeZone = "Asia/Barnaul";
-
-  # Языковые настройки
-  i18n.defaultLocale = "en_US.UTF-8";
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
 
   # Включение XWayland для совместимости со старыми приложениями
   programs.xwayland.enable = true;
@@ -23,15 +25,28 @@
   programs.hyprland = {
     enable = true;
     # set the flake package
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    package =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     # make sure to also set the portal package, so that they are in sync
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   # SSH
   services.openssh = {
     enable = true;
     # settings.passwordAuthentication = false; # Recommended for security
+  };
+
+  security.sudo = {
+    enable = true;
+    extraRules = [{
+      commands = [{
+        command = "/run/current-system/sw/bin/nixos-rebuild";
+        options = [ "NOPASSWD" ];
+      }];
+      groups = [ "wheel" ];
+    }];
   };
 
   zramSwap = {
@@ -44,12 +59,23 @@
   # Настройка пользователя
   users.users.angeldust = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Добавление в группы для sudo, сети, virt-manager [9, 11]
-    initialPassword = ",jv;bybobt"; # Установите начальный пароль или используйте initialHashedPassword [5]
+    extraGroups = [
+      "wheel"
+      "input"
+      "networkmanager"
+      "gamemode"
+    ]; # Добавление в группы для sudo, сети, virt-manager [9, 11]
+    initialPassword =
+      ",jv;bybobt"; # Установите начальный пароль или используйте initialHashedPassword [5]
     shell = pkgs.fish;
   };
 
-  # Разрешение несвободного ПО, необходимого для драйверов NVIDIA [12]
+  fonts = {
+    enableDefaultPackages = true;
+    enableGhostscriptFonts = true;
+    packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   # Дополнительные системные пакеты
@@ -72,12 +98,16 @@
     tree
     gcc
     clang
-    zig
     grc
     bibata-cursors
     pcre
     file
     git
+    gnumake
+    uv
+
+    # Libs
+    python313Packages.gpustat
 
     # Nix workflow
     direnv
@@ -86,23 +116,55 @@
     # Git tools
     lazygit # Git TUI
 
+    # Languages
+    zig
+    go
+    nodejs_24
+    nil
+    python3Full
+
     # System tools
     btop # Better top
     tldr # Simplified man pages
 
     # Development containers
     docker
+
+    # Vulkan
+    vulkan-tools
+
+    # Wayland
+    wl-clipboard
+    fcitx5
+    swww
+    base16-schemes
+    pavucontrol
+
+    # Audio
+    easyeffects
   ];
 
-  # Импорт общих модулей NixOS
   imports = [
     # Модуль Disko для декларативной разметки диска [2]
     inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
     inputs.self.diskoConfigurations.pcDisk # Импортируем нашу конфигурацию диска из flake
+    inputs.home-manager.nixosModules.home-manager
+    "${inputs.self}/modules/nixos/autologin.nix"
+    "${inputs.self}/modules/nixos/nvidia.nix"
+    "${inputs.self}/modules/nixos/pipewire.nix"
+    "${inputs.self}/modules/nixos/network.nix"
+    "${inputs.self}/modules/nixos/bluetooth.nix"
+    "${inputs.self}/modules/nixos/kernel.nix"
+    "${inputs.self}/modules/nixos/lang.nix"
+    "${inputs.self}/modules/nixos/rust/rustup.nix"
+    "${inputs.self}/modules/nixos/ccache.nix"
+    "${inputs.self}/modules/nixos/gaming.nix"
+    "${inputs.self}/modules/nixos/git.nix"
+
   ];
 
   # Установите имя хоста
   networking.hostName = "nixos-pc";
 
-  system.stateVersion = "25.05"; # Или актуальная версия NixOS
+  system.stateVersion = "25.05"; # Или акуальная версия NixOS
 }

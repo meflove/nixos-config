@@ -1,5 +1,4 @@
-{ config, pkgs, lib, inputs, ... }:
-{
+{ config, pkgs, lib, inputs, ... }: {
   imports = [
     inputs.zen-browser.homeModules.beta
     ../../modules/home-manager/fish.nix
@@ -8,8 +7,11 @@
     ../../modules/home-manager/programs.nix
     ../../modules/home-manager/atuin.nix
     ../../modules/home-manager/zen.nix
+    ../../modules/home-manager/theming.nix
+    ../../modules/home-manager/cli.nix
+    ../../modules/home-manager/gaming.nix
+    ../../modules/home-manager/fastfetch.nix
   ];
-
 
   # Общие настройки Home Manager
   home = {
@@ -20,26 +22,16 @@
     # Устанавливаем программы, у которых нет специальных модулей
     # или чьи модули мы не используем для конфигурации
     packages = with pkgs; [
-      htop
-      fastfetch
-      kitty
       neovim
-      tmux
       zellij
       easyeffects
-      grc
       xdg-user-dirs
-      yazi
-      dust
-      duf
-      # hyprpanel - может быть частью hyprland или отдельным пакетом
+      ayugram-desktop
     ];
 
   };
 
   # Настройки для XDG Base Directory Specification
-  xdg = {
-    enable = true;
-  };
+  xdg.enable = true;
 }
 
