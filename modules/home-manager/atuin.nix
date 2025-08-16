@@ -1,12 +1,15 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   programs.atuin = {
     enable = true;
     settings = {
-      auto_sync = true;
-      sync_frequency = "5m";
-      sync_address = "https://api.atuin.sh";
+      auto_sync = false;
+
+      enter_accept = true;
       search_mode = "fuzzy";
+
+      style = "full";
+
+      common_subcommands = [ "git" "ip" "systemctl" "nix" ];
     };
   };
 }
