@@ -15,15 +15,6 @@
     kernelPackages = pkgs.linuxPackages_cachyos;
 
     consoleLogLevel = 3;
-
-    initrd = {
-      enable = true;
-      verbose = false;
-      systemd = {
-        enable = true;
-        tpm2.enable = true;
-      };
-    };
   };
 
   boot.kernelPatches = [{

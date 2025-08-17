@@ -1,9 +1,4 @@
 { pkgs, inputs, ... }: {
-  # Загрузчик: systemd-boot для UEFI систем
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.efiSysMountPoint = "/efi";
-  boot.loader.efi.canTouchEfiVariables = true;
-
   # Включение экспериментальных функций Nix (для flakes)
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
@@ -156,6 +151,7 @@
     inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
     inputs.self.diskoConfigurations.pcDisk # Импортируем нашу конфигурацию диска из flake
     inputs.home-manager.nixosModules.home-manager
+    inputs.lanzaboote.nixosModules.lanzaboote
     "${inputs.self}/modules/nixos/autologin.nix"
     "${inputs.self}/modules/nixos/nvidia.nix"
     "${inputs.self}/modules/nixos/pipewire.nix"
@@ -167,6 +163,7 @@
     "${inputs.self}/modules/nixos/ccache.nix"
     "${inputs.self}/modules/nixos/gaming.nix"
     "${inputs.self}/modules/nixos/git.nix"
+    "${inputs.self}/modules/nixos/secureboot.nix"
 
   ];
 
