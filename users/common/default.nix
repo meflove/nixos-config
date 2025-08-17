@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }: {
   imports = [
     inputs.zen-browser.homeModules.beta
+    inputs.otter-launcher.homeModules.default
     ../../modules/home-manager/fish/fish.nix
     ../../modules/home-manager/ghostty.nix
     ../../modules/home-manager/hyprland.nix
@@ -11,6 +12,7 @@
     ../../modules/home-manager/cli.nix
     ../../modules/home-manager/gaming.nix
     ../../modules/home-manager/fastfetch.nix
+    ../../modules/home-manager/otter-launcher.nix
   ];
 
   # Общие настройки Home Manager

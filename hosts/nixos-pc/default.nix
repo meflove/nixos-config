@@ -108,6 +108,8 @@
     gnumake
     uv
     sd
+    krabby
+    chafa
 
     # Libs
     python313Packages.gpustat
@@ -116,6 +118,7 @@
     direnv
     home-manager
     nix-search-tv
+    television
 
     # Git tools
     lazygit # Git TUI
