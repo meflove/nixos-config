@@ -13,6 +13,7 @@
     ../../modules/home-manager/gaming.nix
     ../../modules/home-manager/fastfetch.nix
     ../../modules/home-manager/otter-launcher.nix
+    ../../modules/home-manager/ai.nix
   ];
 
   # Общие настройки Home Manager
