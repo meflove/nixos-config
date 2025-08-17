@@ -116,6 +116,7 @@
     television
     transcrypt
     openssl
+    inputs.nixai.packages.${system}.default
 
     # Git tools
     lazygit # Git TUI

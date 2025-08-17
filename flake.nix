@@ -58,13 +58,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixai = {
+      url = "github:olafkfreund/nix-ai-help";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Дополнительные инпуты могут быть добавлены по мере необходимости,
     # например, для sops-nix (управление секретами), impermanence (персистентность).
   };
 
   outputs = { self, nixpkgs, chaotic, home-manager, disko, rust-overlay
     , hyprland, hyprpanel, hyprland-plugins, hypr-dynamic-cursors
-    , otter-launcher, nixos-hardware, lanzaboote, zen-browser, ... }@inputs: {
+    , otter-launcher, nixos-hardware, lanzaboote, zen-browser, nixai, ...
+    }@inputs: {
 
       diskoConfigurations.vmDisk = import ./hosts/vm/vm-disk.nix;
       diskoConfigurations.pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
