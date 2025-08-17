@@ -96,7 +96,6 @@
     gcc
     clang
     grc
-    bibata-cursors
     pcre
     file
     git

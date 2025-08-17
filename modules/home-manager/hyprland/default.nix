@@ -13,6 +13,22 @@ in {
 
   home.packages = with pkgs; [ grim grimblast slurp hyprpicker libnotify ];
 
+  home.pointerCursor = {
+    gtk.enable = true;
+    hyprcursor = {
+      enable = true;
+      size = 20;
+    };
+    x11 = {
+      enable = true;
+      defaultCursor = "Bibata-Modern-Classic";
+    };
+
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Classic";
+    size = 20;
+  };
+
   wayland.windowManager.hyprland = {
     enable = true;
     package = pkgs.hyprland;
