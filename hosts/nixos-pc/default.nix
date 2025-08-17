@@ -163,6 +163,9 @@
     "${inputs.self}/modules/nixos/gaming.nix"
     "${inputs.self}/modules/nixos/git.nix"
     "${inputs.self}/modules/nixos/secureboot.nix"
+    "${inputs.self}/modules/nixos/secureboot.nix"
+    "${inputs.self}/modules/nixos/podman.nix"
+    "${inputs.self}/modules/nixos/virt-manager.nix"
 
   ];
 
