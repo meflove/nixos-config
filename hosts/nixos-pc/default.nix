@@ -114,6 +114,8 @@
     home-manager
     nix-search-tv
     television
+    transcrypt
+    openssl
 
     # Git tools
     lazygit # Git TUI
@@ -168,7 +170,6 @@
     "${inputs.self}/modules/nixos/secureboot.nix"
     "${inputs.self}/modules/nixos/podman.nix"
     "${inputs.self}/modules/nixos/virt-manager.nix"
-
   ];
 
   # Установите имя хоста

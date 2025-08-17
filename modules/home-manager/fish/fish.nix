@@ -1,4 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+let secret = import ../../../secrets/gemini.nix;
+in {
   # Включаем и настраиваем Fish
   programs.starship.enable = true;
 
@@ -193,6 +195,7 @@
     SPACEFISH_USER_SHOW = "always";
     GDK_BACKEND = "wayland";
     npm_config_prefix = "$HOME/.local";
+    GEMINI_API_KEY = secret.GEMINI_API_KEY;
   };
 
   # Пути
