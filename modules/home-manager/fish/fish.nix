@@ -140,7 +140,18 @@
     };
 
     # Функции
-    functions = import ./magic-enter.nix;
+    functions = (import ./magic-enter.nix) // {
+      sudo = {
+        body = ''
+          if functions -q -- $argv[1]
+              set -l new_args (string join ' ' -- (string escape -- $argv))
+              set argv fish -c "$new_args"
+          end
+
+          command sudo $argv
+        '';
+      };
+    };
 
     # Код, который выполняется при запуске оболочки
     shellInit = ''
