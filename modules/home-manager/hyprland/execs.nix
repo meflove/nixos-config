@@ -2,7 +2,6 @@
 [
   "swww-daemon --format xrgb"
   # "/usr/lib/geoclue-2.0/demos/agent &"
-  "fcitx5"
   # "gnome-keyring-daemon --start --components=secrets"
   # "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 || /usr/libexec/polkit-gnome-authentication-agent-1"
   "dbus-update-activation-environment --all"

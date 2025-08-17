@@ -31,6 +31,8 @@
 
   boot.kernelParams = [
     "systemd.show_status=auto"
+    "quiet"
+    "splash"
     "vt.global_cursor_default=0"
     "lpj=2496000"
     "page_alloc.shuffle=1"

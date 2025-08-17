@@ -136,7 +136,6 @@
 
     # Wayland
     wl-clipboard
-    fcitx5
     swww
     base16-schemes
     pavucontrol

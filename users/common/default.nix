@@ -29,6 +29,7 @@
       easyeffects
       xdg-user-dirs
       ayugram-desktop
+      kitty
     ];
 
   };

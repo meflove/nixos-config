@@ -15,10 +15,7 @@ in {
 
   home.pointerCursor = {
     gtk.enable = true;
-    hyprcursor = {
-      enable = true;
-      size = 20;
-    };
+    hyprcursor.enable = true;
     x11 = {
       enable = true;
       defaultCursor = "Bibata-Modern-Classic";
