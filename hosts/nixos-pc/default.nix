@@ -104,6 +104,7 @@
     sd
     krabby
     chafa
+    dig
 
     # Libs
     python313Packages.gpustat
@@ -139,6 +140,8 @@
     swww
     base16-schemes
     pavucontrol
+    gtk3
+    gtk4
 
     # Audio
     easyeffects
