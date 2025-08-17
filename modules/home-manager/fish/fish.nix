@@ -98,6 +98,8 @@
       #   "home-manager switch --log-format internal-json -v --flake .#angeldust &| nom --json";
       nrs = "nh os switch .";
       hms = "nh home switch .";
+      ns = ''
+        tv --preview-command "nix-search-tv preview {}" --source-command "nix-search-tv print"'';
 
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
       n = "nvim";
