@@ -113,6 +113,7 @@
     # Nix workflow
     direnv
     home-manager
+    nix-search-tv
 
     # Git tools
     lazygit # Git TUI
