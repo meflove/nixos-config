@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, ... }: {
+{ pkgs, inputs, ... }: {
   imports = [
     inputs.zen-browser.homeModules.beta
     ../../modules/home-manager/fish/fish.nix

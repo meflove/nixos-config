@@ -1,5 +1,5 @@
 # /home/meflove/git/nixos-config/modules/home-manager/hyprland/settings.nix
-{ pkgs, ... }:
+{ ... }:
 let colors = import ./colors.nix;
 in {
   "general" = {

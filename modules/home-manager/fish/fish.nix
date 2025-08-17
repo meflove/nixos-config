@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   # Включаем и настраиваем Fish
   programs.starship.enable = true;
 

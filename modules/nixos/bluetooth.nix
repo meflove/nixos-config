@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   hardware.enableAllFirmware = true;
   hardware.bluetooth = {
     enable = true; # Включает поддержку Bluetooth [20]

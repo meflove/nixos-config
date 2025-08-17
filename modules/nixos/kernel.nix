@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: {
+{ pkgs, lib, ... }: {
 
   nixpkgs.localSystem = { system = "x86_64-linux"; };
 

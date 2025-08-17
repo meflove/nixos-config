@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ config, ... }: {
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ r8125 ];
   boot.kernelModules = [ "r8125" ];

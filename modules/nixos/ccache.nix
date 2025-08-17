@@ -4,7 +4,7 @@
   nix.settings.extra-sandbox-paths = [ config.programs.ccache.cacheDir ];
 
   nixpkgs.overlays = [
-    (self: super: {
+    (_self: super: {
       ccacheWrapper = super.ccacheWrapper.override {
         extraConfig = ''
           export CCACHE_COMPRESS=1
