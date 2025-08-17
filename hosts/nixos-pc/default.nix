@@ -5,10 +5,12 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Включение экспериментальных функций Nix (для flakes)
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.system-features =
-    [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-  nix.settings.auto-optimise-store = true;
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    system-features = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+    auto-optimise-store = true;
+    download-buffer-size = 2097152000;
+  };
 
   nix.gc = {
     automatic = true;
