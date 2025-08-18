@@ -15,17 +15,6 @@ in {
     options = "--delete-older-than 30d";
   };
 
-  security.sudo = {
-    enable = true;
-    extraRules = [{
-      commands = [{
-        command = "/run/current-system/sw/bin/nixos-rebuild";
-        options = [ "NOPASSWD" ];
-      }];
-      groups = [ "wheel" ];
-    }];
-  };
-
   zramSwap = {
     enable = true;
     priority = 100;
@@ -52,7 +41,10 @@ in {
     packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
   };
 
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    cudaSupport = true;
+  };
 
   # Дополнительные системные пакеты
   environment.systemPackages = with pkgs; [
@@ -111,9 +103,6 @@ in {
     btop # Better top
     tldr # Simplified man pages
 
-    # Development containers
-    docker
-
     # Vulkan
     vulkan-tools
     vulkan-loader
@@ -157,6 +146,7 @@ in {
     "${inputs.self}/modules/nixos/virt-manager.nix"
     "${inputs.self}/modules/nixos/ai.nix"
     "${inputs.self}/modules/nixos/flatpak.nix"
+    "${inputs.self}/modules/nixos/security.nix"
   ];
 
   # Установите имя хоста
