@@ -18,6 +18,6 @@
   # SSH
   services.openssh = {
     enable = true;
-    settings.passwordAuthentication = false; # Recommended for security
+    settings.PasswordAuthentication = false; # Recommended for security
   };
 }

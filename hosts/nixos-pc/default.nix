@@ -156,6 +156,7 @@ in {
     "${inputs.self}/modules/nixos/podman.nix"
     "${inputs.self}/modules/nixos/virt-manager.nix"
     "${inputs.self}/modules/nixos/ai.nix"
+    "${inputs.self}/modules/nixos/flatpak.nix"
   ];
 
   # Установите имя хоста

@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    nix-flatpak.url = "github:gmodena/nix-flatpak/";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -67,8 +68,8 @@
     # например, для sops-nix (управление секретами), impermanence (персистентность).
   };
 
-  outputs = { self, nixpkgs, chaotic, home-manager, disko, rust-overlay
-    , hyprland, hyprpanel, hyprland-plugins, hypr-dynamic-cursors
+  outputs = { self, nixpkgs, chaotic, nix-flatpak, home-manager, disko
+    , rust-overlay, hyprland, hyprpanel, hyprland-plugins, hypr-dynamic-cursors
     , otter-launcher, nixos-hardware, lanzaboote, zen-browser, nixai, ...
     }@inputs: {
 
@@ -83,6 +84,7 @@
             ./hosts/nixos-pc/default.nix
             nixos-hardware.nixosModules.common-cpu-intel-cpu-only
             chaotic.nixosModules.default
+            nix-flatpak.nixosModules.nix-flatpak
           ];
         };
 
@@ -98,9 +100,11 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs; };
           modules = [
+
             {
               home.username = "angeldust";
               home.homeDirectory = "/home/angeldust";
+
             }
             ./users/common/default.nix
           ];
