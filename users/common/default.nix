@@ -16,6 +16,8 @@
     ../../modules/home-manager/ai.nix
   ];
 
+  nixpkgs.config = { allowUnfree = true; };
+
   # Общие настройки Home Manager
   home = {
     username = "angeldust";
@@ -31,6 +33,7 @@
       xdg-user-dirs
       ayugram-desktop
       kitty
+      obsidian
     ];
 
   };
