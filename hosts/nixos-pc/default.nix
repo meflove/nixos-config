@@ -137,6 +137,10 @@
 
     # Vulkan
     vulkan-tools
+    vulkan-loader
+    vulkan-headers
+    vulkan-validation-layers
+    vulkan-extension-layer
 
     # Wayland
     wl-clipboard
@@ -171,6 +175,7 @@
     "${inputs.self}/modules/nixos/secureboot.nix"
     "${inputs.self}/modules/nixos/podman.nix"
     "${inputs.self}/modules/nixos/virt-manager.nix"
+    "${inputs.self}/modules/nixos/ai.nix"
   ];
 
   # Установите имя хоста
