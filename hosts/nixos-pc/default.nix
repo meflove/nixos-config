@@ -1,4 +1,6 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }:
+let secret = import ../../secrets/pass.nix;
+in {
   # Включение экспериментальных функций Nix (для flakes)
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
@@ -11,28 +13,6 @@
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 30d";
-  };
-
-  # Включение XWayland для совместимости со старыми приложениями
-  programs.xwayland.enable = true;
-
-  # Включение fish на системном уровне
-  programs.fish.enable = true;
-
-  programs.hyprland = {
-    enable = true;
-    # set the flake package
-    package =
-      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # make sure to also set the portal package, so that they are in sync
-    portalPackage =
-      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-  };
-
-  # SSH
-  services.openssh = {
-    enable = true;
-    # settings.passwordAuthentication = false; # Recommended for security
   };
 
   security.sudo = {
@@ -62,8 +42,7 @@
       "networkmanager"
       "gamemode"
     ]; # Добавление в группы для sudo, сети, virt-manager [9, 11]
-    initialPassword =
-      ",jv;bybobt"; # Установите начальный пароль или используйте initialHashedPassword [5]
+    initialPassword = secret.pass;
     shell = pkgs.fish;
   };
 
@@ -160,6 +139,7 @@
     inputs.self.diskoConfigurations.pcDisk # Импортируем нашу конфигурацию диска из flake
     inputs.home-manager.nixosModules.home-manager
     inputs.lanzaboote.nixosModules.lanzaboote
+    "${inputs.self}/modules/nixos/common.nix"
     "${inputs.self}/modules/nixos/autologin.nix"
     "${inputs.self}/modules/nixos/nvidia.nix"
     "${inputs.self}/modules/nixos/pipewire.nix"

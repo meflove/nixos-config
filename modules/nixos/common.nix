@@ -1,6 +1,23 @@
-{ ... }:
-{
+{ inputs, pkgs, ... }: {
   # Общие системные программы и настройки для всех хостов
-  # programs.hyprland.enable = true;
   programs.xwayland.enable = true;
+
+  # Включение fish на системном уровне
+  programs.fish.enable = true;
+
+  programs.hyprland = {
+    enable = true;
+    # set the flake package
+    package =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # make sure to also set the portal package, so that they are in sync
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  };
+
+  # SSH
+  services.openssh = {
+    enable = true;
+    settings.passwordAuthentication = false; # Recommended for security
+  };
 }
