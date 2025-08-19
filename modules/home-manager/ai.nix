@@ -26,6 +26,11 @@ in {
           ];
           env = { GITHUB_PERSONAL_ACCESS_TOKEN = secret.GITHUB_PAT; };
         };
+
+        nixos = {
+          command = "uvx";
+          args = [ "mcp-nixos" ];
+        };
       };
     };
   };
