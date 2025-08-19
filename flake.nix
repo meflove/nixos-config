@@ -39,6 +39,7 @@
     hypr-dynamic-cursors = {
       url = "github:VirtCode/hypr-dynamic-cursors";
       inputs.hyprland.follows = "hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     otter-launcher = {
@@ -59,13 +60,19 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    freesmlauncher = {
+      url = "github:FreesmTeam/FreesmLauncher";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Дополнительные инпуты могут быть добавлены по мере необходимости,
     # например, для sops-nix (управление секретами), impermanence (персистентность).
   };
 
   outputs = { self, nixpkgs, chaotic, nix-flatpak, home-manager, disko
     , rust-overlay, hyprland, hyprpanel, hyprland-plugins, hypr-dynamic-cursors
-    , otter-launcher, nixos-hardware, lanzaboote, zen-browser, ... }@inputs: {
+    , otter-launcher, nixos-hardware, lanzaboote, zen-browser, freesmlauncher
+    , ... }@inputs: {
 
       diskoConfigurations.vmDisk = import ./hosts/vm/vm-disk.nix;
       diskoConfigurations.pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;

@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, inputs, ... }: {
   config = {
     programs.gamemode = {
       enable = true;
@@ -23,6 +23,7 @@
       veloren
       mindustry-wayland
       shattered-pixel-dungeon
+      inputs.freesmlauncher.packages.${pkgs.system}.freesmlauncher
     ];
   };
 }
