@@ -146,6 +146,7 @@ in {
     "${inputs.self}/modules/nixos/ai.nix"
     "${inputs.self}/modules/nixos/flatpak.nix"
     "${inputs.self}/modules/nixos/security.nix"
+    "${inputs.self}/modules/nixos/iphone.nix"
   ];
 
   # Установите имя хоста
