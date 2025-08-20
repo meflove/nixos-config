@@ -100,7 +100,7 @@ in {
 
     # System tools
     btop # Better top
-    tldr # Simplified man pages
+    tlrc # Simplified man pages
 
     # Vulkan
     vulkan-tools
