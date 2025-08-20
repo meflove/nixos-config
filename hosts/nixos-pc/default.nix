@@ -101,6 +101,7 @@ in {
     # System tools
     btop # Better top
     tlrc # Simplified man pages
+    ggh
 
     # Vulkan
     vulkan-tools
