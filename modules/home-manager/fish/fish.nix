@@ -104,7 +104,7 @@ in {
         tv --preview-command "nix-search-tv preview {}" --source-command "nix-search-tv print"'';
 
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-      n = "nvim";
+      n = "NVIM_APPNAME=nvim-og nvim";
       m = "micro";
       py = "python";
       dif = "delta";
