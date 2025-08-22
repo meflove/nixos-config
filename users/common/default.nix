@@ -1,7 +1,9 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }:
+{
   imports = [
     inputs.zen-browser.homeModules.beta
     inputs.otter-launcher.homeModules.default
+    inputs.hyprland.homeManagerModules.default
     ../../modules/home-manager/fish/fish.nix
     ../../modules/home-manager/ghostty.nix
     ../../modules/home-manager/hyprland.nix
@@ -16,7 +18,9 @@
     ../../modules/home-manager/ai.nix
   ];
 
-  nixpkgs.config = { allowUnfree = true; };
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
 
   # Общие настройки Home Manager
   home = {
@@ -34,9 +38,13 @@
       ayugram-desktop
       kitty
       obsidian
+
+      stylua
+      nixfmt
+      prettier
+      luajitPackages.lua-lsp
     ];
 
   };
 
 }
-
