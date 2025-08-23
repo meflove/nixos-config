@@ -159,6 +159,7 @@ in
     "${inputs.self}/modules/nixos/security.nix"
     "${inputs.self}/modules/nixos/iphone.nix"
     "${inputs.self}/modules/nixos/torrent.nix"
+    "${inputs.self}/modules/nixos/optimisations.nix"
   ];
 
   # Установите имя хоста

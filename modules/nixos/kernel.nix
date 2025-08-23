@@ -1,6 +1,9 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
 
-  nixpkgs.localSystem = { system = "x86_64-linux"; };
+  nixpkgs.localSystem = {
+    system = "x86_64-linux";
+  };
 
   hardware.xone.enable = true;
 
@@ -17,17 +20,19 @@
     consoleLogLevel = 3;
   };
 
-  boot.kernelPatches = [{
-    name = "bbr";
-    patch = null;
-    structuredExtraConfig = with pkgs.lib.kernel; {
-      TCP_CONG_CUBIC = lib.mkForce module;
-      TCP_CONG_BBR = yes; # enable BBR
-      DEFAULT_BBR = yes; # use it by default
-      NET_SCH_FQ_CODEL = module;
-      NET_SCH_FQ = yes;
-    };
-  }];
+  boot.kernelPatches = [
+    {
+      name = "bbr";
+      patch = null;
+      structuredExtraConfig = with pkgs.lib.kernel; {
+        TCP_CONG_CUBIC = lib.mkForce module;
+        TCP_CONG_BBR = yes; # enable BBR
+        DEFAULT_BBR = yes; # use it by default
+        NET_SCH_FQ_CODEL = module;
+        NET_SCH_FQ = yes;
+      };
+    }
+  ];
 
   boot.kernelParams = [
     "systemd.show_status=auto"
