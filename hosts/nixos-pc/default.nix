@@ -1,10 +1,20 @@
 { pkgs, inputs, ... }:
-let secret = import ../../secrets/pass.nix;
-in {
+let
+  secret = import ../../secrets/pass.nix;
+in
+{
   # Включение экспериментальных функций Nix (для flakes)
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
-    system-features = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+    system-features = [
+      "nixos-test"
+      "benchmark"
+      "big-parallel"
+      "kvm"
+    ];
     auto-optimise-store = true;
     download-buffer-size = 2097152000;
   };
@@ -148,6 +158,7 @@ in {
     "${inputs.self}/modules/nixos/flatpak.nix"
     "${inputs.self}/modules/nixos/security.nix"
     "${inputs.self}/modules/nixos/iphone.nix"
+    "${inputs.self}/modules/nixos/torrent.nix"
   ];
 
   # Установите имя хоста
