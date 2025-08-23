@@ -1,7 +1,11 @@
 { pkgs, ... }:
-let secret = import ../../../secrets/gemini.nix;
-in {
+let
+  secret = import ../../../secrets/gemini.nix;
+in
+{
   # Включаем и настраиваем Fish
+  home.packages = with pkgs; [ any-nix-shell ];
+
   programs.starship.enable = true;
 
   programs.fish = {
@@ -100,8 +104,7 @@ in {
       #   "home-manager switch --log-format internal-json -v --flake .#angeldust &| nom --json";
       nrs = "nh os switch .";
       hms = "nh home switch .";
-      ns = ''
-        tv --preview-command "nix-search-tv preview {}" --source-command "nix-search-tv print"'';
+      ns = ''tv --preview-command "nix-search-tv preview {}" --source-command "nix-search-tv print"'';
 
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
       n = "NVIM_APPNAME=nvim-og nvim";
@@ -120,8 +123,7 @@ in {
       fman = "compgen -c | fzf | xargs man";
 
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Сеть и интернет ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-      ipv4 =
-        "ip addr show | grep 'inet ' | grep -v '127.0.0.1' | cut -d' ' -f6 | cut -d/ -f1";
+      ipv4 = "ip addr show | grep 'inet ' | grep -v '127.0.0.1' | cut -d' ' -f6 | cut -d/ -f1";
       ipv6 = "ip addr show | grep 'inet6 ' | cut -d ' ' -f6 | sed -n '2p'";
       PublicIP = "curl ifconfig.me && echo ''";
       brn = "curl wttr.in/barnaul | head -n -1";
@@ -160,7 +162,7 @@ in {
     # Код, который выполняется при запуске оболочки
     shellInit = ''
       source $__fish_config_dir/themes/tokyo-night-moon.fish
-
+      any-nix-shell fish --info-right | source
       __magic-enter
 
       # Atuin
