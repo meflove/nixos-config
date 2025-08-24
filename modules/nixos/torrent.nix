@@ -6,7 +6,8 @@
 
     webHome = "${pkgs.flood-for-transmission}";
     settings = {
-      download-dir = "${config.users.users.angeldust.home}/Torrents";
+      # download-dir = "${config.users.users.angeldust.home}/Torrents";
+      # incomplete-dir = "${config.users.users.angeldust.home}/Torrents";
     };
   };
 
