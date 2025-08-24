@@ -1,7 +1,9 @@
 # /home/meflove/git/nixos-config/modules/home-manager/hyprland/settings.nix
 { ... }:
-let colors = import ./colors.nix;
-in {
+let
+  colors = import ./colors.nix;
+in
+{
   "general" = {
     gaps_in = 5;
     gaps_out = 12;
@@ -21,8 +23,7 @@ in {
     animate_manual_resizes = false;
     animate_mouse_windowdragging = false;
     enable_swallow = false;
-    swallow_regex =
-      "(foot|kitty|allacritty|Alacritty|ghostty|Ghostty|com.mitchellh.ghostty|tmux)";
+    swallow_regex = "(foot|kitty|allacritty|Alacritty|ghostty|Ghostty|com.mitchellh.ghostty|tmux)";
     disable_hyprland_logo = true;
     force_default_wallpaper = 0;
     new_window_takes_over_fullscreen = 2;
@@ -122,14 +123,19 @@ in {
     smart_resizing = true;
   };
 
-  "opengl" = { nvidia_anti_flicker = true; };
+  "opengl" = {
+    nvidia_anti_flicker = true;
+  };
 
   "cursor" = {
     no_hardware_cursors = true;
     default_monitor = "DP-1";
   };
 
-  "debug" = { disable_logs = false; };
+  "debug" = {
+    disable_logs = false;
+    full_cm_proto = true;
+  };
 
   "plugin" = {
     dynamic-cursors = {

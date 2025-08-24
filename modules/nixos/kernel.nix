@@ -34,6 +34,8 @@
     }
   ];
 
+  boot.kernelModules = [ "ntsync" ];
+
   boot.kernelParams = [
     "systemd.show_status=auto"
     "quiet"

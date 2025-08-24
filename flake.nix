@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    nix-gaming.url = "github:fufexan/nix-gaming";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
 
     home-manager = {
@@ -47,7 +48,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-hardware = { url = "github:NixOS/nixos-hardware/master"; };
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+    };
 
     # Lanzaboote для Secure Boot и UKI.
     lanzaboote = {
@@ -69,10 +72,27 @@
     # например, для sops-nix (управление секретами), impermanence (персистентность).
   };
 
-  outputs = { self, nixpkgs, chaotic, nix-flatpak, home-manager, disko
-    , rust-overlay, hyprland, hyprpanel, hyprland-plugins, hypr-dynamic-cursors
-    , otter-launcher, nixos-hardware, lanzaboote, zen-browser, freesmlauncher
-    , ... }@inputs: {
+  outputs =
+    {
+      self,
+      nixpkgs,
+      chaotic,
+      nix-flatpak,
+      home-manager,
+      disko,
+      rust-overlay,
+      hyprland,
+      hyprpanel,
+      hyprland-plugins,
+      hypr-dynamic-cursors,
+      otter-launcher,
+      nixos-hardware,
+      lanzaboote,
+      zen-browser,
+      freesmlauncher,
+      ...
+    }@inputs:
+    {
 
       diskoConfigurations.vmDisk = import ./hosts/vm/vm-disk.nix;
       diskoConfigurations.pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
@@ -101,11 +121,9 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs; };
           modules = [
-
             {
               home.username = "angeldust";
               home.homeDirectory = "/home/angeldust";
-
             }
             ./users/common/default.nix
           ];

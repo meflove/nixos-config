@@ -1,4 +1,5 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, inputs, ... }:
+{
   config = {
     programs.gamemode = {
       enable = true;
@@ -14,9 +15,12 @@
     environment.systemPackages = with pkgs; [
       lutris # install lutris launcher
 
-      wineWowPackages.staging
+      # wineWowPackages.staging
+      inputs.nix-gaming.packages.${pkgs.system}.wine-tkg-ntsync
       winetricks
       wineWowPackages.waylandFull
+      vkd3d-proton
+      dxvk
 
       equibop
 

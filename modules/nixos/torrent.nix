@@ -14,5 +14,6 @@
   environment.systemPackages = with pkgs; [
     rustmission
     flood-for-transmission
+    deluge
   ];
 }
