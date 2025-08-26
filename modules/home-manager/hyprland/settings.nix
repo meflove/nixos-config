@@ -1,4 +1,3 @@
-# /home/meflove/git/nixos-config/modules/home-manager/hyprland/settings.nix
 { ... }:
 let
   colors = import ./colors.nix;
@@ -137,12 +136,7 @@ in
     full_cm_proto = true;
   };
 
-  "plugin" = {
-    dynamic-cursors = {
-      enabled = true;
-      mode = "stretch";
-    };
-  };
+  "plugin" = { };
 
   "monitor" = [
     "DP-1, highres@highrr, 1920x0, 1, vrr, 1, bitdepth, 10"
