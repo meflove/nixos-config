@@ -60,78 +60,86 @@ in
 
   # Дополнительные системные пакеты
   environment.systemPackages = with pkgs; [
-    # Basic CLIs
-    eza # Better ls
-    zoxide # Better cd
+    # --- CLI Tools ---
+    # Core
+    coreutils
+    curl
+    dig
+    file
+    killall
+    pcre
+    rsync
+    tree
+    unzip
+    wget
+    zip
+
+    # Replacements
     bat # Better cat
+    eza # Better ls
     fd # Better find
     ripgrep # Better grep
-    fzf # Fuzzy finder
-    wget
-    curl
-    killall
-    zip
-    unzip
-    jq
-    rsync
-    coreutils
-    tree
-    gcc
-    clang
-    grc
-    pcre
-    file
-    git
-    gnumake
-    uv
-    sd
-    krabby
+    sd # Better sed
+    zoxide # Better cd
+    ggh # Better SSH
+    btop # Better top
+
+    # Other
     chafa
-    dig
+    fzf # Fuzzy finder
+    grc
+    jq
+    tlrc # Simplified man pages
+
+    # --- Development ---
+    # Compilers & Build Tools
+    gnumake
+
+    # Languages & Runtimes
+    go
+    nil
+    nodejs_24
+    python3Full
+    uv # Python package manager
+    zig
+
+    # Git
+    git
+    lazygit # Git TUI
 
     # Libs
+    openssl
     python313Packages.gpustat
 
-    # Nix workflow
+    # --- Nix Ecosystem ---
     direnv
+    nix-direnv
     home-manager
     nix-search-tv
     television
     transcrypt
-    openssl
 
-    # Git tools
-    lazygit # Git TUI
-
-    # Languages
-    zig
-    go
-    nodejs_24
-    nil
-    python3Full
-
-    # System tools
-    btop # Better top
-    tlrc # Simplified man pages
-    ggh
-
+    # --- Graphics & Display ---
     # Vulkan
-    vulkan-tools
-    vulkan-loader
-    vulkan-headers
-    vulkan-validation-layers
     vulkan-extension-layer
+    vulkan-headers
+    vulkan-loader
+    vulkan-tools
+    vulkan-validation-layers
 
-    # Wayland
-    wl-clipboard
-    swww
+    # Wayland & GUI
     base16-schemes
-    pavucontrol
     gtk3
     gtk4
+    pavucontrol
+    swww
+    wl-clipboard
 
-    # Audio
+    # --- Audio ---
     easyeffects
+
+    # --- Fun ---
+    krabby
   ];
 
   imports = [
