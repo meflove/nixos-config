@@ -112,8 +112,6 @@ in
     python313Packages.gpustat
 
     # --- Nix Ecosystem ---
-    direnv
-    nix-direnv
     home-manager
     nix-search-tv
     television

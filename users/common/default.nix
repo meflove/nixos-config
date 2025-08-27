@@ -16,6 +16,7 @@
     ../../modules/home-manager/fastfetch.nix
     ../../modules/home-manager/otter-launcher.nix
     ../../modules/home-manager/ai.nix
+    ../../modules/home-manager/direnv.nix
   ];
 
   nixpkgs.config = {
