@@ -131,7 +131,6 @@
               home.homeDirectory = "/home/angeldust";
             }
             ./users/common/default.nix
-            # ./users/angeldust/default.nix # Если есть специфичные для пользователя настройки
           ];
         };
       };

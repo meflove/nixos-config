@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }:
 {
   imports = [
-    inputs.zen-browser.homeModules.beta
+    inputs.zen-browser.homeModules.default
     inputs.otter-launcher.homeModules.default
     inputs.hyprland.homeManagerModules.default
     ../../modules/home-manager/fish/fish.nix
@@ -47,5 +47,4 @@
     ];
 
   };
-
 }

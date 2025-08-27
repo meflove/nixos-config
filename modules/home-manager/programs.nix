@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
 
   home.packages = with pkgs; [ aria2 ];
 
@@ -9,7 +10,9 @@
   };
 
   # Настройка GnuPG
-  programs.gpg = { enable = true; };
+  programs.gpg = {
+    enable = true;
+  };
   services.gpg-agent = {
     enable = true;
     enableSshSupport = true;
@@ -18,9 +21,10 @@
   # Настройка SSH
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
     matchBlocks = {
       "github.com" = {
-        user = "git";
+        user = "angeldust";
         identityFile = "~/.ssh/id_ed25519";
       };
     };

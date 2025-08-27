@@ -66,18 +66,10 @@ in
         src = forgit.src;
       }
       {
-        name = "fish-you-should-use";
-        src = fish-you-should-use.src;
-      }
-      {
         name = "colored-man-pages";
         src = colored-man-pages.src;
       }
 
-      # {
-      #   name = "fifc";
-      #   src = fifc.src;
-      # }
     ];
 
     shellAliases = {
