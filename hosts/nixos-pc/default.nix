@@ -99,8 +99,6 @@ in
     go
     nil
     nodejs_24
-    python3Full
-    uv # Python package manager
     zig
 
     # Git
