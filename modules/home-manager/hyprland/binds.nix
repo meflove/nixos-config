@@ -6,24 +6,19 @@
   ", Super, exec, true"
 
   # Actions
-  ''
-    Super, V, exec, pkill clipse || ghostty --class="com.free.clipse" --title="clipse" -e clipse''
+  ''Super, V, exec, pkill clipse || ghostty --class="com.free.clipse" --title="clipse" -e clipse''
   "Super, Period, exec, pkill fuzzel || ~/.config/scripts/fuzzel-emoji"
   "Ctrl+Shift+Alt, Delete, exec, pkill wlogout || wlogout -p layer-shell"
   ",Print, exec, ~/.config/scripts/grimblast.sh --freeze copy area"
   ''Super+Shift+Alt, S, exec, grim -g "$(slurp)" - | swappy -f -''
-  ''
-    Super+Ctrl,T,exec,grim -g "$(slurp $SLURP_ARGS)" "tmp.png" && tesseract -l eng "tmp.png" - | wl-copy && rm "tmp.png"''
-  ''
-    Ctrl+Super+Shift,S,exec,grim -g "$(slurp $SLURP_ARGS)" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png"''
+  ''Super+Ctrl,T,exec,grim -g "$(slurp $SLURP_ARGS)" "tmp.png" && tesseract -l eng "tmp.png" - | wl-copy && rm "tmp.png"''
+  ''Ctrl+Super+Shift,S,exec,grim -g "$(slurp $SLURP_ARGS)" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png"''
   "Super+Shift, C, exec, hyprpicker -ar"
-  ''
-    Ctrl+Shift,Print, exec, mkdir -p ~/Images/Screenshots && ~/.config/scripts/grimblast.sh copysave screen ~/Images/Screenshots/Screenshot_"$(date '+%Y-%m-%d_%H.%M.%S')".png''
+  ''Ctrl+Shift,Print, exec, mkdir -p ~/Images/Screenshots && ~/.config/scripts/grimblast.sh copysave screen ~/Images/Screenshots/Screenshot_"$(date '+%Y-%m-%d_%H.%M.%S')".png''
 
   # Session
   "Super, X, exec, bash ~/.config/rofi/powermenu.sh"
-  ''
-    Super, G, exec, pkill kalker || ghostty --class="com.free.kalker" --title="kalker" -e kalker''
+  ''Super, G, exec, pkill kalker || ghostty --class="com.free.kalker" --title="kalker" -e kalker''
   "Super, L, exec, hyprlock"
   "Super+Shift, L, exec, loginctl lock-session"
   "Super+Shift, L, exec, sleep 0.1 && systemctl suspend || loginctl suspend"
@@ -112,15 +107,12 @@
   # Widgets
   "Ctrl+Super, R, exec, hyprpanel"
   "Ctrl+Super+Alt, R, exec, hyprctl reload; killall gjs; hyprpanel &"
-  ''
-    Super, Super_L, exec, pkill otter-launcher || ghostty --class="com.free.otter-launcher" --title="otter-launcher" -e otter-launcher''
+  ''Super, Super_L, exec, pkill otter-launcher || ghostty --class="com.free.otter-launcher" --title="otter-launcher" -e otter-launcher''
 
   # Media
-  ''
-    Super+Shift, N, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
+  ''Super+Shift, N, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
   "Super+Shift+Alt, mouse:275, exec, playerctl previous"
-  ''
-    Super+Shift+Alt, mouse:276, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
+  ''Super+Shift+Alt, mouse:276, exec, playerctl next || playerctl position `bc <<< "100 * $(playerctl metadata mpris:length) / 1000000 / 100"`''
   "Super+Shift, B, exec, playerctl previous"
   "Super+Shift, P, exec, playerctl play-pause"
 

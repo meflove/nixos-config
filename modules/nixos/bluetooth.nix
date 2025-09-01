@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   hardware.enableAllFirmware = true;
   hardware.bluetooth = {
     enable = true; # Включает поддержку Bluetooth [20]
@@ -14,6 +15,9 @@
     # Включение экспериментальных функций для отображения заряда батареи (по желанию) [20]
   };
 
-  environment.systemPackages = with pkgs; [ bluetui bluez-experimental ];
+  environment.systemPackages = with pkgs; [
+    bluetui
+    bluez-experimental
+  ];
 
 }

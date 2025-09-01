@@ -7,11 +7,6 @@ My declarative NixOS configuration, managed with [Nix Flakes](https://nixos.wiki
 
 ---
 
-<!-- ❗️ REPLACE THIS URL WITH A LINK TO YOUR SCREENSHOT -->
-
-![Desktop Screenshot](https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/showcases/catwalk.png "My Hyprland Desktop")
-_(Don't forget to take a nice screenshot of your desktop and replace the link!)_
-
 ## 🚀 Highlights
 
 This configuration is built around a minimalist yet functional environment for development and daily use.
@@ -23,9 +18,6 @@ This configuration is built around a minimalist yet functional environment for d
 | **Bar**            | [Hyprpanel](https://github.com/hyprland-community/hyprpanel)       |
 | **Terminal**       | [Ghostty](https://github.com/ghostty-org/ghostty)                  |
 | **Shell**          | [Fish Shell](https://fishshell.com/) with plugins                  |
-| **Code Editor**    | [Neovim (LazyVim)](https://www.lazyvim.org/)                       |
-| **Theming**        | [Catppuccin Mocha](https://github.com/catppuccin)                  |
-| **Drivers**        | [NVIDIA](https://www.nvidia.com) (proprietary)                     |
 | **Security**       | [Secure Boot](https://nixos.wiki/wiki/Secure_Boot) support enabled |
 | **Gaming**         | Gaming optimizations, including `gamemode`                         |
 

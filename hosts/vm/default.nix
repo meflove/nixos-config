@@ -1,20 +1,26 @@
 { pkgs, inputs, ... }:
 {
 
-
   # Загрузчик: systemd-boot для UEFI систем
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.efiSysMountPoint = "/efi";
   boot.loader.efi.canTouchEfiVariables = true;
 
   # Добавляем необходимые драйверы для виртуальной машины в initrd
-  boot.initrd.availableKernelModules = [ "virtio_pci" "virtio_mmio" "virtio_blk" ];
+  boot.initrd.availableKernelModules = [
+    "virtio_pci"
+    "virtio_mmio"
+    "virtio_blk"
+  ];
 
   services.qemuGuest.enable = true; # Включает QEMU Guest Agent [8, 9]
   services.spice-vdagentd.enable = true; # Включает Spice VDAgent для копирования/вставки [9]
 
   # Включение экспериментальных функций Nix (для flakes)
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Установка системной временной зоны
   time.timeZone = "Asia/Barnaul";
@@ -33,7 +39,8 @@
     # set the flake package
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     # make sure to also set the portal package, so that they are in sync
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   # SSH
@@ -45,7 +52,10 @@
   # Настройка пользователя
   users.users.angeldust = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" ]; # Для sudo и сети
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+    ]; # Для sudo и сети
     initialPassword = "2852";
     shell = pkgs.fish;
   };

@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   programs.atuin = {
     enable = true;
     settings = {
@@ -9,7 +10,12 @@
 
       style = "full";
 
-      common_subcommands = [ "git" "ip" "systemctl" "nix" ];
+      common_subcommands = [
+        "git"
+        "ip"
+        "systemctl"
+        "nix"
+      ];
     };
   };
 }

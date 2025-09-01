@@ -29,13 +29,13 @@
     "size 600 500, class:com.free.kalker"
     "stayfocused, class:com.free.kalker"
     "noborder, class:com.free.kalker"
-    
+
     "keepaspectratio, title:^(Picture(-| )in(-| )[Pp]icture)$"
     "move 73% 72%,title:^(Picture(-| )in(-| )[Pp]icture)$"
     "size 25%, title:^(Picture(-| )in(-| )[Pp]icture)$"
     "float, title:^(Picture(-| )in(-| )[Pp]icture)$"
     "pin, title:^(Picture(-| )in(-| )[Pp]icture)$"
-    
+
     "float,title:^(Open File)(.*)$"
     "float,title:^(Select a File)(.*)$"
     "float,title:^(Choose wallpaper)(.*)$"
@@ -44,10 +44,10 @@
     "float,title:^(Library)(.*)$"
     "float,title:^(File Upload)(.*)$"
     "float,title:^(Extract)(.*)$"
-    
+
     "immediate,title:^(.*\\.exe)$"
     "immediate,class:(steam_app)"
-    
+
     "noshadow,floating:0"
     "bordercolor rgba(C6C5D6AA) rgba(C6C5D677),pinned:1"
   ];
@@ -63,7 +63,7 @@
     "noanim, hyprpicker"
     "blur, shell:*"
     "ignorealpha 0.6, shell:*"
-    
+
     "noanim, noanim"
     "blur, gtk-layer-shell"
     "ignorezero, gtk-layer-shell"
@@ -71,11 +71,11 @@
     "ignorealpha 0.5, launcher"
     "blur, notifications"
     "ignorealpha 0.69, notifications"
-    
+
     "animation slide left, sideleft.*"
     "animation slide right, sideright.*"
     "blur, session"
-    
+
     "blur, bar"
     "ignorealpha 0.6, bar"
     "blur, corner.*"

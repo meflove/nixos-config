@@ -27,36 +27,76 @@
                   "/@root" = {
                     mountpoint = "/";
                     # Параметры монтирования для основного монтирования Btrfs (применяются ко всей файловой системе)
-                    mountOptions = [ "compress-force=zstd:3" "noatime" "space_cache=v2" "nodiscard" ];
+                    mountOptions = [
+                      "compress-force=zstd:3"
+                      "noatime"
+                      "space_cache=v2"
+                      "nodiscard"
+                    ];
                   };
                   "/@home" = {
                     mountpoint = "/home";
                     # Параметры монтирования для /home (нет необходимости повторять общесистемные параметры)
-                    mountOptions = [ "compress-force=zstd:3" "noatime" "space_cache=v2" "nodiscard" ]; # noatime применяется для каждой точки монтирования
+                    mountOptions = [
+                      "compress-force=zstd:3"
+                      "noatime"
+                      "space_cache=v2"
+                      "nodiscard"
+                    ]; # noatime применяется для каждой точки монтирования
                   };
                   "/@nix" = {
                     mountpoint = "/nix";
-                    mountOptions = [ "compress-force=zstd:3" "noatime" "space_cache=v2" "nodiscard" ]; # noatime применяется для каждой точки монтирования
+                    mountOptions = [
+                      "compress-force=zstd:3"
+                      "noatime"
+                      "space_cache=v2"
+                      "nodiscard"
+                    ]; # noatime применяется для каждой точки монтирования
                   };
                   "/@var/log" = {
                     mountpoint = "/var/log";
-                    mountOptions = [ "compress-force=zstd:3" "noatime" "space_cache=v2" "nodiscard" ];
+                    mountOptions = [
+                      "compress-force=zstd:3"
+                      "noatime"
+                      "space_cache=v2"
+                      "nodiscard"
+                    ];
                   };
                   "/@var/cache" = {
                     mountpoint = "/var/cache";
-                    mountOptions = [ "compress-force=zstd:3" "noatime" "space_cache=v2" "nodiscard" ];
+                    mountOptions = [
+                      "compress-force=zstd:3"
+                      "noatime"
+                      "space_cache=v2"
+                      "nodiscard"
+                    ];
                   };
                   "/@.snapshots" = {
                     mountpoint = "/.snapshots";
-                    mountOptions = [ "compress-force=zstd:3" "noatime" "space_cache=v2" "nodiscard" ];
+                    mountOptions = [
+                      "compress-force=zstd:3"
+                      "noatime"
+                      "space_cache=v2"
+                      "nodiscard"
+                    ];
                   };
                   "/@srv" = {
                     mountpoint = "/srv";
-                    mountOptions = [ "compress-force=zstd:3" "noatime" "space_cache=v2" "nodiscard" ];
+                    mountOptions = [
+                      "compress-force=zstd:3"
+                      "noatime"
+                      "space_cache=v2"
+                      "nodiscard"
+                    ];
                   };
                   "/@tmp" = {
                     mountpoint = "/tmp";
-                    mountOptions = [ "compress-force=zstd:3" "noatime" "space_cache=v2" "nodiscard" ];
+                    mountOptions = [
+                      "compress-force=zstd:3"
+                      "noatime"
+                      "space_cache=v2"
+                      "nodiscard"
+                    ];
                   };
                 };
               };

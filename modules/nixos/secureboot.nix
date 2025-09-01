@@ -1,4 +1,5 @@
-{ pkgs, lib, ... }: {
+{ pkgs, lib, ... }:
+{
 
   boot.lanzaboote = {
     enable = true;
@@ -11,8 +12,7 @@
     systemd-boot.enable = lib.mkForce false;
     efi = {
       efiSysMountPoint = "/efi";
-      canTouchEfiVariables =
-        true; # Необходимо для записи в переменные UEFI [27]
+      canTouchEfiVariables = true; # Необходимо для записи в переменные UEFI [27]
     };
   };
 

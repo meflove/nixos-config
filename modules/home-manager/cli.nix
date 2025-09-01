@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
     yazi
     dust
@@ -16,7 +17,6 @@
     enable = true;
     clean.enable = true;
     clean.extraArgs = "--keep-since 7d --keep 3";
-    flake =
-      "/home/angeldust/.config/nixos-config"; # sets NH_OS_FLAKE variable for you
+    flake = "/home/angeldust/.config/nixos-config"; # sets NH_OS_FLAKE variable for you
   };
 }

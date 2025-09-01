@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
 
   boot.extraModulePackages = with config.boot.kernelPackages; [ r8125 ];
   boot.kernelModules = [ "r8125" ];
@@ -14,10 +15,18 @@
   networking.wireless.iwd = {
     enable = true;
     settings = {
-      General = { EnableNetworkConfiguration = true; };
-      Setting = { AutoConnect = true; };
-      Network = { EnableIPv6 = true; };
-      Scan = { DisablePeriodicScan = false; };
+      General = {
+        EnableNetworkConfiguration = true;
+      };
+      Setting = {
+        AutoConnect = true;
+      };
+      Network = {
+        EnableIPv6 = true;
+      };
+      Scan = {
+        DisablePeriodicScan = false;
+      };
     };
   };
 
@@ -32,7 +41,10 @@
     enable = true;
     dnssec = "false";
     domains = [ "~." ];
-    fallbackDns = [ "1.1.1.1" "1.0.0.1" ];
+    fallbackDns = [
+      "1.1.1.1"
+      "1.0.0.1"
+    ];
     dnsovertls = "false";
   };
 }

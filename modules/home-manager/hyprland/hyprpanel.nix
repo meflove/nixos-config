@@ -1,4 +1,5 @@
-{ inputs, pkgs, ... }: {
+{ inputs, pkgs, ... }:
+{
 
   programs.hyprpanel = {
     enable = true;
@@ -8,10 +9,16 @@
     settings = {
       tear = true;
       bar = {
-        media = { truncation_size = 31; };
-        network = { truncation_size = 11; };
+        media = {
+          truncation_size = 31;
+        };
+        network = {
+          truncation_size = 11;
+        };
         customModules = {
-          updates = { pollingInterval = 1440000; };
+          updates = {
+            pollingInterval = 1440000;
+          };
           ram = {
             leftClick = "ghostty -e btop";
             labelType = "percentage";
@@ -23,22 +30,50 @@
           };
           kbLayout = {
             labelType = "code";
-            leftClick =
-              "hyprctl switchxkblayout logitech-g102-lightsync-gaming-mouse-keyboard next";
+            leftClick = "hyprctl switchxkblayout logitech-g102-lightsync-gaming-mouse-keyboard next";
           };
-          weather = { unit = "metric"; };
-          storage = { paths = [ "/" ]; };
-          cava = { bars = 10; };
+          weather = {
+            unit = "metric";
+          };
+          storage = {
+            paths = [ "/" ];
+          };
+          cava = {
+            bars = 10;
+          };
         };
         layouts = {
           "0" = {
-            left = [ "dashboard" "windowtitle" ];
-            middle = [ "ram" "cpu" "media" "workspaces" "clock" ];
-            right = [ "systray" "kbinput" "volume" "notifications" ];
+            left = [
+              "dashboard"
+              "windowtitle"
+            ];
+            middle = [
+              "ram"
+              "cpu"
+              "media"
+              "workspaces"
+              "clock"
+            ];
+            right = [
+              "systray"
+              "kbinput"
+              "volume"
+              "notifications"
+            ];
           };
           "1" = {
-            left = [ "dashboard" "windowtitle" ];
-            middle = [ "ram" "cpu" "media" "workspaces" "clock" ];
+            left = [
+              "dashboard"
+              "windowtitle"
+            ];
+            middle = [
+              "ram"
+              "cpu"
+              "media"
+              "workspaces"
+              "clock"
+            ];
             right = [
               "systray"
               "kbinput"
@@ -67,7 +102,9 @@
           show_icons = false;
           showWsIcons = true;
         };
-        clock = { format = "%d/%m/%y  %H:%M:%S"; };
+        clock = {
+          format = "%d/%m/%y  %H:%M:%S";
+        };
       };
       menus = {
         dashboard = {
@@ -79,12 +116,22 @@
                 command = "zen-twilight";
                 tooltip = "Zen Browser";
               };
-              shortcut2 = { command = "spotify-launcher"; };
-              shortcut3 = { command = "equibop"; };
+              shortcut2 = {
+                command = "spotify-launcher";
+              };
+              shortcut3 = {
+                command = "equibop";
+              };
             };
           };
-          powermenu = { avatar = { image = "/home/meflove/Images/"; }; };
-          stats = { enable_gpu = true; };
+          powermenu = {
+            avatar = {
+              image = "/home/meflove/Images/";
+            };
+          };
+          stats = {
+            enable_gpu = true;
+          };
           directories = {
             enabled = false;
             right = {
@@ -114,7 +161,9 @@
         transition = "crossfade";
       };
       scalingPriority = "hyprland";
-      notifications = { showActionsOnHover = true; };
+      notifications = {
+        showActionsOnHover = true;
+      };
       terminal = "ghostty";
 
       theme = {
@@ -124,7 +173,9 @@
             opacity = 100;
             menu = {
               notifications = {
-                scrollbar = { color = "#bb9af7"; };
+                scrollbar = {
+                  color = "#bb9af7";
+                };
                 pager = {
                   label = "#565f89";
                   button = "#bb9af7";
@@ -171,8 +222,12 @@
                     background = "#24283b";
                   };
                 };
-                border = { color = "#414868"; };
-                background = { color = "#1a1b26"; };
+                border = {
+                  color = "#414868";
+                };
+                background = {
+                  color = "#1a1b26";
+                };
               };
               dashboard = {
                 monitors = {
@@ -200,14 +255,26 @@
                 };
                 directories = {
                   right = {
-                    bottom = { color = "#bb9af7"; };
-                    middle = { color = "#bb9af7"; };
-                    top = { color = "#73daca"; };
+                    bottom = {
+                      color = "#bb9af7";
+                    };
+                    middle = {
+                      color = "#bb9af7";
+                    };
+                    top = {
+                      color = "#73daca";
+                    };
                   };
                   left = {
-                    bottom = { color = "#f7768e"; };
-                    middle = { color = "#e0af68"; };
-                    top = { color = "#f7768e"; };
+                    bottom = {
+                      color = "#f7768e";
+                    };
+                    middle = {
+                      color = "#e0af68";
+                    };
+                    top = {
+                      color = "#f7768e";
+                    };
                   };
                 };
                 controls = {
@@ -254,10 +321,18 @@
                   restart = "#e0af68";
                   shutdown = "#f7768e";
                 };
-                profile = { name = "#f7768e"; };
-                border = { color = "#414868"; };
-                background = { color = "#1a1b26"; };
-                card = { color = "#24283b"; };
+                profile = {
+                  name = "#f7768e";
+                };
+                border = {
+                  color = "#414868";
+                };
+                background = {
+                  color = "#1a1b26";
+                };
+                card = {
+                  color = "#24283b";
+                };
               };
               clock = {
                 weather = {
@@ -291,9 +366,15 @@
                   time = "#f7768e";
                 };
                 text = "#c0caf5";
-                border = { color = "#414868"; };
-                background = { color = "#1a1b26"; };
-                card = { color = "#24283b"; };
+                border = {
+                  color = "#414868";
+                };
+                background = {
+                  color = "#1a1b26";
+                };
+                card = {
+                  color = "#24283b";
+                };
               };
               battery = {
                 slider = {
@@ -311,10 +392,18 @@
                   passive = "#c0caf5";
                 };
                 text = "#c0caf5";
-                label = { color = "#e0af68"; };
-                border = { color = "#414868"; };
-                background = { color = "#1a1b26"; };
-                card = { color = "#24283b"; };
+                label = {
+                  color = "#e0af68";
+                };
+                border = {
+                  color = "#414868";
+                };
+                background = {
+                  color = "#1a1b26";
+                };
+                card = {
+                  color = "#24283b";
+                };
               };
               systray = {
                 dropdownmenu = {
@@ -344,11 +433,21 @@
                 switch_divider = "#414868";
                 status = "#565f89";
                 text = "#c0caf5";
-                label = { color = "#7dcfff"; };
-                border = { color = "#414868"; };
-                background = { color = "#1a1b26"; };
-                card = { color = "#24283b"; };
-                scroller = { color = "#7dcfff"; };
+                label = {
+                  color = "#7dcfff";
+                };
+                border = {
+                  color = "#414868";
+                };
+                background = {
+                  color = "#1a1b26";
+                };
+                card = {
+                  color = "#24283b";
+                };
+                scroller = {
+                  color = "#7dcfff";
+                };
               };
               network = {
                 iconbuttons = {
@@ -363,18 +462,30 @@
                   active = "#bb9af7";
                   passive = "#c0caf5";
                 };
-                status = { color = "#565f89"; };
+                status = {
+                  color = "#565f89";
+                };
                 text = "#c0caf5";
-                label = { color = "#bb9af7"; };
-                border = { color = "#414868"; };
-                background = { color = "#1a1b26"; };
-                card = { color = "#24283b"; };
+                label = {
+                  color = "#bb9af7";
+                };
+                border = {
+                  color = "#414868";
+                };
+                background = {
+                  color = "#1a1b26";
+                };
+                card = {
+                  color = "#24283b";
+                };
                 switch = {
                   enabled = "#bb9af7";
                   disabled = "#565f89";
                   puck = "#565f89";
                 };
-                scroller = { color = "#bb9af7"; };
+                scroller = {
+                  color = "#bb9af7";
+                };
               };
               volume = {
                 input_slider = {
@@ -402,10 +513,18 @@
                   passive = "#c0caf5";
                 };
                 text = "#c0caf5";
-                label = { color = "#f7768e"; };
-                border = { color = "#414868"; };
-                background = { color = "#1a1b26"; };
-                card = { color = "#24283b"; };
+                label = {
+                  color = "#f7768e";
+                };
+                border = {
+                  color = "#414868";
+                };
+                background = {
+                  color = "#1a1b26";
+                };
+                card = {
+                  color = "#24283b";
+                };
               };
               media = {
                 slider = {
@@ -420,9 +539,15 @@
                   enabled = "#73daca";
                   inactive = "#414868";
                 };
-                border = { color = "#414868"; };
-                card = { color = "#24283b"; };
-                background = { color = "#1a1b26"; };
+                border = {
+                  color = "#414868";
+                };
+                card = {
+                  color = "#24283b";
+                };
+                background = {
+                  color = "#1a1b26";
+                };
                 album = "#f7768e";
                 artist = "#73daca";
                 song = "#bb9af7";
@@ -485,7 +610,9 @@
             feinttext = "#414868";
             dimtext = "#414868";
             text = "#c0caf5";
-            border = { color = "#414868"; };
+            border = {
+              color = "#414868";
+            };
             cards = "#24283b";
             background = "#222336";
             monochrome = false;
@@ -667,9 +794,13 @@
           background = "#1a1b26";
           transparent = true;
           scaling = 95;
-          border = { color = "#bb9af7"; };
+          border = {
+            color = "#bb9af7";
+          };
         };
-        font = { weight = 600; };
+        font = {
+          weight = 600;
+        };
         osd = {
           label = "#bb9af7";
           icon = "#1a1b26";

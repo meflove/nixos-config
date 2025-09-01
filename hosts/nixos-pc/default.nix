@@ -130,6 +130,7 @@ in
     pavucontrol
     swww
     wl-clipboard
+    nekoray
 
     # --- Audio ---
     easyeffects
@@ -144,28 +145,31 @@ in
     inputs.self.diskoConfigurations.pcDisk # Импортируем нашу конфигурацию диска из flake
     inputs.home-manager.nixosModules.home-manager
     inputs.lanzaboote.nixosModules.lanzaboote
-    "${inputs.self}/modules/nixos/common.nix"
-    "${inputs.self}/modules/nixos/autologin.nix"
-    "${inputs.self}/modules/nixos/nvidia.nix"
-    "${inputs.self}/modules/nixos/pipewire.nix"
-    "${inputs.self}/modules/nixos/network.nix"
-    "${inputs.self}/modules/nixos/bluetooth.nix"
-    "${inputs.self}/modules/nixos/kernel.nix"
-    "${inputs.self}/modules/nixos/lang.nix"
-    "${inputs.self}/modules/nixos/rust/rustup.nix"
-    "${inputs.self}/modules/nixos/ccache.nix"
-    "${inputs.self}/modules/nixos/gaming.nix"
-    "${inputs.self}/modules/nixos/git.nix"
-    "${inputs.self}/modules/nixos/secureboot.nix"
-    "${inputs.self}/modules/nixos/secureboot.nix"
-    "${inputs.self}/modules/nixos/podman.nix"
-    "${inputs.self}/modules/nixos/virt-manager.nix"
-    "${inputs.self}/modules/nixos/ai.nix"
-    "${inputs.self}/modules/nixos/flatpak.nix"
-    "${inputs.self}/modules/nixos/security.nix"
-    "${inputs.self}/modules/nixos/iphone.nix"
-    "${inputs.self}/modules/nixos/torrent.nix"
-    "${inputs.self}/modules/nixos/optimisations.nix"
+    ../../modules/nixos/common.nix
+    ../../modules/nixos/autologin.nix
+    ../../modules/nixos/nvidia.nix
+    ../../modules/nixos/pipewire.nix
+    ../../modules/nixos/network.nix
+    ../../modules/nixos/bluetooth.nix
+    ../../modules/nixos/kernel.nix
+    ../../modules/nixos/lang.nix
+    ../../modules/nixos/rust/rustup.nix
+    ../../modules/nixos/ccache.nix
+    ../../modules/nixos/gaming.nix
+    ../../modules/nixos/git.nix
+    ../../modules/nixos/secureboot.nix
+    ../../modules/nixos/secureboot.nix
+    ../../modules/nixos/podman.nix
+    ../../modules/nixos/virt-manager.nix
+    ../../modules/nixos/ai.nix
+    ../../modules/nixos/flatpak.nix
+    ../../modules/nixos/security.nix
+    ../../modules/nixos/iphone.nix
+    ../../modules/nixos/torrent.nix
+    ../../modules/nixos/optimisations.nix
+
+    # Custom packages
+    # ../../pkgs/custom_pkg.nix
   ];
 
   # Установите имя хоста
