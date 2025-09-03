@@ -18,7 +18,8 @@ in
       "kvm"
     ];
     auto-optimise-store = true;
-    download-buffer-size = 2097152000;
+    # With Lix, i cant use this option
+    # download-buffer-size = 2097152000;
   };
 
   nix.gc = {
@@ -111,6 +112,7 @@ in
 
     # --- Nix Ecosystem ---
     home-manager
+    snowfallorg.flake
     nix-search-tv
     television
     transcrypt
@@ -143,6 +145,7 @@ in
     # Модуль Disko для декларативной разметки диска [2]
     inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
     inputs.self.diskoConfigurations.pcDisk # Импортируем нашу конфигурацию диска из flake
+    inputs.lix-module.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     inputs.lanzaboote.nixosModules.lanzaboote
     ../../modules/nixos/common.nix
@@ -167,9 +170,14 @@ in
     ../../modules/nixos/iphone.nix
     ../../modules/nixos/torrent.nix
     ../../modules/nixos/optimisations.nix
+    ../../modules/nixos/screen_record.nix
 
     # Custom packages
     # ../../pkgs/custom_pkg.nix
+  ];
+
+  nixpkgs.overlays = with inputs; [
+    snowfall-flake.overlays."package/flake"
   ];
 
   # Установите имя хоста
