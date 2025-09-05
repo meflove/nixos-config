@@ -11,13 +11,16 @@ in
       "nix-command"
       "flakes"
     ];
+
     system-features = [
       "nixos-test"
       "benchmark"
       "big-parallel"
       "kvm"
     ];
+
     auto-optimise-store = true;
+
     # With Lix, i cant use this option
     # download-buffer-size = 2097152000;
   };
@@ -35,7 +38,14 @@ in
     memoryPercent = 100;
   };
 
-  # Настройка пользователя
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 150;
+  };
+
+  services.cockpit = {
+    enable = true;
+  };
+
   users.users.angeldust = {
     isNormalUser = true;
     extraGroups = [
@@ -43,7 +53,7 @@ in
       "input"
       "networkmanager"
       "gamemode"
-    ]; # Добавление в группы для sudo, сети, virt-manager [9, 11]
+    ];
     initialPassword = secret.pass;
     shell = pkgs.fish;
   };
@@ -51,6 +61,7 @@ in
   fonts = {
     enableDefaultPackages = true;
     enableGhostscriptFonts = true;
+
     packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
   };
 
@@ -59,7 +70,6 @@ in
     cudaSupport = true;
   };
 
-  # Дополнительные системные пакеты
   environment.systemPackages = with pkgs; [
     # --- CLI Tools ---
     # Core
@@ -171,6 +181,7 @@ in
     ../../modules/nixos/torrent.nix
     ../../modules/nixos/optimisations.nix
     ../../modules/nixos/screen_record.nix
+    ../../modules/nixos/ssh.nix
 
     # Custom packages
     # ../../pkgs/custom_pkg.nix
@@ -180,8 +191,7 @@ in
     snowfall-flake.overlays."package/flake"
   ];
 
-  # Установите имя хоста
   networking.hostName = "nixos-pc";
 
-  system.stateVersion = "25.05"; # Или акуальная версия NixOS
+  system.stateVersion = "25.05";
 }
