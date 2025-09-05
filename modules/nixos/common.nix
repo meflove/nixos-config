@@ -15,9 +15,4 @@
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
-  # SSH
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false; # Recommended for security
-  };
 }

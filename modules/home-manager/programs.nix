@@ -19,9 +19,11 @@
   };
 
   # Настройка SSH
+
   programs.ssh = {
     enable = true;
-    enableDefaultConfig = false;
+
+    enableDefaultConfig = true;
     matchBlocks = {
       "github.com" = {
         user = "angeldust";
