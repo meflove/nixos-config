@@ -158,33 +158,43 @@ in
     inputs.lix-module.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     inputs.lanzaboote.nixosModules.lanzaboote
-    ../../modules/nixos/common.nix
-    ../../modules/nixos/autologin.nix
-    ../../modules/nixos/nvidia.nix
-    ../../modules/nixos/pipewire.nix
-    ../../modules/nixos/network.nix
-    ../../modules/nixos/bluetooth.nix
-    ../../modules/nixos/kernel.nix
-    ../../modules/nixos/lang.nix
-    ../../modules/nixos/rust/rustup.nix
-    ../../modules/nixos/ccache.nix
-    ../../modules/nixos/gaming.nix
-    ../../modules/nixos/git.nix
-    ../../modules/nixos/secureboot.nix
-    ../../modules/nixos/secureboot.nix
-    ../../modules/nixos/podman.nix
-    ../../modules/nixos/virt-manager.nix
-    ../../modules/nixos/ai.nix
-    ../../modules/nixos/flatpak.nix
-    ../../modules/nixos/security.nix
-    ../../modules/nixos/iphone.nix
-    ../../modules/nixos/torrent.nix
-    ../../modules/nixos/optimisations.nix
-    ../../modules/nixos/screen_record.nix
-    ../../modules/nixos/ssh.nix
 
-    # Custom packages
-    # ../../pkgs/custom_pkg.nix
+    # Boot
+    ../../modules/nixos/boot/kernel.nix
+    ../../modules/nixos/boot/secureboot.nix
+
+    # Core
+    ../../modules/nixos/core/autologin.nix
+    ../../modules/nixos/core/common.nix
+    ../../modules/nixos/core/lang.nix
+    ../../modules/nixos/core/optimisations.nix
+    ../../modules/nixos/core/security.nix
+
+    # Desktop
+    ../../modules/nixos/desktop/screen_record.nix
+
+    # Development
+    ../../modules/nixos/development/ai.nix
+    ../../modules/nixos/development/ccache.nix
+    ../../modules/nixos/development/git.nix
+    ../../modules/nixos/development/podman.nix
+    ../../modules/nixos/development/rust/rustup.nix
+    ../../modules/nixos/development/virt-manager.nix
+
+    # Hardware
+    ../../modules/nixos/hardware/bluetooth.nix
+    ../../modules/nixos/hardware/iphone.nix
+    ../../modules/nixos/hardware/network.nix
+    ../../modules/nixos/hardware/nvidia.nix
+    ../../modules/nixos/hardware/pipewire.nix
+
+    # Services
+    ../../modules/nixos/services/ssh.nix
+    ../../modules/nixos/services/torrent.nix
+
+    # Software
+    ../../modules/nixos/software/flatpak.nix
+    ../../modules/nixos/software/gaming.nix
   ];
 
   nixpkgs.overlays = with inputs; [

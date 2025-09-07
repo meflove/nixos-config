@@ -4,19 +4,29 @@
     inputs.zen-browser.homeModules.default
     inputs.otter-launcher.homeModules.default
     inputs.hyprland.homeManagerModules.default
-    ../../modules/home-manager/fish/fish.nix
-    ../../modules/home-manager/ghostty.nix
-    ../../modules/home-manager/hyprland.nix
-    ../../modules/home-manager/programs.nix
-    ../../modules/home-manager/atuin.nix
-    ../../modules/home-manager/zen.nix
-    ../../modules/home-manager/theming.nix
-    ../../modules/home-manager/cli.nix
-    ../../modules/home-manager/gaming.nix
-    ../../modules/home-manager/fastfetch.nix
-    ../../modules/home-manager/otter-launcher.nix
-    ../../modules/home-manager/ai.nix
-    ../../modules/home-manager/direnv.nix
+
+    # CLI
+    ../../modules/home-manager/cli/atuin.nix
+    ../../modules/home-manager/cli/cli.nix
+    ../../modules/home-manager/cli/fastfetch.nix
+    ../../modules/home-manager/cli/fish/fish.nix
+    ../../modules/home-manager/cli/otter-launcher.nix
+
+    # Desktop
+    ../../modules/home-manager/desktop/ghostty.nix
+    ../../modules/home-manager/desktop/hyprland.nix
+    ../../modules/home-manager/desktop/theming.nix
+    ../../modules/home-manager/desktop/zen.nix
+
+    # Development
+    ../../modules/home-manager/development/ai.nix
+    ../../modules/home-manager/development/direnv.nix
+
+    # Gaming
+    ../../modules/home-manager/gaming/gaming.nix
+
+    # Misc
+    ../../modules/home-manager/misc/programs.nix
   ];
 
   nixpkgs.config = {
