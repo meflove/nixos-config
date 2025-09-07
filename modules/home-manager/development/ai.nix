@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  secret = import ../../secrets/github.nix;
+  secret = import ../../../secrets/github.nix;
 in
 {
   programs.gemini-cli = {

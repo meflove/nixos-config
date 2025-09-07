@@ -1,6 +1,6 @@
 { pkgs, ... }:
 let
-  secret = import ../../../secrets/gemini.nix;
+  secret = import ../../../../secrets/gemini.nix;
 in
 {
   # Включаем и настраиваем Fish
