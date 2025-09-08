@@ -94,12 +94,12 @@ in
       #   "sudo nixos-rebuild switch --log-format internal-json -v --flake .#nixos-pc &| nom --json";
       # hms =
       #   "home-manager switch --log-format internal-json -v --flake .#angeldust &| nom --json";
-      nrs = "nh os switch .";
-      hms = "nh home switch .";
+      nrs = "nh os switch";
+      hms = "nh home switch";
       ns = ''tv --preview-command "nix-search-tv preview {}" --source-command "nix-search-tv print"'';
 
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-      n = "NVIM_APPNAME=nvim-og nvim";
+      n = "nvim";
       m = "micro";
       py = "python";
       dif = "delta";
@@ -182,6 +182,7 @@ in
   # Переменные окружения
   home.sessionVariables = {
     EDITOR = "nvim";
+    NVIM_APPNAME = "nvim-og";
     SUDO_PROMPT = "$(tput setaf 1 bold)Password:$(tput sgr0) ";
     LIBVIRT_DEFAULT_URI = "qemu:///system";
     RIP_GRAVEYARD = "~/.local/share/Trash";
