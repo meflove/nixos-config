@@ -31,17 +31,6 @@ in
     options = "--delete-older-than 30d";
   };
 
-  zramSwap = {
-    enable = true;
-    priority = 100;
-    swapDevices = 2;
-    memoryPercent = 100;
-  };
-
-  boot.kernel.sysctl = {
-    "vm.swappiness" = 150;
-  };
-
   services.cockpit = {
     enable = true;
   };
