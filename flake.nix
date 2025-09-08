@@ -71,6 +71,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    yazi = {
+      url = "github:sxyazi/yazi";
+    };
+
     freesmlauncher = {
       url = "github:FreesmTeam/FreesmLauncher";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -102,9 +106,10 @@
       ...
     }@inputs:
     {
-
-      diskoConfigurations.vmDisk = import ./hosts/vm/vm-disk.nix;
-      diskoConfigurations.pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
+      diskoConfigurations = {
+        vmDisk = import ./hosts/vm/vm-disk.nix;
+        pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
+      };
 
       nixosConfigurations = {
         nixos-pc = nixpkgs.lib.nixosSystem {
@@ -134,19 +139,7 @@
               home.username = "angeldust";
               home.homeDirectory = "/home/angeldust";
             }
-            ./users/common/default.nix
-          ];
-        };
-
-        "angeldust-vm" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
-          extraSpecialArgs = { inherit inputs; };
-          modules = [
-            {
-              home.username = "angeldust";
-              home.homeDirectory = "/home/angeldust";
-            }
-            ./users/common/default.nix
+            ./users/angeldust/default.nix
           ];
         };
       };
