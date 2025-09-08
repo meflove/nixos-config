@@ -32,6 +32,8 @@
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
+                      "ssd_spread"
+                      "commit=300"
                     ];
                   };
                   "@home" = {
@@ -42,6 +44,8 @@
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
+                      "ssd_spread"
+                      "commit=300"
                     ]; # noatime применяется для каждой точки монтирования
                   };
                   "@nix" = {
@@ -51,6 +55,8 @@
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
+                      "ssd_spread"
+                      "commit=300"
                     ]; # noatime применяется для каждой точки монтирования
                   };
                   "@var/log" = {
@@ -60,6 +66,8 @@
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
+                      "ssd_spread"
+                      "commit=300"
                     ];
                   };
                   "@var/cache" = {
@@ -69,6 +77,8 @@
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
+                      "ssd_spread"
+                      "commit=300"
                     ];
                   };
                   "@.snapshots" = {
@@ -78,6 +88,8 @@
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
+                      "ssd_spread"
+                      "commit=300"
                     ];
                   };
                   "@srv" = {
@@ -87,6 +99,8 @@
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
+                      "ssd_spread"
+                      "commit=300"
                     ];
                   };
                   "@tmp" = {
@@ -96,6 +110,8 @@
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
+                      "ssd_spread"
+                      "commit=300"
                     ];
                   };
                 };

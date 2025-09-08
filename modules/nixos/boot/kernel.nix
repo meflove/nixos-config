@@ -40,6 +40,8 @@
     "systemd.show_status=auto"
     "quiet"
     "splash"
+    "mitigations=off"
+    "loglevel=3"
     "vt.global_cursor_default=0"
     "lpj=2496000"
     "page_alloc.shuffle=1"
@@ -54,5 +56,4 @@
   ];
 
   powerManagement.cpuFreqGovernor = "perfomance";
-
 }
