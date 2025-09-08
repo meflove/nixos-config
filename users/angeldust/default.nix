@@ -11,6 +11,7 @@
     ../../modules/home-manager/cli/fastfetch.nix
     ../../modules/home-manager/cli/fish/fish.nix
     ../../modules/home-manager/cli/otter-launcher.nix
+    ../../modules/home-manager/cli/yazi.nix
 
     # Desktop
     ../../modules/home-manager/desktop/ghostty.nix
@@ -35,8 +36,6 @@
 
   # Общие настройки Home Manager
   home = {
-    username = "angeldust";
-    # homeDirectory = "/home/angeldust";
     stateVersion = "25.05";
 
     # Устанавливаем программы, у которых нет специальных модулей
