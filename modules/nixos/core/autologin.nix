@@ -1,10 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 let
-  tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
-  session = "${pkgs.hyprland}/bin/Hyprland 2>&1";
+  tuigreet = "${pkgs.tuigreet}/bin/tuigreet";
+  session = "${config.programs.hyprland.package}/bin/Hyprland 2>&1";
   username = "angeldust";
-
 in
 {
   services.greetd = {
