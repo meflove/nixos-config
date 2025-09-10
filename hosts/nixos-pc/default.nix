@@ -47,6 +47,11 @@ in
     shell = pkgs.fish;
   };
 
+  home-manager = {
+    useUserPackages = true;
+    useGlobalPkgs = true;
+  };
+
   fonts = {
     enableDefaultPackages = true;
     enableGhostscriptFonts = true;
