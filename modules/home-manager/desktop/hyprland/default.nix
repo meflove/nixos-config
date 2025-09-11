@@ -21,25 +21,28 @@ in
     ./hyprpanel.nix
   ];
 
-  home.packages = with pkgs; [
-    grim
-    grimblast
-    slurp
-    hyprpicker
-    libnotify
-  ];
+  home = {
+    packages = with pkgs; [
+      grim
+      grimblast
+      slurp
+      hyprpicker
+      libnotify
+      tesseract
+    ];
 
-  home.pointerCursor = {
-    gtk.enable = true;
-    hyprcursor.enable = true;
-    x11 = {
-      enable = true;
-      defaultCursor = "Bibata-Modern-Classic";
+    pointerCursor = {
+      gtk.enable = true;
+      hyprcursor.enable = true;
+      x11 = {
+        enable = true;
+        defaultCursor = "Bibata-Modern-Classic";
+      };
+
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Classic";
+      size = 20;
     };
-
-    package = pkgs.bibata-cursors;
-    name = "Bibata-Modern-Classic";
-    size = 20;
   };
 
   gtk = {

@@ -33,6 +33,28 @@
         "type": "github"
       }
     },
+    "ayugram-desktop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1757543583,
+        "narHash": "sha256-Van2RD8V6cnFgxj18CNeWxYGk2YSNNEhFJGJgLWlb24=",
+        "ref": "refs/heads/release",
+        "rev": "ddf9300fefba0352bbb2487b92b7223a5e1a7761",
+        "revCount": 324,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/meflove/ayugram-desktop/"
+      },
+      "original": {
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/meflove/ayugram-desktop/"
+      }
+    },
     "chaotic": {
       "inputs": {
         "flake-schemas": "flake-schemas",
@@ -42,11 +64,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1757436326,
-        "narHash": "sha256-V4w0k9CZ9G+BidPI9LM8T6EbbHkrbpbacZKkPpZQeIg=",
+        "lastModified": 1757505806,
+        "narHash": "sha256-n9/XRT0g6ucBpq2r1NUGDVwI6CTqg45sdljjAJdvWwc=",
         "owner": "chaotic-cx",
         "repo": "nyx",
-        "rev": "0c5dbb01f3d493918d36e21768339e9f6c949057",
+        "rev": "0e34b767650b5b71a9c2b2caf4270f50a66a9305",
         "type": "github"
       },
       "original": {
@@ -356,11 +378,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1756985141,
-        "narHash": "sha256-CpfzpusDSTWR5CjfH7DBL+D6e9hkm95Y42I7kJjy780=",
+        "lastModified": 1757526985,
+        "narHash": "sha256-qI9p9SxhFAVnTGzc80+w00+dCyoLjxtNsXjhRkTNfvc=",
         "owner": "FreesmTeam",
         "repo": "FreesmLauncher",
-        "rev": "651fb668fec0f704e77863a86742b4fe4b836024",
+        "rev": "06fb8e8e43f5c05b19b74069825b1c5602c3ac6b",
         "type": "github"
       },
       "original": {
@@ -421,11 +443,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1757256385,
-        "narHash": "sha256-WK7tOhWwr15mipcckhDg2no/eSpM1nIh4C9le8HgHhk=",
+        "lastModified": 1757503661,
+        "narHash": "sha256-bBh9sAJn0x/EdCVA6NYj/hXpcW1YBLCRMgn8A2T1l2E=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "f35703b412c67b48e97beb6e27a6ab96a084cd37",
+        "rev": "3c97248d6f896232355735e34bb518ae9f130c5d",
         "type": "github"
       },
       "original": {
@@ -441,11 +463,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1757503661,
-        "narHash": "sha256-bBh9sAJn0x/EdCVA6NYj/hXpcW1YBLCRMgn8A2T1l2E=",
+        "lastModified": 1757529548,
+        "narHash": "sha256-If5AT3dPXH0BM+q+pwyZvtWLTmlqJmGW6IDZ2MqlGRU=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "3c97248d6f896232355735e34bb518ae9f130c5d",
+        "rev": "e0154ae41614e32a443c43ee51eee9eed3ad9a48",
         "type": "github"
       },
       "original": {
@@ -894,11 +916,11 @@
     "lix": {
       "flake": false,
       "locked": {
-        "lastModified": 1756426754,
-        "narHash": "sha256-EVJDo/KjdGtvJKelVPoL92TsPNrqnOJUnaLTIqP+F0o=",
-        "rev": "f4bdddf0fdaabc68546cf561c5343b83d95d2466",
+        "lastModified": 1757256637,
+        "narHash": "sha256-EBpeLdUwTedFKbOypXtYVacdPy6R8ZGF3/Dsby4jiAk=",
+        "rev": "91bf54d726cddd74d6ca34c6c01de2c9461cbe32",
         "type": "tarball",
-        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/f4bdddf0fdaabc68546cf561c5343b83d95d2466.tar.gz?rev=f4bdddf0fdaabc68546cf561c5343b83d95d2466"
+        "url": "https://git.lix.systems/api/v1/repos/lix-project/lix/archive/91bf54d726cddd74d6ca34c6c01de2c9461cbe32.tar.gz?rev=91bf54d726cddd74d6ca34c6c01de2c9461cbe32"
       },
       "original": {
         "type": "tarball",
@@ -1200,6 +1222,7 @@
     },
     "root": {
       "inputs": {
+        "ayugram-desktop": "ayugram-desktop",
         "chaotic": "chaotic",
         "disko": "disko",
         "freesmlauncher": "freesmlauncher",
@@ -1229,11 +1252,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1757298987,
-        "narHash": "sha256-yuFSw6fpfjPtVMmym51ozHYpJQ7SzVOTkk7tUv2JA0U=",
+        "lastModified": 1757471515,
+        "narHash": "sha256-0+rSzNsYindDWjO9VVULKGjXlPsQV6IDjRU5G3SwI9U=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "cfd63776bde44438ff2936f0c9194c79dd407a5f",
+        "rev": "aecf31120156fe47a7d1992aa814052910178fca",
         "type": "github"
       },
       "original": {
@@ -1494,11 +1517,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1757481500,
-        "narHash": "sha256-zYL8X9zUXQFQCQgiYk5YOIpf4vkFbvwP9S551Eqtpsk=",
+        "lastModified": 1757517843,
+        "narHash": "sha256-7gLIZVep5wIU3Tw7c2lDsuOglU6BV+lOPU8HsbJg3ZY=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "ce326c21966ea63eeb82dabdf1cff8786ee88f6d",
+        "rev": "8214fd8f4e8d96f53a760093f36e5fab7e5806a0",
         "type": "github"
       },
       "original": {

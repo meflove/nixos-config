@@ -11,7 +11,7 @@
   "Ctrl+Shift+Alt, Delete, exec, pkill wlogout || wlogout -p layer-shell"
   ",Print, exec, ~/.config/scripts/grimblast.sh --freeze copy area"
   ''Super+Shift+Alt, S, exec, grim -g "$(slurp)" - | swappy -f -''
-  ''Super+Ctrl,T,exec,grim -g "$(slurp $SLURP_ARGS)" "tmp.png" && tesseract -l eng "tmp.png" - | wl-copy && rm "tmp.png"''
+  ''Super+Ctrl,T,exec, grim -g "$(slurp $SLURP_ARGS)" "tmp.png" && tesseract -l eng "tmp.png" - | wl-copy && rm "tmp.png"''
   ''Ctrl+Super+Shift,S,exec,grim -g "$(slurp $SLURP_ARGS)" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png"''
   "Super+Shift, C, exec, hyprpicker -ar"
   ''Ctrl+Shift,Print, exec, mkdir -p ~/Images/Screenshots && ~/.config/scripts/grimblast.sh copysave screen ~/Images/Screenshots/Screenshot_"$(date '+%Y-%m-%d_%H.%M.%S')".png''
@@ -131,7 +131,7 @@
   "Ctrl+Shift, Escape, exec, gnome-system-monitor"
   "Ctrl+Super, Slash, exec, pkill anyrun || anyrun"
   "Super+Alt, Slash, exec, pkill anyrun || fuzzel"
-  "Super+Shift, T, exec, AyuGram"
+  "Super+Shift, T, exec, ayugram-desktop"
   "Super+Shift, D, exec, equibop"
   "Super, S, exec, spotify-launcher"
   "Super, K, exec, ghostty -e calcure"
