@@ -58,8 +58,10 @@
     };
 
     ayugram-desktop = {
-      url = "github:meflove/ayugram-desktop";
+      url = "https://github.com/meflove/ayugram-desktop/";
+      type = "git";
       submodules = true;
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixos-hardware = {
@@ -119,7 +121,7 @@
 
       homeConfigurations = {
         "angeldust" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.legacyPackages.x86_64-linux;
+          pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs; };
           modules = [
             {
