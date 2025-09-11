@@ -2,6 +2,7 @@
   pkgs,
   lib,
   inputs,
+  config,
   ...
 }:
 let
@@ -65,6 +66,7 @@ in
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     portalPackage =
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    systemd.enable = true;
 
     settings = (import ./settings.nix { inherit pkgs; }) // {
       bind = binds;
@@ -85,6 +87,23 @@ in
 
   xdg = {
     enable = true;
+    autostart.enable = true;
+    mime.enable = true;
+
+    userDirs = {
+      enable = true;
+
+      createDirectories = true;
+    };
+
+    terminal-exec = {
+      enable = true;
+      package = config.programs.ghostty.package;
+      # settings.default = [
+      #   "ghostty.desktop"
+      # ];
+    };
+
     portal = {
       enable = true;
       extraPortals = with pkgs; [
@@ -93,5 +112,6 @@ in
       ];
       xdgOpenUsePortal = true;
     };
+
   };
 }

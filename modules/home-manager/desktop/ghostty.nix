@@ -1,9 +1,5 @@
 { ... }:
 {
-  xdg.terminal-exec.settings = {
-    default = [ "ghostty.desktop" ];
-  };
-
   programs.ghostty = {
     enable = true;
 
