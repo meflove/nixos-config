@@ -45,7 +45,7 @@
       zellij
       easyeffects
       xdg-user-dirs
-      ayugram-desktop
+      inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
       kitty
       obsidian
 

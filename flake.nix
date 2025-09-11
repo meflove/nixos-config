@@ -57,6 +57,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ayugram-desktop = {
+      url = "github:meflove/ayugram-desktop";
+      submodules = true;
+    };
+
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
@@ -85,24 +90,6 @@
   outputs =
     {
       self,
-      nixpkgs,
-      chaotic,
-      nix-gaming,
-      nix-flatpak,
-      lix,
-      lix-module,
-      home-manager,
-      disko,
-      snowfall-flake,
-      rust-overlay,
-      hyprland,
-      hyprpanel,
-      hyprland-plugins,
-      otter-launcher,
-      nixos-hardware,
-      lanzaboote,
-      zen-browser,
-      freesmlauncher,
       ...
     }@inputs:
     {
@@ -112,18 +99,18 @@
       };
 
       nixosConfigurations = {
-        nixos-pc = nixpkgs.lib.nixosSystem {
+        nixos-pc = inputs.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/nixos-pc/default.nix
-            nixos-hardware.nixosModules.common-cpu-intel-cpu-only
-            chaotic.nixosModules.default
-            nix-flatpak.nixosModules.nix-flatpak
+            inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
+            inputs.chaotic.nixosModules.default
+            inputs.nix-flatpak.nixosModules.nix-flatpak
           ];
         };
 
-        vm = nixpkgs.lib.nixosSystem {
+        vm = inputs.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
           modules = [ ./hosts/vm/default.nix ];
@@ -131,8 +118,8 @@
       };
 
       homeConfigurations = {
-        "angeldust" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        "angeldust" = inputs.home-manager.lib.homeManagerConfiguration {
+          pkgs = inputs.legacyPackages.x86_64-linux;
           extraSpecialArgs = { inherit inputs; };
           modules = [
             {
