@@ -53,19 +53,4 @@
     ];
     dnsovertls = "false";
   };
-
-  networking.firewall = {
-    enable = true;
-
-    allowedTCPPorts = [
-      22
-      9090
-      47950
-    ];
-    allowedUDPPorts = [
-      22
-      9090
-      47950
-    ];
-  };
 }

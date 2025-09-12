@@ -16,6 +16,7 @@
   "WLR_RENDERER" = "vulkan";
   "NVD_BACKEND" = "direct";
   "ELECTRON_OZONE_PLATFORM_HINT" = "wayland";
+  "NIXOS_OZONE_WL" = "1";
 
   "EDITOR" = "nvim";
   "TERMINAL" = "ghostty";

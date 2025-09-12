@@ -9,6 +9,8 @@
     defaultNetwork.settings.dns_enabled = true;
   };
 
+  hardware.nvidia-container-toolkit.enable = true;
+
   environment.variables.DBX_CONTAINER_MANAGER = "podman";
   users.extraGroups.podman.members = [ "xnm" ];
 

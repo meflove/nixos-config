@@ -1,4 +1,4 @@
-{ inputs, lib, ... }:
+{ inputs, pkgs, ... }:
 let
   system = "x86_64-linux";
 in
@@ -12,6 +12,5 @@ in
         })
       ];
     })
-
   ];
 }

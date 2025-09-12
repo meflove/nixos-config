@@ -25,14 +25,15 @@ in
     # download-buffer-size = 2097152000;
   };
 
+  nixpkgs.config = {
+    allowUnfree = true;
+    cudaSupport = true;
+  };
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 30d";
-  };
-
-  services.cockpit = {
-    enable = true;
   };
 
   users.users.angeldust = {
@@ -57,11 +58,6 @@ in
     enableGhostscriptFonts = true;
 
     packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
-  };
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    cudaSupport = true;
   };
 
   environment.systemPackages = with pkgs; [
@@ -152,6 +148,7 @@ in
     inputs.lix-module.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     inputs.lanzaboote.nixosModules.lanzaboote
+    inputs.nnf.nixosModules.default
 
     # Boot
     ../../modules/nixos/boot/kernel.nix
@@ -163,6 +160,7 @@ in
     ../../modules/nixos/core/lang.nix
     ../../modules/nixos/core/optimisations.nix
     ../../modules/nixos/core/security.nix
+    ../../modules/nixos/core/firewall.nix
 
     # Desktop
     ../../modules/nixos/desktop/screen_record.nix
