@@ -1,6 +1,7 @@
 { pkgs, inputs, ... }:
 let
   secret = import ../../secrets/pass.nix;
+  # multranslate = pkgs.callPackage ../../pkgs/multranslate/default.nix { };
 in
 {
   nix.settings = {
@@ -91,6 +92,7 @@ in
     grc
     jq
     tlrc # Simplified man pages
+    # multranslate
 
     # --- Development ---
     # Compilers & Build Tools
@@ -187,6 +189,9 @@ in
     # Software
     ../../modules/nixos/software/flatpak.nix
     ../../modules/nixos/software/gaming.nix
+
+    # pkgs
+
   ];
 
   nixpkgs.overlays = with inputs; [

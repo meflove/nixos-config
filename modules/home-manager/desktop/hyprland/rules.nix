@@ -45,6 +45,9 @@
     "float,title:^(File Upload)(.*)$"
     "float,title:^(Extract)(.*)$"
 
+    "workspace 2, class:^(zen-beta)$"
+    "monitor 0, class:^(com.ayugram)$"
+
     "immediate,title:^(.*\\.exe)$"
     "immediate,class:(steam_app)"
 
