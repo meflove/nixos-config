@@ -23,11 +23,25 @@
   programs.ssh = {
     enable = true;
 
-    enableDefaultConfig = true;
+    enableDefaultConfig = false;
+
     matchBlocks = {
       "github.com" = {
         user = "angeldust";
         identityFile = "~/.ssh/id_ed25519";
+      };
+
+      "*" = {
+        forwardAgent = false;
+        serverAliveInterval = 0;
+        serverAliveCountMax = 3;
+        compression = false;
+        addKeysToAgent = "no";
+        hashKnownHosts = false;
+        userKnownHostsFile = "~/.ssh/known_hosts";
+        controlMaster = "no";
+        controlPath = "~/.ssh/master-%r@%n:%p";
+        controlPersist = "no";
       };
     };
   };
