@@ -13,4 +13,8 @@
       KbdInteractiveAuthentication yes
     '';
   };
+
+  users.users."angeldust".openssh.authorizedKeys.keyFiles = [
+    ../../../secrets/ssh/authorized_keys
+  ];
 }

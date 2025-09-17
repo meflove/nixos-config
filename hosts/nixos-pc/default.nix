@@ -135,6 +135,7 @@ in
     swww
     wl-clipboard
     nekoray
+    papers
 
     # --- Audio ---
     easyeffects
