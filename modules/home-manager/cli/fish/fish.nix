@@ -18,7 +18,7 @@ in
 
       # Zellij
       export ZELLIJ_CONFIG_DIR=$HOME/.config/zellij
-      if [ "$TERM" = xterm-ghostty ]
+      if [ "$TERM" = ghostty ]
           set ZELLIJ_AUTO_ATTACH true
           eval (zellij setup --generate-auto-start fish | string collect)
 

@@ -14,7 +14,7 @@
   ''Super+Ctrl,T,exec, grim -g "$(slurp $SLURP_ARGS)" "tmp.png" && tesseract -l eng "tmp.png" - | wl-copy && rm "tmp.png"''
   ''Ctrl+Super+Shift,S,exec,grim -g "$(slurp $SLURP_ARGS)" "tmp.png" && tesseract "tmp.png" - | wl-copy && rm "tmp.png"''
   "Super+Shift, C, exec, hyprpicker -ar"
-  ''Ctrl+Shift,Print, exec, mkdir -p ~/Images/Screenshots && ~/.config/scripts/grimblast.sh copysave screen ~/Images/Screenshots/Screenshot_"$(date '+%Y-%m-%d_%H.%M.%S')".png''
+  ''Ctrl+Shift,Print, exec, mkdir -p ~/Pictures/Screenshots && ~/.config/scripts/grimblast.sh copysave screen ~/Pictures/Screenshots/Screenshot_"$(date '+%Y-%m-%d_%H.%M.%S')".png''
 
   # Session
   "Super, X, exec, bash ~/.config/rofi/powermenu.sh"
@@ -120,7 +120,7 @@
   "Super, T, exec, "
   "Super, Z, exec, Zed"
   "Super, C, exec, ghostty -e nvim"
-  "Super, E, exec, nemo"
+  "Super, E, exec, ghostty -e yazi"
   "Super+Alt, E, exec, thunar"
   "Super, W, exec, zen"
   "Ctrl+Super, W, exec, firefox"

@@ -99,9 +99,9 @@ in
     terminal-exec = {
       enable = true;
       package = config.programs.ghostty.package;
-      # settings.default = [
-      #   "ghostty.desktop"
-      # ];
+      settings.default = [
+        "com.mitchellh.ghostty.desktop"
+      ];
     };
 
     portal = {
@@ -113,5 +113,15 @@ in
       xdgOpenUsePortal = true;
     };
 
+    # mimeApps = {
+    #   enable = true;
+    #
+    #   associations.added = {
+    #     "inode/directory" = [ "yazi.desktop" ];
+    #   };
+    #   defaultApplications = {
+    #     "inode/directory" = [ "yazi.desktop" ];
+    #   };
+    # };
   };
 }

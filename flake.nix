@@ -108,9 +108,6 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/nixos-pc/default.nix
-            inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
-            inputs.chaotic.nixosModules.default
-            inputs.nix-flatpak.nixosModules.nix-flatpak
           ];
         };
 
