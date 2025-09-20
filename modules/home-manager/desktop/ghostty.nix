@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 {
   programs.ghostty = {
     enable = true;
@@ -31,6 +31,7 @@
       window-padding-x = 9;
       window-padding-y = 9;
 
+      command = "TERM=ghostty ${pkgs.fish}/bin/fish";
     };
 
     themes = {

@@ -11,7 +11,7 @@
           hide_cursor = true;
         };
         background = {
-          path = "$HOME/Images/wallpaper/lock_screen.png";
+          path = "$HOME/Pictures/wallpaper/lock_screen.png";
           blur_passes = 3;
           color = "rgb(${colors.base})";
         };
@@ -45,7 +45,7 @@
           }
         ];
         image = {
-          # path = "$HOME/Images/wallpaper/lock_screen.png";
+          # path = "$HOME/Pictures/wallpaper/lock_screen.png";
           size = 100;
           border_color = "rgb(${colors.mauve})";
           position = "0, 75";

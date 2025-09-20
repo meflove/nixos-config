@@ -6,5 +6,4 @@ result-*
 # Ignore automatically generated direnv output
 .direnv
 
-.sops.yaml
 pkgs/multranslate

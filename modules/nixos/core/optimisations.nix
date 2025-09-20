@@ -66,5 +66,7 @@
     };
 
     irqbalance.enable = true;
+
+    dbus.implementation = "broker";
   };
 }

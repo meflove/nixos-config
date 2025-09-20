@@ -107,10 +107,14 @@ in
     # Git
     git
     lazygit # Git TUI
+    delta
 
     # Libs
     openssl
     python313Packages.gpustat
+
+    # Database
+    dbeaver-bin
 
     # --- Nix Ecosystem ---
     home-manager
@@ -135,23 +139,31 @@ in
     swww
     wl-clipboard
     nekoray
-    papers
 
     # --- Audio ---
     easyeffects
 
     # --- Fun ---
     krabby
+
+    # --- Office & docs ---
+    papers
+    libreoffice
+
+    # --- Image & Video ---
+    gimp3-with-plugins
   ];
 
   imports = [
-    # Модуль Disko для декларативной разметки диска [2]
-    inputs.disko.nixosModules.disko # Импортируем основной модуль Disko
-    inputs.self.diskoConfigurations.pcDisk # Импортируем нашу конфигурацию диска из flake
+    inputs.disko.nixosModules.disko
+    inputs.self.diskoConfigurations.pcDisk
     inputs.lix-module.nixosModules.default
     inputs.home-manager.nixosModules.home-manager
     inputs.lanzaboote.nixosModules.lanzaboote
     inputs.nnf.nixosModules.default
+    inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
+    inputs.chaotic.nixosModules.default
+    inputs.nix-flatpak.nixosModules.nix-flatpak
 
     # Boot
     ../../modules/nixos/boot/kernel.nix

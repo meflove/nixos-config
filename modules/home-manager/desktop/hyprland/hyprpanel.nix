@@ -126,7 +126,7 @@
           };
           powermenu = {
             avatar = {
-              image = "/home/meflove/Images/";
+              image = "/home/angeldust/Pictures/";
             };
           };
           stats = {
@@ -137,7 +137,7 @@
             right = {
               directory2 = {
                 label = "󰉏 Images";
-                command = ''bash -c "xdg-open $HOME/Images/"'';
+                command = ''bash -c "xdg-open $HOME/Pictures/"'';
               };
             };
           };
