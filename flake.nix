@@ -60,10 +60,9 @@
     };
 
     ayugram-desktop = {
-      url = "https://github.com/meflove/ayugram-desktop/";
       type = "git";
       submodules = true;
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "https://github.com/ndfined-crp/ayugram-desktop/";
     };
 
     nixos-hardware = {
