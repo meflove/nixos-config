@@ -5,7 +5,6 @@
     duf
     progress
     viddy
-    clipse
     kalker
     python313Packages.downloader-cli
     blobdrop
@@ -19,5 +18,12 @@
     flake = "/home/angeldust/.config/nixos-config"; # sets NH_OS_FLAKE variable for you
     osFlake = "/home/angeldust/.config/nixos-config";
     homeFlake = "/home/angeldust/.config/nixos-config";
+  };
+
+  services.clipse = {
+    enable = true;
+
+    historySize = 1000;
+    imageDisplay.type = "kitty";
   };
 }
