@@ -46,19 +46,33 @@ in
     };
   };
 
+  dconf.settings = {
+    "org/gnome/desktop/background" = {
+      picture-uri-dark = "file://${pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src}";
+    };
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+  };
+
   gtk = {
     enable = true;
 
     theme = {
-      package = pkgs.catppuccin-gtk;
-      name = "catppuccin-frappe-blue-standard";
+      name = "Adwaita-dark";
+      package = pkgs.gnome-themes-extra;
     };
 
     iconTheme = {
       package = pkgs.adwaita-icon-theme;
       name = "Adwaita";
     };
+  };
 
+  qt = {
+    enable = true;
+    platformTheme.name = "adwaita";
+    style.name = "adwaita-dark";
   };
 
   wayland.windowManager.hyprland = {
@@ -113,15 +127,49 @@ in
       xdgOpenUsePortal = true;
     };
 
-    # mimeApps = {
-    #   enable = true;
-    #
-    #   associations.added = {
-    #     "inode/directory" = [ "yazi.desktop" ];
-    #   };
-    #   defaultApplications = {
-    #     "inode/directory" = [ "yazi.desktop" ];
-    #   };
-    # };
+    mimeApps = {
+      enable = true;
+
+      defaultApplications = {
+        "image/jpeg" = [ "feh.desktop" ];
+        "image/png" = [ "feh.desktop" ];
+        "inode/directory" = [ "yazi.desktop" ];
+
+        "x-scheme-handler/http" = [ "zen-beta.desktop" ];
+        "x-scheme-handler/https" = [ "zen-beta.desktop" ];
+        "x-scheme-handler/chrome" = [ "zen-beta.desktop" ];
+        "text/html" = [ "zen-beta.desktop" ];
+        "application/x-extension-htm" = [ "zen-beta.desktop" ];
+        "application/x-extension-html" = [ "zen-beta.desktop" ];
+        "application/x-extension-shtml" = [ "zen-beta.desktop" ];
+        "application/xhtml+xml" = [ "zen-beta.desktop" ];
+        "application/x-extension-xhtml" = [ "zen-beta.desktop" ];
+        "application/x-extension-xht" = [ "zen-beta.desktop" ];
+
+        "x-scheme-handler/tg" = [ "com.ayugram.desktop.desktop" ];
+        "x-scheme-handler/tonsite" = [ "com.ayugram.desktop.desktop" ];
+        "x-scheme-handler/discord" = [ "equibop.desktop" ];
+      };
+
+      associations.added = {
+        "image/jpeg" = [ "feh.desktop" ];
+        "image/png" = [ "feh.desktop" ];
+        "inode/directory" = [ "yazi.desktop" ];
+
+        "x-scheme-handler/http" = [ "zen-beta.desktop" ];
+        "x-scheme-handler/https" = [ "zen-beta.desktop" ];
+        "x-scheme-handler/chrome" = [ "zen-beta.desktop" ];
+        "text/html" = [ "zen-beta.desktop" ];
+        "application/x-extension-htm" = [ "zen-beta.desktop" ];
+        "application/x-extension-html" = [ "zen-beta.desktop" ];
+        "application/x-extension-shtml" = [ "zen-beta.desktop" ];
+        "application/xhtml+xml" = [ "zen-beta.desktop" ];
+        "application/x-extension-xhtml" = [ "zen-beta.desktop" ];
+        "application/x-extension-xht" = [ "zen-beta.desktop" ];
+
+        "x-scheme-handler/tg" = [ "com.ayugram.desktop.desktop" ];
+        "x-scheme-handler/tonsite" = [ "com.ayugram.desktop.desktop" ];
+      };
+    };
   };
 }
