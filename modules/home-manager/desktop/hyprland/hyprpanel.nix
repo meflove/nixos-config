@@ -120,7 +120,7 @@
                 command = "spotify-launcher";
               };
               shortcut3 = {
-                command = "equibop";
+                command = "discord";
               };
             };
           };

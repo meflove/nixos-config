@@ -133,8 +133,9 @@ in
       defaultApplications = {
         "image/jpeg" = [ "feh.desktop" ];
         "image/png" = [ "feh.desktop" ];
-        "inode/directory" = [ "yazi.desktop" ];
-
+        "inode/directory" = [
+          "${config.programs.yazi.package}/share/applications/yazi.desktop"
+        ];
         "x-scheme-handler/http" = [ "zen-beta.desktop" ];
         "x-scheme-handler/https" = [ "zen-beta.desktop" ];
         "x-scheme-handler/chrome" = [ "zen-beta.desktop" ];
@@ -146,9 +147,17 @@ in
         "application/x-extension-xhtml" = [ "zen-beta.desktop" ];
         "application/x-extension-xht" = [ "zen-beta.desktop" ];
 
-        "x-scheme-handler/tg" = [ "com.ayugram.desktop.desktop" ];
-        "x-scheme-handler/tonsite" = [ "com.ayugram.desktop.desktop" ];
-        "x-scheme-handler/discord" = [ "equibop.desktop" ];
+        "x-scheme-handler/tg" = [
+          "${
+            inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
+          }/share/applications/com.ayugram.desktop.desktop"
+        ];
+        "x-scheme-handler/tonsite" = [
+          "${
+            inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
+          }/share/applications/com.ayugram.desktop.desktop"
+        ];
+        "x-scheme-handler/discord" = [ "discord.desktop" ];
       };
 
       associations.added = {
