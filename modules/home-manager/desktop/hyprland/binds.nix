@@ -132,7 +132,7 @@
   "Ctrl+Super, Slash, exec, pkill anyrun || anyrun"
   "Super+Alt, Slash, exec, pkill anyrun || fuzzel"
   "Super+Shift, T, exec, AyuGram"
-  "Super+Shift, D, exec, equibop"
+  "Super+Shift, D, exec, discord"
   "Super, S, exec, spotify-launcher"
   "Super, K, exec, ghostty -e calcure"
 

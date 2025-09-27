@@ -4,6 +4,7 @@
     inputs.zen-browser.homeModules.default
     inputs.otter-launcher.homeModules.default
     inputs.hyprland.homeManagerModules.default
+    inputs.nixcord.homeModules.nixcord
 
     # CLI
     ../../modules/home-manager/cli/atuin.nix
@@ -18,10 +19,12 @@
     ../../modules/home-manager/desktop/hyprland.nix
     ../../modules/home-manager/desktop/theming.nix
     ../../modules/home-manager/desktop/zen.nix
+    ../../modules/home-manager/desktop/nixcord.nix
 
     # Development
     ../../modules/home-manager/development/ai.nix
     ../../modules/home-manager/development/direnv.nix
+    ../../modules/home-manager/development/git.nix
 
     # Gaming
     ../../modules/home-manager/gaming/gaming.nix

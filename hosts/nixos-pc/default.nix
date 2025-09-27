@@ -152,6 +152,7 @@ in
 
     # --- Image & Video ---
     gimp3-with-plugins
+    solaar
   ];
 
   imports = [
@@ -183,7 +184,6 @@ in
     # Development
     ../../modules/nixos/development/ai.nix
     ../../modules/nixos/development/ccache.nix
-    ../../modules/nixos/development/git.nix
     ../../modules/nixos/development/podman.nix
     ../../modules/nixos/development/rust/rustup.nix
     ../../modules/nixos/development/virt-manager.nix

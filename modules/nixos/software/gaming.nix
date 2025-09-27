@@ -22,8 +22,6 @@
       vkd3d-proton
       dxvk
 
-      equibop
-
       veloren
       mindustry-wayland
       shattered-pixel-dungeon

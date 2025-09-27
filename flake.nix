@@ -65,6 +65,10 @@
       url = "https://github.com/ndfined-crp/ayugram-desktop/";
     };
 
+    nixcord = {
+      url = "github:kaylorben/nixcord";
+    };
+
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
     };
@@ -113,7 +117,9 @@
         vm = inputs.nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = { inherit inputs; };
-          modules = [ ./hosts/vm/default.nix ];
+          modules = [
+            ./hosts/vm/default.nix
+          ];
         };
       };
 

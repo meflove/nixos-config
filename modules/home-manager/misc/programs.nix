@@ -3,12 +3,6 @@
 
   home.packages = with pkgs; [ aria2 ];
 
-  programs.git = {
-    enable = true;
-    userName = "meflove";
-    userEmail = "meflov3r@icloud.com";
-  };
-
   # Настройка GnuPG
   programs.gpg = {
     enable = true;
