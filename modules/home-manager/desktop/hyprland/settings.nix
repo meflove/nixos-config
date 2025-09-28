@@ -38,31 +38,27 @@ in
     repeat_delay = 250;
     repeat_rate = 35;
 
-    touchpad = {
-      natural_scroll = true;
-      disable_while_typing = true;
-      clickfinger_behavior = true;
-      scroll_factor = 0.5;
-    };
     special_fallthrough = true;
     follow_mouse = 1;
   };
 
   "decoration" = {
     rounding = 10;
+    active_opacity = 0.89;
+    inactive_opacity = 0.89;
+
     blur = {
       enabled = true;
       xray = true;
       special = true;
       new_optimizations = true;
-      size = 3;
-      passes = 3;
+      size = 2;
+      passes = 2;
       brightness = 1;
       vibrancy = 2;
       contrast = 2;
       popups = true;
       popups_ignorealpha = 0.6;
-      ignore_opacity = true;
     };
     shadow = {
       enabled = true;
