@@ -31,7 +31,7 @@
       window-padding-x = 9;
       window-padding-y = 9;
 
-      command = "TERM=ghostty ${pkgs.fish}/bin/fish";
+      command = "${pkgs.fish}/bin/fish";
     };
 
     themes = {

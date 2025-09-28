@@ -1,0 +1,530 @@
+keybinds clear-defaults=true {
+    normal {
+        bind "Alt ;" {
+            EditScrollback
+        }
+        bind "Alt f" {
+            ToggleFloatingPanes
+            SwitchToMode "normal"
+        }
+        bind "Alt g" {
+            ToggleFocusFullscreen
+            SwitchToMode "normal"
+        }
+        bind "Alt h" {
+            SwitchToMode "move"
+        }
+        bind "Alt q" {
+            SwitchToMode "tmux"
+        }
+        bind "Alt r" {
+            SwitchToMode "resize"
+        }
+    }
+    pane {
+        bind "left" {
+            MoveFocus "left"
+        }
+        bind "down" {
+            MoveFocus "down"
+        }
+        bind "up" {
+            MoveFocus "up"
+        }
+        bind "right" {
+            MoveFocus "right"
+        }
+        bind "\\" {
+            NewPane
+            SwitchToMode "normal"
+        }
+        bind "c" {
+            SwitchToMode "renamepane"
+            PaneNameInput 0
+        }
+        bind "e" {
+            TogglePaneEmbedOrFloating
+            SwitchToMode "normal"
+        }
+        bind "f" {
+            ToggleFocusFullscreen
+            SwitchToMode "normal"
+        }
+        bind "h" {
+            MoveFocus "left"
+        }
+        bind "j" {
+            MoveFocus "down"
+        }
+        bind "k" {
+            MoveFocus "up"
+        }
+        bind "l" {
+            MoveFocus "right"
+        }
+        bind "n" {
+            NewPane
+            SwitchToMode "normal"
+        }
+        bind "p" {
+            SwitchFocus
+        }
+        bind "Alt p" {
+            SwitchToMode "normal"
+        }
+        bind "w" {
+            ToggleFloatingPanes
+            SwitchToMode "normal"
+        }
+        bind "x" {
+            CloseFocus
+            SwitchToMode "normal"
+        }
+        bind "z" {
+            TogglePaneFrames
+            SwitchToMode "normal"
+        }
+    }
+    tab {
+        bind "left" {
+            GoToPreviousTab
+        }
+        bind "down" {
+            GoToNextTab
+        }
+        bind "up" {
+            GoToPreviousTab
+        }
+        bind "right" {
+            GoToNextTab
+        }
+        bind "[" {
+            BreakPaneLeft
+            SwitchToMode "normal"
+        }
+        bind "]" {
+            BreakPaneRight
+            SwitchToMode "normal"
+        }
+        bind "b" {
+            BreakPane
+            SwitchToMode "normal"
+        }
+        bind "h" {
+            GoToPreviousTab
+        }
+        bind "j" {
+            GoToNextTab
+        }
+        bind "k" {
+            GoToPreviousTab
+        }
+        bind "l" {
+            GoToNextTab
+        }
+        bind "n" {
+            NewTab
+            SwitchToMode "normal"
+        }
+        bind "r" {
+            SwitchToMode "renametab"
+            TabNameInput 0
+        }
+        bind "s" {
+            ToggleActiveSyncTab
+            SwitchToMode "normal"
+        }
+        bind "Ctrl t" {
+            SwitchToMode "normal"
+        }
+        bind "Alt t" {
+            SwitchToMode "normal"
+        }
+        bind "x" {
+            CloseTab
+            SwitchToMode "normal"
+        }
+    }
+    resize {
+        bind "left" {
+            Resize "Increase left"
+        }
+        bind "down" {
+            Resize "Increase down"
+        }
+        bind "up" {
+            Resize "Increase up"
+        }
+        bind "right" {
+            Resize "Increase right"
+        }
+        bind "+" {
+            Resize "Increase"
+        }
+        bind "-" {
+            Resize "Decrease"
+        }
+        bind "=" {
+            Resize "Increase"
+        }
+        bind "H" {
+            Resize "Decrease left"
+        }
+        bind "J" {
+            Resize "Decrease down"
+        }
+        bind "K" {
+            Resize "Decrease up"
+        }
+        bind "L" {
+            Resize "Decrease right"
+        }
+        bind "h" {
+            Resize "Increase left"
+        }
+        bind "j" {
+            Resize "Increase down"
+        }
+        bind "k" {
+            Resize "Increase up"
+        }
+        bind "l" {
+            Resize "Increase right"
+        }
+        bind "Ctrl n" {
+            SwitchToMode "normal"
+        }
+        bind "Alt r" {
+            SwitchToMode "normal"
+        }
+    }
+    move {
+        bind "left" {
+            MovePane "left"
+        }
+        bind "down" {
+            MovePane "down"
+        }
+        bind "up" {
+            MovePane "up"
+        }
+        bind "right" {
+            MovePane "right"
+        }
+        bind "h" {
+            MovePane "left"
+        }
+        bind "Ctrl h" {
+            SwitchToMode "normal"
+        }
+        bind "j" {
+            MovePane "down"
+        }
+        bind "k" {
+            MovePane "up"
+        }
+        bind "l" {
+            MovePane "right"
+        }
+        bind "n" {
+            MovePane
+        }
+        bind "p" {
+            MovePaneBackwards
+        }
+        bind "tab" {
+            MovePane
+        }
+    }
+    scroll {
+        bind "e" {
+            EditScrollback
+            SwitchToMode "normal"
+        }
+        bind "s" {
+            SwitchToMode "entersearch"
+            SearchInput 0
+        }
+    }
+    search {
+        bind "c" {
+            SearchToggleOption "CaseSensitivity"
+        }
+        bind "n" {
+            Search "down"
+        }
+        bind "o" {
+            SearchToggleOption "WholeWord"
+        }
+        bind "p" {
+            Search "up"
+        }
+        bind "w" {
+            SearchToggleOption "Wrap"
+        }
+    }
+    session {
+        bind "d" {
+            Detach
+        }
+        bind "Ctrl o" {
+            SwitchToMode "normal"
+        }
+        bind "Ctrl s" {
+            SwitchToMode "scroll"
+        }
+    }
+    shared_except "locked" {
+        bind "Alt left" {
+            MoveFocusOrTab "left"
+        }
+        bind "Alt down" {
+            MoveFocus "down"
+        }
+        bind "Alt up" {
+            MoveFocus "up"
+        }
+        bind "Alt right" {
+            MoveFocusOrTab "right"
+        }
+        bind "Alt +" {
+            Resize "Increase"
+        }
+        bind "Alt -" {
+            Resize "Decrease"
+        }
+        bind "Alt =" {
+            Resize "Increase"
+        }
+        bind "Alt i" {
+            MoveTab "left"
+        }
+        bind "Alt j" {
+            MoveFocus "down"
+        }
+        bind "Alt k" {
+            MoveFocus "up"
+        }
+        bind "Alt l" {
+            MoveFocusOrTab "right"
+        }
+        bind "Alt n" {
+            NewPane
+        }
+        bind "Alt o" {
+            MoveTab "right"
+        }
+    }
+    shared_except "locked" "tab" {
+        bind "Alt t" {
+            SwitchToMode "tab"
+        }
+    }
+    shared_except "locked" "pane" {
+        bind "Alt p" {
+            SwitchToMode "pane"
+        }
+    }
+    shared_except "normal" "locked" {
+        bind "Alt h" {
+            MoveFocusOrTab "left"
+        }
+    }
+    shared_except "normal" "locked" "entersearch" {
+        bind "enter" {
+            SwitchToMode "normal"
+        }
+    }
+    shared_except "normal" "locked" "entersearch" "renametab" "renamepane" {
+        bind "esc" {
+            SwitchToMode "normal"
+        }
+    }
+    shared_except "normal" "locked" "scroll" {
+        bind "Alt s" {
+            SwitchToMode "scroll"
+        }
+    }
+    shared_among "tab" "tmux" {
+        bind "1" {
+            GoToTab 1
+            SwitchToMode "normal"
+        }
+        bind "2" {
+            GoToTab 2
+            SwitchToMode "normal"
+        }
+        bind "3" {
+            GoToTab 3
+            SwitchToMode "normal"
+        }
+        bind "4" {
+            GoToTab 4
+            SwitchToMode "normal"
+        }
+        bind "5" {
+            GoToTab 5
+            SwitchToMode "normal"
+        }
+        bind "6" {
+            GoToTab 6
+            SwitchToMode "normal"
+        }
+        bind "7" {
+            GoToTab 7
+            SwitchToMode "normal"
+        }
+        bind "8" {
+            GoToTab 8
+            SwitchToMode "normal"
+        }
+        bind "9" {
+            GoToTab 9
+            SwitchToMode "normal"
+        }
+        bind "t" {
+            NewTab
+            SwitchToMode "normal"
+        }
+        bind "tab" {
+            ToggleTab
+        }
+    }
+    shared_among "scroll" "search" {
+        bind "PageDown" {
+            PageScrollDown
+        }
+        bind "PageUp" {
+            PageScrollUp
+        }
+        bind "left" {
+            PageScrollUp
+        }
+        bind "down" {
+            ScrollDown
+        }
+        bind "up" {
+            ScrollUp
+        }
+        bind "right" {
+            PageScrollDown
+        }
+        bind "Ctrl b" {
+            PageScrollUp
+        }
+        bind "Ctrl c" {
+            ScrollToBottom
+            SwitchToMode "normal"
+        }
+        bind "d" {
+            HalfPageScrollDown
+        }
+        bind "Ctrl f" {
+            PageScrollDown
+        }
+        bind "h" {
+            PageScrollUp
+        }
+        bind "j" {
+            ScrollDown
+        }
+        bind "k" {
+            ScrollUp
+        }
+        bind "l" {
+            PageScrollDown
+        }
+        bind "Ctrl s" {
+            SwitchToMode "normal"
+        }
+        bind "u" {
+            HalfPageScrollUp
+        }
+    }
+    entersearch {
+        bind "Ctrl c" {
+            SwitchToMode "scroll"
+        }
+        bind "esc" {
+            SwitchToMode "scroll"
+        }
+        bind "enter" {
+            SwitchToMode "search"
+        }
+    }
+    renametab {
+        bind "esc" {
+            UndoRenameTab
+            SwitchToMode "tab"
+        }
+    }
+    shared_among "renametab" "renamepane" {
+        bind "Ctrl c" {
+            SwitchToMode "normal"
+        }
+    }
+    renamepane {
+        bind "esc" {
+            UndoRenamePane
+            SwitchToMode "pane"
+        }
+    }
+    tmux {
+        bind "," {
+            SwitchToMode "renametab"
+            TabNameInput 0
+        }
+        bind "-" {
+            NewPane "down"
+            SwitchToMode "normal"
+        }
+        bind "0" {
+            SwitchToMode "pane"
+        }
+        bind "[" {
+            SwitchToMode "scroll"
+        }
+        bind "\\" {
+            NewPane "right"
+            SwitchToMode "normal"
+        }
+        bind "f" {
+            ToggleFloatingPanes
+            SwitchToMode "normal"
+        }
+        bind "g" {
+            ToggleFocusFullscreen
+            SwitchToMode "normal"
+        }
+        bind "k" {
+            SwitchToMode "normal"
+            Run "zellij" "run" "--floating" "--y" "5%" "--x" "0" "--height" "100%" "--width" "100%" "--close-on-exit" "--" "zellij-sessionx-kill" {
+                hold_on_close false
+            }
+        }
+        bind "p" {
+            SwitchToMode "normal"
+            Run "zellij" "run" "--floating" "--y" "5%" "--x" "0" "--height" "100%" "--width" "100%" "--close-on-exit" "--" "zellij-sessionx" {
+                hold_on_close false
+            }
+        }
+        bind "r" {
+            SwitchToMode "resize"
+        }
+        bind "s" {
+            SwitchToMode "normal"
+            Run "zellij" "run" "--floating" "--y" "5%" "--x" "0" "--height" "100%" "--width" "100%" "--close-on-exit" "--" "zellij-sessionx" {
+                hold_on_close false
+            }
+        }
+    }
+}
+
+plugins {
+    plugin-manager location="zellij:plugin-manager"
+    zjstatus location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm"
+}
+
+load_plugins {
+    "https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm"
+}

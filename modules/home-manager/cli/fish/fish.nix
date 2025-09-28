@@ -18,7 +18,7 @@ in
 
       # Zellij
       export ZELLIJ_CONFIG_DIR=$HOME/.config/zellij
-      if [ "$TERM" = ghostty ]
+      if [ "$TERM" = xterm-ghostty ]
           set ZELLIJ_AUTO_ATTACH true
           eval (zellij setup --generate-auto-start fish | string collect)
 
@@ -74,7 +74,6 @@ in
 
     shellAliases = {
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Системные утилиты ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-      p = "paru";
       ls = "eza --icons=always --color=always -a1 --level 1";
       ll = "eza --icons=always --color=always -alh --git";
       gp = "gtrash put";
@@ -90,10 +89,6 @@ in
       err = "journalctl -b -p err";
       syslog_emerg = "sudo dmesg --level=emerg,alert,crit";
       watch = "viddy";
-      # nrs =
-      #   "sudo nixos-rebuild switch --log-format internal-json -v --flake .#nixos-pc &| nom --json";
-      # hms =
-      #   "home-manager switch --log-format internal-json -v --flake .#angeldust &| nom --json";
       nrs = "nh os switch";
       hms = "nh home switch";
       ns = ''tv --preview-command "nix-search-tv preview {}" --source-command "nix-search-tv print"'';
@@ -153,7 +148,7 @@ in
 
     # Код, который выполняется при запуске оболочки
     shellInit = ''
-      source $__fish_config_dir/themes/tokyo-night-moon.fish
+      source ${./tokyo-night-moon.fish}
       any-nix-shell fish --info-right | source
       __magic-enter
 
