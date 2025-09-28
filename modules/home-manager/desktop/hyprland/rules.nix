@@ -1,6 +1,6 @@
 {
   windowRules = [
-    "opacity 0.89 override 0.89 override, title:^(.*)$"
+    # "opacity 0.89 override 0.89 override, title:^(.*)$"
     "float, title:^(blueberry.py)$"
     "float, title:^(steam)$"
     "float, title:^(guifetch)$"
