@@ -6,12 +6,24 @@ in
   programs.gemini-cli = {
     enable = true;
     settings = {
-      excludeTools = [ "ShellTool(rm -rf)" ];
-
-      preferredEditor = "nvim";
-      checkpointing = {
-        enabled = false;
+      security = {
+        auth = {
+          selectedType = "gemini-api-key";
+        };
       };
+
+      tools = {
+        exclude = [ "ShellTool(rm -rf)" ];
+      };
+
+      general = {
+        preferredEditor = "nvim";
+
+        checkpointing = {
+          enabled = false;
+        };
+      };
+
       mcpServers = {
         context7 = {
           command = "npx";

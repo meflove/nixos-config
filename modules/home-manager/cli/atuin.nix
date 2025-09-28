@@ -5,6 +5,9 @@
     settings = {
       auto_sync = false;
 
+      timezone = "+7";
+      dialect = "uk";
+
       enter_accept = true;
       search_mode = "fuzzy";
 
@@ -15,6 +18,9 @@
         "ip"
         "systemctl"
         "nix"
+      ];
+      ignored_commands = [
+        "c"
       ];
     };
   };

@@ -152,7 +152,6 @@ in
 
     # --- Image & Video ---
     gimp3-with-plugins
-    solaar
   ];
 
   imports = [
@@ -165,6 +164,7 @@ in
     inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only
     inputs.chaotic.nixosModules.default
     inputs.nix-flatpak.nixosModules.nix-flatpak
+    inputs.solaar.nixosModules.default
 
     # Boot
     ../../modules/nixos/boot/kernel.nix
