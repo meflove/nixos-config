@@ -13,6 +13,7 @@
     ../../modules/home-manager/cli/fish/fish.nix
     ../../modules/home-manager/cli/otter-launcher.nix
     ../../modules/home-manager/cli/yazi.nix
+    ../../modules/home-manager/cli/zellij
 
     # Desktop
     ../../modules/home-manager/desktop/ghostty.nix
@@ -45,7 +46,6 @@
     # или чьи модули мы не используем для конфигурации
     packages = with pkgs; [
       neovim
-      zellij
       easyeffects
       xdg-user-dirs
       inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
