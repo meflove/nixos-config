@@ -26,6 +26,7 @@
     ../../modules/home-manager/development/ai.nix
     ../../modules/home-manager/development/direnv.nix
     ../../modules/home-manager/development/git.nix
+    ../../modules/home-manager/development/zed.nix
 
     # Gaming
     ../../modules/home-manager/gaming/gaming.nix
