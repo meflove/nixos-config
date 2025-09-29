@@ -21,6 +21,7 @@
     ../../modules/home-manager/desktop/theming.nix
     ../../modules/home-manager/desktop/zen.nix
     ../../modules/home-manager/desktop/nixcord.nix
+    ../../modules/home-manager/desktop/easyeffects
 
     # Development
     ../../modules/home-manager/development/ai.nix
@@ -47,7 +48,6 @@
     # или чьи модули мы не используем для конфигурации
     packages = with pkgs; [
       neovim
-      easyeffects
       xdg-user-dirs
       inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
       kitty

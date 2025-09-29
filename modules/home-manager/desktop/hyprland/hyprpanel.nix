@@ -1,6 +1,5 @@
 { inputs, pkgs, ... }:
 {
-
   programs.hyprpanel = {
     enable = true;
     systemd.enable = true;

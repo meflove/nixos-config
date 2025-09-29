@@ -12,20 +12,14 @@
   hardware.nvidia-container-toolkit.enable = true;
 
   environment.variables.DBX_CONTAINER_MANAGER = "podman";
-  users.extraGroups.podman.members = [ "xnm" ];
+  users.extraGroups.podman.members = [ "angeldust" ];
 
   environment.systemPackages = with pkgs; [
     nvidia-docker
-    nerdctl
-
-    distrobox
-    qemu
-    lima
 
     podman-compose
     podman-tui
 
     docker-compose
-    lazydocker
   ];
 }

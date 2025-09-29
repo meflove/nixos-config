@@ -136,12 +136,10 @@ in
     gtk3
     gtk4
     pavucontrol
-    swww
     wl-clipboard
     nekoray
 
     # --- Audio ---
-    easyeffects
 
     # --- Fun ---
     krabby
