@@ -8,16 +8,13 @@
 let
   rules = import ./rules.nix;
   env = import ./env.nix;
-  execs = import ./execs.nix;
   binds = import ./binds.nix;
   envConfig = lib.concatStringsSep "\n" (
     lib.mapAttrsToList (name: value: "env = ${name},${value}") env
   );
-  execOnceConfig = lib.concatStringsSep "\n" (map (command: "exec-once = ${command}") execs);
 in
 {
   imports = [
-    ./hypridle.nix
     ./hyprlock.nix
     ./hyprpanel.nix
   ];
@@ -30,6 +27,7 @@ in
       hyprpicker
       libnotify
       tesseract
+      swww
     ];
 
     pointerCursor = {
@@ -46,12 +44,14 @@ in
     };
   };
 
-  dconf.settings = {
-    "org/gnome/desktop/background" = {
-      picture-uri-dark = "file://${pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src}";
-    };
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
+  dconf = {
+    settings = {
+      "org/gnome/desktop/background" = {
+        picture-uri-dark = "file://${pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src}";
+      };
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+      };
     };
   };
 
@@ -80,7 +80,21 @@ in
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     portalPackage =
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-    systemd.enable = true;
+
+    systemd = {
+      enable = true;
+
+      variables = [
+        "--all"
+        "DISPLAY"
+        "WAYLAND_DISPLAY"
+        "XDG_CURRENT_DESKTOP"
+      ];
+
+      enableXdgAutostart = true;
+    };
+
+    xwayland.enable = true;
 
     settings = (import ./settings.nix { inherit pkgs; }) // {
       bind = binds;
@@ -95,7 +109,12 @@ in
 
     extraConfig = ''
       ${envConfig}
-      ${execOnceConfig}
+
+      exec-once = easyeffects --gapplication-service
+      exec-once = hyprpanel &> /dev/null
+
+      exec-once = [workspace 2 silent] zen
+      exec-once = [workspace 1 silent] AyuGram
     '';
   };
 
@@ -114,7 +133,7 @@ in
       enable = true;
       package = config.programs.ghostty.package;
       settings.default = [
-        "com.mitchellh.ghostty.desktop"
+        "${config.programs.ghostty.package}/share/applications/com.mitchellh.ghostty.desktop"
       ];
     };
 
