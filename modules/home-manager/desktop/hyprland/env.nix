@@ -1,12 +1,5 @@
 {
-  "QT_IM_MODULE" = "fcitx";
-  "XMODIFIERS" = "@im=fcitx";
-  "SDL_IM_MODULE" = "fcitx";
-  "GLFW_IM_MODULE" = "ibus";
-  "INPUT_METHOD" = "fcitx";
-
   "QT_QPA_PLATFORM" = "wayland";
-  "QT_QPA_PLATFORMTHEME" = "qt5ct";
   "WLR_NO_HARDWARE_CURSORS" = "1";
 
   "LIBVA_DRIVER_NAME" = "nvidia";

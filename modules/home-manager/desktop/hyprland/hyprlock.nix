@@ -1,5 +1,7 @@
-# /home/meflove/git/nixos-config/modules/home-manager/hyprland/hyprlock.nix
+{ inputs, ... }:
 {
+  home.file."Pictures/wallpaper/lock_screen.png".source = ../../../../pics/lock_screen.png;
+
   programs.hyprlock = {
     enable = true;
     settings =
@@ -11,7 +13,7 @@
           hide_cursor = true;
         };
         background = {
-          path = "$HOME/Pictures/wallpaper/lock_screen.png";
+          path = "${inputs.self}/pics/lock_screen.png";
           blur_passes = 3;
           color = "rgb(${colors.base})";
         };

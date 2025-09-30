@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   home.packages = with pkgs; [
     dust
@@ -24,6 +29,8 @@
     enable = true;
 
     historySize = 1000;
-    imageDisplay.type = "kitty";
+    imageDisplay.type = "sixel";
   };
+
+  systemd.user.services.clipse = lib.mkForce { };
 }
