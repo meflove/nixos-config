@@ -8,7 +8,7 @@
 let
   rules = import ./rules.nix;
   env = import ./env.nix;
-  binds = import ./binds.nix;
+  binds = import ./binds.nix { inherit inputs; };
   envConfig = lib.concatStringsSep "\n" (
     lib.mapAttrsToList (name: value: "env = ${name},${value}") env
   );
@@ -110,8 +110,10 @@ in
     extraConfig = ''
       ${envConfig}
 
-      exec-once = easyeffects --gapplication-service
+      exec-once = clipse -listen
+      exec-once = easyeffects --gapplication-service &
       exec-once = hyprpanel &> /dev/null
+      exec-once = hyprlock
 
       exec-once = [workspace 2 silent] zen
       exec-once = [workspace 1 silent] AyuGram
@@ -120,7 +122,6 @@ in
 
   xdg = {
     enable = true;
-    autostart.enable = true;
     mime.enable = true;
 
     userDirs = {
@@ -150,8 +151,8 @@ in
       enable = true;
 
       defaultApplications = {
-        "image/jpeg" = [ "feh.desktop" ];
-        "image/png" = [ "feh.desktop" ];
+        "image/jpeg" = [ "imv.desktop" ];
+        "image/png" = [ "imv.desktop" ];
         "inode/directory" = [
           "${config.programs.yazi.package}/share/applications/yazi.desktop"
         ];
@@ -180,9 +181,9 @@ in
       };
 
       associations.added = {
-        "image/jpeg" = [ "feh.desktop" ];
-        "image/png" = [ "feh.desktop" ];
-        "inode/directory" = [ "yazi.desktop" ];
+        "image/jpeg" = [ "imv.desktop" ];
+        "image/png" = [ "imv.desktop" ];
+        "inode/directory" = [ "${config.programs.yazi.package}/share/applications/yazi.desktop" ];
 
         "x-scheme-handler/http" = [ "zen-beta.desktop" ];
         "x-scheme-handler/https" = [ "zen-beta.desktop" ];

@@ -17,6 +17,7 @@
     "center, title:^(Wine configuration)(.*)$"
     "center, title:^(Blobdrop)(.*)$"
     "float, title:^(Blobdrop)(.*)$"
+
     "float, class:com.free.clipse"
     "size 900 652, class:com.free.clipse"
     "stayfocused, class:com.free.clipse"
@@ -29,6 +30,10 @@
     "size 600 500, class:com.free.kalker"
     "stayfocused, class:com.free.kalker"
     "noborder, class:com.free.kalker"
+    "float, class:it.mijorus.smile"
+    "size 600 800, class:it.mijorus.smile"
+    "stayfocused, class:it.mijorus.smile"
+    "noborder, class:it.mijorus.smile"
 
     "keepaspectratio, title:^(Picture(-| )in(-| )[Pp]icture)$"
     "move 73% 72%,title:^(Picture(-| )in(-| )[Pp]icture)$"
