@@ -1,9 +1,18 @@
-{ pkgs, lib, ... }:
 {
-
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+{
   nixpkgs.localSystem = {
     system = "x86_64-linux";
   };
+
+  environment.systemPackages = with pkgs; [
+    linuxPackages_cachyos.v4l2loopback
+    v4l-utils
+  ];
 
   hardware.xone.enable = true;
 
@@ -18,30 +27,34 @@
     kernelPackages = pkgs.linuxPackages_cachyos;
 
     consoleLogLevel = 3;
+
+    kernelPatches = [
+      {
+        name = "bbr";
+        patch = null;
+        structuredExtraConfig = with pkgs.lib.kernel; {
+          TCP_CONG_CUBIC = lib.mkForce module;
+          TCP_CONG_BBR = yes; # enable BBR
+          DEFAULT_BBR = yes; # use it by default
+          NET_SCH_FQ_CODEL = module;
+          NET_SCH_FQ = yes;
+        };
+      }
+    ];
+
+    kernelModules = [
+      "ntsync"
+      "v4l2loopback"
+    ];
+
+    extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   };
-
-  boot.kernelPatches = [
-    {
-      name = "bbr";
-      patch = null;
-      structuredExtraConfig = with pkgs.lib.kernel; {
-        TCP_CONG_CUBIC = lib.mkForce module;
-        TCP_CONG_BBR = yes; # enable BBR
-        DEFAULT_BBR = yes; # use it by default
-        NET_SCH_FQ_CODEL = module;
-        NET_SCH_FQ = yes;
-      };
-    }
-  ];
-
-  boot.kernelModules = [ "ntsync" ];
 
   boot.kernelParams = [
     "systemd.show_status=auto"
     "quiet"
     "splash"
     "mitigations=off"
-    "loglevel=3"
     "vt.global_cursor_default=0"
     "lpj=2496000"
     "page_alloc.shuffle=1"
