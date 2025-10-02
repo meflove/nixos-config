@@ -3,11 +3,6 @@ let
   secret = import ../../../../secrets/gemini.nix;
 in
 {
-  # Включаем и настраиваем Fish
-  home.packages = with pkgs; [ any-nix-shell ];
-
-  programs.starship.enable = true;
-
   programs.fish = {
     enable = true;
 
@@ -15,6 +10,19 @@ in
 
     interactiveShellInit = ''
       set fish_greeting
+
+      # Atuin
+      set -x ATUIN_NOBIND true
+      bind ctrl-r _atuin_search
+      bind up _atuin_bind_up
+      bind \eOA _atuin_bind_up
+      bind \e\[A _atuin_bind_up
+      if bind -M insert >/dev/null 2>&1
+          bind -M insert ctrl-r _atuin_search
+          bind -M insert up _atuin_bind_up
+          bind -M insert \eOA _atuin_bind_up
+          bind -M insert \e\[A _atuin_bind_up
+      end
 
       # Zellij
       export ZELLIJ_CONFIG_DIR=$HOME/.config/zellij
@@ -74,10 +82,10 @@ in
 
     shellAliases = {
       # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Системные утилиты ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-      ls = "eza --icons=always --color=always -a1 --level 1";
-      ll = "eza --icons=always --color=always -alh --git";
+      ls = "eza";
+      ll = "eza -l";
       gp = "gtrash put";
-      tree = "ls --tree --level 1000";
+      tree = "eza --tree";
       less = "less -R";
       du = "dust";
       df = "duf";
@@ -149,28 +157,8 @@ in
     # Код, который выполняется при запуске оболочки
     shellInit = ''
       source ${./tokyo-night-moon.fish}
-      any-nix-shell fish --info-right | source
+      ${pkgs.any-nix-shell}/bin/any-nix-shell fish --info-right | source
       __magic-enter
-
-      # Atuin
-      set -x ATUIN_NOBIND true
-      atuin init fish | source
-      bind ctrl-r _atuin_search
-      bind up _atuin_bind_up
-      bind \eOA _atuin_bind_up
-      bind \e\[A _atuin_bind_up
-      if bind -M insert >/dev/null 2>&1
-          bind -M insert ctrl-r _atuin_search
-          bind -M insert up _atuin_bind_up
-          bind -M insert \eOA _atuin_bind_up
-          bind -M insert \e\[A _atuin_bind_up
-      end
-
-      # Zoxide
-      zoxide init fish | source
-
-      # Starship
-      starship init fish | source # Раскомментируйте, если используете Starship вместо темы
     '';
   };
 

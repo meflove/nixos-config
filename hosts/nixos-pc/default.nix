@@ -75,14 +75,15 @@ in
     unzip
     wget
     zip
+    nmap
 
     # Replacements
     bat # Better cat
-    eza # Better ls
+    # eza # Better ls
     fd # Better find
     ripgrep # Better grep
     sd # Better sed
-    zoxide # Better cd
+    # zoxide # Better cd
     ggh # Better SSH
     btop # Better top
 

@@ -7,7 +7,6 @@
     inputs.nixcord.homeModules.nixcord
 
     # CLI
-    ../../modules/home-manager/cli/atuin.nix
     ../../modules/home-manager/cli/cli.nix
     ../../modules/home-manager/cli/fastfetch.nix
     ../../modules/home-manager/cli/fish/fish.nix
@@ -27,7 +26,7 @@
     ../../modules/home-manager/development/ai.nix
     ../../modules/home-manager/development/direnv.nix
     ../../modules/home-manager/development/git.nix
-    ../../modules/home-manager/development/zed.nix
+    # ../../modules/home-manager/development/zed.nix
     ../../modules/home-manager/development/nvim.nix
 
     # Gaming

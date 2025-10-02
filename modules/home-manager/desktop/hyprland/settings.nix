@@ -52,7 +52,7 @@ in
       xray = true;
       special = true;
       new_optimizations = true;
-      size = 2;
+      size = 5;
       passes = 2;
       brightness = 1;
       vibrancy = 2;
@@ -60,6 +60,7 @@ in
       popups = true;
       popups_ignorealpha = 0.6;
     };
+
     shadow = {
       enabled = true;
       ignore_window = true;
@@ -67,6 +68,7 @@ in
       offset = "0 2";
       render_power = 3;
     };
+
     dim_inactive = false;
     dim_strength = 0.1;
     dim_special = 0;
