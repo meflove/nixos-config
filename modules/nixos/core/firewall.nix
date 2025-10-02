@@ -29,9 +29,7 @@
       private-postgresql = {
         from = "all";
         to = [ "private" ];
-        allowedTCPPorts = [
-          47950
-        ];
+        allowedTCPPorts = [ 47950 ];
       };
 
       private-ssh = {

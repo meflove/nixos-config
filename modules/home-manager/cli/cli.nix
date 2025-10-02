@@ -33,4 +33,56 @@
   };
 
   systemd.user.services.clipse = lib.mkForce { };
+
+  programs.eza = {
+    enable = true;
+
+    git = true;
+    icons = "always";
+    colors = "always";
+
+    extraOptions = [
+      "-a"
+      "-1"
+    ];
+  };
+
+  programs.zoxide = {
+    enable = true;
+
+    enableFishIntegration = true;
+  };
+
+  programs.starship = {
+    enable = true;
+
+    enableFishIntegration = true;
+  };
+
+  programs.atuin = {
+    enable = true;
+
+    enableFishIntegration = true;
+    settings = {
+      auto_sync = false;
+
+      timezone = "+7";
+      dialect = "uk";
+
+      enter_accept = true;
+      search_mode = "fuzzy";
+
+      style = "full";
+
+      common_subcommands = [
+        "git"
+        "ip"
+        "systemctl"
+        "nix"
+      ];
+      ignored_commands = [
+        "c"
+      ];
+    };
+  };
 }

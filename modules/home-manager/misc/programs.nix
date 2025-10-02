@@ -45,6 +45,7 @@
 
     settings = {
       embed-thumbnail = true;
+      embed-metadata = true;
       embed-subs = true;
       sub-langs = "all";
       downloader = "aria2c";
