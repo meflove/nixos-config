@@ -16,13 +16,13 @@
 
     # Desktop
     ../../modules/home-manager/desktop/ghostty.nix
-    ../../modules/home-manager/desktop/hyprland.nix
+    ../../modules/home-manager/desktop/hyprland
     ../../modules/home-manager/desktop/theming.nix
     ../../modules/home-manager/desktop/zen.nix
     ../../modules/home-manager/desktop/nixcord.nix
     ../../modules/home-manager/desktop/easyeffects
     ../../modules/home-manager/desktop/mpv.nix
-    ../../modules/home-manager/desktop/obs.nix
+    # ../../modules/home-manager/desktop/obs.nix
 
     # Development
     ../../modules/home-manager/development/ai.nix

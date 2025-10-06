@@ -16,7 +16,7 @@
       };
 
       init = {
-        defaultBranch = "main";
+        defaultBranch = "dev";
       };
 
       diff = {

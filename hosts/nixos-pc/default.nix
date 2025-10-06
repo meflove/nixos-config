@@ -1,11 +1,20 @@
-{ pkgs, inputs, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 let
   secret = import ../../secrets/pass.nix;
-  # multranslate = pkgs.callPackage ../../pkgs/multranslate/default.nix { };
+  multranslate = pkgs.callPackage ../../pkgs/multranslate/default.nix { };
+  slit = pkgs.callPackage ../../pkgs/slit { };
 in
 {
   nix.settings = {
-    substituters = [ "https://nix-gaming.cachix.org" ];
+    substituters = lib.mkForce [
+      "https://nix-gaming.cachix.org"
+      "https://nixos-cache-proxy.cofob.dev"
+    ];
     trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
 
     experimental-features = [
@@ -86,6 +95,7 @@ in
     # zoxide # Better cd
     ggh # Better SSH
     btop # Better top
+    # slit # better less
 
     # Other
     chafa
@@ -179,6 +189,7 @@ in
 
     # Desktop
     ../../modules/nixos/desktop/screen_record.nix
+    ../../modules/nixos/desktop/obs.nix
 
     # Development
     ../../modules/nixos/development/ai.nix

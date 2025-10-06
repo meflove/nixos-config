@@ -1,12 +1,10 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    pwvucontrol
-    vlc
-  ];
+  security.polkit.enable = true;
 
   programs.obs-studio = {
-    enable = false;
+    enable = true;
+    enableVirtualCamera = true;
 
     plugins = with pkgs.obs-studio-plugins; [
       wlrobs
@@ -16,6 +14,6 @@
       obs-pipewire-audio-capture
       droidcam-obs
     ];
-  };
 
+  };
 }
