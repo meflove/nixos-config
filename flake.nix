@@ -37,6 +37,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-colors.url = "github:misterio77/nix-colors";
+    nix-cursors = {
+      url = "github:LilleAila/nix-cursors";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ayugram-desktop = {
       type = "git";
       submodules = true;

@@ -1,7 +1,10 @@
 { pkgs, ... }:
 {
 
-  home.packages = with pkgs; [ diffnav ];
+  home.packages = with pkgs; [
+    diffnav
+    git-filter-repo
+  ];
 
   programs.git = {
     enable = true;

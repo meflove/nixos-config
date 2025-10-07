@@ -22,13 +22,6 @@ in
       "flakes"
     ];
 
-    system-features = [
-      "nixos-test"
-      "benchmark"
-      "big-parallel"
-      "kvm"
-    ];
-
     auto-optimise-store = true;
 
     # With Lix, i cant use this option
@@ -157,10 +150,10 @@ in
 
     # --- Office & docs ---
     papers
-    libreoffice
+    # libreoffice
 
     # --- Image & Video ---
-    gimp3-with-plugins
+    # gimp3-with-plugins
   ];
 
   imports = [

@@ -15,7 +15,7 @@
     lutris # install lutris launcher
 
     # wineWowPackages.staging
-    inputs.nix-gaming.packages.${pkgs.system}.wine-tkg-ntsync
+    inputs.nix-gaming.packages.${pkgs.system}.wine-ge
     winetricks
     wineWowPackages.waylandFull
     vkd3d-proton

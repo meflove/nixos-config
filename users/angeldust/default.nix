@@ -5,6 +5,7 @@
     inputs.otter-launcher.homeModules.default
     inputs.hyprland.homeManagerModules.default
     inputs.nixcord.homeModules.nixcord
+    inputs.nix-colors.homeManagerModules.default
 
     # CLI
     ../../modules/home-manager/cli/cli.nix
@@ -22,6 +23,7 @@
     ../../modules/home-manager/desktop/nixcord.nix
     ../../modules/home-manager/desktop/easyeffects
     ../../modules/home-manager/desktop/mpv.nix
+    ../../modules/home-manager/desktop/xdg.nix
     # ../../modules/home-manager/desktop/obs.nix
 
     # Development
@@ -63,7 +65,7 @@
       imv
 
       smile
-      calcure
+      # calcure
     ];
 
   };
