@@ -11,7 +11,7 @@
     ../../modules/home-manager/cli/cli.nix
     ../../modules/home-manager/cli/fastfetch.nix
     ../../modules/home-manager/cli/fish/fish.nix
-    ../../modules/home-manager/cli/otter-launcher.nix
+    ../../modules/home-manager/cli/otter-launcher
     ../../modules/home-manager/cli/yazi.nix
     ../../modules/home-manager/cli/zellij
 
