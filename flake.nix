@@ -58,6 +58,10 @@
       url = "github:kuokuo123/otter-launcher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    fsel = {
+      url = "github:Mjoyufull/fsel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     solaar = {
       url = "github:Svenum/Solaar-Flake/main";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -103,7 +107,14 @@
       self,
       ...
     }@inputs:
+    let
+      system = "x86_64-linux";
+      pkgs = import inputs.nixpkgs { inherit system; };
+      shell = import ./shell.nix { inherit pkgs; };
+    in
     {
+      devShells.${system}.default = pkgs.mkShell shell;
+
       diskoConfigurations = {
         vmDisk = import ./hosts/vm/vm-disk.nix;
         pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
@@ -111,7 +122,7 @@
 
       nixosConfigurations = {
         nixos-pc = inputs.nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          inherit system;
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/nixos-pc/default.nix
@@ -119,7 +130,7 @@
         };
 
         vm = inputs.nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          inherit system;
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/vm/default.nix
@@ -129,7 +140,7 @@
 
       homeConfigurations = {
         "angeldust" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+          pkgs = inputs.nixpkgs.legacyPackages.${system};
           extraSpecialArgs = { inherit inputs; };
           modules = [
             {
