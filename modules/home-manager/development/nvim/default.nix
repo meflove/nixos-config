@@ -15,4 +15,9 @@
       };
     };
   };
+
+  xdg.configFile."nvim-og" = {
+    recursive = true;
+    source = ./nvim;
+  };
 }

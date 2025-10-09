@@ -31,7 +31,7 @@
     ../../modules/home-manager/development/direnv.nix
     ../../modules/home-manager/development/git.nix
     # ../../modules/home-manager/development/zed.nix
-    ../../modules/home-manager/development/nvim.nix
+    ../../modules/home-manager/development/nvim
 
     # Gaming
     ../../modules/home-manager/gaming/gaming.nix
