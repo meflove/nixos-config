@@ -5,9 +5,6 @@
   ...
 }:
 {
-  nixpkgs.localSystem = {
-    system = "x86_64-linux";
-  };
 
   environment.systemPackages = with pkgs; [
     linuxPackages_cachyos.v4l2loopback

@@ -14,6 +14,7 @@
     ../../modules/home-manager/cli/otter-launcher
     ../../modules/home-manager/cli/yazi.nix
     ../../modules/home-manager/cli/zellij
+    ../../modules/home-manager/cli/fsel
 
     # Desktop
     ../../modules/home-manager/desktop/ghostty.nix

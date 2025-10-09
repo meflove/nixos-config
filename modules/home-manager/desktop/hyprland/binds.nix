@@ -100,7 +100,7 @@ in
   "Alt, Tab, bringactivetotop,"
 
   # Widgets
-  ''${super}, Super_L, exec, pkill otter-launcher || ${term} --class="com.free.otter-launcher" --title="otter-launcher" -e otter-launcher''
+  ''${super}, Super_L, exec, pkill otter-launcher || ${term} --class="com.free.otter-launcher" --title="otter-launcher" -e sh -c "sleep 0.05 && otter-launcher"''
 
   # Apps
   "${super}, T, exec, "

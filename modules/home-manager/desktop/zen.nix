@@ -1,10 +1,7 @@
 { inputs, pkgs, ... }:
-let
-  system = "x86_64-linux";
-in
 {
   home.packages = with inputs; [
-    (zen-browser.packages."${system}".default.override {
+    (zen-browser.packages.${pkgs.system}.default.override {
       extraPrefsFiles = [
         (builtins.fetchurl {
           url = "https://raw.githubusercontent.com/MrOtherGuy/fx-autoconfig/master/program/config.js";

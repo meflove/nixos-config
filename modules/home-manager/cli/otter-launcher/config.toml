@@ -32,23 +32,15 @@ hint_color = "\u001B[90m"
 
 # Modules are defined as followed
 [[modules]]
-description = "search with google"
-prefix = "gg"
-# try wm's exec command if 'setsid -f' does not work, eg. 'hyprctl dispatch exec'
-cmd = "hyprctl dispatch exec xdg-open 'https://www.google.com/search?q={}'"
-with_argument = true                                                        # If "with_argument" is true, the {} in the cmd value will be replaced with user input. If the field is not explicitly set, will be taken as false.
-url_encode = true                                                           # "url_encode" should be true if the module is set to call webpages, as this ensures special characters in url being readable to browsers. It'd better be false with shell scripts. If the field is not explicitly set, will be taken as false.
-
-[[modules]]
 description = "launch desktop applications with fzf"
 prefix = "app"
 cmd = """
 desktop_file() {
-    find /usr/share/applications -name "*.desktop" 2>/dev/null
-    find /usr/local/share/applications -name "*.desktop" 2>/dev/null
-    find "$HOME/.local/share/applications" -name "*.desktop" 2>/dev/null
-    find /var/lib/flatpak/exports/share/applications -name "*.desktop" 2>/dev/null
-    find "$HOME/.local/share/flatpak/exports/share/applications" -name "*.desktop" 2>/dev/null
+    # find /usr/share/applications -name "*.desktop" 2>/dev/null
+    # find /usr/local/share/applications -name "*.desktop" 2>/dev/null
+    # find "$HOME/.local/share/applications" -name "*.desktop" 2>/dev/null
+    # find /var/lib/flatpak/exports/share/applications -name "*.desktop" 2>/dev/null
+    # find "$HOME/.local/share/flatpak/exports/share/applications" -name "*.desktop" 2>/dev/null
     find /run/current-system/sw/share/applications -name "*.desktop" 2>/dev/null
     find "$HOME/.nix-profile/share/applications/" -name "*.desktop" 2>/dev/null
 }
@@ -73,20 +65,19 @@ selected_path=$(echo "$selected_line" | cut -d ":" -f 2-)
 hyprctl dispatch exec gtk-launch "$(basename "$selected_path")"
 """
 
-# [[modules]]
-# description = "search github"
-# prefix = "gh"
-# cmd = "hyprctl dispatch exec xdg-open https://github.com/search?q='{}'"
-#
-# with_argument = true
-# url_encode = true
+[[modules]]
+description = "search with google"
+prefix = "gg"
+# try wm's exec command if 'setsid -f' does not work, eg. 'hyprctl dispatch exec'
+cmd = "hyprctl dispatch exec xdg-open 'https://www.google.com/search?q={}'"
+with_argument = true                                                        # If "with_argument" is true, the {} in the cmd value will be replaced with user input. If the field is not explicitly set, will be taken as false.
+url_encode = true                                                           # "url_encode" should be true if the module is set to call webpages, as this ensures special characters in url being readable to browsers. It'd better be false with shell scripts. If the field is not explicitly set, will be taken as false.
 
 
 [[modules]]
 description = "launch program in a new terminal"
 prefix = "sh"
 cmd = "hyprctl dispatch exec 'ghostty -e {}'"
-
 with_argument = true
 
 

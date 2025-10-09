@@ -22,14 +22,22 @@
     "size 900 652, class:com.free.clipse"
     "stayfocused, class:com.free.clipse"
     "noborder, class:com.free.clipse"
+
     "float, class:com.free.otter-launcher"
     "size 600 500, class:com.free.otter-launcher"
-    "stayfocused, class:com.otter-launcher"
+    "stayfocused, class:com.free.otter-launcher"
     "noborder, class:com.free.otter-launcher"
+
+    "float, class:com.free.fsel"
+    "size 600 500, class:com.free.fsel"
+    "stayfocused, class:com.free.fsel"
+    "noborder, class:com.free.fsel"
+
     "float, class:com.free.kalker"
     "size 600 500, class:com.free.kalker"
     "stayfocused, class:com.free.kalker"
     "noborder, class:com.free.kalker"
+
     "float, class:it.mijorus.smile"
     "size 600 800, class:it.mijorus.smile"
     "stayfocused, class:it.mijorus.smile"
