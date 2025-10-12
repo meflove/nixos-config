@@ -1,5 +1,8 @@
-{ pkgs, inputs, ... }:
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   programs.gamemode = {
     enable = true;
     settings.general.inhibit_screensaver = 0;
@@ -11,20 +14,24 @@
     gamescopeSession.enable = true;
   };
 
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; let
+    gamePkgs = inputs.nix-gaming.packages.${pkgs.hostPlatform.system};
+  in [
+    inputs.freesmlauncher.packages.${pkgs.system}.freesmlauncher
+    inputs.nix-gaming.packages.${pkgs.system}.wine-tkg
     lutris # install lutris launcher
-
-    # wineWowPackages.staging
-    inputs.nix-gaming.packages.${pkgs.system}.wine-ge
     winetricks
-    wineWowPackages.waylandFull
+    wineWow64Packages.stagingFull
     vkd3d-proton
     dxvk
 
-    veloren
-    mindustry-wayland
-    shattered-pixel-dungeon
-    inputs.freesmlauncher.packages.${pkgs.system}.freesmlauncher
+    # veloren
+    # mindustry-wayland
+    # shattered-pixel-dungeon
+    # (gamePkgs.osu-stable.override {
+    #   useGameMode = false;
+    # })
+    # osu-lazer-bin
 
     logiops
   ];
@@ -38,5 +45,11 @@
     extraArgs = ""; # Extra arguments to pass to solaar on startup
   };
 
-  hardware.new-lg4ff.enable = true;
+  hardware = {
+    new-lg4ff.enable = true;
+    opentabletdriver = {
+      enable = true;
+      daemon.enable = true;
+    };
+  };
 }

@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-{
-
+{pkgs, ...}: {
   time.timeZone = "Asia/Barnaul";
 
   i18n = {

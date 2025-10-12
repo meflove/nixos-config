@@ -1,13 +1,15 @@
-{ inputs, pkgs, ... }:
-let
+{
+  inputs,
+  pkgs,
+  ...
+}: let
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "plugins";
     rev = "main";
     hash = "sha256-9+58QhdM4HVOAfEC224TrPEx1N7F2VLGMxKVLAM4nJw=";
   };
-in
-{
+in {
   programs.yazi = {
     enable = true;
     package = (
@@ -42,9 +44,9 @@ in
     };
 
     initLua = ''
-      			require("full-border"):setup()
-      			require("starship"):setup()
-      		'';
+      require("full-border"):setup()
+      require("starship"):setup()
+    '';
 
     keymap = {
       mgr.prepend_keymap = [

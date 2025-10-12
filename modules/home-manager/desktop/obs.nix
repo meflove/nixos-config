@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     pwvucontrol
     vlc
@@ -17,5 +16,4 @@
       droidcam-obs
     ];
   };
-
 }

@@ -1,9 +1,7 @@
-{ ... }:
-let
+{...}: let
   outputPreset = import ./output_preset.nix;
   inputPreset = import ./input_preset.nix;
-in
-{
+in {
   services.easyeffects = {
     enable = true;
 

@@ -12,7 +12,6 @@
       scope = 100;
     };
     blocklist = [
-
     ];
     "compressor#0" = {
       attack = 20;

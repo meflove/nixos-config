@@ -1,5 +1,8 @@
-{ inputs, pkgs, ... }:
 {
+  inputs,
+  pkgs,
+  ...
+}: {
   # Общие системные программы и настройки для всех хостов
   programs.xwayland.enable = true;
 

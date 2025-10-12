@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
@@ -7,10 +6,10 @@
       runAsRoot = true;
       swtpm.enable = true;
 
-      vhostUserPackages = with pkgs; [ virtiofsd ];
+      vhostUserPackages = with pkgs; [virtiofsd];
     };
   };
   programs.virt-manager.enable = true;
 
-  users.users.angeldust.extraGroups = [ "libvirtd" ];
+  users.users.angeldust.extraGroups = ["libvirtd"];
 }

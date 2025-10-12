@@ -3,8 +3,7 @@
   config,
   pkgs,
   ...
-}:
-{
+}: {
   home = {
     pointerCursor = {
       gtk.enable = true;
@@ -25,9 +24,9 @@
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
-      serif = [ "JetBrainsMono NF SemiBold" ];
-      sansSerif = [ "JetBrainsMono NF SemiBold" ];
-      monospace = [ "JetBrainsMono NF SemiBold" ];
+      serif = ["JetBrainsMono NF SemiBold"];
+      sansSerif = ["JetBrainsMono NF SemiBold"];
+      monospace = ["JetBrainsMono NF SemiBold"];
     };
   };
 

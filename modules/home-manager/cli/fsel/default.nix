@@ -1,8 +1,5 @@
-{
-  ...
-}:
-{
-  imports = [ ./hm-module.nix ];
+{...}: {
+  imports = [./hm-module.nix];
 
   programs.fsel = {
     enable = false;

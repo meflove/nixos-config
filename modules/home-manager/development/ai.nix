@@ -1,8 +1,6 @@
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   secret = import ../../../secrets/github.nix;
-in
-{
+in {
   programs.gemini-cli = {
     enable = true;
     settings = {
@@ -13,7 +11,7 @@ in
       };
 
       tools = {
-        exclude = [ "ShellTool(rm -rf)" ];
+        exclude = ["ShellTool(rm -rf)"];
       };
 
       general = {

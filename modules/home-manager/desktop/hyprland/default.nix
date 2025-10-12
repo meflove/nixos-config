@@ -3,16 +3,14 @@
   lib,
   inputs,
   ...
-}:
-let
+}: let
   rules = import ./rules.nix;
   env = import ./env.nix;
-  binds = import ./binds.nix { inherit inputs; };
+  binds = import ./binds.nix {inherit inputs;};
   envConfig = lib.concatStringsSep "\n" (
     lib.mapAttrsToList (name: value: "env = ${name},${value}") env
   );
-in
-{
+in {
   imports = [
     ./hyprlock.nix
     ./hyprpanel.nix
@@ -51,16 +49,18 @@ in
 
     xwayland.enable = true;
 
-    settings = (import ./settings.nix { inherit pkgs; }) // {
-      bind = binds;
-      bindm = [
-        "Super, mouse:272, movewindow"
-        "Super, mouse:273, resizewindow"
-      ];
+    settings =
+      (import ./settings.nix {inherit pkgs;})
+      // {
+        bind = binds;
+        bindm = [
+          "Super, mouse:272, movewindow"
+          "Super, mouse:273, resizewindow"
+        ];
 
-      windowrule = rules.windowRules;
-      layerrule = rules.layerRules;
-    };
+        windowrule = rules.windowRules;
+        layerrule = rules.layerRules;
+      };
 
     extraConfig = ''
       ${envConfig}
@@ -70,8 +70,8 @@ in
       exec-once = hyprpanel &> /dev/null
       exec-once = hyprlock
 
-      exec-once = [workspace 2 silent] zen
       exec-once = [workspace 1 silent] AyuGram
+      exec-once = [workspace 2 silent] zen
     '';
   };
 }

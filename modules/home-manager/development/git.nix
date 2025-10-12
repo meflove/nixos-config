@@ -1,9 +1,8 @@
-{ pkgs, ... }:
-{
-
+{pkgs, ...}: {
   home.packages = with pkgs; [
     diffnav
     git-filter-repo
+    pre-commit
   ];
 
   programs.git = {

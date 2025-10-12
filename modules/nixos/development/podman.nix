@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   virtualisation.podman = {
     enable = true;
 
@@ -12,7 +11,7 @@
   hardware.nvidia-container-toolkit.enable = true;
 
   environment.variables.DBX_CONTAINER_MANAGER = "podman";
-  users.extraGroups.podman.members = [ "angeldust" ];
+  users.extraGroups.podman.members = ["angeldust"];
 
   environment.systemPackages = with pkgs; [
     nvidia-docker

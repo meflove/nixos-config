@@ -1,8 +1,6 @@
-{ ... }:
-let
+{...}: let
   colors = import ./colors.nix;
-in
-{
+in {
   "general" = {
     gaps_in = 5;
     gaps_out = 12;
@@ -123,7 +121,7 @@ in
     full_cm_proto = true;
   };
 
-  "plugin" = { };
+  "plugin" = {};
 
   "monitor" = [
     "DP-1, highres@highrr, 1920x0, 1, vrr, 1, bitdepth, 10"

@@ -1,10 +1,8 @@
-{ inputs, ... }:
-let
+{inputs, ...}: let
   super = "Super";
   term = "ghostty";
   editor = "nvim";
-in
-[
+in [
   # Essentials
   "${super}, T, exec, ${term}"
   "${super}, Return, exec, ${term}"
@@ -104,6 +102,7 @@ in
 
   # Apps
   "${super}, T, exec, "
+  "Ctrl+Shift+${super}, T, exec, kitty"
   "${super}, C, exec, ${term} -e ${editor}"
   "${super}, E, exec, ${term} -e yazi"
   "${super}, W, exec, zen-beta"

@@ -1,11 +1,12 @@
-{ pkgs, config, ... }:
-
-let
+{
+  pkgs,
+  config,
+  ...
+}: let
   tuigreet = "${pkgs.tuigreet}/bin/tuigreet";
   session = "${config.programs.hyprland.package}/bin/Hyprland 2>&1";
   username = "angeldust";
-in
-{
+in {
   services.greetd = {
     enable = true;
     settings = {

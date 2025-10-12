@@ -1,10 +1,11 @@
-{ pkgs, lib, ... }:
 {
-
+  pkgs,
+  lib,
+  ...
+}: {
   boot.lanzaboote = {
     enable = true;
     pkiBundle = "/var/lib/sbctl";
-
   };
 
   # Для использования Lanzaboote с systemd-boot
@@ -17,6 +18,5 @@
   };
 
   # Добавление Lanzaboote в системные пакеты
-  environment.systemPackages = with pkgs; [ sbctl ];
-
+  environment.systemPackages = with pkgs; [sbctl];
 }

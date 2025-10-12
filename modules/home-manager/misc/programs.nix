@@ -1,7 +1,5 @@
-{ pkgs, ... }:
-{
-
-  home.packages = with pkgs; [ aria2 ];
+{pkgs, ...}: {
+  home.packages = with pkgs; [aria2];
 
   # Настройка GnuPG
   programs.gpg = {

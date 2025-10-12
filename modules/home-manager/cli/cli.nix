@@ -3,8 +3,7 @@
   lib,
   config,
   ...
-}:
-{
+}: {
   home.packages = with pkgs; [
     dust
     duf
@@ -32,7 +31,7 @@
     imageDisplay.type = "sixel";
   };
 
-  systemd.user.services.clipse = lib.mkForce { };
+  systemd.user.services.clipse = lib.mkForce {};
 
   programs.eza = {
     enable = true;

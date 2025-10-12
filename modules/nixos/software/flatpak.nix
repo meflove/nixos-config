@@ -1,10 +1,9 @@
-{ ... }:
-{
+{...}: {
   services.flatpak = {
     enable = true;
 
-    update.auto.enable = false;
+    update.auto.enable = true;
 
-    packages = [ "org.vinegarhq.Sober" ];
+    packages = ["org.vinegarhq.Sober"];
   };
 }

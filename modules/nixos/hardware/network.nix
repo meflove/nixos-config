@@ -1,9 +1,7 @@
-{ config, ... }:
-{
-
-  boot.extraModulePackages = with config.boot.kernelPackages; [ r8125 ];
-  boot.kernelModules = [ "r8125" ];
-  boot.blacklistedKernelModules = [ "r8169" ];
+{config, ...}: {
+  boot.extraModulePackages = with config.boot.kernelPackages; [r8125];
+  boot.kernelModules = ["r8125"];
+  boot.blacklistedKernelModules = ["r8169"];
 
   networking.wireless.iwd = {
     settings = {
@@ -26,7 +24,7 @@
     useDHCP = false;
     dhcpcd.enable = true;
 
-    nameservers = [ "192.168.1.1" ];
+    nameservers = ["192.168.1.1"];
 
     networkmanager = {
       enable = true;
@@ -46,7 +44,7 @@
   services.resolved = {
     enable = true;
     dnssec = "false";
-    domains = [ "~." ];
+    domains = ["~."];
     fallbackDns = [
       "1.1.1.1"
       "1.0.0.1"

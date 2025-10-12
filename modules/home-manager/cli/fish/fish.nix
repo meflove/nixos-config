@@ -1,8 +1,6 @@
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   secret = import ../../../../secrets/gemini.nix;
-in
-{
+in {
   programs.fish = {
     enable = true;
 
@@ -77,7 +75,6 @@ in
         name = "colored-man-pages";
         src = colored-man-pages.src;
       }
-
     ];
 
     shellAliases = {
@@ -141,18 +138,20 @@ in
     };
 
     # Функции
-    functions = (import ./magic-enter.nix) // {
-      sudo = {
-        body = ''
-          if functions -q -- $argv[1]
-              set -l new_args (string join ' ' -- (string escape -- $argv))
-              set argv fish -c "$new_args"
-          end
+    functions =
+      (import ./magic-enter.nix)
+      // {
+        sudo = {
+          body = ''
+            if functions -q -- $argv[1]
+                set -l new_args (string join ' ' -- (string escape -- $argv))
+                set argv fish -c "$new_args"
+            end
 
-          command sudo $argv
-        '';
+            command sudo $argv
+          '';
+        };
       };
-    };
 
     # Код, который выполняется при запуске оболочки
     shellInit = ''

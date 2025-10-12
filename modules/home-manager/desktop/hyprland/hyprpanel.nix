@@ -1,5 +1,8 @@
-{ inputs, pkgs, ... }:
 {
+  inputs,
+  pkgs,
+  ...
+}: {
   programs.hyprpanel = {
     enable = true;
     systemd.enable = true;
@@ -35,7 +38,7 @@
             unit = "metric";
           };
           storage = {
-            paths = [ "/" ];
+            paths = ["/"];
           };
           cava = {
             bars = 10;
@@ -834,7 +837,6 @@
           contrast = 0;
         };
       };
-
     };
   };
 }

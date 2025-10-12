@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   programs.zed-editor = {
     enable = true;
 
@@ -220,9 +219,9 @@
 
       #  Tipos de arquivo
       file_types = {
-        css = [ "*.css" ];
-        json = [ ".prettierrc" ];
-        dotenv = [ ".env.*" ];
+        css = ["*.css"];
+        json = [".prettierrc"];
+        dotenv = [".env.*"];
       };
 
       # Дополнительные поля из вашего шаблона, которые отсутствуют в JSON

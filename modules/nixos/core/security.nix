@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   security = {
     sudo.enable = false;
 
@@ -13,10 +12,14 @@
           commands = [
             {
               command = "/run/current-system/sw/bin/nixos-rebuild";
-              options = [ "NOPASSWD" ];
+              options = ["NOPASSWD"];
+            }
+            {
+              command = "/run/current-system/sw/bin/nh";
+              options = ["NOPASSWD"];
             }
           ];
-          groups = [ "wheel" ];
+          groups = ["wheel"];
         }
       ];
     };

@@ -1,5 +1,8 @@
-{ pkgs, config, ... }:
 {
+  pkgs,
+  config,
+  ...
+}: {
   services.transmission = {
     enable = true;
     package = pkgs.transmission_4;

@@ -1,7 +1,6 @@
 {
   input = {
     blocklist = [
-
     ];
     "compressor#0" = {
       attack = 5;

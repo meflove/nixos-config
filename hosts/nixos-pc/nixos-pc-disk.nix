@@ -14,7 +14,7 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/efi"; # Точка монтирования EFI
-                mountOptions = [ "umask=0077" ];
+                mountOptions = ["umask=0077"];
               };
             };
             btrfs = {
@@ -22,7 +22,7 @@
               label = "disk-main-btrfs"; # Явно задаем метку раздела
               content = {
                 type = "btrfs"; # Важно: используйте тип "btrfs" для поддержки подтомов
-                extraArgs = [ "-f" ]; # Принудительное создание файловой системы
+                extraArgs = ["-f"]; # Принудительное создание файловой системы
                 subvolumes = {
                   "@root" = {
                     mountpoint = "/";

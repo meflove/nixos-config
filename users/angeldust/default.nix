@@ -1,5 +1,8 @@
-{ pkgs, inputs, ... }:
 {
+  pkgs,
+  inputs,
+  ...
+}: {
   imports = [
     inputs.zen-browser.homeModules.default
     inputs.otter-launcher.homeModules.default
@@ -59,15 +62,13 @@
       obsidian
 
       stylua
-      nixfmt
       prettier
       luajitPackages.lua-lsp
 
       imv
 
       smile
-      # calcure
+      calcure
     ];
-
   };
 }

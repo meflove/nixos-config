@@ -3,40 +3,29 @@
   pkgs,
   lib,
   ...
-}:
-let
+}: let
   secret = import ../../secrets/pass.nix;
-  multranslate = pkgs.callPackage ../../pkgs/multranslate/default.nix { };
-  slit = pkgs.callPackage ../../pkgs/slit { };
-in
-{
-  nix.settings = {
-    substituters = lib.mkForce [
-      "https://nix-gaming.cachix.org"
-      "https://nixos-cache-proxy.cofob.dev"
-    ];
-    trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
+  multranslate = pkgs.callPackage ../../pkgs/multranslate/default.nix {};
+  slit = pkgs.callPackage ../../pkgs/slit {};
+in {
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
 
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
+      auto-optimise-store = true;
 
-    auto-optimise-store = true;
+      # With Lix, i cant use this option
+      # download-buffer-size = 2097152000;
+    };
 
-    # With Lix, i cant use this option
-    # download-buffer-size = 2097152000;
-  };
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    cudaSupport = true;
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
 
   users.users.angeldust = {
@@ -60,7 +49,7 @@ in
     enableDefaultPackages = true;
     enableGhostscriptFonts = true;
 
-    packages = with pkgs; [ nerd-fonts.jetbrains-mono ];
+    packages = with pkgs; [nerd-fonts.jetbrains-mono];
   };
 
   environment.systemPackages = with pkgs; [
@@ -125,7 +114,6 @@ in
     snowfallorg.flake
     nix-search-tv
     television
-    transcrypt
 
     # --- Graphics & Display ---
     # Vulkan
@@ -139,9 +127,8 @@ in
     base16-schemes
     gtk3
     gtk4
-    pavucontrol
+    pwvucontrol
     wl-clipboard
-    nekoray
 
     # --- Audio ---
 
@@ -179,6 +166,7 @@ in
     ../../modules/nixos/core/optimisations.nix
     ../../modules/nixos/core/security.nix
     ../../modules/nixos/core/firewall.nix
+    ../../modules/nixos/core/vpn.nix
 
     # Desktop
     ../../modules/nixos/desktop/screen_record.nix
@@ -207,12 +195,21 @@ in
     ../../modules/nixos/software/gaming.nix
 
     # pkgs
-
   ];
 
-  nixpkgs.overlays = with inputs; [
-    snowfall-flake.overlays."package/flake"
-  ];
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      cudaSupport = true;
+      permittedInsecurePackages = [
+        "mbedtls-2.28.10"
+      ];
+    };
+
+    overlays = with inputs; [
+      snowfall-flake.overlays."package/flake"
+    ];
+  };
 
   networking.hostName = "nixos-pc";
 

@@ -4,7 +4,8 @@
   inputs = {
     # Core
     nixpkgs.url = "github:NixOS/nixpkgs/master";
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+    chaotic.url = "github:chaotic-cx/nyx/main";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
     nix-gaming.url = "github:fufexan/nix-gaming";
@@ -19,7 +20,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Desktop Environment (Hyprland)
+    # Desktop Environment
     hyprland = {
       url = "github:hyprwm/Hyprland";
     };
@@ -102,54 +103,91 @@
     };
   };
 
-  outputs =
-    {
-      self,
-      ...
-    }@inputs:
-    let
-      system = "x86_64-linux";
-      pkgs = import inputs.nixpkgs { inherit system; };
-      shell = import ./shell.nix { inherit pkgs; };
-    in
-    {
-      devShells.${system}.default = pkgs.mkShell shell;
+  outputs = {self, ...} @ inputs: let
+    system = "x86_64-linux";
+    pkgs = import inputs.nixpkgs {
+      inherit system;
+    };
+    shell = import ./shell.nix {inherit pkgs;};
+  in {
+    devShells."${system}" = {
+      default = pkgs.mkShell shell;
+    };
 
-      diskoConfigurations = {
-        vmDisk = import ./hosts/vm/vm-disk.nix;
-        pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
-      };
+    nixConfig = {
+      extra-substituters = [
+        "https://nix-gaming.cachix.org"
+        "https://nixos-cache-proxy.cofob.dev"
+      ];
+      extra-trusted-public-keys = [
+        "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+      ];
+    };
 
-      nixosConfigurations = {
-        nixos-pc = inputs.nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/nixos-pc/default.nix
-          ];
-        };
+    formatter."${system}" = pkgs.alejandra;
 
-        vm = inputs.nixpkgs.lib.nixosSystem {
-          inherit system;
-          specialArgs = { inherit inputs; };
-          modules = [
-            ./hosts/vm/default.nix
-          ];
-        };
-      };
+    diskoConfigurations = {
+      vmDisk = import ./hosts/vm/vm-disk.nix;
+      pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
+    };
 
-      homeConfigurations = {
-        "angeldust" = inputs.home-manager.lib.homeManagerConfiguration {
-          pkgs = inputs.nixpkgs.legacyPackages.${system};
-          extraSpecialArgs = { inherit inputs; };
-          modules = [
-            {
-              home.username = "angeldust";
-              home.homeDirectory = "/home/angeldust";
-            }
-            ./users/angeldust/default.nix
-          ];
-        };
+    #TODO
+    # check script
+    packages.${system} = {
+      install = pkgs.stdenv.mkDerivation {
+        pname = "install-nixos";
+        version = "1.0.0";
+        src = ./.;
+        phases = ["installPhase"];
+        installPhase = ''
+          mkdir -p $out/bin
+          cat << 'EOF' > $out/bin/install-nixos
+          #!${pkgs.bash}/bin/bash
+          sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake .#pcDisk
+
+          read -p "Enter pass for transcrypt: " pass
+          ${pkgs.transcrypt}/bin/transcrypt -c aes-256-cbc -p "$${pass}"
+
+          pre-commit install
+
+          sudo nixos-install --flake .#nixos
+          EOF
+
+          chmod +x $out/bin/install-nixos
+        '';
       };
     };
+
+    nixosConfigurations = {
+      nixos-pc = inputs.nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/nixos-pc/default.nix
+        ];
+      };
+
+      vm = inputs.nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {inherit inputs;};
+        modules = [
+          ./hosts/vm/default.nix
+        ];
+      };
+    };
+
+    homeConfigurations = {
+      "angeldust" = inputs.home-manager.lib.homeManagerConfiguration {
+        pkgs = inputs.nixpkgs.legacyPackages.${system};
+        extraSpecialArgs = {inherit inputs;};
+        modules = [
+          {
+            home.username = "angeldust";
+            home.homeDirectory = "/home/angeldust";
+          }
+          ./users/angeldust/default.nix
+        ];
+      };
+    };
+  };
 }

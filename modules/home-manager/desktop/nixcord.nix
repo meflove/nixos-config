@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   # ...
   programs.nixcord = {
     enable = true; # Enable Nixcord (It also installs Discord)
@@ -21,7 +20,7 @@
         # or use an online theme
         "https://raw.githubusercontent.com/refact0r/system24/refs/heads/main/theme/flavors/system24-catppuccin-mocha.theme.css"
       ];
-      enabledThemes = [ "catppuccin-mocha.theme.css" ];
+      enabledThemes = ["catppuccin-mocha.theme.css"];
 
       frameless = true; # Set some Vencord options
       plugins = {

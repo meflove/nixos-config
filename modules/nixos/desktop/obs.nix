@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   security.polkit.enable = true;
 
   programs.obs-studio = {
@@ -14,6 +13,5 @@
       obs-pipewire-audio-capture
       droidcam-obs
     ];
-
   };
 }

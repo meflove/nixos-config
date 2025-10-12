@@ -4,21 +4,19 @@
   lib,
   pkgs,
   ...
-}:
-let
+}: let
   cfg = config.programs.fsel;
-  toml-format = pkgs.formats.toml { };
+  toml-format = pkgs.formats.toml {};
   toml = toml-format.type;
 
   fsel = inputs.fsel.packages.${pkgs.system}.default;
-in
-{
+in {
   options.programs.fsel = {
     enable = lib.mkEnableOption "Enable fsel";
 
     settings = lib.mkOption {
       type = toml;
-      default = { };
+      default = {};
       defaultText = lib.literalExpression "{ }";
       description = ''
         Configuration written to {file}`$XDG_CONFIG_DIR/fsel/config.toml`.
@@ -29,7 +27,7 @@ in
 
     keybinds = lib.mkOption {
       type = toml;
-      default = { };
+      default = {};
       defaultText = lib.literalExpression "{ }";
       description = ''
         Keybindings configuration.
@@ -37,7 +35,6 @@ in
         See the [keybinds section](https://github.com/Mjoyufull/fsel/blob/main/keybinds.toml)
       '';
     };
-
   };
 
   config = lib.mkIf cfg.enable {
@@ -45,11 +42,11 @@ in
       fsel
     ];
 
-    xdg.configFile."fsel/config.toml" = lib.mkIf (cfg.settings != { }) {
+    xdg.configFile."fsel/config.toml" = lib.mkIf (cfg.settings != {}) {
       source = toml-format.generate "fsel-config" cfg.settings;
     };
 
-    xdg.configFile."fsel/keybinds.toml" = lib.mkIf (cfg.keybinds != { }) {
+    xdg.configFile."fsel/keybinds.toml" = lib.mkIf (cfg.keybinds != {}) {
       source = toml-format.generate "fsel-keybinds-config" cfg.keybinds;
     };
   };
