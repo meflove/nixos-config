@@ -55,20 +55,72 @@
     # Устанавливаем программы, у которых нет специальных модулей
     # или чьи модули мы не используем для конфигурации
     packages = with pkgs; [
+      #---------------------------------------------------------------------
+      # GUI Applications
+      #---------------------------------------------------------------------
+      # Terminals & Editors
       neovim
-      xdg-user-dirs
-      inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
       kitty
-      obsidian
 
+      # Communication
+      inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop
+
+      # Productivity & Notes
+      obsidian
+      libreoffice
+      papers # PDF viewer
+      calcure # Modern TUI calendar and task manager
+
+      # Media & Images
+      imv # Image viewer for Wayland
+      gimp
+
+      # Database
+      dbeaver-bin
+
+      #---------------------------------------------------------------------
+      # Development
+      #---------------------------------------------------------------------
+      # Languages & Runtimes
+      go
+      nodejs_24
+      zig
+
+      # Linters & Formatters
       stylua
       prettier
+
+      # Language Servers
       luajitPackages.lua-lsp
+      nil # Nix Language Server
 
-      imv
+      #---------------------------------------------------------------------
+      # CLI Tools
+      #---------------------------------------------------------------------
+      # Core Utilities
+      xdg-user-dirs
 
+      # Replacements for standard commands
+      bat # `cat` alternative
+      fd # `find` alternative
+      ripgrep # `grep` alternative
+      sd # `sed` alternative
+
+      # System & Info
+      btop # `top` alternative
+
+      # Productivity & Helpers
+      fzf # Fuzzy finder
+      ggh # SSH connection manager
+      jq # JSON processor
+      tlrc # Simplified man pages
+      chafa # Image to terminal converter
+
+      #---------------------------------------------------------------------
+      # Fun & Games
+      #---------------------------------------------------------------------
       smile
-      calcure
+      krabby
     ];
   };
 }

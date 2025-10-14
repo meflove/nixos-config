@@ -23,8 +23,8 @@ in {
 
     gc = {
       automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 30d";
+      dates = "daily";
+      options = "--delete-older-than 7d";
     };
   };
 
@@ -68,52 +68,13 @@ in {
     zip
     nmap
 
-    # Replacements
-    bat # Better cat
-    # eza # Better ls
-    fd # Better find
-    ripgrep # Better grep
-    sd # Better sed
-    # zoxide # Better cd
-    ggh # Better SSH
-    btop # Better top
-    # slit # better less
-
-    # Other
-    chafa
-    fzf # Fuzzy finder
-    grc
-    jq
-    tlrc # Simplified man pages
-    # multranslate
-
-    # --- Development ---
-    # Compilers & Build Tools
-    gnumake
-
-    # Languages & Runtimes
-    go
-    nil
-    nodejs_24
-    zig
-
-    # Git
-    git
-    lazygit # Git TUI
-    delta
-
     # Libs
+    gnumake
     openssl
-    python313Packages.gpustat
-
-    # Database
-    dbeaver-bin
 
     # --- Nix Ecosystem ---
     home-manager
     snowfallorg.flake
-    nix-search-tv
-    television
 
     # --- Graphics & Display ---
     # Vulkan
@@ -129,18 +90,6 @@ in {
     gtk4
     pwvucontrol
     wl-clipboard
-
-    # --- Audio ---
-
-    # --- Fun ---
-    krabby
-
-    # --- Office & docs ---
-    papers
-    # libreoffice
-
-    # --- Image & Video ---
-    # gimp3-with-plugins
   ];
 
   imports = [

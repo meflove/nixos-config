@@ -1,6 +1,8 @@
 {pkgs, ...}: {
   home.packages = with pkgs; [
-    diffnav
+    diffnav # Diff viewer for git
+    delta # diff viewer
+    lazygit # Git TUI
     git-filter-repo
     pre-commit
   ];

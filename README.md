@@ -53,12 +53,29 @@ cd nixos-config
 - Change the hostname in `flake.nix` and under the `hosts/` directory.
 - Change the username in the `users/` directory.
 - Review and adapt the hardware configuration, especially in `hosts/nixos-pc/nixos-pc-disk.nix` and `modules/nixos/nvidia.nix`.
+- Change variables in `secrets/` with sample files provided.
 
 **3. Build the configuration:**
 
 ```bash
 # First build for a host named 'nixos-pc'
-sudo nixos-rebuild switch --flake .#nixos-pc
+sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake .#pcDisk # or your disko config name in flake.nix
+
+nix-shell -p transcrypt
+transcrypt
+
+sudo nixos-install --flake .#nixos-pc
+
+# After rebooting to system
+
+git clone https://github.com/meflove/nixos-config.git # to your location
+cd nixos-config
+
+nix-shell -p transcrypt pre-commit
+transcrypt -c aes-256-cbc -p '<your password>'
+pre-commit install
+
+home-manager switch --flake .#angeldust # or your username from users
 ```
 
 For subsequent updates, simply run the same command.

@@ -162,23 +162,29 @@ in {
   };
 
   # Переменные окружения
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    NVIM_APPNAME = "nvim-og";
-    SUDO_PROMPT = "$(tput setaf 1 bold)Password:$(tput sgr0) ";
-    LIBVIRT_DEFAULT_URI = "qemu:///system";
-    RIP_GRAVEYARD = "~/.local/share/Trash";
-    no_proxy = "127.0.0.1";
-    SPACEFISH_USER_SHOW = "always";
-    GDK_BACKEND = "wayland";
-    npm_config_prefix = "$HOME/.local";
-    GEMINI_API_KEY = secret.GEMINI_API_KEY;
-  };
+  home = {
+    packages = with pkgs; [
+      grc # Generic Colouriser for command output
+    ];
 
-  # Пути
-  home.sessionPath = [
-    "/home/angeldust/.cargo/bin"
-    "$HOME/.ZAP_D/webdriver/linux/64"
-    "/home/angeldust/.local/bin"
-  ];
+    sessionVariables = {
+      EDITOR = "nvim";
+      NVIM_APPNAME = "nvim-og";
+      SUDO_PROMPT = "$(tput setaf 1 bold)Password:$(tput sgr0) ";
+      LIBVIRT_DEFAULT_URI = "qemu:///system";
+      RIP_GRAVEYARD = "~/.local/share/Trash";
+      no_proxy = "127.0.0.1";
+      SPACEFISH_USER_SHOW = "always";
+      GDK_BACKEND = "wayland";
+      npm_config_prefix = "$HOME/.local";
+      GEMINI_API_KEY = secret.GEMINI_API_KEY;
+    };
+
+    # Пути
+    sessionPath = [
+      "/home/angeldust/.cargo/bin"
+      "$HOME/.ZAP_D/webdriver/linux/64"
+      "/home/angeldust/.local/bin"
+    ];
+  };
 }

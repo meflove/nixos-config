@@ -3,6 +3,11 @@
   pkgs,
   ...
 }: {
+  home.packages = with pkgs; [
+    # Monitoring for hyprpanel
+    python313Packages.gpustat
+  ];
+
   programs.hyprpanel = {
     enable = true;
     systemd.enable = true;

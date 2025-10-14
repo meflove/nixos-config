@@ -150,7 +150,7 @@
 
           pre-commit install
 
-          sudo nixos-install --flake .#nixos
+          sudo nixos-install --flake .#nixos-pc
           EOF
 
           chmod +x $out/bin/install-nixos
