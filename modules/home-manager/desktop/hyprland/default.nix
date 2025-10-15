@@ -1,15 +1,10 @@
 {
   pkgs,
-  lib,
   inputs,
   ...
 }: let
   rules = import ./rules.nix;
-  env = import ./env.nix;
   binds = import ./binds.nix {inherit inputs;};
-  envConfig = lib.concatStringsSep "\n" (
-    lib.mapAttrsToList (name: value: "env = ${name},${value}") env
-  );
 in {
   imports = [
     ./hyprlock.nix
@@ -26,6 +21,16 @@ in {
       tesseract
       swww
     ];
+
+    sessionVariables = {
+      QT_QPA_PLATFORM = "wayland";
+      WLR_NO_HARDWARE_CURSORS = "1";
+
+      XDG_SESSION_TYPE = "wayland";
+      WLR_RENDERER = "vulkan";
+      ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+      NIXOS_OZONE_WL = "1";
+    };
   };
 
   wayland.windowManager.hyprland = {
@@ -63,8 +68,6 @@ in {
       };
 
     extraConfig = ''
-      ${envConfig}
-
       exec-once = clipse -listen
       exec-once = easyeffects --gapplication-service &
       exec-once = hyprpanel &> /dev/null

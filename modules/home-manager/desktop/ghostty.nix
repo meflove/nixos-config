@@ -1,4 +1,11 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  cursorSmear =
+    pkgs.fetchurl
+    {
+      url = "https://raw.githubusercontent.com/KroneCorylus/ghostty-shader-playground/refs/heads/main/public/shaders/cursor_smear.glsl";
+      sha256 = "sha256-+5jUoSYIv3YJ/1ge7Bj49+ZVtz890cYvUng33UgGakM=";
+    };
+in {
   programs.ghostty = {
     enable = true;
 
@@ -6,6 +13,9 @@
 
     settings = {
       theme = "tokyo-night";
+      custom-shader = [
+        "${cursorSmear}"
+      ];
 
       font-family = "JetBrainsMono NF SemiBold";
       font-family-bold = "JetBrainsMono NF Bold";
@@ -17,15 +27,16 @@
       window-theme = "ghostty";
       window-colorspace = "display-p3";
 
-      gtk-titlebar = "false";
-
-      confirm-close-surface = "false";
+      gtk-titlebar = false;
+      app-notifications = false;
+      confirm-close-surface = false;
 
       cursor-style = "block";
+      cursor-style-blink = false;
       mouse-scroll-multiplier = "0.5";
       shell-integration-features = "no-cursor";
 
-      link-url = "true";
+      link-url = true;
 
       window-padding-x = 9;
       window-padding-y = 9;

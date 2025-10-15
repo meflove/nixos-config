@@ -3,10 +3,11 @@
     handbrake # for compressing videos
   ];
 
-  security.polkit.enable = true;
-
   programs.obs-studio = {
     enable = true;
+    package = pkgs.obs-studio.override {
+      cudaSupport = true;
+    };
     enableVirtualCamera = true;
 
     plugins = with pkgs.obs-studio-plugins; [

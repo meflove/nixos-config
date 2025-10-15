@@ -29,6 +29,7 @@
     ../../modules/home-manager/desktop/mpv.nix
     ../../modules/home-manager/desktop/xdg.nix
     # ../../modules/home-manager/desktop/obs.nix
+    ../../modules/home-manager/desktop/kitty.nix
 
     # Development
     ../../modules/home-manager/development/ai.nix
@@ -60,7 +61,6 @@
       #---------------------------------------------------------------------
       # Terminals & Editors
       neovim
-      kitty
 
       # Communication
       inputs.ayugram-desktop.packages.${pkgs.system}.ayugram-desktop

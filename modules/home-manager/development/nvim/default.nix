@@ -19,4 +19,8 @@
     recursive = true;
     source = ./nvim;
   };
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
 }

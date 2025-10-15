@@ -1,21 +1,30 @@
 {config, ...}: {
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-  };
-
   services.xserver.videoDrivers = ["nvidia"];
 
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+    };
 
-    modesetting.enable = true;
+    nvidia = {
+      package = config.boot.kernelPackages.nvidiaPackages.beta;
 
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
+      modesetting.enable = true;
 
-    open = true;
+      powerManagement.enable = false;
+      powerManagement.finegrained = false;
 
-    nvidiaSettings = false;
+      open = true;
+
+      nvidiaSettings = false;
+    };
+  };
+
+  environment.sessionVariables = {
+    NVD_BACKEND = "direct";
+    GBM_BACKEND = "nvidia-drm";
+    LIBVA_DRIVER_NAME = "nvidia";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
   };
 }
