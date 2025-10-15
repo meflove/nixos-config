@@ -4,7 +4,6 @@
     delta # diff viewer
     lazygit # Git TUI
     git-filter-repo
-    pre-commit
   ];
 
   programs.git = {

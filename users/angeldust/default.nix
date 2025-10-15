@@ -74,6 +74,7 @@
       # Media & Images
       imv # Image viewer for Wayland
       gimp
+      vlc
 
       # Database
       dbeaver-bin
@@ -112,7 +113,6 @@
       # Productivity & Helpers
       fzf # Fuzzy finder
       ggh # SSH connection manager
-      jq # JSON processor
       tlrc # Simplified man pages
       chafa # Image to terminal converter
 

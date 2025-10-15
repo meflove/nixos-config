@@ -3,6 +3,7 @@
     glow # for md files
     jq # for shellHook script
     transcrypt # for shellHook script
+    pre-commit
   ];
 
   name = "nixland";

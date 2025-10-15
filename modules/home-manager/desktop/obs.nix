@@ -1,9 +1,4 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [
-    pwvucontrol
-    vlc
-  ];
-
   programs.obs-studio = {
     enable = false;
 

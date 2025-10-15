@@ -1,4 +1,8 @@
 {pkgs, ...}: {
+  environment.systemPackages = with pkgs; [
+    handbrake # for compressing videos
+  ];
+
   security.polkit.enable = true;
 
   programs.obs-studio = {

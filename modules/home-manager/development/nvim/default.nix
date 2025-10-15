@@ -10,7 +10,7 @@
         insert_final_newline = true;
         max_line_width = 100;
         indent_style = "space";
-        indent_size = 2;
+        indent_size = 4;
       };
     };
   };

@@ -114,16 +114,6 @@
       default = pkgs.mkShell shell;
     };
 
-    nixConfig = {
-      extra-substituters = [
-        "https://nix-gaming.cachix.org"
-        "https://nixos-cache-proxy.cofob.dev"
-      ];
-      extra-trusted-public-keys = [
-        "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-      ];
-    };
-
     formatter."${system}" = pkgs.alejandra;
 
     diskoConfigurations = {
