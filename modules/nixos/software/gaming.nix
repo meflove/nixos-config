@@ -21,7 +21,6 @@
     inputs.nix-gaming.packages.${pkgs.system}.wine-tkg
     lutris # install lutris launcher
     winetricks
-    wineWow64Packages.stagingFull
     vkd3d-proton
     dxvk
 
