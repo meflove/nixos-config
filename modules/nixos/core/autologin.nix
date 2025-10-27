@@ -1,22 +1,43 @@
 {
   pkgs,
   config,
+  lib,
+  namespace,
   ...
 }: let
-  tuigreet = "${pkgs.tuigreet}/bin/tuigreet";
-  session = "${config.programs.hyprland.package}/bin/Hyprland 2>&1";
+  inherit (lib) mkIf;
+
+  cfg = config.${namespace}.nixos.core.autologin;
+
+  tuigreet = lib.getExe pkgs.tuigreet;
+  session = "${lib.getExe config.programs.hyprland.package} 2>&1";
   username = "angeldust";
 in {
-  services.greetd = {
-    enable = true;
-    settings = {
-      initial_session = {
-        command = "${session}";
-        user = "${username}";
+  options.${namespace}.nixos.core.autologin = {
+    enable =
+      lib.mkEnableOption "Enable automatic login for a specified user."
+      // {
+        default = true;
       };
-      default_session = {
-        command = "${tuigreet} --greeting 'Welcome to NixOS!' --asterisks --remember --remember-user-session --time -cmd ${session}";
-        user = "greeter";
+
+    user = lib.mkOption {
+      type = lib.types.str;
+      default = "${username}";
+      description = "The user to automatically log in.";
+    };
+  };
+  config = mkIf cfg.enable {
+    services.greetd = {
+      enable = true;
+      settings = {
+        initial_session = {
+          inherit (cfg) user;
+          command = "${session}";
+        };
+        default_session = {
+          command = "${tuigreet} --greeting 'Welcome to NixOS!' --asterisks --remember --remember-user-session --time -cmd ${session}";
+          user = "greeter";
+        };
       };
     };
   };

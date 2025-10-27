@@ -1,22 +1,51 @@
 {
   pkgs,
   lib,
+  config,
+  namespace,
   ...
-}: {
-  boot.lanzaboote = {
-    enable = true;
-    pkiBundle = "/var/lib/sbctl";
-  };
+}: let
+  inherit (lib) mkIf;
 
-  # Для использования Lanzaboote с systemd-boot
-  boot.loader = {
-    systemd-boot.enable = lib.mkForce false;
-    efi = {
-      efiSysMountPoint = "/efi";
-      canTouchEfiVariables = true; # Необходимо для записи в переменные UEFI [27]
+  cfg = config.${namespace}.nixos.boot.secureBoot;
+in {
+  options.${namespace}.nixos.boot.secureBoot = {
+    enable =
+      lib.mkEnableOption "Enable secure boot with Lanzaboote (sbctl)"
+      // {
+        default = false;
+      };
+
+    disableWarning = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Disable the warning about secure boot being enabled.";
     };
   };
 
-  # Добавление Lanzaboote в системные пакеты
-  environment.systemPackages = with pkgs; [sbctl];
+  config = mkIf cfg.enable {
+    warnings =
+      if !cfg.disableWarning
+      then [
+        "⚠️ Secure Boot enabled. Read: https://github.com/nix-community/lanzaboote/blob/master/docs/QUICK_START.md"
+      ]
+      else [];
+
+    boot = {
+      lanzaboote = {
+        enable = true;
+        pkiBundle = "/var/lib/sbctl";
+      };
+
+      loader = {
+        systemd-boot.enable = lib.mkForce false;
+        efi = {
+          efiSysMountPoint = "/efi";
+          canTouchEfiVariables = true;
+        };
+      };
+    };
+
+    environment.systemPackages = with pkgs; [sbctl];
+  };
 }

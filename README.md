@@ -26,16 +26,18 @@ This configuration is built around a minimalist yet functional environment for d
 The configuration is organized as follows for easy management and scalability:
 
 - `flake.nix`: The main entry point that defines dependencies and builds the entire configuration.
-- `hosts/`: Configurations for specific machines (hosts).
-  - `nixos-pc/`: My main PC.
-  - `vm/`: A virtual machine for testing.
+- `systems/`: Configurations for specific machines (hosts).
+  - `x86_64-linux/nixos-pc`: My main PC.
 - `modules/`: Shared modules that are reused across hosts.
   - `nixos/`: System-level NixOS modules (kernel, drivers, services).
-  - `home-manager/`: Modules for managing the user environment (dotfiles, programs).
-- `users/`: User definitions and import of their Home Manager configurations.
+  - `home/`: Modules for managing the user environment (dotfiles, programs).
+- `homes/`: User definitions and import of their Home Manager configurations.
+- `scripts/`: Utility scripts for setup and maintenance.
+- `shells/`: Shell configuration.
+- `pics/`: Images and wallpapers used in the configuration.
+- `packages/`: Custom Nix packages. # TODO fix this packages
 - `overlays/`: Custom packages and fixes for existing ones.
 - `secrets/`: Encrypted secrets, managed with [transcrypt](https://github.com/elasticdog/transcrypt) (or a similar tool).
-- `dotfiles/`: The actual configuration files (dotfiles) that are linked via Home Manager.
 
 ## 🛠️ Installation and Usage
 
@@ -52,7 +54,7 @@ cd nixos-config
 
 - Change the hostname in `flake.nix` and under the `hosts/` directory.
 - Change the username in the `users/` directory.
-- Review and adapt the hardware configuration, especially in `hosts/nixos-pc/nixos-pc-disk.nix` and `modules/nixos/nvidia.nix`.
+- Review and adapt the hardware configuration, especially in `hosts/nixos-pc/nixos-pc-disk.nix` and `modules/nixos/hardware`.
 - Change variables in `secrets/` with sample files provided.
 
 **3. Build the configuration:**

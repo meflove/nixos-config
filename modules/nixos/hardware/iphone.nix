@@ -1,13 +1,33 @@
-{pkgs, ...}: {
-  services.usbmuxd = {
-    enable = true;
-    package = pkgs.usbmuxd2;
+{
+  pkgs,
+  lib,
+  config,
+  namespace,
+  ...
+}: let
+  inherit (lib) mkIf;
+
+  cfg = config.${namespace}.nixos.harware.iphone;
+in {
+  options.${namespace}.nixos.harware.iphone = {
+    enable =
+      lib.mkEnableOption "enable support for iPhone/iPad connectivity via usbmuxd"
+      // {
+        default = false;
+      };
   };
 
-  environment.systemPackages = with pkgs; [
-    libimobiledevice
-    idevicerestore
+  config = mkIf cfg.enable {
+    services.usbmuxd = {
+      enable = true;
+      package = pkgs.usbmuxd2;
+    };
 
-    ifuse # optional, to mount using 'ifuse'
-  ];
+    environment.systemPackages = with pkgs; [
+      libimobiledevice
+      idevicerestore
+
+      ifuse # optional, to mount using 'ifuse'
+    ];
+  };
 }

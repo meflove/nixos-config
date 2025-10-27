@@ -1,24 +1,44 @@
-{pkgs, ...}: {
-  virtualisation.podman = {
-    enable = true;
+{
+  pkgs,
+  lib,
+  config,
+  namespace,
+  ...
+}: let
+  inherit (lib) mkIf;
 
-    dockerCompat = true;
-    dockerSocket.enable = true;
-
-    defaultNetwork.settings.dns_enabled = true;
+  cfg = config.${namespace}.nixos.development.podman;
+in {
+  options.${namespace}.nixos.development.podman = {
+    enable =
+      lib.mkEnableOption "enable Podman container management and Docker compatibility"
+      // {
+        default = false;
+      };
   };
 
-  hardware.nvidia-container-toolkit.enable = true;
+  config = mkIf cfg.enable {
+    virtualisation.podman = {
+      enable = true;
 
-  environment.variables.DBX_CONTAINER_MANAGER = "podman";
-  users.extraGroups.podman.members = ["angeldust"];
+      dockerCompat = true;
+      dockerSocket.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    nvidia-docker
+      defaultNetwork.settings.dns_enabled = true;
+    };
 
-    podman-compose
-    podman-tui
+    hardware.nvidia-container-toolkit.enable = true;
 
-    docker-compose
-  ];
+    environment.variables.DBX_CONTAINER_MANAGER = "podman";
+    users.extraGroups.podman.members = ["angeldust"];
+
+    environment.systemPackages = with pkgs; [
+      nvidia-docker
+
+      podman-compose
+      podman-tui
+
+      docker-compose
+    ];
+  };
 }

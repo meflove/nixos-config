@@ -2,70 +2,118 @@
   pkgs,
   lib,
   config,
+  namespace,
   ...
-}: {
-  environment.systemPackages = with pkgs; [
-    config.boot.kernelPackages.v4l2loopback
-    v4l-utils
-  ];
+}: let
+  inherit (lib) mkIf;
 
-  hardware.xone.enable = true;
+  cfg = config.${namespace}.nixos.boot.kernelOptimisations;
+in {
+  options.${namespace}.nixos.boot.kernelOptimisations = {
+    enable =
+      lib.mkEnableOption "kernelOptimisations"
+      // {
+        default = false;
+        description = "Enable kernel optimisations for better performance.";
+      };
 
-  services.scx = {
-    enable = true;
-    package = pkgs.scx_git.rustscheds;
-
-    scheduler = "scx_lavd";
-  };
-
-  boot = {
-    kernelPackages = pkgs.linuxPackages_cachyos.cachyOverride {mArch = "GENERIC_V3";};
-
-    initrd = {
-      compressor = "cat";
+    kernelPackage = lib.mkOption {
+      type = lib.types.raw;
+      default = pkgs.linuxPackages_latest;
+      description = "Kernel package to use.";
     };
 
-    consoleLogLevel = 3;
-
-    kernelPatches = [
-      {
-        name = "bbr";
-        patch = null;
-        structuredExtraConfig = with pkgs.lib.kernel; {
-          TCP_CONG_CUBIC = lib.mkForce module;
-          TCP_CONG_BBR = yes; # enable BBR
-          DEFAULT_BBR = yes; # use it by default
-          NET_SCH_FQ_CODEL = module;
-          NET_SCH_FQ = yes;
-        };
-      }
-    ];
-
-    kernelModules = [
-      "ntsync"
-      "v4l2loopback"
-    ];
-
-    extraModulePackages = with config.boot.kernelPackages; [v4l2loopback];
-
-    kernelParams = [
-      "systemd.show_status=auto"
-      "quiet"
-      "splash"
-      "mitigations=off"
-      "vt.global_cursor_default=0"
-      "lpj=2496000"
-      "page_alloc.shuffle=1"
-      "pci=pcie_bus_perf"
-      "intel_idle.max_cstate=1"
-      "bgrt_disable"
-      "nowatchdog"
-      "ibt=off"
-      "kernel.sysrq=1"
-      "nvidia_drm.modeset=1"
-      "nvidia_drm.fbdev=1"
-    ];
+    cpuGovernor = lib.mkOption {
+      type = lib.types.str;
+      default = "performance";
+      description = ''
+        CPU frequency governor to use. Options include "performance", "powersave", "ondemand", etc.
+      '';
+    };
   };
 
-  powerManagement.cpuFreqGovernor = "perfomance";
+  config = mkIf cfg.enable {
+    services.scx = {
+      enable = true;
+      package = pkgs.callPackage ../../../packages/scx_rustcheds {};
+
+      scheduler = "scx_lavd";
+      extraArgs = [
+        "--performance"
+        "--no-core-compaction"
+        "--per-cpu-dsq"
+      ];
+    };
+
+    boot = {
+      kernelPackages = cfg.kernelPackage;
+      kernelPatches = [
+        {
+          name = "bbr";
+          patch = null;
+          structuredExtraConfig = with pkgs.lib.kernel; {
+            TCP_CONG_CUBIC = lib.mkForce module;
+            DEFAULT_CUBIC = no;
+            TCP_CONG_BBR = yes;
+            DEFAULT_BBR = yes;
+            DEFAULT_TCP_CONG = "bbr";
+            NET_SCH_FQ_CODEL = module;
+            NET_SCH_FQ = yes;
+            CONFIG_DEFAULT_FQ_CODEL = no;
+            CONFIG_DEFAULT_FQ = yes;
+          };
+        }
+        {
+          name = "disable_brk";
+          patch = null;
+          structuredExtraConfig = with pkgs.lib.kernel; {
+            COMPAT_BRK = no;
+          };
+        }
+        {
+          name = "nohz_full";
+          patch = null;
+          structuredExtraConfig = with pkgs.lib.kernel; {
+            HZ_PERIODIC = no;
+            NO_HZ_IDLE = no;
+            CONTEXT_TRACKING_FORCE = no;
+            NO_HZ_FULL_NODEF = yes;
+            NO_HZ_FULL = yes;
+            NO_HZ = yes;
+            NO_HZ_COMMON = yes;
+            CONTEXT_TRACKING = yes;
+          };
+        }
+      ];
+      kernelModules = [
+        "v4l2loopback"
+      ];
+
+      initrd = {
+        compressor = "cat";
+      };
+
+      consoleLogLevel = 3;
+
+      kernel.sysctl."kernel.sysrq" = 1;
+      kernelParams = [
+        "systemd.show_status=auto"
+        "quiet"
+        "splash"
+        "mitigations=off"
+        "vt.global_cursor_default=0"
+        "lpj=2496000"
+        "page_alloc.shuffle=1"
+        "pci=pcie_bus_perf"
+        "intel_idle.max_cstate=1"
+        "bgrt_disable"
+        "nowatchdog"
+        "ibt=off"
+        "nvidia_drm.modeset=1"
+        "nvidia_drm.fbdev=1"
+      ];
+    };
+
+    powerManagement.cpuFreqGovernor = cfg.cpuGovernor;
+  };
 }

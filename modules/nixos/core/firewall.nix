@@ -1,58 +1,75 @@
-{...}: {
-  networking.nftables = {
-    enable = true;
+{
+  lib,
+  namespace,
+  config,
+  ...
+}: let
+  inherit (lib) mkIf;
 
-    firewall = {
-      enable = true;
-      snippets.nnf-common.enable = true;
+  cfg = config.${namespace}.nixos.core.firewall;
+in {
+  options.${namespace}.nixos.core.firewall = {
+    enable = lib.mkEnableOption "Enable firewall" // {default = true;};
+  };
 
-      zones = {
-        uplink = {
-          interfaces = [
-            "enp3s0"
-            "wlan0"
-          ];
-        };
+  config = mkIf cfg.enable {
+    networking = {
+      nftables = {
+        enable = true;
 
-        local = {
-          parent = "uplink";
-          ipv4Addresses = ["192.168.1.0/24"];
-        };
+        firewall = {
+          enable = true;
+          snippets.nnf-common.enable = true;
 
-        # for ethernet connections only
-        private = {
-          interfaces = [
-            "enp3s0"
-          ];
-        };
-      };
+          zones = {
+            uplink = {
+              interfaces = [
+                "enp3s0"
+                "wlan0"
+              ];
+            };
 
-      rules = {
-        private-postgresql = {
-          from = "all";
-          to = ["private"];
-          allowedTCPPorts = [47950];
-        };
+            local = {
+              parent = "uplink";
+              ipv4Addresses = ["192.168.1.0/24"];
+            };
 
-        private-ssh = {
-          from = "all";
-          to = ["private"];
-          allowedTCPPorts = [22];
-        };
+            # for ethernet connections only
+            private = {
+              interfaces = [
+                "enp3s0"
+              ];
+            };
+          };
 
-        private-outgoing = {
-          from = ["private"];
-          to = ["uplink"];
-          verdict = "accept";
-        };
+          rules = {
+            private-postgresql = {
+              from = "all";
+              to = ["private"];
+              allowedTCPPorts = [47950];
+            };
 
-        ban = {
-          from = ["banned"];
-          to = "all";
-          ruleType = "ban";
-          extraLines = [
-            "counter drop"
-          ];
+            private-ssh = {
+              from = "all";
+              to = ["private"];
+              allowedTCPPorts = [22];
+            };
+
+            private-outgoing = {
+              from = ["private"];
+              to = ["uplink"];
+              verdict = "accept";
+            };
+
+            ban = {
+              from = ["banned"];
+              to = "all";
+              ruleType = "ban";
+              extraLines = [
+                "counter drop"
+              ];
+            };
+          };
         };
       };
     };

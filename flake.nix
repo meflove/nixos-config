@@ -4,11 +4,20 @@
   inputs = {
     # Core
     nixpkgs.url = "github:NixOS/nixpkgs/master";
+    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     chaotic.url = "github:chaotic-cx/nyx/main";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
     nix-gaming.url = "github:fufexan/nix-gaming";
+    snowfall-lib = {
+      url = "github:snowfallorg/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    snowfall-flake = {
+      url = "github:snowfallorg/flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # System & Boot
     disko = {
@@ -38,15 +47,21 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ## Utils
     nix-colors.url = "github:misterio77/nix-colors";
     nix-cursors = {
       url = "github:LilleAila/nix-cursors";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ## GUI
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ayugram-desktop = {
+      url = "https://github.com/ndfined-crp/ayugram-desktop/";
       type = "git";
       submodules = true;
-      url = "https://github.com/ndfined-crp/ayugram-desktop/";
     };
     freesmlauncher = {
       url = "github:FreesmTeam/FreesmLauncher";
@@ -54,6 +69,14 @@
     };
     nixcord = {
       url = "github:kaylorben/nixcord";
+    };
+    solaar = {
+      url = "github:Svenum/Solaar-Flake/main";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ## TUI
+    angeldust-nixCats = {
+      url = "github:meflove/angeldust-nixCats";
     };
     otter-launcher = {
       url = "github:kuokuo123/otter-launcher";
@@ -63,22 +86,11 @@
       url = "github:Mjoyufull/fsel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    solaar = {
-      url = "github:Svenum/Solaar-Flake/main";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     yazi = {
       url = "github:sxyazi/yazi";
     };
-    zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    # Development
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
+    nh = {
+      url = "github:nix-community/nh";
     };
 
     # Services & Networking
@@ -95,89 +107,76 @@
       url = "github:thelegy/nixos-nftables-firewall";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Frameworks & Overlays
-    snowfall-flake = {
-      url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
-  outputs = {self, ...} @ inputs: let
-    system = "x86_64-linux";
-    pkgs = import inputs.nixpkgs {
-      inherit system;
-    };
-    shell = import ./shell.nix {inherit pkgs;};
-  in {
-    devShells."${system}" = {
-      default = pkgs.mkShell shell;
-    };
+  outputs = inputs: let
+    secrets = import ./secrets/secrets.nix;
+  in
+    inputs.snowfall-lib.mkFlake {
+      overlays = with inputs; [
+        lix-module.overlays.default
+        snowfall-flake.overlays.default
+      ];
 
-    formatter."${system}" = pkgs.alejandra;
+      inherit inputs;
+      src = ./.;
+      supportedSystems = ["x86_64-linux"];
 
-    diskoConfigurations = {
-      vmDisk = import ./hosts/vm/vm-disk.nix;
-      pcDisk = import ./hosts/nixos-pc/nixos-pc-disk.nix;
-    };
+      snowfall = {
+        root = ./.;
+        namespace = "angl";
 
-    #TODO
-    # check script
-    packages.${system} = {
-      install = pkgs.stdenv.mkDerivation {
-        pname = "install-nixos";
-        version = "1.0.0";
-        src = ./.;
-        phases = ["installPhase"];
-        installPhase = ''
-          mkdir -p $out/bin
-          cat << 'EOF' > $out/bin/install-nixos
-          #!${pkgs.bash}/bin/bash
-          sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake .#pcDisk
-
-          read -p "Enter pass for transcrypt: " pass
-          ${pkgs.transcrypt}/bin/transcrypt -c aes-256-cbc -p "$${pass}"
-
-          pre-commit install
-
-          sudo nixos-install --flake .#nixos-pc
-          EOF
-
-          chmod +x $out/bin/install-nixos
-        '';
-      };
-    };
-
-    nixosConfigurations = {
-      nixos-pc = inputs.nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {inherit inputs;};
-        modules = [
-          ./hosts/nixos-pc/default.nix
-        ];
+        meta = {
+          name = "nixos-config";
+          title = "angeldust`s NixOS Configuration";
+        };
       };
 
-      vm = inputs.nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {inherit inputs;};
-        modules = [
-          ./hosts/vm/default.nix
-        ];
+      channels-config = {
+        # Allow unfree packages.
+        allowUnfree = true;
       };
-    };
 
-    homeConfigurations = {
-      "angeldust" = inputs.home-manager.lib.homeManagerConfiguration {
-        pkgs = inputs.nixpkgs.legacyPackages.${system};
-        extraSpecialArgs = {inherit inputs;};
-        modules = [
-          {
-            home.username = "angeldust";
-            home.homeDirectory = "/home/angeldust";
-          }
-          ./users/angeldust/default.nix
-        ];
+      systems.hosts = {
+        nixos-pc = {
+          specialArgs = {
+            inherit secrets;
+          };
+
+          modules = with inputs; [
+            disko.nixosModules.disko
+            lanzaboote.nixosModules.lanzaboote
+            home-manager.nixosModules.home-manager
+            nnf.nixosModules.default
+            nixos-hardware.nixosModules.common-cpu-intel-cpu-only
+            chaotic.nixosModules.default
+            nix-flatpak.nixosModules.nix-flatpak
+            solaar.nixosModules.default
+          ];
+        };
+      };
+
+      homes.users = {
+        "angeldust@nixos-pc" = {
+          specialArgs = {
+            inherit secrets;
+          };
+
+          modules = with inputs; [
+            zen-browser.homeModules.default
+            otter-launcher.homeModules.default
+            hyprland.homeManagerModules.default
+            nixcord.homeModules.nixcord
+            nix-colors.homeManagerModules.default
+            chaotic.homeManagerModules.default
+          ];
+        };
+      };
+
+      outputs-builder = channels: {
+        # Outputs in the outputs builder are transformed to support each system. This
+        # entry will be turned into multiple different outputs like `formatter.x86_64-linux.*`.
+        formatter = channels.nixpkgs.alejandra;
       };
     };
-  };
 }

@@ -1,0 +1,33 @@
+--- a/multranslate.js
++++ b/multranslate.js
+@@ -5,9 +5,11 @@
+ import clipboardy from 'clipboardy'
+ import Database from 'better-sqlite3'
+ import path from 'path'
++import os from 'os'
+ import { fileURLToPath } from 'url'
+ import { readFileSync } from 'fs'
+ import { writeFileSync } from 'fs'
++import { existsSync, mkdirSync } from 'fs'
+ import { Command } from 'commander'
+
+ // Определяем текущий путь для доступа к файлу БД, ключу OpenAI и конфигурации package
+@@ -584,13 +586,17 @@
+
+ // -------------------------------------- SQLite ----------------------------------------
+
+-const dbPath = path.join(__dirname, 'translation-history.db')
++const dbPath = path.join(os.homedir(), '.local', 'share', 'multranslate', 'translation-history.db');
+ const clearHistory = 500 // Количество объектов истории для хранения в базе данных
+ let maxID = 0
+ let curID = 0
+
+ // Функция для записи в БД
+ function writeHistory(inputData, googleData, deeplxData, reversoData, mymemoryData, openaiData) {
++    const dbDir = path.dirname(dbPath)
++    if (!existsSync(dbDir)) {
++        mkdirSync(dbDir, { recursive: true })
++    }
+     const db = new Database(dbPath)
+     db.exec(`
+         CREATE TABLE IF NOT EXISTS translationTable (

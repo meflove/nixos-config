@@ -1,0 +1,61 @@
+{
+  "name": "multranslate",
+  "version": "0.6.4",
+  "description": "Cross-platform TUI for translating text in multiple translators simultaneously and LLM, with support for translation history and automatic language detection.",
+  "keywords": [
+    "tui",
+    "blessed",
+    "translate",
+    "translator",
+    "google",
+    "deepl",
+    "reverso",
+    "mymemory",
+    "ai",
+    "llm",
+    "gpt",
+    "openai",
+    "deepseek",
+    "sqlite"
+  ],
+  "author": "Lifailon",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lifailon/multranslate"
+  },
+  "main": "multranslate.js",
+  "type": "module",
+  "scripts": {
+    "start": "node multranslate.js",
+    "dev": "node multranslate-native-cursor.js"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "better-sqlite3": "^11.9.1",
+    "blessed": "^0.1.81",
+    "clipboardy": "^4.0.0",
+    "commander": "^13.1.0"
+  },
+  "bin": {
+    "multranslate": "multranslate.js"
+  },
+  "pkg": {
+    "assets": [
+      "node_modules/blessed/**/*",
+      "node_modules/axios/**/*",
+      "node_modules/clipboardy/**/*",
+      "node_modules/better-sqlite3/**/*",
+      "node_modules/url/**/*",
+      "node_modules/path/**/*",
+      "node_modules/fs/**/*",
+      "node_modules/commander/**/*",
+      "image/logo.png"
+    ],
+    "targets": [
+      "node18-win-x64",
+      "node18-linux-x64",
+      "node18-macos-x64"
+    ]
+  }
+}

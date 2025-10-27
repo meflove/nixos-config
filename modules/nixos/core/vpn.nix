@@ -1,7 +1,26 @@
-{...}: {
-  programs.nekoray = {
-    enable = true;
+{
+  lib,
+  config,
+  namespace,
+  ...
+}: let
+  inherit (lib) mkIf;
 
-    tunMode.enable = true;
+  cfg = config.${namespace}.nixos.core.vpn;
+in {
+  options.${namespace}.nixos.core.vpn = {
+    enable =
+      lib.mkEnableOption "Enable VPN services"
+      // {
+        default = false;
+      };
+  };
+
+  config = mkIf cfg.enable {
+    programs.nekoray = {
+      enable = true;
+
+      tunMode.enable = true;
+    };
   };
 }
