@@ -36,8 +36,8 @@
       #!${lib.getExe pkgs.bash}
 
       # Transcrypt pre-commit hook: fail if secret file in staging lacks the magic prefix "Salted" in B64
-      RELATIVE_GIT_DIR=$(git rev-parse --git-dir 2>/dev/null || printf "")
-      CRYPT_DIR=$(git config transcrypt.crypt-dir 2>/dev/null || printf "%s/crypt" "''${RELATIVE_GIT_DIR}")
+      RELATIVE_GIT_DIR=$(${lib.getExe pkgs.git} rev-parse --git-dir 2>/dev/null || printf "")
+      CRYPT_DIR=$(${lib.getExe pkgs.git} config transcrypt.crypt-dir 2>/dev/null || printf "%s/crypt" "''${RELATIVE_GIT_DIR}")
 
       printf "\nRunning transcrypt pre-commit hook...\n\n"
       "''${CRYPT_DIR}/transcrypt" pre_commit
@@ -54,10 +54,12 @@
       trim-trailing-whitespace.enable = true;
       detect-private-keys.enable = true;
 
+      # Nix specific hooks
       alejandra.enable = true;
       deadnix.enable = true;
       statix.enable = true;
 
+      # Secret management hooks
       transcrypt = {
         enable = true;
 

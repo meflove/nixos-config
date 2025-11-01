@@ -10,7 +10,7 @@
   cfg = config.${namespace}.nixos.core.autologin;
 
   tuigreet = lib.getExe pkgs.tuigreet;
-  session = "${lib.getExe config.programs.hyprland.package} 2>&1";
+  session = "${lib.getExe config.programs.hyprland.package}";
   username = "angeldust";
 in {
   options.${namespace}.nixos.core.autologin = {

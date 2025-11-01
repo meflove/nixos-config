@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   namespace,
@@ -19,7 +20,10 @@ in {
   config = mkIf cfg.enable {
     programs.nixcord = {
       enable = true; # Enable Nixcord (It also installs Discord)
-      vesktop.enable = true; # Vesktop
+      vesktop = {
+        enable = true; # Vesktop
+        package = pkgs.unstable.vesktop;
+      };
 
       quickCss = ''
         body {

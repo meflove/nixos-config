@@ -4,7 +4,6 @@
   lib,
   config,
   namespace,
-  system,
   ...
 }: let
   inherit (lib) mkIf;
@@ -21,7 +20,7 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      inputs.angeldust-nixCats.packages.${system}.default
+      inputs.angeldust-nixCats.packages.${pkgs.stdenv.hostPlatform.system}.default
       neovim
       statix
     ];

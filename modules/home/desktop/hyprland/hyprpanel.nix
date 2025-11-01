@@ -4,7 +4,6 @@
   config,
   lib,
   namespace,
-  system,
   ...
 }: let
   inherit (lib) mkIf;
@@ -20,7 +19,7 @@ in {
     programs.hyprpanel = {
       enable = true;
       systemd.enable = true;
-      package = inputs.hyprpanel.packages.${system}.default;
+      package = inputs.hyprpanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
       settings = {
         tear = true;

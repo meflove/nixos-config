@@ -73,11 +73,10 @@ sudo nixos-install --flake .#nixos-pc
 git clone https://github.com/meflove/nixos-config.git # to your location
 cd nixos-config
 
-nix-shell -p transcrypt pre-commit
+nix-shell -p transcrypt
 transcrypt -c aes-256-cbc -p '<your password>'
-pre-commit install
 
-home-manager switch --flake .#angeldust # or your username from users
+home-manager switch --flake .#angeldust@nixos-pc # or your username from homes
 ```
 
 For subsequent updates, simply run the same command.

@@ -3,14 +3,13 @@
   config,
   lib,
   pkgs,
-  system,
   ...
 }: let
   cfg = config.programs.fsel;
   toml-format = pkgs.formats.toml {};
   toml = toml-format.type;
 
-  fsel = inputs.fsel.packages.${system}.default;
+  fsel = inputs.fsel.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in {
   options.programs.fsel = {
     enable = lib.mkEnableOption "Enable fsel";

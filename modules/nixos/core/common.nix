@@ -1,9 +1,9 @@
 {
+  pkgs,
   inputs,
   lib,
   namespace,
   config,
-  system,
   ...
 }: let
   inherit (lib) mkIf;
@@ -21,9 +21,9 @@ in {
       hyprland = {
         enable = true;
         # set the flake package
-        package = inputs.hyprland.packages.${system}.hyprland;
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
         # # make sure to also set the portal package, so that they are in sync
-        portalPackage = inputs.hyprland.packages.${system}.xdg-desktop-portal-hyprland;
+        portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
       };
       # Включение fish на системном уровне
       fish.enable = true;
@@ -32,7 +32,7 @@ in {
 
       nh = {
         enable = true;
-        package = inputs.nh.packages.${system}.default;
+        package = inputs.nh.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
         flake = "/home/angeldust/.config/nixos-config"; # sets NH_OS_FLAKE variable for you
 
@@ -40,7 +40,7 @@ in {
           enable = true;
 
           dates = "daily";
-          extraArgs = "--delete-older-than 7d";
+          extraArgs = "--delete-older-than 3d";
         };
       };
     };

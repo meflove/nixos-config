@@ -4,16 +4,13 @@
   inputs = {
     # Core
     nixpkgs.url = "github:NixOS/nixpkgs/master";
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     chaotic.url = "github:chaotic-cx/nyx/main";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
     nix-gaming.url = "github:fufexan/nix-gaming";
-    snowfall-lib = {
-      url = "github:snowfallorg/lib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    meflove-lib.url = "github:meflove/lib";
     snowfall-flake = {
       url = "github:snowfallorg/flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,6 +23,14 @@
     };
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+      };
+    };
+    # Fix build for lanzaboote
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -112,14 +117,17 @@
   outputs = inputs: let
     secrets = import ./secrets/secrets.nix;
   in
-    inputs.snowfall-lib.mkFlake {
+    inputs.meflove-lib.mkFlake {
       overlays = with inputs; [
         lix-module.overlays.default
         snowfall-flake.overlays.default
       ];
 
       inherit inputs;
-      src = ./.;
+      src = builtins.path {
+        path = ./.;
+        name = "source";
+      };
       supportedSystems = ["x86_64-linux"];
 
       snowfall = {
@@ -133,7 +141,6 @@
       };
 
       channels-config = {
-        # Allow unfree packages.
         allowUnfree = true;
       };
 

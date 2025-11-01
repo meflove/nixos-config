@@ -4,7 +4,6 @@
   lib,
   config,
   namespace,
-  system,
   ...
 }: let
   inherit (lib) mkIf;
@@ -33,7 +32,7 @@ in {
     services.clipse = {
       enable = true;
 
-      historySize = 1000;
+      historySize = 10000;
       imageDisplay.type = "sixel";
     };
 
@@ -65,7 +64,7 @@ in {
 
       yt-dlp = {
         enable = true;
-        package = inputs.chaotic.packages.${system}.yt-dlp_git;
+        package = inputs.chaotic.packages.${pkgs.stdenv.hostPlatform.system}.yt-dlp_git;
 
         settings = {
           embed-thumbnail = true;

@@ -1,9 +1,9 @@
 {
+  pkgs,
   inputs,
   lib,
   config,
   namespace,
-  system,
   ...
 }: let
   inherit (lib) mkIf;
@@ -20,7 +20,7 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with inputs; [
-      (zen-browser.packages.${system}.default.override {
+      (zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
         extraPrefsFiles = [
           (builtins.fetchurl {
             url = "https://raw.githubusercontent.com/MrOtherGuy/fx-autoconfig/master/program/config.js";

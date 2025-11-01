@@ -91,14 +91,12 @@ in {
 
       initrd = {
         compressor = "cat";
+        verbose = false;
       };
-
-      consoleLogLevel = 3;
 
       kernel.sysctl."kernel.sysrq" = 1;
       kernelParams = [
         "systemd.show_status=auto"
-        "quiet"
         "splash"
         "mitigations=off"
         "vt.global_cursor_default=0"

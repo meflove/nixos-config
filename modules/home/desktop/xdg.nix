@@ -4,7 +4,6 @@
   lib,
   config,
   namespace,
-  system,
   ...
 }: let
   inherit (lib) mkIf;
@@ -60,12 +59,12 @@ in {
 
           "x-scheme-handler/tg" = [
             "${
-              inputs.ayugram-desktop.packages.${system}.ayugram-desktop
+              inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
             }/share/applications/com.ayugram.desktop.desktop"
           ];
           "x-scheme-handler/tonsite" = [
             "${
-              inputs.ayugram-desktop.packages.${system}.ayugram-desktop
+              inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
             }/share/applications/com.ayugram.desktop.desktop"
           ];
           "x-scheme-handler/discord" = ["discord.desktop"];

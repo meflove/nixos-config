@@ -4,7 +4,6 @@
   lib,
   config,
   namespace,
-  system,
   ...
 }: let
   inherit (lib) mkIf;
@@ -30,7 +29,7 @@ in {
     programs.yazi = {
       enable = true;
       enableFishIntegration = true;
-      package = inputs.yazi.packages.${system}.default.override {
+      package = inputs.yazi.packages.${pkgs.stdenv.hostPlatform.system}.default.override {
         _7zz = pkgs._7zz-rar;
       };
 

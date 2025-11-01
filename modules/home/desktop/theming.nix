@@ -4,7 +4,6 @@
   lib,
   config,
   namespace,
-  system,
   ...
 }: let
   inherit (lib) mkIf;
@@ -25,7 +24,7 @@ in {
         gtk.enable = true;
         hyprcursor.enable = true;
 
-        package = inputs.nix-cursors.packages.${system}.bibata-modern-cursor.override {
+        package = inputs.nix-cursors.packages.${pkgs.stdenv.hostPlatform.system}.bibata-modern-cursor.override {
           background_color = "#${config.colorScheme.palette.base00}";
           outline_color = "#${config.colorScheme.palette.base06}";
           accent_color = "#${config.colorScheme.palette.base00}";

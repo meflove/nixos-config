@@ -4,7 +4,6 @@
   lib,
   config,
   namespace,
-  system,
   ...
 }: let
   inherit (lib) mkIf;
@@ -72,10 +71,10 @@ in {
     };
 
     environment.systemPackages = with pkgs; let
-      gamePkgs = inputs.nix-gaming.packages.${system};
+      gamePkgs = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system};
     in
       [
-        inputs.freesmlauncher.packages.${system}.freesmlauncher
+        inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.freesmlauncher
         lutris # install lutris launcher
         winetricks
         vkd3d-proton

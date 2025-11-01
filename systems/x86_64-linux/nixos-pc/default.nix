@@ -2,7 +2,6 @@
   inputs,
   pkgs,
   lib,
-  system,
   secrets,
   ...
 }: {
@@ -82,7 +81,7 @@
 
         gaming = {
           enable = true;
-          wine.package = inputs.nix-gaming.packages.${system}.wine-tkg;
+          wine.package = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-tkg;
         };
 
         obs.enable = true;
@@ -91,7 +90,7 @@
       };
 
       development = {
-        ollama.enable = true;
+        ollama.enable = false;
         podman.enable = true;
         virtManager.enable = true;
       };

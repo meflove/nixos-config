@@ -1,16 +1,8 @@
 {
   pkgs,
   inputs,
-  system,
   ...
-}: let
-  unstable =
-    import inputs.unstable
-    {
-      inherit system;
-      config = {allowUnfree = true;};
-    };
-in {
+}: {
   angl.home = {
     cli = {
       yazi.enable = true;
@@ -19,7 +11,7 @@ in {
     desktop = {
       gaming.enable = true;
       kitty.enable = true;
-      nixcord.enable = true;
+      nixcord.enable = false;
     };
 
     development = {
@@ -33,7 +25,7 @@ in {
       # GUI Applications
       #---------------------------------------------------------------------
       # Communication
-      inputs.ayugram-desktop.packages.${system}.ayugram-desktop
+      inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
 
       # Productivity & Notes
       unstable.obsidian

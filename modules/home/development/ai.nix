@@ -9,11 +9,6 @@
   inherit (lib) mkIf;
 
   cfg = config.${namespace}.home.development.ai;
-
-  geminiPrompt = builtins.readFile (pkgs.fetchurl {
-    url = "https://gist.githubusercontent.com/Maharshi-Pandya/4aeccbe1dbaa7f89c182bd65d2764203/raw/contemplative-llms.txt";
-    sha256 = "sha256-QCWMW1Wxo9hffjvCd8lkEbTCHXQDkDUf1Wlo7ILbreo=";
-  });
 in {
   options.${namespace}.home.development.ai = {
     enable =
@@ -26,10 +21,6 @@ in {
   config = mkIf cfg.enable {
     programs.gemini-cli = {
       enable = true;
-
-      context = {
-        SMART = geminiPrompt;
-      };
 
       settings = {
         context.fileName = ["SMART.md" "GEMINI.md"];
