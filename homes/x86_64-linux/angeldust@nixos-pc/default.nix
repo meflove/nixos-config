@@ -15,7 +15,8 @@
     };
 
     development = {
-      ai.enable = true;
+      gemini.enable = true;
+      claude.enable = true;
     };
   };
 
@@ -46,16 +47,7 @@
       #---------------------------------------------------------------------
       # Languages & Runtimes
       go
-      nodejs_24
       zig
-
-      # Linters & Formatters
-      stylua
-      prettier
-
-      # Language Servers
-      luajitPackages.lua-lsp
-      nil # Nix Language Server
 
       #---------------------------------------------------------------------
       # CLI Tools

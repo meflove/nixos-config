@@ -40,8 +40,8 @@ in {
         end
 
         # Zellij
-        export ZELLIJ_CONFIG_DIR=$HOME/.config/zellij
-        if [ "$TERM" = xterm-ghostty ]
+        set -x ZELLIJ_CONFIG_DIR "$HOME/.config/zellij"
+        if test "$TERM" = "xterm-ghostty"
             set ZELLIJ_AUTO_ATTACH true
             eval (zellij setup --generate-auto-start fish | string collect)
 
@@ -116,7 +116,8 @@ in {
         ns = ''tv --preview-command "nix-search-tv preview {}" --source-command "nix-search-tv print"'';
 
         # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-        n = "nvim";
+        n = "nixCats";
+        nog = "nvim";
         m = "micro";
         py = "python";
         dif = "delta";
@@ -189,7 +190,6 @@ in {
       ];
 
       sessionVariables = {
-        EDITOR = "nvim";
         SUDO_PROMPT = "$(tput setaf 1 bold)Password:$(tput sgr0) ";
         LIBVIRT_DEFAULT_URI = "qemu:///system";
         RIP_GRAVEYARD = "~/.local/share/Trash";

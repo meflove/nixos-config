@@ -51,7 +51,7 @@ in {
     };
 
     home.sessionVariables = {
-      EDITOR = "nvim";
+      EDITOR = "nixCats";
       NVIM_APPNAME = "nvim-og";
     };
   };

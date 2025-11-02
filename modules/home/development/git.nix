@@ -114,10 +114,10 @@ in {
         enable = true;
       };
     };
-    services.gpg-agent = {
-      enable = true;
-      enableSshSupport = true;
-    };
+    # services.gpg-agent = {
+    #   enable = true;
+    #   enableSshSupport = true;
+    # };
 
     # Настройка SSH
 

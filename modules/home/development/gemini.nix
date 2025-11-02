@@ -8,9 +8,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.development.ai;
+  cfg = config.${namespace}.home.development.gemini;
 in {
-  options.${namespace}.home.development.ai = {
+  options.${namespace}.home.development.gemini = {
     enable =
       lib.mkEnableOption "enable AI development environment with Gemini and Gemini-CLI"
       // {
@@ -45,15 +45,17 @@ in {
 
         mcpServers = {
           context7 = {
-            command = "npx";
+            command = "${pkgs.nodejs}/bin/npx";
             args = [
               "-y"
               "@upstash/context7-mcp"
+              "--api-key"
+              secrets.context7.context7_api_key
             ];
           };
 
           github = {
-            command = "podman";
+            command = "${lib.getExe pkgs.podman}";
             args = [
               "run"
               "-i"

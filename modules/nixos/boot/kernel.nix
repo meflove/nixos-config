@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   config,
@@ -35,7 +36,7 @@ in {
   config = mkIf cfg.enable {
     services.scx = {
       enable = true;
-      package = pkgs.callPackage ../../../packages/scx_rustcheds {};
+      package = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.scx_rustcheds;
 
       scheduler = "scx_lavd";
       extraArgs = [
