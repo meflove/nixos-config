@@ -9,13 +9,21 @@
     };
 
     desktop = {
-      gaming.enable = true;
+      gaming = {
+        enable = true;
+
+        wine.package = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-tkg;
+
+        lutris.enable = false;
+        minecraft.enable = true;
+        osu.enable = false;
+      };
       kitty.enable = true;
       nixcord.enable = false;
     };
 
     development = {
-      gemini.enable = true;
+      gemini.enable = false;
       claude.enable = true;
     };
   };
@@ -46,8 +54,6 @@
       # Development
       #---------------------------------------------------------------------
       # Languages & Runtimes
-      go
-      zig
 
       #---------------------------------------------------------------------
       # CLI Tools

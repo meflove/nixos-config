@@ -1,6 +1,5 @@
 {
   pkgs,
-  inputs,
   lib,
   config,
   namespace,
@@ -16,19 +15,6 @@ in {
       // {
         default = false;
       };
-
-    wine = {
-      enable =
-        lib.mkEnableOption "enable wine"
-        // {
-          default = true;
-        };
-      package =
-        lib.mkPackageOption pkgs "wine package to use"
-        {
-          default = pkgs.wineWowPackages.stagingFull;
-        };
-    };
   };
 
   config = mkIf cfg.enable {
@@ -36,16 +22,16 @@ in {
       "ntsync"
     ];
 
-    hardware.xone.enable = true;
-
     programs = {
       gamemode = {
         enable = true;
+
         settings.general.inhibit_screensaver = 0;
       }; # for performance mode
 
       steam = {
         enable = true; # install steam
+        package = pkgs.unstable.steam;
 
         gamescopeSession.enable = true;
       };
@@ -63,6 +49,7 @@ in {
     };
 
     hardware = {
+      xone.enable = true;
       new-lg4ff.enable = true;
       opentabletdriver = {
         enable = true;
@@ -70,26 +57,11 @@ in {
       };
     };
 
-    environment.systemPackages = with pkgs; let
-      gamePkgs = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system};
-    in
-      [
-        inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.freesmlauncher
-        lutris # install lutris launcher
-        winetricks
-        vkd3d-proton
-        dxvk
+    environment.systemPackages = with pkgs; [
+      vkd3d-proton
+      dxvk
 
-        # veloren
-        # mindustry-wayland
-        # shattered-pixel-dungeon
-        (gamePkgs.osu-stable.override {
-          useGameMode = false;
-        })
-        # osu-lazer-bin
-
-        logiops
-      ]
-      ++ lib.optionals cfg.wine.enable [cfg.wine.package];
+      logiops
+    ];
   };
 }

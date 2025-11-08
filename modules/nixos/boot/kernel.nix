@@ -108,8 +108,6 @@ in {
         "bgrt_disable"
         "nowatchdog"
         "ibt=off"
-        "nvidia_drm.modeset=1"
-        "nvidia_drm.fbdev=1"
       ];
     };
 

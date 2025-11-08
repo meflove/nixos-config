@@ -3,7 +3,7 @@
   buildGoModule,
   fetchFromGitHub,
 }:
-buildGoModule rec {
+buildGoModule {
   pname = "slit";
   version = "1.3.0";
 

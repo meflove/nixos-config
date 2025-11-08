@@ -28,7 +28,7 @@
         rust-overlay.follows = "rust-overlay";
       };
     };
-    # Fix build for lanzaboote
+    ## Fix build for lanzaboote
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -82,6 +82,7 @@
     ## TUI
     angeldust-nixCats = {
       url = "github:meflove/angeldust-nixCats";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     otter-launcher = {
       url = "github:kuokuo123/otter-launcher";

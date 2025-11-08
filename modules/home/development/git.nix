@@ -114,12 +114,10 @@ in {
         enable = true;
       };
     };
-    # services.gpg-agent = {
-    #   enable = true;
-    #   enableSshSupport = true;
-    # };
-
-    # Настройка SSH
+    services.gpg-agent = {
+      enable = true;
+      enableSshSupport = true;
+    };
 
     home.file = {
       ".ssh/id_ed25519".source = ../../../secrets/ssh/id_ed25519;

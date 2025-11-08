@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   lib,
   secrets,
@@ -20,6 +19,7 @@
         "https://cache.garnix.io"
         "https://yazi.cachix.org"
         "https://devenv.cachix.org"
+        "https://nvim-treesitter-main.cachix.org"
       ];
       trusted-public-keys = [
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
@@ -28,6 +28,7 @@
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
+        "nvim-treesitter-main.cachix.org-1:cbwE6blfW5+BkXXyeAXoVSu1gliqPLHo2m98E4hWfZQ="
       ];
 
       experimental-features = [
@@ -79,13 +80,12 @@
           ];
         };
 
-        gaming = {
-          enable = true;
-          wine.package = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-tkg;
-        };
+        gaming.enable = true;
 
-        obs.enable = true;
-        screenRecord.enable = true;
+        videoTools = {
+          enable = false;
+          obs.enable = false;
+        };
         torrent.enable = true;
       };
 

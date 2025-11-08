@@ -21,8 +21,6 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       inputs.angeldust-nixCats.packages.${pkgs.stdenv.hostPlatform.system}.default
-      neovim
-      statix
     ];
 
     editorconfig = {
@@ -45,10 +43,10 @@ in {
       };
     };
 
-    xdg.configFile."nvim-og" = {
-      recursive = true;
-      source = ./nvim;
-    };
+    # xdg.configFile."nvim-og" = {
+    #   recursive = true;
+    #   source = ./nvim;
+    # };
 
     home.sessionVariables = {
       EDITOR = "nixCats";

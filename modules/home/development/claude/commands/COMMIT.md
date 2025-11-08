@@ -1,5 +1,5 @@
 ---
-description: "Creates well-formatted commits with conventional commit messages and emoji"
+description: "Creates well-formatted commits with conventional commit messages and emoji on $ARGUMENTS language"
 allowed-tools:
   [
     "Bash(git status:*)",
@@ -19,10 +19,6 @@ Creates well-formatted commits with conventional commit messages.
 
 ## Usage
 
-```
-/commit
-/commit --lang <language> # default: English
-```
 
 ## Context
 - Current git status: !`git status`

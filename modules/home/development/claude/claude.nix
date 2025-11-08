@@ -25,6 +25,8 @@ in {
 
       commands = {
         commit = ./commands/COMMIT.md;
+        code_review = ./commands/CODE_REVIEW.md;
+        full_review = ./commands/FULL_REVIEW.md;
       };
 
       settings = {
@@ -32,6 +34,8 @@ in {
           allow = [
             "Task"
             "Bash(git log:*)"
+            "Bash(grep:*)"
+            "Bash(find:*)"
             "Glob"
             "Grep"
             "LS"
@@ -48,6 +52,7 @@ in {
         env = {
           ANTHROPIC_AUTH_TOKEN = secrets.claude.zai_api_key;
           ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
+          DISABLE_TELEMETRY = 1;
         };
 
         statusLine = {
@@ -81,10 +86,12 @@ in {
         };
 
         nixos = {
-          command = "nix";
+          command = "${lib.getExe pkgs.podman}";
           args = [
             "run"
-            "github:utensils/mcp-nixos"
+            "--rm"
+            "-i"
+            "ghcr.io/utensils/mcp-nixos"
           ];
         };
       };

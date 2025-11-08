@@ -23,15 +23,16 @@ in {
         default = true;
       };
   };
-
   config = mkIf cfg.enable {
     programs.ghostty = {
       enable = true;
-
+      systemd.enable = true;
       enableFishIntegration = true;
+      installBatSyntax = true;
+      installVimSyntax = true;
 
       settings = {
-        theme = "tokyo-night";
+        theme = "Catppuccin Macchiato";
         custom-shader = [
           "${cursorSmear}"
         ];
