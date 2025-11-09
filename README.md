@@ -14,30 +14,73 @@ This configuration is built around a minimalist yet functional environment for d
 | Component          | Implementation                                                     |
 | ------------------ | ------------------------------------------------------------------ |
 | **System**         | [NixOS Unstable](https://nixos.org/channels/nixos-unstable)        |
-| **Window Manager** | [Hyprland](https://hyprland.org/) (with `hyprlock`, `hypridle`)    |
+| **Implementation** | [Lix](https://lix.systems/) (modern Nix replacement)              |
+| **Architecture**   | [Snowfall Lib](https://github.com/snowfallorg/lib) for modularity   |
+| **Window Manager** | [Hyprland](https://hyprland.org/) (Wayland with gaming optimizations) |
 | **Bar**            | [Hyprpanel](https://github.com/hyprland-community/hyprpanel)       |
 | **Terminal**       | [Ghostty](https://github.com/ghostty-org/ghostty)                  |
-| **Shell**          | [Fish Shell](https://fishshell.com/) with plugins                  |
-| **Security**       | [Secure Boot](https://nixos.wiki/wiki/Secure_Boot) support enabled |
-| **Gaming**         | Gaming optimizations, including `gamemode`                         |
+| **Shell**          | [Fish Shell](https://fishshell.com/) with plugins and starship      |
+| **Security**       | [Secure Boot](https://github.com/nix-community/lanzaboote) + transcrypt     |
+| **Gaming**         | Comprehensive gaming stack with optimizations                       |
+
+### 🎮 Gaming & Performance Stack
+
+**Kernel & Scheduler:**
+- **CachyOS Kernel** with LTO optimizations for gaming performance
+- **SCX lavd** scheduler with low-latency configuration
+- **Aggressive CPU tuning** with performance governor
+
+**Memory & Storage:**
+- **ZRAM compression** (100% RAM) with 2 devices for load balancing
+- **Optimized I/O schedulers**: BFQ for HDD/SSD, none for NVMe
+- **Aggressive page cache** tuning for gaming workloads
+
+**Graphics & Compatibility:**
+- **NVIDIA beta drivers** with open kernel modules
+- **Full Vulkan stack** with validation layers
+- **Wine/Proton integration** via nix-gaming overlays
+- **DirectX translation** through VKD3D-Proton and DXVK
+
+**Network:**
+- **TCP BBR** congestion control for better network connection
 
 ## 📂 Repository Structure
 
-The configuration is organized as follows for easy management and scalability:
+The configuration uses **snowfall-lib** for modular architecture with automatic module discovery:
 
-- `flake.nix`: The main entry point that defines dependencies and builds the entire configuration.
-- `systems/`: Configurations for specific machines (hosts).
-  - `x86_64-linux/nixos-pc`: My main PC.
-- `modules/`: Shared modules that are reused across hosts.
-  - `nixos/`: System-level NixOS modules (kernel, drivers, services).
-  - `home/`: Modules for managing the user environment (dotfiles, programs).
-- `homes/`: User definitions and import of their Home Manager configurations.
-- `scripts/`: Utility scripts for setup and maintenance.
-- `shells/`: Shell configuration.
-- `pics/`: Images and wallpapers used in the configuration.
-- `packages/`: Custom Nix packages. # TODO fix this packages
-- `overlays/`: Custom packages and fixes for existing ones.
-- `secrets/`: Encrypted secrets, managed with [transcrypt](https://github.com/elasticdog/transcrypt) (or a similar tool).
+```
+nixos-config/
+├── flake.nix                     # Main entry point with snowfall-lib integration
+├── devenv.nix                    # Development environment with git hooks
+├── systems/                      # Host-specific configurations
+│   └── x86_64-linux/
+│       └── nixos-pc/
+│           ├── default.nix       # System configuration with module imports
+│           └── nixos-pc-disk.nix # Disko partitioning scheme
+├── homes/                        # User-specific Home Manager configs
+│   └── x86_64-linux/
+│       └── angeldust@nixos-pc/
+│           └── default.nix       # User environment configuration
+├── modules/                      # Reusable modules (auto-discovered)
+│   ├── nixos/                    # System-level modules
+│   │   ├── core/                 # Essential system services (firewall, ssh, autologin)
+│   │   ├── boot/                 # Kernel, secure boot, bootloader
+│   │   ├── hardware/             # Hardware support (nvidia, sound, bluetooth)
+│   │   └── desktop/              # GUI services (gaming, flatpak, obs)
+│   └── home/                     # User environment modules
+│       ├── cli/                  # Command-line tools and shell config
+│       ├── desktop/              # GUI applications (hyprland, ghostty, zen)
+│       └── development/          # Dev tools (nvim, git, ai tools)
+├── secrets/                      # Encrypted secrets (transcrypt managed)
+└── overlays/                     # Custom package modifications
+```
+
+### 🏗️ Architecture Features
+
+- **Namespace**: All modules use `angl` namespace for consistency
+- **Modular Options**: Each module provides `angl.nixos.category.module.enable` options
+- **Secret Management**: Encrypted secrets with git hooks integration
+- **Development Shell**: Pre-configured environment with quality tools
 
 ## 🛠️ Installation and Usage
 
@@ -61,7 +104,7 @@ cd nixos-config
 
 ```bash
 # First build for a host named 'nixos-pc'
-sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake .#pcDisk # or your disko config name in flake.nix
+sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount ./systems/x86_64-linux/nixos-pc/nixos-pc-disk.nix # or your disko config name
 
 nix-shell -p transcrypt
 transcrypt

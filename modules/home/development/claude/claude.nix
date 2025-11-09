@@ -50,8 +50,11 @@ in {
         };
 
         env = {
-          ANTHROPIC_AUTH_TOKEN = secrets.claude.zai_api_key;
+          ANTHROPIC_DEFAULT_OPUS_MODEL = "GLM-4.6";
+          ANTHROPIC_DEFAULT_SONNET_MODEL = "GLM-4.6";
+          ANTHROPIC_DEFAULT_HAIKU_MODEL = "GLM-4.5-Air";
           ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
+          ANTHROPIC_AUTH_TOKEN = secrets.claude.zai_api_key;
           DISABLE_TELEMETRY = 1;
         };
 

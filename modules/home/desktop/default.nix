@@ -5,6 +5,7 @@
     ./hyprland/hyprland.nix
     ./hyprland/hyprpanel.nix
     ./hyprland/hyprlock.nix
+    ./niri/niri.nix
     ./kitty.nix
     ./mpv.nix
     ./nixcord.nix

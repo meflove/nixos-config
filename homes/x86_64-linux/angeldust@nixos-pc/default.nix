@@ -9,6 +9,11 @@
     };
 
     desktop = {
+      hyprland = {
+        enable = true;
+        autologin.enable = true;
+      };
+      niri.autologin.enable = false;
       gaming = {
         enable = true;
 
