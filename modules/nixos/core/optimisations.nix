@@ -9,7 +9,18 @@
   cfg = config.${namespace}.nixos.core.optimisations;
 in {
   options.${namespace}.nixos.core.optimisations = {
-    enable = lib.mkEnableOption "Enable optimisations" // {default = true;};
+    enable =
+      lib.mkEnableOption ''
+        Enable comprehensive system optimizations for performance and responsiveness.
+
+        This module applies performance optimizations including:
+        - ZRAM swap compression for improved memory management
+        - I/O scheduler optimizations for different storage types
+        - Memory management and page cache tuning
+        - EarlyOOM for proactive out-of-memory handling
+        - Watchdog timer disabling to reduce system overhead
+      ''
+      // {default = true;};
   };
 
   config = mkIf cfg.enable {

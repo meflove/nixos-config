@@ -35,6 +35,7 @@
     };
 
     # Desktop Environment
+    ## Hyprland
     hyprland = {
       url = "github:hyprwm/Hyprland";
     };
@@ -45,6 +46,10 @@
     hyprpanel = {
       url = "github:Jas-SinghFSU/HyprPanel";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ## Niri
+    niri = {
+      url = "github:sodiboo/niri-flake";
     };
 
     # Home Manager & User Apps
@@ -122,6 +127,7 @@
       overlays = with inputs; [
         lix-module.overlays.default
         snowfall-flake.overlays.default
+        niri.overlays.niri
       ];
 
       inherit inputs;
@@ -174,6 +180,7 @@
             zen-browser.homeModules.default
             otter-launcher.homeModules.default
             hyprland.homeManagerModules.default
+            niri.homeModules.niri
             nixcord.homeModules.nixcord
             nix-colors.homeManagerModules.default
             chaotic.homeManagerModules.default

@@ -7,9 +7,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.nixos.harware.iphone;
+  cfg = config.${namespace}.nixos.hardware.iphone;
 in {
-  options.${namespace}.nixos.harware.iphone = {
+  options.${namespace}.nixos.hardware.iphone = {
     enable =
       lib.mkEnableOption "enable support for iPhone/iPad connectivity via usbmuxd"
       // {

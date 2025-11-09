@@ -9,10 +9,28 @@
   cfg = config.${namespace}.nixos.core.firewall;
 in {
   options.${namespace}.nixos.core.firewall = {
-    enable = lib.mkEnableOption "Enable firewall" // {default = true;};
+    enable =
+      lib.mkEnableOption ''
+        Enable advanced firewall configuration with nftables.
+
+        Configures zone-based firewall with:
+        - Separate zones for different network interfaces
+        - Automatic SSH port opening for trusted networks
+        - PostgreSQL access for local connections
+        - Ban system for malicious IPs
+        - Outgoing connections allowed from trusted zones
+      ''
+      // {default = true;};
   };
 
   config = mkIf cfg.enable {
+    # Assertions to validate firewall configuration
+    assertions = [
+      {
+        assertion = builtins.all (iface: config.networking.interfaces ? ${iface}) ["enp3s0" "wlan0"];
+        message = "Firewall references network interfaces (enp3s0, wlan0) that are not defined in networking.interfaces.";
+      }
+    ];
     networking = {
       nftables = {
         enable = true;

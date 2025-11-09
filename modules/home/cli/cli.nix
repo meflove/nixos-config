@@ -20,13 +20,21 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
-      dust
-      duf
-      progress
-      viddy
-      kalker
-      python313Packages.downloader-cli
-      blobdrop
+      # === File System & Disk Utilities ===
+      # Modern alternatives to standard tools
+      dust # Disk usage visualization (du alternative)
+      duf # Disk usage/free tool with colors (df alternative)
+
+      # === System Monitoring & Progress ===
+      progress # Coreutils progress viewer
+      viddy # Modern watch command with TUI
+
+      # === CLI Tools & Utilities ===
+      kalker # Calculator with support for units and functions
+      blobdrop # TUI for drag-and-drop file transfers to browser/desktop apps
+
+      # === Download & Media ===
+      python313Packages.downloader-cli # CLI downloader with progress bars
     ];
 
     services.clipse = {

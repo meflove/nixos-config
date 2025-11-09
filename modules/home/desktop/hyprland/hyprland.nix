@@ -14,11 +14,46 @@
   binds = import ./binds.nix {inherit lib pkgs inputs;};
 in {
   options.${namespace}.home.desktop.hyprland = {
-    enable = lib.mkEnableOption "Enable Hyprland as the window manager." // {default = true;};
+    enable =
+      lib.mkEnableOption ''
+        Enable Hyprland as the Wayland compositor/window manager.
 
-    hyprlock.enable = lib.mkEnableOption "Enable hyprlock as the screen locker." // {default = true;};
+        Configures Hyprland with:
+        - Dynamic tiling with keyboard-driven workflow
+        - Custom animations and visual effects
+        - Multi-monitor support with proper workspaces
+        - Integration with Hyprpanel and Hyprlock
+        - Gaming optimizations (VRR, tearing controls)
+        - Extensive keybindings for window management
+      ''
+      // {default = true;};
 
-    hyprpanel.enable = lib.mkEnableOption "Enable hyprpanel as the panel." // {default = true;};
+    hyprlock.enable =
+      lib.mkEnableOption ''
+        Enable Hyprlock as the screen locker.
+
+        Provides modern Wayland screen locking with:
+        - Customizable lock screen with time/date display
+        - Password authentication support
+        - Smooth animations and blur effects
+        - Integration with Hyprland system theme
+      ''
+      // {default = true;};
+
+    hyprpanel.enable =
+      lib.mkEnableOption ''
+        Enable Hyprpanel as the system panel/bar.
+
+        Feature-rich panel including:
+        - System tray and notification center
+        - Workspace overview and window switcher
+        - System controls (volume, brightness, network)
+        - Customizable widgets and themes
+        - Quick settings and application menu
+      ''
+      // {default = true;};
+
+    autologin.enable = lib.mkEnableOption ''Enable automatic login for a specified user.'' // {default = false;};
   };
 
   config = mkIf cfg.enable {

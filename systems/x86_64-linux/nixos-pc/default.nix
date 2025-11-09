@@ -20,6 +20,7 @@
         "https://yazi.cachix.org"
         "https://devenv.cachix.org"
         "https://nvim-treesitter-main.cachix.org"
+        "https://niri.cachix.org"
       ];
       trusted-public-keys = [
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
@@ -29,6 +30,7 @@
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
         "nvim-treesitter-main.cachix.org-1:cbwE6blfW5+BkXXyeAXoVSu1gliqPLHo2m98E4hWfZQ="
+        "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
       ];
 
       experimental-features = [
@@ -95,7 +97,7 @@
         virtManager.enable = true;
       };
 
-      harware = {
+      hardware = {
         iphone.enable = true;
       };
     };
@@ -126,44 +128,49 @@
   };
 
   environment.systemPackages = with pkgs; [
-    # --- CLI Tools ---
-    # Core
+    # === Core System Utilities ===
+    # Essential CLI tools for system administration
     coreutils
     curl
     dig
     file
     killall
-    pcre
     rsync
     tree
+    wget
+
+    # File management and compression
     unzip
     zip
     rar
     unrar
     _7zz-rar
-    wget
-    nmap
 
-    # Libs
+    # Development tools and libraries
     gnumake
     openssl
+    pcre
 
-    # --- Nix Ecosystem ---
+    # Network diagnostics and security
+    nmap
+
+    # === Nix Ecosystem ===
+    # Nix package management tools
     home-manager
     snowfallorg.flake
 
-    # --- Graphics & Display ---
-    # Vulkan
+    # === Graphics & Display System ===
+    # Vulkan stack for GPU acceleration and gaming
     vulkan-extension-layer
     vulkan-headers
     vulkan-loader
     vulkan-tools
     vulkan-validation-layers
 
-    # Wayland & GUI
-    base16-schemes
+    # GUI framework and clipboard utilities
     gtk3
     gtk4
+    base16-schemes
     pwvucontrol
     wl-clipboard
   ];

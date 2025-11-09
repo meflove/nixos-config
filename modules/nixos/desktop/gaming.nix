@@ -11,13 +11,36 @@
 in {
   options.${namespace}.nixos.desktop.gaming = {
     enable =
-      lib.mkEnableOption "enable gaming related packages and services"
+      lib.mkEnableOption ''
+        Enable comprehensive gaming environment with performance optimizations.
+
+        This module configures a complete gaming setup including:
+        - Steam with Gamescope integration for improved gaming experience
+        - GameMode for CPU/GPU optimization during gaming
+        - ntsync kernel module for improved Windows game compatibility
+        - Solaar for Logitech gaming device management
+        - Wine/Proton integration through home-manager modules
+
+        Designed for both native Linux gaming and Windows compatibility.
+      ''
       // {
         default = false;
       };
   };
 
   config = mkIf cfg.enable {
+    # Assertions to validate gaming configuration
+    assertions = [
+      {
+        assertion = config.hardware.graphics.enable;
+        message = "Gaming module requires graphics acceleration to be enabled via hardware.graphics.enable.";
+      }
+      {
+        assertion = config.${namespace}.nixos.hardware.nvidia.enable;
+        message = "Gaming module requires NVIDIA drivers to be enabled for optimal performance.";
+      }
+    ];
+
     boot.kernelModules = [
       "ntsync"
     ];
@@ -42,7 +65,7 @@ in {
         enable = true; # Enable the service
         package = pkgs.solaar; # The package to use
 
-        window = "only"; # Show the window on startup (show, *hide*, only [window only])
+        window = "hide"; # Show the window on startup (show, *hide*, only [window only])
         batteryIcons = "regular"; # Which battery icons to use (*regular*, symbolic, solaar)
         extraArgs = ""; # Extra arguments to pass to solaar on startup
       };

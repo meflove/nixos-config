@@ -33,6 +33,7 @@ in {
         extraPortals = with pkgs; [
           xdg-desktop-portal-gtk
           xdg-desktop-portal-wlr
+          xdg-desktop-portal-gnome
         ];
         xdgOpenUsePortal = true;
       };

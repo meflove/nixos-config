@@ -27,5 +27,6 @@ in {
 
       packages = cfg.flatpakPackages;
     };
+    xdg.portal.enable = true;
   };
 }
