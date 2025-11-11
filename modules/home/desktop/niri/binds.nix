@@ -35,6 +35,7 @@ in {
   "${super}+BracketLeft".action.focus-column-left = {};
   "${super}+BracketRight".action.focus-column-right = {};
   "${super}+Q".action.close-window = {};
+  "${super}+O".action.toggle-overview = {};
 
   # Window arrangement
   "${super}+Shift+Left".action.move-column-left = {};

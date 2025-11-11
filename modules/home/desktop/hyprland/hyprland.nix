@@ -51,7 +51,7 @@ in {
         - Customizable widgets and themes
         - Quick settings and application menu
       ''
-      // {default = true;};
+      // {default = false;};
 
     autologin.enable = lib.mkEnableOption ''Enable automatic login for a specified user.'' // {default = false;};
   };
@@ -110,7 +110,7 @@ in {
       extraConfig = ''
         exec-once = clipse -listen
         exec-once = easyeffects --gapplication-service &
-        exec-once = hyprpanel &> /dev/null
+        # exec-once = hyprpanel &> /dev/null
         exec-once = hyprlock
 
         exec-once = [workspace 1 silent] AyuGram

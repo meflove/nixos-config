@@ -20,6 +20,7 @@ This configuration is built around a minimalist yet functional environment for d
 | **Bar**            | [Hyprpanel](https://github.com/hyprland-community/hyprpanel)       |
 | **Terminal**       | [Ghostty](https://github.com/ghostty-org/ghostty)                  |
 | **Shell**          | [Fish Shell](https://fishshell.com/) with plugins and starship      |
+| **Code Editor**    | [Neovim](https://neovim.io/) with [angeldust-nixCats](https://github.com/meflove/angeldust-nixCats) configuration |
 | **Security**       | [Secure Boot](https://github.com/nix-community/lanzaboote) + transcrypt     |
 | **Gaming**         | Comprehensive gaming stack with optimizations                       |
 
@@ -43,6 +44,17 @@ This configuration is built around a minimalist yet functional environment for d
 
 **Network:**
 - **TCP BBR** congestion control for better network connection
+
+### 💻 Development Environment
+
+**Neovim Configuration ([angeldust-nixCats](https://github.com/meflove/angeldust-nixCats)):**
+A comprehensive Neovim setup using [nixCats](https://github.com/BirdeeHub/nixCats-nvim) for reproducible, declarative Neovim environments with:
+
+- **Modern Features**: Catppuccin theme, Blink.cmp completion, Copilot integration
+- **Multi-language Support**: LSP for Python, Lua, Nix, Bash with intelligent completion
+- **Reproducible Configuration**: Nix-managed environment for consistent setup across systems
+- **Rich Plugin Ecosystem**: Development tools, Git integration, file navigation, and syntax highlighting
+- **Customizable**: Declarative configuration with modular design
 
 ## 📂 Repository Structure
 
@@ -70,7 +82,7 @@ nixos-config/
 │   └── home/                     # User environment modules
 │       ├── cli/                  # Command-line tools and shell config
 │       ├── desktop/              # GUI applications (hyprland, ghostty, zen)
-│       └── development/          # Dev tools (nvim, git, ai tools)
+│       └── development/          # Dev tools (angeldust-nixCats nvim, git, ai tools)
 ├── secrets/                      # Encrypted secrets (transcrypt managed)
 └── overlays/                     # Custom package modifications
 ```
