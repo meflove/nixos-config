@@ -9,15 +9,14 @@
         ],
         "nvim-treesitter-main": "nvim-treesitter-main",
         "plugins-blink-cmp-copilot": "plugins-blink-cmp-copilot",
-        "plugins-hlargs": "plugins-hlargs",
         "plugins-tiny-inline-diagnostic": "plugins-tiny-inline-diagnostic"
       },
       "locked": {
-        "lastModified": 1762808118,
-        "narHash": "sha256-8s2y5kKIJc14yoigAxx089dgAmNhpWwhXC79IHf2kCM=",
+        "lastModified": 1762904539,
+        "narHash": "sha256-hTB+Mw86t66Gy6XZq577aH+L4PwPhGRiORNUeXVtrRk=",
         "owner": "meflove",
         "repo": "angeldust-nixCats",
-        "rev": "aa6d13716d1c2e00c18dfe793f4c42c8c73d7aca",
+        "rev": "4d6410110c9885e8d318f31ea224f94103ade7ab",
         "type": "github"
       },
       "original": {
@@ -133,6 +132,32 @@
         "type": "github"
       }
     },
+    "dankMaterialShell": {
+      "inputs": {
+        "dgop": [
+          "dgop"
+        ],
+        "dms-cli": [
+          "dms-cli"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762885646,
+        "narHash": "sha256-bmIQuwAdp29/4jdhuoFLoc7wyAMQxyc9ArrIPWh6Dh4=",
+        "owner": "AvengeMedia",
+        "repo": "DankMaterialShell",
+        "rev": "eec9da42bfec282f2d843fd48d5056da4f7ae9f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "DankMaterialShell",
+        "type": "github"
+      }
+    },
     "dependencyDagOfSubmodule": {
       "inputs": {
         "nixpkgs": [
@@ -154,6 +179,26 @@
         "type": "github"
       }
     },
+    "dgop": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762835999,
+        "narHash": "sha256-UykYGrGFOFTmDpKTLNxj1wvd1gbDG4TkqLNSbV0TYwk=",
+        "owner": "AvengeMedia",
+        "repo": "dgop",
+        "rev": "799301991cd5dcea9b64245f9d500dcc76615653",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "dgop",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -171,6 +216,26 @@
       "original": {
         "owner": "nix-community",
         "repo": "disko",
+        "type": "github"
+      }
+    },
+    "dms-cli": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1762831304,
+        "narHash": "sha256-3n44wWSKvHM7sRUnEDWYhuH6ZPyJF1dc7ASVxrnq0oo=",
+        "owner": "AvengeMedia",
+        "repo": "danklinux",
+        "rev": "40520454025053af8b5211d0368264950bc632bd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "danklinux",
         "type": "github"
       }
     },
@@ -1995,22 +2060,6 @@
         "type": "github"
       }
     },
-    "plugins-hlargs": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1758619418,
-        "narHash": "sha256-WjmVefR0qk2ANWgyHSuYMTuCfzlVTF7tqzAL+uatKkc=",
-        "owner": "m-demare",
-        "repo": "hlargs.nvim",
-        "rev": "0b29317c944fb1f76503ce4540d6dceffbb5ccd2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "m-demare",
-        "repo": "hlargs.nvim",
-        "type": "github"
-      }
-    },
     "plugins-tiny-inline-diagnostic": {
       "flake": false,
       "locked": {
@@ -2081,7 +2130,10 @@
         "angeldust-nixCats": "angeldust-nixCats",
         "ayugram-desktop": "ayugram-desktop",
         "chaotic": "chaotic",
+        "dankMaterialShell": "dankMaterialShell",
+        "dgop": "dgop",
         "disko": "disko",
+        "dms-cli": "dms-cli",
         "flake-utils": "flake-utils",
         "freesmlauncher": "freesmlauncher",
         "fsel": "fsel",

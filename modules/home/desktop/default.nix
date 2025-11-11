@@ -13,5 +13,6 @@
     ./xdg.nix
     ./zen.nix
     ./gaming.nix
+    ./quickShell.nix
   ];
 }

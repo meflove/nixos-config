@@ -82,6 +82,7 @@
     "noanim, indicator.*"
     "noanim, osk"
     "noanim, hyprpicker"
+    "noanim, ^(dms)$"
     "blur, shell:*"
     "ignorealpha 0.6, shell:*"
 

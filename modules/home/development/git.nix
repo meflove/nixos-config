@@ -23,6 +23,7 @@ in {
       delta # diff viewer
       lazygit # Git TUI
       git-filter-repo
+      gh
     ];
 
     programs = {
@@ -36,7 +37,7 @@ in {
           };
 
           core = {
-            editor = "nvim";
+            editor = "nixCats";
             whitespace = "error";
             preloadindex = true;
           };

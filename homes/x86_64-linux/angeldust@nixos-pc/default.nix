@@ -13,7 +13,7 @@
         enable = true;
         autologin.enable = true;
       };
-      niri.autologin.enable = false;
+      niri.enable = false;
       gaming = {
         enable = true;
 

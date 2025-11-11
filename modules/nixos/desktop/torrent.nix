@@ -18,13 +18,14 @@ in {
   };
 
   config = mkIf cfg.enable {
+    users.users.angeldust.extraGroups = ["transmission"];
+
     services.transmission = {
       enable = true;
       package = pkgs.transmission_4;
       webHome = "${pkgs.flood-for-transmission}";
 
       home = "${config.users.users.angeldust.home}/Torrents";
-      downloadDirPermissions = "777";
 
       settings = {
         download-dir = "${config.services.transmission.home}";
