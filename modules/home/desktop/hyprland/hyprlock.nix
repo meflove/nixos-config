@@ -7,7 +7,7 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.desktop.hyprland;
+  cfg = config.home.${namespace}.desktop.hyprland;
 in {
   config = mkIf cfg.hyprlock.enable {
     home.file."Pictures/wallpaper/lock_screen.png".source = ../../../../pics/lock_screen.png;

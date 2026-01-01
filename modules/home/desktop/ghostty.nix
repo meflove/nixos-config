@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   config,
@@ -7,7 +8,7 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.desktop.ghostty;
+  cfg = config.home.${namespace}.desktop.ghostty;
 
   cursorSmear =
     pkgs.fetchurl
@@ -16,7 +17,7 @@
       sha256 = "sha256-+5jUoSYIv3YJ/1ge7Bj49+ZVtz890cYvUng33UgGakM=";
     };
 in {
-  options.${namespace}.home.desktop.ghostty = {
+  options.home.${namespace}.desktop.ghostty = {
     enable =
       lib.mkEnableOption "enable Ghostty terminal emulator"
       // {
@@ -26,6 +27,7 @@ in {
   config = mkIf cfg.enable {
     programs.ghostty = {
       enable = true;
+      package = inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.ghostty;
       systemd.enable = true;
       enableFishIntegration = true;
       installBatSyntax = true;

@@ -7,9 +7,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.development.git;
+  cfg = config.home.${namespace}.development.git;
 in {
-  options.${namespace}.home.development.git = {
+  options.home.${namespace}.development.git = {
     enable =
       lib.mkEnableOption "enable git configuration and related tools"
       // {
@@ -84,45 +84,6 @@ in {
           };
         };
       };
-
-      ssh = {
-        enable = true;
-
-        enableDefaultConfig = false;
-
-        matchBlocks = {
-          "github.com" = {
-            user = "angeldust";
-            identityFile = "~/.ssh/id_ed25519";
-          };
-
-          "*" = {
-            forwardAgent = false;
-            serverAliveInterval = 0;
-            serverAliveCountMax = 3;
-            compression = false;
-            addKeysToAgent = "no";
-            hashKnownHosts = false;
-            userKnownHostsFile = "~/.ssh/known_hosts";
-            controlMaster = "no";
-            controlPath = "~/.ssh/master-%r@%n:%p";
-            controlPersist = "no";
-          };
-        };
-      };
-
-      gpg = {
-        enable = true;
-      };
-    };
-    services.gpg-agent = {
-      enable = true;
-      enableSshSupport = true;
-    };
-
-    home.file = {
-      ".ssh/id_ed25519".source = ../../../secrets/ssh/id_ed25519;
-      ".ssh/id_ed25519.pub".source = ../../../secrets/ssh/id_ed25519.pub;
     };
   };
 }

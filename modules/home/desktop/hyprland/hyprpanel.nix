@@ -8,7 +8,7 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.desktop.hyprland;
+  cfg = config.home.${namespace}.desktop.hyprland;
 in {
   config = mkIf cfg.hyprpanel.enable {
     home.packages = with pkgs; [

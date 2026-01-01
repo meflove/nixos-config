@@ -7,13 +7,13 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.cli.otter-launcher;
+  cfg = config.home.${namespace}.cli.otter-launcher;
 in {
-  options.${namespace}.home.cli.otter-launcher = {
+  options.home.${namespace}.cli.otter-launcher = {
     enable =
       lib.mkEnableOption "enable otter-launcher"
       // {
-        default = config.${namespace}.home.desktop.hyprland.enable;
+        default = config.home.${namespace}.desktop.hyprland.enable;
       };
   };
 

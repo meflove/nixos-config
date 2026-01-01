@@ -6,13 +6,13 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.cli.zellij;
+  cfg = config.home.${namespace}.cli.zellij;
 in {
-  options.${namespace}.home.cli.zellij = {
+  options.home.${namespace}.cli.zellij = {
     enable =
       lib.mkEnableOption "enable zellij configuration"
       // {
-        default = config.${namespace}.home.cli.fishShell.enable;
+        default = config.home.${namespace}.cli.fishShell.enable;
       };
   };
 

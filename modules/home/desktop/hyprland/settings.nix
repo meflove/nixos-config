@@ -23,7 +23,7 @@ in {
     swallow_regex = "(foot|kitty|allacritty|Alacritty|ghostty|Ghostty|com.mitchellh.ghostty|tmux)";
     disable_hyprland_logo = true;
     force_default_wallpaper = 0;
-    new_window_takes_over_fullscreen = 2;
+    on_focus_under_fullscreen = 2;
     allow_session_lock_restore = true;
     initial_workspace_tracking = false;
     background_color = "rgba(131315FF)";
@@ -123,8 +123,35 @@ in {
 
   "plugin" = {};
 
-  "monitor" = [
-    "DP-1, highres@highrr, 1920x0, 1, vrr, 1, bitdepth, 10"
-    "HDMI-A-1, highres@highrr, 0x360, 1"
+  source = " ~/.config/hypr/test.conf";
+
+  "render" = {
+    cm_fs_passthrough = true;
+  };
+
+  "experimental" = {
+    xx_color_management_v4 = true;
+  };
+
+  "monitorv2" = [
+    # "DP-1, highres@highrr, 1920x0, 1, vrr, 1, bitdepth, 10"
+    # {
+    #   output = "DP-1";
+    #   mode = "highres@highrr";
+    #   position = "1920x0";
+    #   scale = 1;
+    #   vrr = 1;
+    #   bitdepth = 10;
+    #   supports_wide_color = true;
+    #   supports_hdr = true;
+    #   # cm = "wide";
+    # }
+    # "HDMI-A-1, highres@highrr, 0x360, 1"
+    {
+      output = "HDMI-A-1";
+      mode = "highres@highrr";
+      position = "0x360";
+      scale = 1;
+    }
   ];
 }

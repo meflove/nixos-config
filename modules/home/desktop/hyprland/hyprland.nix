@@ -8,12 +8,13 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.desktop.hyprland;
+  cfg = config.home.${namespace}.desktop.hyprland;
 
+  settings = import ./settings.nix {inherit pkgs;};
   rules = import ./rules.nix;
-  binds = import ./binds.nix {inherit lib pkgs inputs;};
+  binds = import ./binds.nix {inherit config lib pkgs inputs;};
 in {
-  options.${namespace}.home.desktop.hyprland = {
+  options.home.${namespace}.desktop.hyprland = {
     enable =
       lib.mkEnableOption ''
         Enable Hyprland as the Wayland compositor/window manager.
@@ -61,6 +62,7 @@ in {
       packages = with pkgs; [
         libnotify
         swww
+        hyprpolkitagent
       ];
 
       sessionVariables = {
@@ -95,8 +97,19 @@ in {
       xwayland.enable = true;
 
       settings =
-        (import ./settings.nix {inherit pkgs;})
+        settings
         // {
+          exec-once = [
+            "systemctl --user start hyprpolkitagent"
+            "dms run &"
+            "${lib.getExe pkgs.clipse} -listen"
+            "${lib.getExe pkgs.easyeffects} --gapplication-service &"
+
+            "[workspace 1 silent] AyuGram"
+            "[workspace 2 silent] zen"
+            "[workspace special silent] soundcloud-desktop"
+          ];
+
           bind = binds;
           bindm = [
             "Super, mouse:272, movewindow"
@@ -106,16 +119,6 @@ in {
           windowrule = rules.windowRules;
           layerrule = rules.layerRules;
         };
-
-      extraConfig = ''
-        exec-once = clipse -listen
-        exec-once = easyeffects --gapplication-service &
-        # exec-once = hyprpanel &> /dev/null
-        exec-once = hyprlock
-
-        exec-once = [workspace 1 silent] AyuGram
-        exec-once = [workspace 2 silent] zen
-      '';
     };
   };
 }

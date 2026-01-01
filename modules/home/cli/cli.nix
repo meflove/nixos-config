@@ -8,13 +8,13 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.cli.basicStuff;
+  cfg = config.home.${namespace}.cli.basicStuff;
 in {
-  options.${namespace}.home.cli.basicStuff = {
+  options.home.${namespace}.cli.basicStuff = {
     enable =
       lib.mkEnableOption "enable basic CLI tools and configurations"
       // {
-        default = config.${namespace}.home.cli.fishShell.enable;
+        default = config.home.${namespace}.cli.fishShell.enable;
       };
   };
 
@@ -46,20 +46,20 @@ in {
 
     systemd.user.services.clipse = lib.mkForce {};
 
-    programs.eza = {
-      enable = true;
-
-      git = true;
-      icons = "always";
-      colors = "always";
-
-      extraOptions = [
-        "-a"
-        "-1"
-      ];
-    };
-
     programs = {
+      eza = {
+        enable = true;
+
+        git = true;
+        icons = "always";
+        colors = "always";
+
+        extraOptions = [
+          "-a"
+          "-1"
+        ];
+      };
+
       zoxide = {
         enable = true;
         enableFishIntegration = true;
@@ -68,6 +68,14 @@ in {
       starship = {
         enable = true;
         enableFishIntegration = true;
+
+        settings = {
+          os = {
+            disabled = false;
+            format = "$symbol  ";
+            symbols.NixOS = "";
+          };
+        };
       };
 
       yt-dlp = {
@@ -82,6 +90,12 @@ in {
           downloader = lib.getExe pkgs.aria2;
           downloader-args = "aria2c:'-c -x8 -s8 -k1M'";
         };
+      };
+
+      nix-index = {
+        enable = true;
+        enableFishIntegration = true;
+        package = inputs.nix-index.packages.${pkgs.stdenv.hostPlatform.system}.default;
       };
     };
   };

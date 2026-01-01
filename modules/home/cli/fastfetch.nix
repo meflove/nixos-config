@@ -6,13 +6,13 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.cli.fastfetch;
+  cfg = config.home.${namespace}.cli.fastfetch;
 in {
-  options.${namespace}.home.cli.fastfetch = {
+  options.home.${namespace}.cli.fastfetch = {
     enable =
       lib.mkEnableOption "enable fastfetch configuration"
       // {
-        default = config.${namespace}.home.cli.fishShell.enable;
+        default = config.home.${namespace}.cli.fishShell.enable;
       };
   };
 

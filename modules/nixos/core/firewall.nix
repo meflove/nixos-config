@@ -25,12 +25,6 @@ in {
 
   config = mkIf cfg.enable {
     # Assertions to validate firewall configuration
-    assertions = [
-      {
-        assertion = builtins.all (iface: config.networking.interfaces ? ${iface}) ["enp3s0" "wlan0"];
-        message = "Firewall references network interfaces (enp3s0, wlan0) that are not defined in networking.interfaces.";
-      }
-    ];
     networking = {
       nftables = {
         enable = true;
@@ -43,7 +37,7 @@ in {
             uplink = {
               interfaces = [
                 "enp3s0"
-                "wlan0"
+                "wlp4s0"
               ];
             };
 
@@ -71,6 +65,24 @@ in {
               from = "all";
               to = ["private"];
               allowedTCPPorts = [22];
+            };
+
+            private-fastapi-dev = {
+              from = "all";
+              to = ["private"];
+              allowedTCPPorts = [8000];
+            };
+
+            private-airplay = {
+              from = "all";
+              to = ["uplink"];
+              allowedUDPPorts = [5353 6001 6002];
+            };
+
+            private-wake-on-lan = {
+              from = "all";
+              to = ["private"];
+              allowedUDPPorts = [9];
             };
 
             private-outgoing = {

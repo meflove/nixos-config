@@ -7,9 +7,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.development.direnv;
+  cfg = config.home.${namespace}.development.direnv;
 in {
-  options.${namespace}.home.development.direnv = {
+  options.home.${namespace}.development.direnv = {
     enable =
       lib.mkEnableOption "enable direnv for managing per-project environment variables"
       // {

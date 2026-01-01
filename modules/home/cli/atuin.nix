@@ -6,13 +6,13 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.cli.atuin;
+  cfg = config.home.${namespace}.cli.atuin;
 in {
-  options.${namespace}.home.cli.atuin = {
+  options.home.${namespace}.cli.atuin = {
     enable =
       lib.mkEnableOption "enable the Atuin shell history manager"
       // {
-        default = config.${namespace}.home.cli.fishShell.enable;
+        default = config.home.${namespace}.cli.fishShell.enable;
       };
   };
 

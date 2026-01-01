@@ -8,7 +8,7 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.cli.yazi;
+  cfg = config.home.${namespace}.cli.yazi;
 
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
@@ -17,7 +17,7 @@
     hash = "sha256-9+58QhdM4HVOAfEC224TrPEx1N7F2VLGMxKVLAM4nJw=";
   };
 in {
-  options.${namespace}.home.cli.yazi = {
+  options.home.${namespace}.cli.yazi = {
     enable =
       lib.mkEnableOption "enable yazi file manager"
       // {

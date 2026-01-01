@@ -3,16 +3,11 @@
   config,
   lib,
   namespace,
-  inputs,
   ...
 }: let
   inherit (lib) mkIf;
 
   cfg = config.${namespace}.nixos.core.autologin;
-
-  tuigreet = lib.getExe pkgs.tuigreet;
-  session = "${lib.getExe config.programs.hyprland.package}";
-  username = "angeldust";
 in {
   options.${namespace}.nixos.core.autologin = {
     enable =
@@ -28,12 +23,13 @@ in {
         - Hyprland as default desktop environment
       ''
       // {
-        default = (inputs.self.homeConfigurations."angeldust@nixos-pc".config.${namespace}.home.desktop.hyprland.autologin.enable || inputs.self.homeConfigurations."angeldust@nixos-pc".config.${namespace}.home.desktop.niri.autologin.enable) || false;
+        # default = (inputs.self.homeConfigurations."angeldust@nixos-pc".config.home.${namespace}.desktop.hyprland.autologin.enable || inputs.self.homeConfigurations."angeldust@nixos-pc".config.home.${namespace}.desktop.niri.autologin.enable) || false;
+        default = true;
       };
 
     user = lib.mkOption {
       type = lib.types.str;
-      default = "${username}";
+      default = "angeldust";
       description = ''
         The username to automatically log in as.
 
@@ -49,22 +45,22 @@ in {
         assertion = config.users.users ? ${cfg.user};
         message = "User '${cfg.user}' must exist for autologin to work. Please create the user or specify a different username.";
       }
-      {
-        assertion = !(inputs.self.homeConfigurations."angeldust@nixos-pc".config.${namespace}.home.desktop.hyprland.autologin.enable && inputs.self.homeConfigurations."angeldust@nixos-pc".config.${namespace}.home.desktop.niri.autologin.enable);
-        message = "Only one display server (Hyprland or Niri) can be enabled for autologin to function properly.";
-      }
+      # {
+      #   assertion = !(inputs.self.homeConfigurations."angeldust@nixos-pc".config.home.${namespace}.desktop.hyprland.autologin.enable && inputs.self.homeConfigurations."angeldust@nixos-pc".config.home.${namespace}.desktop.niri.autologin.enable);
+      #   message = "Only one display server (Hyprland or Niri) can be enabled for autologin to function properly.";
+      # }
     ];
 
-    services.greetd = {
-      enable = true;
-      settings = {
-        initial_session = {
-          inherit (cfg) user;
-          command = "${session}";
-        };
-        default_session = {
-          command = "${tuigreet} --greeting 'Welcome to NixOS!' --asterisks --remember --remember-user-session --time -cmd ${session}";
-          user = "greeter";
+    systemd = {
+      targets."getty".wants = ["getty@tty1.service"];
+
+      services."getty@tty1" = {
+        overrideStrategy = "asDropin";
+        serviceConfig = {
+          ExecStart = [
+            "" # override upstream default with an empty ExecStart
+            "@${pkgs.util-linux}/sbin/agetty agetty --login-program ${pkgs.shadow}/bin/login --autologin ${cfg.user} --noclear %I $TERM"
+          ];
         };
       };
     };

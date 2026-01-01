@@ -18,27 +18,33 @@ in {
   };
 
   config = mkIf cfg.enable {
-    virtualisation.podman = {
-      enable = true;
+    virtualisation = {
+      podman = {
+        enable = true;
 
-      dockerCompat = true;
-      dockerSocket.enable = true;
+        dockerCompat = true;
+        dockerSocket.enable = true;
 
-      defaultNetwork.settings.dns_enabled = true;
+        defaultNetwork.settings.dns_enabled = true;
+      };
     };
 
-    hardware.nvidia-container-toolkit.enable = true;
+    hardware.nvidia-container-toolkit = {
+      enable = false;
+    };
 
-    environment.variables.DBX_CONTAINER_MANAGER = "podman";
     users.extraGroups.podman.members = ["angeldust"];
 
-    environment.systemPackages = with pkgs; [
-      nvidia-docker
+    environment = {
+      variables.DBX_CONTAINER_MANAGER = "podman";
+      systemPackages = with pkgs; [
+        nvidia-docker
 
-      podman-compose
-      podman-tui
+        podman-compose
+        podman-tui
 
-      docker-compose
-    ];
+        docker-compose
+      ];
+    };
   };
 }

@@ -35,18 +35,25 @@ in {
       }
     ];
 
-    services.openssh = {
-      enable = true;
+    services = {
+      openssh = {
+        enable = true;
 
-      settings = {
-        PasswordAuthentication = true;
-        PermitRootLogin = "no";
+        settings = {
+          PasswordAuthentication = true;
+          PermitRootLogin = "no";
+        };
+
+        extraConfig = ''
+          PubkeyAuthentication yes
+          KbdInteractiveAuthentication yes
+        '';
       };
 
-      extraConfig = ''
-        PubkeyAuthentication yes
-        KbdInteractiveAuthentication yes
-      '';
+      fail2ban = {
+        enable = true;
+        bantime-increment.enable = true;
+      };
     };
   };
 }

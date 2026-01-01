@@ -54,7 +54,7 @@ in {
 
       steam = {
         enable = true; # install steam
-        package = pkgs.unstable.steam;
+        package = pkgs.steam;
 
         gamescopeSession.enable = true;
       };
@@ -81,9 +81,6 @@ in {
     };
 
     environment.systemPackages = with pkgs; [
-      vkd3d-proton
-      dxvk
-
       logiops
     ];
   };

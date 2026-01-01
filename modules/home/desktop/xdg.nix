@@ -8,13 +8,13 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.desktop.xdg;
+  cfg = config.home.${namespace}.desktop.xdg;
 in {
-  options.${namespace}.home.desktop.xdg = {
+  options.home.${namespace}.desktop.xdg = {
     enable =
       lib.mkEnableOption "enable XDG user directories and mimeapps configuration"
       // {
-        default = config.${namespace}.home.desktop.hyprland.enable;
+        default = config.home.${namespace}.desktop.hyprland.enable;
       };
   };
 
@@ -38,58 +38,76 @@ in {
         xdgOpenUsePortal = true;
       };
 
-      mimeApps = {
+      mimeApps = let
+        value = let
+          zen-browser = inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.beta; # or twilight
+        in
+          zen-browser.meta.desktopFileName;
+        associations = builtins.listToAttrs (map (name: {
+            inherit name value;
+          }) [
+            "application/x-extension-shtml"
+            "application/x-extension-xhtml"
+            "application/x-extension-html"
+            "application/x-extension-xht"
+            "application/x-extension-htm"
+            "x-scheme-handler/unknown"
+            "x-scheme-handler/mailto"
+            "x-scheme-handler/chrome"
+            "x-scheme-handler/about"
+            "x-scheme-handler/https"
+            "x-scheme-handler/http"
+            "application/xhtml+xml"
+            "application/json"
+            "text/plain"
+            "text/html"
+          ]);
+      in {
         enable = true;
 
-        defaultApplications = {
-          "image/jpeg" = ["imv.desktop"];
-          "image/png" = ["imv.desktop"];
-          "inode/directory" = [
-            "${config.programs.yazi.package}/share/applications/yazi.desktop"
-          ];
-          "x-scheme-handler/http" = ["zen-beta.desktop"];
-          "x-scheme-handler/https" = ["zen-beta.desktop"];
-          "x-scheme-handler/chrome" = ["zen-beta.desktop"];
-          "text/html" = ["zen-beta.desktop"];
-          "application/x-extension-htm" = ["zen-beta.desktop"];
-          "application/x-extension-html" = ["zen-beta.desktop"];
-          "application/x-extension-shtml" = ["zen-beta.desktop"];
-          "application/xhtml+xml" = ["zen-beta.desktop"];
-          "application/x-extension-xhtml" = ["zen-beta.desktop"];
-          "application/x-extension-xht" = ["zen-beta.desktop"];
+        associations.added =
+          associations
+          // {
+            "image/jpeg" = ["imv.desktop"];
+            "image/png" = ["imv.desktop"];
+            "inode/directory" = ["${config.programs.yazi.package}/share/applications/yazi.desktop"];
 
-          "x-scheme-handler/tg" = [
-            "${
-              inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
-            }/share/applications/com.ayugram.desktop.desktop"
-          ];
-          "x-scheme-handler/tonsite" = [
-            "${
-              inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
-            }/share/applications/com.ayugram.desktop.desktop"
-          ];
-          "x-scheme-handler/discord" = ["discord.desktop"];
-        };
+            "x-scheme-handler/tg" = [
+              "${
+                inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
+              }/share/applications/com.ayugram.desktop.desktop"
+            ];
+            "x-scheme-handler/tonsite" = [
+              "${
+                inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
+              }/share/applications/com.ayugram.desktop.desktop"
+            ];
 
-        associations.added = {
-          "image/jpeg" = ["imv.desktop"];
-          "image/png" = ["imv.desktop"];
-          "inode/directory" = ["${config.programs.yazi.package}/share/applications/yazi.desktop"];
+            "x-scheme-handler/discord" = ["discord.desktop"];
+          };
 
-          "x-scheme-handler/http" = ["zen-beta.desktop"];
-          "x-scheme-handler/https" = ["zen-beta.desktop"];
-          "x-scheme-handler/chrome" = ["zen-beta.desktop"];
-          "text/html" = ["zen-beta.desktop"];
-          "application/x-extension-htm" = ["zen-beta.desktop"];
-          "application/x-extension-html" = ["zen-beta.desktop"];
-          "application/x-extension-shtml" = ["zen-beta.desktop"];
-          "application/xhtml+xml" = ["zen-beta.desktop"];
-          "application/x-extension-xhtml" = ["zen-beta.desktop"];
-          "application/x-extension-xht" = ["zen-beta.desktop"];
+        defaultApplications =
+          associations
+          // {
+            "image/jpeg" = ["imv.desktop"];
+            "image/png" = ["imv.desktop"];
+            "inode/directory" = [
+              "${config.programs.yazi.package}/share/applications/yazi.desktop"
+            ];
 
-          "x-scheme-handler/tg" = ["com.ayugram.desktop.desktop"];
-          "x-scheme-handler/tonsite" = ["com.ayugram.desktop.desktop"];
-        };
+            "x-scheme-handler/tg" = [
+              "${
+                inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
+              }/share/applications/com.ayugram.desktop.desktop"
+            ];
+            "x-scheme-handler/tonsite" = [
+              "${
+                inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
+              }/share/applications/com.ayugram.desktop.desktop"
+            ];
+
+            "x-scheme-handler/discord" = ["discord.desktop"];
+          };
       };
     };
   };

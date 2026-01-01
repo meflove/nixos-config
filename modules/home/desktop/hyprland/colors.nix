@@ -1,4 +1,3 @@
-# /home/meflove/git/nixos-config/modules/home-manager/hyprland/colors.nix
 {
   rosewater = "f5e0dc";
   flamingo = "f2cdcd";

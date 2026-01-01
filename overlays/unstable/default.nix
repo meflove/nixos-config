@@ -9,5 +9,5 @@
     };
   };
 
-  unstable = import inputs.nixpkgs-unstable overlaysSettings;
+  master = import inputs.nixpkgs-master overlaysSettings;
 }

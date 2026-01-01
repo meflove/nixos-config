@@ -19,7 +19,8 @@ in {
 
   config = mkIf cfg.enable {
     hardware = {
-      enableAllFirmware = true;
+      enableRedistributableFirmware = true;
+      enableAllHardware = true;
 
       bluetooth = {
         enable = true; # Включает поддержку Bluetooth [20]

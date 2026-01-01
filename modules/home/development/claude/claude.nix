@@ -1,6 +1,5 @@
 {
   pkgs,
-  secrets,
   lib,
   config,
   namespace,
@@ -8,9 +7,29 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.development.claude;
+  cfg = config.home.${namespace}.development.claude;
+
+  claudeAgents = pkgs.fetchFromGitHub {
+    owner = "contains-studio";
+    repo = "agents";
+    rev = "a5a480c324cac64b9c569bca0b2f297d517240cb";
+    sha256 = "sha256-yZ7llkqGBAmGPc7wooxzk0X7qWkW/zTv5VWISIyCYz8=";
+  };
+
+  # Wrapped claude-code package that injects secrets as environment variables
+  claude-wrapped = pkgs.symlinkJoin {
+    name = "claude-code-wrapped";
+    paths = [pkgs.claude-code];
+    buildInputs = [pkgs.makeWrapper];
+    postBuild = ''
+      wrapProgram $out/bin/claude \
+        --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.sops.secrets."github/github_pat".path})' \
+        --run 'export CONTEXT7_API_KEY=$(cat ${config.sops.secrets."context7/context7_api_key".path})' \
+        --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.sops.secrets."claude/zai_api_key".path})'
+    '';
+  };
 in {
-  options.${namespace}.home.development.claude = {
+  options.home.${namespace}.development.claude = {
     enable =
       lib.mkEnableOption "enable AI development environment with claude-code"
       // {
@@ -19,8 +38,24 @@ in {
   };
 
   config = mkIf cfg.enable {
+    sops = {
+      secrets = lib.angl.flattenSecrets {
+        github = {
+          github_pat = {};
+        };
+        claude = {
+          zai_api_key = {};
+        };
+        context7 = {
+          context7_api_key = {};
+        };
+      };
+    };
+
     programs.claude-code = {
       enable = true;
+      package = claude-wrapped;
+
       memory.source = ./CLAUDE.md;
 
       commands = {
@@ -30,6 +65,8 @@ in {
       };
 
       settings = {
+        alwaysThinkingEnabled = true;
+
         permissions = {
           allow = [
             "Task"
@@ -50,12 +87,10 @@ in {
         };
 
         env = {
-          ANTHROPIC_DEFAULT_OPUS_MODEL = "GLM-4.6";
-          ANTHROPIC_DEFAULT_SONNET_MODEL = "GLM-4.6";
-          ANTHROPIC_DEFAULT_HAIKU_MODEL = "GLM-4.5-Air";
           ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
-          ANTHROPIC_AUTH_TOKEN = secrets.claude.zai_api_key;
+          API_TIMEOUT_MS = 3000000;
           DISABLE_TELEMETRY = 1;
+          DISABLE_AUTOUPDATER = 1;
         };
 
         statusLine = {
@@ -69,7 +104,7 @@ in {
           type = "http";
           url = "https://mcp.context7.com/mcp";
           headers = {
-            CONTEXT7_API_KEY = secrets.context7.context7_api_key;
+            CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
           };
         };
 
@@ -84,7 +119,7 @@ in {
             "ghcr.io/github/github-mcp-server"
           ];
           env = {
-            GITHUB_PERSONAL_ACCESS_TOKEN = secrets.github.github_pat;
+            GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
           };
         };
 
@@ -100,9 +135,14 @@ in {
       };
     };
 
-    home.file.".claude/statusline.py" = {
-      source = ./statusline.py;
-      executable = true;
+    home.file = {
+      ".claude/statusline.py" = {
+        source = ./statusline.py;
+        executable = true;
+      };
+      ".claude/agents" = {
+        source = "${claudeAgents}";
+      };
     };
   };
 }

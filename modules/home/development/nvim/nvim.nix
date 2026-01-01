@@ -8,9 +8,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.development.nvim;
+  cfg = config.home.${namespace}.development.nvim;
 in {
-  options.${namespace}.home.development.nvim = {
+  options.home.${namespace}.development.nvim = {
     enable =
       lib.mkEnableOption "enable Neovim configuration"
       // {
@@ -19,7 +19,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
+    home.packages = [
       inputs.angeldust-nixCats.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
@@ -42,11 +42,6 @@ in {
         };
       };
     };
-
-    # xdg.configFile."nvim-og" = {
-    #   recursive = true;
-    #   source = ./nvim;
-    # };
 
     home.sessionVariables = {
       EDITOR = "nixCats";

@@ -41,10 +41,14 @@ in {
       };
     };
 
-    hardware.block.scheduler = {
-      "sd[a-z]*" = "bfq";
-      "mmcblk[0-9]*" = "mq-deadline";
-      "nvme[0-9]*" = "none";
+    hardware = {
+      ksm.enable = true;
+
+      block.scheduler = {
+        "sd[a-z]*" = "bfq";
+        "mmcblk[0-9]*" = "mq-deadline";
+        "nvme[0-9]*" = "none";
+      };
     };
 
     boot = {

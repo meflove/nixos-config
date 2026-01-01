@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   namespace,
@@ -45,21 +46,47 @@ in {
       }
     ];
 
+    # Load NVIDIA DRM kernel modules early for proper Wayland support
+    boot = {
+      initrd.kernelModules = ["nvidia" "nvidia-drm"];
+
+      # Enable nvidia-drm modeset for Wayland support
+      kernelParams = ["nvidia-drm.modeset=1"];
+    };
+
     services.xserver.videoDrivers = ["nvidia"];
 
     hardware = {
       graphics = {
         enable = true;
         enable32Bit = true;
+        extraPackages = with pkgs; [
+          # Vulkan stack for GPU acceleration and gaming
+          vulkan-extension-layer
+          vulkan-headers
+          vulkan-loader
+          vulkan-tools
+          vulkan-validation-layers
+          vulkan-hdr-layer-kwin6
+        ];
       };
 
       nvidia = {
-        package = config.boot.kernelPackages.nvidiaPackages.beta;
+        package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+          version = "590.44.01";
+          sha256_64bit = "sha256-VbkVaKwElaazojfxkHnz/nN/5olk13ezkw/EQjhKPms=";
+          sha256_aarch64 = "";
+          openSha256 = "sha256-ft8FEnBotC9Bl+o4vQA1rWFuRe7gviD/j1B8t0MRL/o=";
+          settingsSha256 = "";
+          persistencedSha256 = lib.fakeSha256;
+        };
 
         modesetting.enable = true;
 
-        powerManagement.enable = false;
-        powerManagement.finegrained = false;
+        powerManagement = {
+          enable = false;
+          finegrained = false;
+        };
 
         open = true;
 

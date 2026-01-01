@@ -1,9 +1,57 @@
 {
+  lib,
+  config,
   pkgs,
   inputs,
   ...
 }: {
-  angl.home = {
+  imports = [./ssh-secrets.nix];
+
+  sops = {
+    secrets = lib.angl.flattenSecrets {
+      github = {
+        github_pat_devenv = {};
+      };
+      pass = {};
+    };
+
+    templates = {
+      "nix-access-tokens.nix".content = ''
+        access-tokens = "github.com=${config.sops.placeholder."github/github_pat_devenv"}";
+      '';
+    };
+  };
+
+  nix = {
+    inherit (inputs.self.nixosConfigurations.nixos-pc.config.nix) package;
+
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+
+    settings = {
+      use-xdg-base-directories = true;
+
+      experimental-features = [
+        "nix-command"
+        "flakes"
+        "auto-allocate-uids"
+        "cgroups"
+      ];
+
+      auto-allocate-uids = true;
+      use-cgroups = true;
+
+      auto-optimise-store = true;
+
+      # With Lix, i cant use this option
+      # download-buffer-size = 2097152000;
+    };
+
+    extraOptions = ''
+      !include ${config.sops.templates."nix-access-tokens.nix".path}
+    '';
+  };
+
+  home.angl = {
     cli = {
       yazi.enable = true;
     };
@@ -11,39 +59,52 @@
     desktop = {
       hyprland = {
         enable = true;
+        hyprlock.enable = false;
         autologin.enable = true;
       };
+
+      ghostty.enable = true;
+
       niri.enable = false;
+
       gaming = {
         enable = true;
+        hyprscope.enable = true;
 
-        wine.package = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-tkg;
+        # wine.package = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-tkg;
+        wine = {
+          enable = true;
+          package = pkgs.wineWow64Packages.stagingFull;
+        };
 
         lutris.enable = false;
         minecraft.enable = true;
         osu.enable = false;
       };
       kitty.enable = true;
-      nixcord.enable = false;
+      nixcord.enable = true;
     };
 
     development = {
-      gemini.enable = false;
+      gemini.enable = true;
       claude.enable = true;
     };
   };
 
   home = {
+    preferXdgDirectories = true;
+
     packages = with pkgs; [
       #---------------------------------------------------------------------
       # GUI Applications
       #---------------------------------------------------------------------
       # Communication
       inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
+      session-desktop
 
       # Productivity & Notes
-      unstable.obsidian
-      unstable.libreoffice
+      obsidian
+      libreoffice
       papers # PDF viewer
       calcure # Modern TUI calendar and task manager
 
@@ -51,9 +112,13 @@
       imv # Image viewer for Wayland
       gimp
       vlc
+      jmtpfs
 
       # Database
       dbeaver-bin
+
+      # Music
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.soundcloud-desktop
 
       #---------------------------------------------------------------------
       # Development
@@ -75,6 +140,7 @@
 
       # System & Info
       btop # `top` alternative
+      inputs.optnix.packages.${pkgs.stdenv.hostPlatform.system}.default
 
       # Productivity & Helpers
       fzf # Fuzzy finder

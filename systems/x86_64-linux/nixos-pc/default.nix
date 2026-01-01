@@ -1,18 +1,46 @@
 {
+  inputs,
   pkgs,
   lib,
-  secrets,
+  namespace,
+  config,
   ...
 }: {
+  imports = [
+    # Disko config
+    ./nixos-pc-disk.nix
+  ];
+
+  sops = {
+    secrets = lib.angl.flattenSecrets {
+      github = {
+        github_pat_devenv = {};
+      };
+      pass = {};
+    };
+
+    templates = {
+      "nix-access-tokens.nix".content = ''
+        access-tokens = "github.com=${config.sops.placeholder."github/github_pat_devenv"}";
+      '';
+    };
+  };
+
   nix = {
     package = pkgs.lix;
 
+    nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+    channel.enable = false;
+
     settings = {
+      use-xdg-base-directories = true;
+
       allowed-users = ["@wheel"];
       trusted-users = ["@wheel"];
 
       substituters = lib.mkForce [
         "https://nixos-cache-proxy.cofob.dev"
+        "https://nixos-cache-proxy.sweetdogs.ru"
         "https://nix-gaming.cachix.org"
         "https://chaotic-nyx.cachix.org"
         "https://nix-community.cachix.org"
@@ -21,6 +49,7 @@
         "https://devenv.cachix.org"
         "https://nvim-treesitter-main.cachix.org"
         "https://niri.cachix.org"
+        "https://watersucks.cachix.org"
       ];
       trusted-public-keys = [
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
@@ -31,20 +60,28 @@
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
         "nvim-treesitter-main.cachix.org-1:cbwE6blfW5+BkXXyeAXoVSu1gliqPLHo2m98E4hWfZQ="
         "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
+        "watersucks.cachix.org-1:6gadPC5R8iLWQ3EUtfu3GFrVY7X6I4Fwz/ihW25Jbv8="
       ];
 
       experimental-features = [
         "nix-command"
         "flakes"
+        "auto-allocate-uids"
+        "cgroups"
       ];
 
-      auto-optimise-store = true;
+      auto-allocate-uids = true;
+      use-cgroups = true;
 
-      access-tokens = "github.com=${secrets.github.github_pat_devenv}";
+      auto-optimise-store = true;
 
       # With Lix, i cant use this option
       # download-buffer-size = 2097152000;
     };
+
+    extraOptions = ''
+      !include ${config.sops.templates."nix-access-tokens.nix".path}
+    '';
   };
 
   nixpkgs = {
@@ -58,9 +95,8 @@
       boot = {
         kernelOptimisations = {
           enable = true;
-          kernelPackage = pkgs.linuxPackages_cachyos-lto.cachyOverride {
+          kernelPackage = pkgs.linuxPackages_cachyos.cachyOverride {
             mArch = "GENERIC_V3";
-            useLTO = "thin";
           };
         };
 
@@ -75,6 +111,7 @@
       };
 
       desktop = {
+        dankMaterialShell.enable = true;
         flatpak = {
           enable = true;
           flatpakPackages = [
@@ -85,7 +122,7 @@
         gaming.enable = true;
 
         videoTools = {
-          enable = false;
+          enable = true;
           obs.enable = false;
         };
         torrent.enable = true;
@@ -111,13 +148,14 @@
       "networkmanager"
       "gamemode"
     ];
-    initialPassword = secrets.pass;
+    hashedPasswordFile = config.sops.secrets.pass.path;
     shell = pkgs.fish;
   };
 
   home-manager = {
     useUserPackages = true;
     useGlobalPkgs = true;
+    extraSpecialArgs = {inherit namespace;};
   };
 
   fonts = {
@@ -145,6 +183,7 @@
     rar
     unrar
     _7zz-rar
+    gparted
 
     # Development tools and libraries
     gnumake
@@ -156,28 +195,16 @@
 
     # === Nix Ecosystem ===
     # Nix package management tools
-    home-manager
+    inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager
     snowfallorg.flake
 
     # === Graphics & Display System ===
-    # Vulkan stack for GPU acceleration and gaming
-    vulkan-extension-layer
-    vulkan-headers
-    vulkan-loader
-    vulkan-tools
-    vulkan-validation-layers
-
     # GUI framework and clipboard utilities
     gtk3
     gtk4
     base16-schemes
     pwvucontrol
     wl-clipboard
-  ];
-
-  imports = [
-    # Disko config
-    ./nixos-pc-disk.nix
   ];
 
   networking.hostName = "nixos-pc";

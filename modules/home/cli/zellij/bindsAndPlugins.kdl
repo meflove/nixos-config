@@ -14,9 +14,6 @@ keybinds clear-defaults=true {
         bind "Alt h" {
             SwitchToMode "move"
         }
-        bind "Alt q" {
-            SwitchToMode "tmux"
-        }
         bind "Alt r" {
             SwitchToMode "resize"
         }
@@ -467,55 +464,6 @@ keybinds clear-defaults=true {
         bind "esc" {
             UndoRenamePane
             SwitchToMode "pane"
-        }
-    }
-    tmux {
-        bind "," {
-            SwitchToMode "renametab"
-            TabNameInput 0
-        }
-        bind "-" {
-            NewPane "down"
-            SwitchToMode "normal"
-        }
-        bind "0" {
-            SwitchToMode "pane"
-        }
-        bind "[" {
-            SwitchToMode "scroll"
-        }
-        bind "\\" {
-            NewPane "right"
-            SwitchToMode "normal"
-        }
-        bind "f" {
-            ToggleFloatingPanes
-            SwitchToMode "normal"
-        }
-        bind "g" {
-            ToggleFocusFullscreen
-            SwitchToMode "normal"
-        }
-        bind "k" {
-            SwitchToMode "normal"
-            Run "zellij" "run" "--floating" "--y" "5%" "--x" "0" "--height" "100%" "--width" "100%" "--close-on-exit" "--" "zellij-sessionx-kill" {
-                hold_on_close false
-            }
-        }
-        bind "p" {
-            SwitchToMode "normal"
-            Run "zellij" "run" "--floating" "--y" "5%" "--x" "0" "--height" "100%" "--width" "100%" "--close-on-exit" "--" "zellij-sessionx" {
-                hold_on_close false
-            }
-        }
-        bind "r" {
-            SwitchToMode "resize"
-        }
-        bind "s" {
-            SwitchToMode "normal"
-            Run "zellij" "run" "--floating" "--y" "5%" "--x" "0" "--height" "100%" "--width" "100%" "--close-on-exit" "--" "zellij-sessionx" {
-                hold_on_close false
-            }
         }
     }
 }

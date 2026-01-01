@@ -1,11 +1,13 @@
 {
+  config,
   lib,
+  inputs,
   pkgs,
   ...
 }: let
   super = "Super";
-  term = "ghostty";
-  editor = "nvim";
+  term = lib.getExe config.programs.ghostty.package;
+  editor = lib.getExe inputs.angeldust-nixCats.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in [
   # Essentials
   "${super}, T, exec, ${term}"
@@ -22,7 +24,7 @@ in [
 
   # Session
   ''${super}, G, exec, pkill kalker || ${term} --class="com.free.kalker" --title="kalker" -e kalker''
-  "${super}, L, exec, hyprlock"
+  "${super}, L, exec, dms ipc call lock lock || hyprlock"
 
   # Window management
   "${super}, Left, movefocus, l"
@@ -110,7 +112,7 @@ in [
   "Ctrl+Shift+${super}, T, exec, kitty"
   "${super}, C, exec, ${term} -e ${editor}"
   "${super}, E, exec, ${term} -e yazi"
-  "${super}, W, exec, zen-beta"
+  "${super}, W, exec, zen"
   "Ctrl+${super}, V, exec, pavucontrol"
   "${super}+Shift, T, exec, AyuGram"
   "${super}+Shift, D, exec, discord"

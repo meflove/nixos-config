@@ -21,7 +21,7 @@ This configuration is built around a minimalist yet functional environment for d
 | **Terminal**       | [Ghostty](https://github.com/ghostty-org/ghostty)                  |
 | **Shell**          | [Fish Shell](https://fishshell.com/) with plugins and starship      |
 | **Code Editor**    | [Neovim](https://neovim.io/) with [angeldust-nixCats](https://github.com/meflove/angeldust-nixCats) configuration |
-| **Security**       | [Secure Boot](https://github.com/nix-community/lanzaboote) + transcrypt     |
+| **Security**       | [Secure Boot](https://github.com/nix-community/lanzaboote) + sops-nix     |
 | **Gaming**         | Comprehensive gaming stack with optimizations                       |
 
 ### 🎮 Gaming & Performance Stack
@@ -83,7 +83,7 @@ nixos-config/
 │       ├── cli/                  # Command-line tools and shell config
 │       ├── desktop/              # GUI applications (hyprland, ghostty, zen)
 │       └── development/          # Dev tools (angeldust-nixCats nvim, git, ai tools)
-├── secrets/                      # Encrypted secrets (transcrypt managed)
+├── secrets/                      # Encrypted secrets (sops-nix managed)
 └── overlays/                     # Custom package modifications
 ```
 
@@ -91,7 +91,7 @@ nixos-config/
 
 - **Namespace**: All modules use `angl` namespace for consistency
 - **Modular Options**: Each module provides `angl.nixos.category.module.enable` options
-- **Secret Management**: Encrypted secrets with git hooks integration
+- **Secret Management**: Encrypted secrets with sops-nix integration
 - **Development Shell**: Pre-configured environment with quality tools
 
 ## 🛠️ Installation and Usage
@@ -110,7 +110,7 @@ cd nixos-config
 - Change the hostname in `flake.nix` and under the `hosts/` directory.
 - Change the username in the `users/` directory.
 - Review and adapt the hardware configuration, especially in `hosts/nixos-pc/nixos-pc-disk.nix` and `modules/nixos/hardware`.
-- Change variables in `secrets/` with sample files provided.
+- Configure sops-nix.
 
 **3. Build the configuration:**
 
@@ -118,18 +118,12 @@ cd nixos-config
 # First build for a host named 'nixos-pc'
 sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount ./systems/x86_64-linux/nixos-pc/nixos-pc-disk.nix # or your disko config name
 
-nix-shell -p transcrypt
-transcrypt
-
 sudo nixos-install --flake .#nixos-pc
 
 # After rebooting to system
 
 git clone https://github.com/meflove/nixos-config.git # to your location
 cd nixos-config
-
-nix-shell -p transcrypt
-transcrypt -c aes-256-cbc -p '<your password>'
 
 home-manager switch --flake .#angeldust@nixos-pc # or your username from homes
 ```

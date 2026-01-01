@@ -7,9 +7,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.desktop.nixcord;
+  cfg = config.home.${namespace}.desktop.nixcord;
 in {
-  options.${namespace}.home.desktop.nixcord = {
+  options.home.${namespace}.desktop.nixcord = {
     enable =
       lib.mkEnableOption "enable Nixcord (declarative Discord with Vencord plugins)"
       // {
@@ -22,7 +22,7 @@ in {
       enable = true; # Enable Nixcord (It also installs Discord)
       vesktop = {
         enable = true; # Vesktop
-        package = pkgs.unstable.vesktop;
+        package = pkgs.vesktop;
       };
 
       quickCss = ''
@@ -52,7 +52,7 @@ in {
           fakeProfileThemes.enable = true;
           fixImagesQuality.enable = true;
           gameActivityToggle.enable = true;
-          pinDMs.enable = true;
+          PinDMs.enable = true;
           readAllNotificationsButton.enable = true;
           roleColorEverywhere.enable = true;
           showAllMessageButtons.enable = true;

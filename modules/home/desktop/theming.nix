@@ -8,13 +8,13 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.desktop.theming;
+  cfg = config.home.${namespace}.desktop.theming;
 in {
-  options.${namespace}.home.desktop.theming = {
+  options.home.${namespace}.desktop.theming = {
     enable =
       lib.mkEnableOption "enable desktop theming settings"
       // {
-        default = config.${namespace}.home.desktop.hyprland.enable;
+        default = config.home.${namespace}.desktop.hyprland.enable;
       };
   };
 

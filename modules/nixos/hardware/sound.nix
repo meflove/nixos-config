@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   namespace,
@@ -17,6 +18,10 @@ in {
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      uxplay
+    ];
+
     security = {
       rtkit.enable = true;
 
@@ -32,6 +37,16 @@ in {
 
     services = {
       pulseaudio.enable = false;
+      avahi = {
+        enable = true;
+        nssmdns4 = true;
+        nssmdns6 = true;
+        publish = {
+          enable = true;
+          userServices = true;
+          workstation = true;
+        };
+      };
 
       pipewire = {
         enable = true;
@@ -39,6 +54,7 @@ in {
         alsa.support32Bit = true;
         pulse.enable = true;
         jack.enable = true;
+        raopOpenFirewall = true;
 
         wireplumber = {
           enable = true;
@@ -64,6 +80,19 @@ in {
                 "default.clock.quantum" = 4096;
                 "default.clock.max-quantum" = 8192;
               };
+            };
+
+            "10-airplay" = {
+              "context.modules" = [
+                {
+                  name = "libpipewire-module-raop-discover";
+
+                  # increase the buffer size if you get dropouts/glitches
+                  # args = {
+                  #   "raop.latency.ms" = 500;
+                  # };
+                }
+              ];
             };
           };
 

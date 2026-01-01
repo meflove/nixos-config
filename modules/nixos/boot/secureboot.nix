@@ -34,7 +34,12 @@ in {
     boot = {
       lanzaboote = {
         enable = true;
-        pkiBundle = "/var/lib/sbctl";
+        pkiBundle = "/var/lib/secureboot";
+        autoGenerateKeys.enable = true;
+        autoEnrollKeys = {
+          enable = true;
+          autoReboot = true;
+        };
       };
 
       loader = {

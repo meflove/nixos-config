@@ -16,38 +16,43 @@ in {
 
   config = mkIf cfg.enable {
     # Общие системные программы и настройки для всех хостов
-    programs = lib.mkMerge [
-      {
-        # Включение fish на системном уровне
-        fish.enable = true;
+    programs = {
+      # Включение fish на системном уровне
+      fish.enable = true;
 
-        dconf.enable = true;
+      dconf.enable = true;
 
-        nh = {
+      nh = {
+        enable = true;
+        package = inputs.nh.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+        flake = "/home/angeldust/.config/nixos-config"; # sets NH_OS_FLAKE variable for you
+
+        clean = {
           enable = true;
-          package = inputs.nh.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
-          flake = "/home/angeldust/.config/nixos-config"; # sets NH_OS_FLAKE variable for you
-
-          clean = {
-            enable = true;
-
-            dates = "daily";
-            extraArgs = "--delete-older-than 3d";
-          };
+          dates = "daily";
+          extraArgs = "--delete-older-than 10d";
         };
-      }
-      (mkIf inputs.self.homeConfigurations."angeldust@nixos-pc".config.${namespace}.home.desktop.hyprland.enable {
-        xwayland.enable = true;
-        hyprland = {
-          enable = true;
-          # set the flake package
-          package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-          # # make sure to also set the portal package, so that they are in sync
-          portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-        };
-      })
-    ];
+      };
+
+      xwayland.enable = true;
+      hyprland = {
+        enable = true;
+        # set the flake package
+        package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+        # inherit (inputs.self.homeConfigurations."angeldust@nixos-pc".config.wayland.windowManager.hyprland) package;
+        # # make sure to also set the portal package, so that they are in sync
+        portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+        # inherit (inputs.self.homeConfigurations."angeldust@nixos-pc".config.wayland.windowManager.hyprland) portalPackage;
+      };
+    };
+    services.nixos-cli = {
+      enable = false;
+      config = {
+        # Whatever settings desired.
+      };
+    };
 
     time.timeZone = "Asia/Barnaul";
 

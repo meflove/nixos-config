@@ -7,9 +7,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.desktop.mpv;
+  cfg = config.home.${namespace}.desktop.mpv;
 in {
-  options.${namespace}.home.desktop.mpv = {
+  options.home.${namespace}.desktop.mpv = {
     enable =
       lib.mkEnableOption "enable mpv media player with youtube-dl support"
       // {

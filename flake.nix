@@ -3,16 +3,23 @@
 
   inputs = {
     # Core
-    nixpkgs.url = "github:NixOS/nixpkgs/master";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    chaotic.url = "github:chaotic-cx/nyx/main";
+    chaotic.url = "github:lonerOrz/nyx-loner";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
     nix-gaming.url = "github:fufexan/nix-gaming";
-    meflove-lib.url = "github:meflove/lib";
+    meflove-lib = {
+      url = "github:meflove/lib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     snowfall-flake = {
       url = "github:snowfallorg/flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    devenv = {
+      url = "github:cachix/devenv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -24,7 +31,6 @@
     lanzaboote = {
       url = "github:nix-community/lanzaboote";
       inputs = {
-        nixpkgs.follows = "nixpkgs";
         rust-overlay.follows = "rust-overlay";
       };
     };
@@ -33,11 +39,17 @@
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ## secrets
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Desktop Environment
     ## Hyprland
     hyprland = {
       url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -52,23 +64,20 @@
       url = "github:sodiboo/niri-flake";
     };
     ## DankMaterialShell
-    dgop = {
-      url = "github:AvengeMedia/dgop";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    dms-cli = {
-      url = "github:AvengeMedia/danklinux";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    dankMaterialShell = {
+    dms = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         dgop.follows = "dgop";
-        dms-cli.follows = "dms-cli";
       };
+    };
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/quickshell/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Home Manager & User Apps
@@ -85,7 +94,10 @@
     ## GUI
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
     };
     ayugram-desktop = {
       url = "https://github.com/ndfined-crp/ayugram-desktop/";
@@ -104,9 +116,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ## TUI
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
     angeldust-nixCats = {
       url = "github:meflove/angeldust-nixCats";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     otter-launcher = {
       url = "github:kuokuo123/otter-launcher";
@@ -121,6 +139,19 @@
     };
     nh = {
       url = "github:nix-community/nh";
+    };
+    nix-index = {
+      url = "github:nix-community/nix-index";
+    };
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    optnix = {
+      url = "github:water-sucks/optnix";
+    };
+    nixos-cli = {
+      url = "github:nix-community/nixos-cli";
     };
 
     # Services & Networking
@@ -137,19 +168,24 @@
       url = "github:thelegy/nixos-nftables-firewall";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    zapret-presets = {
+      url = "github:kotudemo/zapret-presets";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs: let
     secrets = import ./secrets/secrets.nix;
   in
     inputs.meflove-lib.mkFlake {
+      inherit inputs;
+
       overlays = with inputs; [
         lix-module.overlays.default
         snowfall-flake.overlays.default
         niri.overlays.niri
       ];
 
-      inherit inputs;
       src = builtins.path {
         path = ./.;
         name = "source";
@@ -185,6 +221,10 @@
             chaotic.nixosModules.default
             nix-flatpak.nixosModules.nix-flatpak
             solaar.nixosModules.default
+            nix-index-database.nixosModules.nix-index
+            nixos-cli.nixosModules.nixos-cli
+            sops-nix.nixosModules.sops
+            zapret-presets.nixosModules.presets
           ];
         };
       };
@@ -203,7 +243,8 @@
             nixcord.homeModules.nixcord
             nix-colors.homeManagerModules.default
             chaotic.homeManagerModules.default
-            dankMaterialShell.homeModules.dankMaterialShell.default
+            nix-index-database.homeModules.nix-index
+            sops-nix.homeManagerModules.sops
           ];
         };
       };

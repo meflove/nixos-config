@@ -8,5 +8,6 @@
     ./otter-launcher/otter-launcher.nix
     ./yazi.nix
     ./zellij/zellij.nix
+    ./sops.nix
   ];
 }

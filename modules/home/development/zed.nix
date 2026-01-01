@@ -6,9 +6,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.development.zed;
+  cfg = config.home.${namespace}.development.zed;
 in {
-  options.${namespace}.home.development.zed = {
+  options.home.${namespace}.development.zed = {
     enable =
       lib.mkEnableOption "enable Zed editor configuration"
       // {

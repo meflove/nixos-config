@@ -34,6 +34,7 @@ in {
       [
         handbrake # for compressing videos
         v4l-utils
+        ffmpeg
       ]
       ++ lib.optional cfg.gpuScreenRecorder.enable gpu-screen-recorder-gtk;
 
@@ -42,9 +43,7 @@ in {
 
       obs-studio = {
         inherit (cfg.obs) enable;
-        package = pkgs.obs-studio.override {
-          inherit (config.nixpkgs.config) cudaSupport;
-        };
+
         enableVirtualCamera = true;
 
         plugins = with pkgs.obs-studio-plugins; [

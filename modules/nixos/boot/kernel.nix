@@ -48,16 +48,27 @@ in {
 
     boot = {
       kernelPackages = cfg.kernelPackage;
+      # kernelPackages = lib.mkForce (cfg.kernelPackage.overrideScope (self: super: {
+      #   amdgpu-pro = null;
+      # }));
       kernelPatches = [
         {
-          name = "bbr";
+          name = "optimisations";
+          patch = null;
+          features = {
+            optimization = true;
+            microcode = true;
+          };
+        }
+        {
+          name = "bbr_net_sched";
           patch = null;
           structuredExtraConfig = with pkgs.lib.kernel; {
             TCP_CONG_CUBIC = lib.mkForce module;
             DEFAULT_CUBIC = no;
             TCP_CONG_BBR = yes;
             DEFAULT_BBR = yes;
-            DEFAULT_TCP_CONG = "bbr";
+            # DEFAULT_TCP_CONG = "bbr";
             NET_SCH_FQ_CODEL = module;
             NET_SCH_FQ = yes;
             CONFIG_DEFAULT_FQ_CODEL = no;
@@ -91,8 +102,8 @@ in {
       ];
 
       initrd = {
-        compressor = "cat";
         verbose = false;
+        systemd.enable = true;
       };
 
       kernel.sysctl."kernel.sysrq" = 1;

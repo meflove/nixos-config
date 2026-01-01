@@ -13,6 +13,6 @@
     ./xdg.nix
     ./zen.nix
     ./gaming.nix
-    ./quickShell.nix
+    ./hyprscope/hyprscope.nix
   ];
 }

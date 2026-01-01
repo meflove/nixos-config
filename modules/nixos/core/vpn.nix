@@ -2,6 +2,7 @@
   lib,
   config,
   namespace,
+  pkgs,
   ...
 }: let
   inherit (lib) mkIf;
@@ -17,10 +18,15 @@ in {
   };
 
   config = mkIf cfg.enable {
-    programs.nekoray = {
+    environment.systemPackages = with pkgs; [];
+
+    programs.throne = {
       enable = true;
 
       tunMode.enable = true;
+    };
+
+    services = {
     };
   };
 }

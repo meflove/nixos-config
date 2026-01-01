@@ -7,7 +7,7 @@
 
   packages = with pkgs; [
     glow # for md files
-    transcrypt # for shellHook script
+    sops # secret management
   ];
 
   enterShell = ''
@@ -31,18 +31,18 @@
     ${lib.getExe pkgs.git} status
   '';
 
-  scripts.transcrypt-hook = {
-    exec = ''
-      #!${lib.getExe pkgs.bash}
-
-      # Transcrypt pre-commit hook: fail if secret file in staging lacks the magic prefix "Salted" in B64
-      RELATIVE_GIT_DIR=$(${lib.getExe pkgs.git} rev-parse --git-dir 2>/dev/null || printf "")
-      CRYPT_DIR=$(${lib.getExe pkgs.git} config transcrypt.crypt-dir 2>/dev/null || printf "%s/crypt" "''${RELATIVE_GIT_DIR}")
-
-      printf "\nRunning transcrypt pre-commit hook...\n\n"
-      "''${CRYPT_DIR}/transcrypt" pre_commit
-    '';
-  };
+  # scripts.transcrypt-hook = {
+  #   exec = ''
+  #     #!${lib.getExe pkgs.bash}
+  #
+  #     # Transcrypt pre-commit hook: fail if secret file in staging lacks the magic prefix "Salted" in B64
+  #     RELATIVE_GIT_DIR=$(${lib.getExe pkgs.git} rev-parse --git-dir 2>/dev/null || printf "")
+  #     CRYPT_DIR=$(${lib.getExe pkgs.git} config transcrypt.crypt-dir 2>/dev/null || printf "%s/crypt" "''${RELATIVE_GIT_DIR}")
+  #
+  #     printf "\nRunning transcrypt pre-commit hook...\n\n"
+  #     "''${CRYPT_DIR}/transcrypt" pre_commit
+  #   '';
+  # };
 
   git-hooks = {
     package = pkgs.prek;
@@ -60,12 +60,12 @@
       statix.enable = true;
 
       # Secret management hooks
-      transcrypt = {
-        enable = true;
-
-        name = "transcrypt-hook";
-        entry = "transcrypt-hook";
-      };
+      # transcrypt = {
+      #   enable = true;
+      #
+      #   name = "transcrypt-hook";
+      #   entry = "transcrypt-hook";
+      # };
     };
   };
 }

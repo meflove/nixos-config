@@ -103,22 +103,19 @@
                       "commit=300"
                     ];
                   };
-                  "@tmp" = {
-                    mountpoint = "/tmp";
-                    mountOptions = [
-                      "compress-force=zstd:3"
-                      "noatime"
-                      "space_cache=v2"
-                      "nodiscard"
-                      "ssd_spread"
-                      "commit=300"
-                    ];
-                  };
                 };
               };
             };
           };
         };
+      };
+    };
+    nodev = {
+      "/tmp" = {
+        fsType = "tmpfs";
+        mountOptions = [
+          "size=8192M"
+        ];
       };
     };
   };

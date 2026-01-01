@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   config,
@@ -26,6 +27,8 @@ in {
     environment.systemPackages = with pkgs; [
       libimobiledevice
       idevicerestore
+
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.iloader
 
       ifuse # optional, to mount using 'ifuse'
     ];

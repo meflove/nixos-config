@@ -6,11 +6,11 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.cli.fsel;
+  cfg = config.home.${namespace}.cli.fsel;
 in {
   imports = [./hm-module.nix];
 
-  options.${namespace}.home.cli.fsel = {
+  options.home.${namespace}.cli.fsel = {
     enable =
       lib.mkEnableOption "enable fsel, a application launcher"
       // {
@@ -20,7 +20,7 @@ in {
 
   config = mkIf cfg.enable {
     programs.fsel = {
-      enable = false;
+      enable = true;
 
       settings = {
         terminal_launcher = "ghostty -e";

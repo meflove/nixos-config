@@ -8,9 +8,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.home.desktop.gaming;
+  cfg = config.home.${namespace}.desktop.gaming;
 in {
-  options.${namespace}.home.desktop.gaming = {
+  options.home.${namespace}.desktop.gaming = {
     enable =
       lib.mkEnableOption "enable gaming optimizations and tools"
       // {
