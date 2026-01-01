@@ -91,6 +91,7 @@ in {
           API_TIMEOUT_MS = 3000000;
           DISABLE_TELEMETRY = 1;
           DISABLE_AUTOUPDATER = 1;
+          MAX_THINKING_TOKENS = 10000;
         };
 
         statusLine = {

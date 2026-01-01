@@ -68,12 +68,7 @@
       url = "github:AvengeMedia/DankMaterialShell";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        dgop.follows = "dgop";
       };
-    };
-    dgop = {
-      url = "github:AvengeMedia/dgop";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     quickshell = {
       url = "git+https://git.outfoxxed.me/quickshell/quickshell";

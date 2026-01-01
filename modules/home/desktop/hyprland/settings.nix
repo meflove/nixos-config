@@ -129,23 +129,19 @@ in {
     cm_fs_passthrough = true;
   };
 
-  "experimental" = {
-    xx_color_management_v4 = true;
-  };
-
   "monitorv2" = [
     # "DP-1, highres@highrr, 1920x0, 1, vrr, 1, bitdepth, 10"
-    # {
-    #   output = "DP-1";
-    #   mode = "highres@highrr";
-    #   position = "1920x0";
-    #   scale = 1;
-    #   vrr = 1;
-    #   bitdepth = 10;
-    #   supports_wide_color = true;
-    #   supports_hdr = true;
-    #   # cm = "wide";
-    # }
+    {
+      output = "DP-1";
+      mode = "highres@highrr";
+      position = "1920x0";
+      scale = 1;
+      vrr = 1;
+      bitdepth = 10;
+      supports_wide_color = true;
+      supports_hdr = true;
+      # cm = "wide";
+    }
     # "HDMI-A-1, highres@highrr, 0x360, 1"
     {
       output = "HDMI-A-1";
