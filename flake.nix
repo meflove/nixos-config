@@ -142,12 +142,6 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    optnix = {
-      url = "github:water-sucks/optnix";
-    };
-    nixos-cli = {
-      url = "github:nix-community/nixos-cli";
-    };
 
     # Services & Networking
     lix = {
@@ -169,9 +163,7 @@
     };
   };
 
-  outputs = inputs: let
-    secrets = import ./secrets/secrets.nix;
-  in
+  outputs = inputs:
     inputs.meflove-lib.mkFlake {
       inherit inputs;
 
@@ -203,10 +195,6 @@
 
       systems.hosts = {
         nixos-pc = {
-          specialArgs = {
-            inherit secrets;
-          };
-
           modules = with inputs; [
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
@@ -217,7 +205,6 @@
             nix-flatpak.nixosModules.nix-flatpak
             solaar.nixosModules.default
             nix-index-database.nixosModules.nix-index
-            nixos-cli.nixosModules.nixos-cli
             sops-nix.nixosModules.sops
             zapret-presets.nixosModules.presets
           ];
@@ -226,10 +213,6 @@
 
       homes.users = {
         "angeldust@nixos-pc" = {
-          specialArgs = {
-            inherit secrets;
-          };
-
           modules = with inputs; [
             zen-browser.homeModules.default
             otter-launcher.homeModules.default

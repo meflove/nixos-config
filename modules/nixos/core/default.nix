@@ -1,4 +1,4 @@
-{...}: {
+{
   imports = [
     ./autologin.nix
     ./common.nix

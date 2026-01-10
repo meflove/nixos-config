@@ -26,7 +26,7 @@ in {
       package =
         lib.mkPackageOption pkgs "wine package to use"
         {
-          default = pkgs.wineWowPackages.stagingFull;
+          default = pkgs.wineWow64Packages.stagingFull;
         };
     };
 
@@ -65,6 +65,11 @@ in {
         ++ lib.optionals cfg.wine.enable [
           cfg.wine.package
           winetricks
+
+          # Fonts for proper Wine UI rendering
+          corefonts # Microsoft Core Fonts (Arial, Times New Roman, Courier New)
+          vista-fonts # Vista fonts (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
+          wineWow64Packages.fonts # Wine replacement fonts
         ]
         ++ lib.optionals cfg.osu.enable [
           (gamePkgs.osu-stable.override {

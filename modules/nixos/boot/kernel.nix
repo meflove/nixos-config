@@ -1,5 +1,4 @@
 {
-  inputs,
   pkgs,
   lib,
   config,
@@ -36,7 +35,7 @@ in {
   config = mkIf cfg.enable {
     services.scx = {
       enable = true;
-      package = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.scx_rustcheds;
+      package = pkgs.scx.rustscheds;
 
       scheduler = "scx_lavd";
       extraArgs = [
@@ -48,9 +47,6 @@ in {
 
     boot = {
       kernelPackages = cfg.kernelPackage;
-      # kernelPackages = lib.mkForce (cfg.kernelPackage.overrideScope (self: super: {
-      #   amdgpu-pro = null;
-      # }));
       kernelPatches = [
         {
           name = "optimisations";
@@ -68,7 +64,6 @@ in {
             DEFAULT_CUBIC = no;
             TCP_CONG_BBR = yes;
             DEFAULT_BBR = yes;
-            # DEFAULT_TCP_CONG = "bbr";
             NET_SCH_FQ_CODEL = module;
             NET_SCH_FQ = yes;
             CONFIG_DEFAULT_FQ_CODEL = no;

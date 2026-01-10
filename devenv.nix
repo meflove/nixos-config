@@ -2,12 +2,23 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  inherit (pkgs) git-lfs;
+  # git-lfs-hook = stage: {
+  #   enable = true;
+  #   name = "git-lfs-${stage}";
+  #   entry = "${lib.getExe git-lfs} ${stage}";
+  #   language = "system";
+  #   pass_filenames = false;
+  #   stages = [stage];
+  # };
+in {
   name = "nixland";
 
   packages = with pkgs; [
     glow # for md files
     sops # secret management
+    git-lfs # git large file storage
   ];
 
   enterShell = ''
@@ -31,21 +42,16 @@
     ${lib.getExe pkgs.git} status
   '';
 
-  # scripts.transcrypt-hook = {
-  #   exec = ''
-  #     #!${lib.getExe pkgs.bash}
-  #
-  #     # Transcrypt pre-commit hook: fail if secret file in staging lacks the magic prefix "Salted" in B64
-  #     RELATIVE_GIT_DIR=$(${lib.getExe pkgs.git} rev-parse --git-dir 2>/dev/null || printf "")
-  #     CRYPT_DIR=$(${lib.getExe pkgs.git} config transcrypt.crypt-dir 2>/dev/null || printf "%s/crypt" "''${RELATIVE_GIT_DIR}")
-  #
-  #     printf "\nRunning transcrypt pre-commit hook...\n\n"
-  #     "''${CRYPT_DIR}/transcrypt" pre_commit
-  #   '';
-  # };
-
   git-hooks = {
     package = pkgs.prek;
+
+    default_stages = [
+      "pre-commit"
+      "pre-push"
+      "post-checkout"
+      "post-commit"
+      "post-merge"
+    ];
 
     hooks = {
       # Basic hooks
@@ -58,14 +64,11 @@
       alejandra.enable = true;
       deadnix.enable = true;
       statix.enable = true;
-
-      # Secret management hooks
-      # transcrypt = {
-      #   enable = true;
-      #
-      #   name = "transcrypt-hook";
-      #   entry = "transcrypt-hook";
-      # };
     };
+    # Git LFS hooks
+    # // (builtins.listToAttrs (map (stage: {
+    #   name = "git-lfs-${stage}";
+    #   value = git-lfs-hook stage;
+    # }) ["pre-push" "post-checkout" "post-commit" "post-merge"]));
   };
 }

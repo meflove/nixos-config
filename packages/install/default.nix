@@ -16,9 +16,6 @@ stdenv.mkDerivation {
     #!${pkgs.bash}/bin/bash
     sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko/latest -- --mode destroy,format,mount --flake .#pcDisk
 
-    read -p "Enter pass for transcrypt: " pass
-    ${pkgs.transcrypt}/bin/transcrypt -c aes-256-cbc -p "''${pass}"
-
     sudo nixos-install --flake .#nixos-pc
     EOF
 

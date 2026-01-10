@@ -28,8 +28,10 @@ in {
         content = ''
           psk_home=${config.sops.placeholder."wifi/Keenetic_home"}
         '';
+        owner = "wpa_supplicant";
       };
     };
+    systemd.services."wpa_supplicant-wlp4s0".after = ["sops-nix.service"];
 
     boot = {
       extraModulePackages = with config.boot.kernelPackages; [r8125];
@@ -49,7 +51,8 @@ in {
 
       wireless = {
         enable = true;
-        userControlled.enable = true;
+        userControlled = true;
+        driver = "nl80211";
         secretsFile = config.sops.templates."wireless.conf".path;
 
         interfaces = ["wlp4s0"];
@@ -87,7 +90,9 @@ in {
         networks = {
           "10-lan" = {
             matchConfig.Path = "pci-0000:03:00.0";
-            networkConfig.DHCP = "yes";
+            networkConfig = {
+              DHCP = "yes";
+            };
             address = ["192.168.1.100/24"];
           };
           "10-wlan" = {
@@ -97,7 +102,6 @@ in {
               DHCP = "yes";
               IgnoreCarrierLoss = "3s";
             };
-            # address = ["192.168.1.101/24"];
           };
         };
         links = {
@@ -117,7 +121,6 @@ in {
           };
         };
       };
-      services.NetworkManager-wait-online.enable = false;
     };
 
     services = {
@@ -132,12 +135,6 @@ in {
         ];
         dnsovertls = "false";
       };
-      # udev.extraRules = ''
-      #   # LAN -> enp3s0
-      #   SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="04:7c:16:59:5c:65", NAME="enp3s0"
-      #   # WiFi -> wlp4s0
-      #   SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="2c:33:58:12:68:03", NAME="wlp4s0"
-      # '';
     };
   };
 }

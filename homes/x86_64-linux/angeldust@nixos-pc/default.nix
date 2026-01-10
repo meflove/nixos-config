@@ -11,13 +11,14 @@
     secrets = lib.angl.flattenSecrets {
       github = {
         github_pat_devenv = {};
+        github_auth_token = {};
       };
       pass = {};
     };
 
     templates = {
       "nix-access-tokens.nix".content = ''
-        access-tokens = "github.com=${config.sops.placeholder."github/github_pat_devenv"}";
+        access-tokens = "github.com=${config.sops.placeholder."github/github_auth_token"}";
       '';
     };
   };
@@ -74,7 +75,7 @@
         # wine.package = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-tkg;
         wine = {
           enable = true;
-          package = pkgs.wineWow64Packages.stagingFull;
+          package = pkgs.wineWowPackages.stagingFull;
         };
 
         lutris.enable = false;
@@ -132,15 +133,12 @@
       xdg-user-dirs
 
       # Replacements for standard commands
-      bat # `cat` alternative
-      fd # `find` alternative
       ripgrep # `grep` alternative
       ripgrep-all
       sd # `sed` alternative
 
       # System & Info
       btop # `top` alternative
-      inputs.optnix.packages.${pkgs.stdenv.hostPlatform.system}.default
 
       # Productivity & Helpers
       fzf # Fuzzy finder

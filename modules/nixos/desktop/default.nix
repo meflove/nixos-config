@@ -1,8 +1,8 @@
-{...}: {
+{
   imports = [
     ./flatpak.nix
     ./videoTools.nix
-    ./gaming.nix
+    ./gaming/gaming.nix
     ./torrent.nix
     ./niri.nix
     ./dankMaterialShell.nix

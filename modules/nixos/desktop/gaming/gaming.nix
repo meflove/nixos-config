@@ -71,6 +71,24 @@ in {
       };
     };
 
+    virtualisation.waydroid = {
+      enable = true;
+      package = pkgs.waydroid-nftables;
+    };
+
+    systemd.tmpfiles.settings = {
+      "10-waydroid-config" = {
+        "/var/lib/waydroid/waydroid_base.prop" = {
+          "f+" = {
+            user = "root";
+            group = "root";
+            mode = "0644";
+            argument = "ro.hardware.gralloc=default\nro.hardware.egl=swiftshader\nsys.use_memfd=true";
+          };
+        };
+      };
+    };
+
     hardware = {
       xone.enable = true;
       new-lg4ff.enable = true;

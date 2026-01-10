@@ -60,6 +60,30 @@ in {
         ];
       };
 
+      fd = {
+        enable = true;
+        hidden = true;
+        ignores = [".git/"];
+      };
+
+      bat = {
+        enable = true;
+        config = {
+          pager = "builtin";
+          theme = "Catppuccin Macchiato";
+        };
+        themes = {
+          catppuccinMacchiato = {
+            src = pkgs.fetchurl {
+              url = "https://raw.githubusercontent.com/catppuccin/bat/refs/heads/main/themes/Catppuccin%20Macchiato.tmTheme";
+              sha256 = "sha256-EQCQ9lW5cOVp2C+zeAwWF2m1m6I0wpDQA5wejEm7WgY=";
+            };
+
+            file = "Catppuccin Macchiato.tmTheme";
+          };
+        };
+      };
+
       zoxide = {
         enable = true;
         enableFishIntegration = true;

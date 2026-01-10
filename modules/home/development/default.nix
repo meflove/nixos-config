@@ -1,4 +1,4 @@
-{...}: {
+{
   imports = [
     ./gemini/gemini.nix
     ./claude/claude.nix
@@ -7,5 +7,6 @@
     ./nvim/nvim.nix
     ./zed.nix
     ./ssh-and-gpg.nix
+    ./mcp.nix
   ];
 }

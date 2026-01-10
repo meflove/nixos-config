@@ -23,9 +23,10 @@
     buildInputs = [pkgs.makeWrapper];
     postBuild = ''
       wrapProgram $out/bin/claude \
+        --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.sops.secrets."claude/zai_api_key".path})' \
         --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.sops.secrets."github/github_pat".path})' \
         --run 'export CONTEXT7_API_KEY=$(cat ${config.sops.secrets."context7/context7_api_key".path})' \
-        --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.sops.secrets."claude/zai_api_key".path})'
+        --run 'export HUGGINGFACE_API_KEY=$(cat ${config.sops.secrets."huggingface/huggingface_api_key".path})' \
     '';
   };
 in {
@@ -40,14 +41,8 @@ in {
   config = mkIf cfg.enable {
     sops = {
       secrets = lib.angl.flattenSecrets {
-        github = {
-          github_pat = {};
-        };
         claude = {
           zai_api_key = {};
-        };
-        context7 = {
-          context7_api_key = {};
         };
       };
     };
@@ -63,6 +58,8 @@ in {
         code_review = ./commands/CODE_REVIEW.md;
         full_review = ./commands/FULL_REVIEW.md;
       };
+
+      mcpServers = config.programs.mcp.servers;
 
       settings = {
         alwaysThinkingEnabled = true;
@@ -97,41 +94,6 @@ in {
         statusLine = {
           type = "command";
           command = "~/.claude/statusline.py";
-        };
-      };
-
-      mcpServers = {
-        context7 = {
-          type = "http";
-          url = "https://mcp.context7.com/mcp";
-          headers = {
-            CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
-          };
-        };
-
-        github = {
-          command = "${lib.getExe pkgs.podman}";
-          args = [
-            "run"
-            "-i"
-            "--rm"
-            "-e"
-            "GITHUB_PERSONAL_ACCESS_TOKEN"
-            "ghcr.io/github/github-mcp-server"
-          ];
-          env = {
-            GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
-          };
-        };
-
-        nixos = {
-          command = "${lib.getExe pkgs.podman}";
-          args = [
-            "run"
-            "--rm"
-            "-i"
-            "ghcr.io/utensils/mcp-nixos"
-          ];
         };
       };
     };

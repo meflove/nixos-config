@@ -13,3 +13,7 @@ devenv.local.yaml
 
 # pre-commit
 .pre-commit-config.yaml
+
+# trash
+2.bash
+index.html

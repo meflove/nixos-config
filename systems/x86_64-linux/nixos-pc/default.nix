@@ -15,13 +15,14 @@
     secrets = lib.angl.flattenSecrets {
       github = {
         github_pat_devenv = {};
+        github_auth_token = {};
       };
       pass = {};
     };
 
     templates = {
       "nix-access-tokens.nix".content = ''
-        access-tokens = "github.com=${config.sops.placeholder."github/github_pat_devenv"}";
+        access-tokens = "github.com=${config.sops.placeholder."github/github_auth_token"}";
       '';
     };
   };
@@ -41,6 +42,7 @@
       substituters = lib.mkForce [
         "https://nixos-cache-proxy.cofob.dev"
         "https://nixos-cache-proxy.sweetdogs.ru"
+        "https://cache.nixos-cuda.org"
         "https://nix-gaming.cachix.org"
         "https://chaotic-nyx.cachix.org"
         "https://nix-community.cachix.org"
@@ -52,6 +54,7 @@
         "https://watersucks.cachix.org"
       ];
       trusted-public-keys = [
+        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
         "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
@@ -104,6 +107,9 @@
           enable = true;
           disableWarning = true;
         };
+      };
+      cli = {
+        basicStuff.enable = true;
       };
 
       core = {

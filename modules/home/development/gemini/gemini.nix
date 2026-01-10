@@ -15,11 +15,16 @@
     buildInputs = [pkgs.makeWrapper];
     postBuild = ''
       wrapProgram $out/bin/gemini \
+        --run 'export GEMINI_API_KEY=$(cat ${config.sops.secrets."gemini/gemini_api_key".path})' \
         --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.sops.secrets."github/github_pat".path})' \
         --run 'export CONTEXT7_API_KEY=$(cat ${config.sops.secrets."context7/context7_api_key".path})' \
-        --run 'export GEMINI_API_KEY=$(cat ${config.sops.secrets."gemini/gemini_api_key".path})'
+        --run 'export HUGGINGFACE_API_KEY=$(cat ${config.sops.secrets."huggingface/huggingface_api_key".path})' \
     '';
   };
+
+  # Remove 'type' key from MCP server configuration for compatibility
+  removeTypeFromServers = servers:
+    lib.mapAttrs (_: server: lib.removeAttrs server ["type"]) servers;
 in {
   options.home.${namespace}.development.gemini = {
     enable =
@@ -47,6 +52,8 @@ in {
       };
 
       settings = {
+        mcpServers = removeTypeFromServers config.programs.mcp.servers;
+
         context.fileName = ["GEMINI.md"];
 
         security = {
@@ -64,41 +71,6 @@ in {
 
           checkpointing = {
             enabled = false;
-          };
-        };
-
-        mcpServers = {
-          context7 = {
-            type = "http";
-            url = "https://mcp.context7.com/mcp";
-            headers = {
-              CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
-            };
-          };
-
-          github = {
-            command = "${lib.getExe pkgs.podman}";
-            args = [
-              "run"
-              "-i"
-              "--rm"
-              "-e"
-              "GITHUB_PERSONAL_ACCESS_TOKEN"
-              "ghcr.io/github/github-mcp-server"
-            ];
-            env = {
-              GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
-            };
-          };
-
-          nixos = {
-            command = "${lib.getExe pkgs.podman}";
-            args = [
-              "run"
-              "--rm"
-              "-i"
-              "ghcr.io/utensils/mcp-nixos"
-            ];
           };
         };
       };

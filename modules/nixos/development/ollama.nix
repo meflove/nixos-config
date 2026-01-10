@@ -2,6 +2,7 @@
   lib,
   config,
   namespace,
+  pkgs,
   ...
 }: let
   inherit (lib) mkIf;
@@ -24,14 +25,14 @@ in {
   config = mkIf cfg.enable {
     services.ollama = {
       enable = true;
-      acceleration = "cuda";
+      package = pkgs.ollama-cuda;
 
       environmentVariables = {
         OLLAMA_KEEP_ALIVE = "30";
       };
 
       loadModels = [
-        "llama3.2:latest"
+        "llava:13b"
       ];
     };
 

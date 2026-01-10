@@ -34,10 +34,6 @@ stdenvNoCC.mkDerivation (finalAttrs: {
     gamemode
   ];
 
-  # makeFlags = [
-  #   "PREFIX=$(out)"
-  # ];
-
   sourceRoot = ".";
 
   installPhase = ''

@@ -15,26 +15,10 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # Общие системные программы и настройки для всех хостов
     programs = {
-      # Включение fish на системном уровне
       fish.enable = true;
 
       dconf.enable = true;
-
-      nh = {
-        enable = true;
-        package = inputs.nh.packages.${pkgs.stdenv.hostPlatform.system}.default;
-
-        flake = "/home/angeldust/.config/nixos-config"; # sets NH_OS_FLAKE variable for you
-
-        clean = {
-          enable = true;
-
-          dates = "daily";
-          extraArgs = "--delete-older-than 10d";
-        };
-      };
 
       xwayland.enable = true;
       hyprland = {
@@ -45,12 +29,6 @@ in {
         # # make sure to also set the portal package, so that they are in sync
         portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
         # inherit (inputs.self.homeConfigurations."angeldust@nixos-pc".config.wayland.windowManager.hyprland) portalPackage;
-      };
-    };
-    services.nixos-cli = {
-      enable = false;
-      config = {
-        # Whatever settings desired.
       };
     };
 

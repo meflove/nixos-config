@@ -1,4 +1,4 @@
-{...}: {
+{
   imports = [
     ./easyeffects/easyeffects.nix
     ./ghostty.nix

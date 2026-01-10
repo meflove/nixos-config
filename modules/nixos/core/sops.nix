@@ -4,7 +4,7 @@
   ...
 }: let
   sops-update-keys = pkgs.writeShellScriptBin "sops-update-keys" ''
-    for file in $(${lib.getExe pkgs.gnugrep} -lr "sops:"); do ${lib.getExe pkgs.sops} updatekeys -y $file; done
+    for file in $(${lib.getExe pkgs.gnugrep} -lr "sops:" secrets/); do ${lib.getExe pkgs.sops} updatekeys -y $file; done
   '';
 in {
   sops = {
