@@ -28,7 +28,7 @@
                     mountpoint = "/";
                     # Параметры монтирования для основного монтирования Btrfs (применяются ко всей файловой системе)
                     mountOptions = [
-                      "compress-force=zstd:3"
+                      "compress-force=zstd:1"
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
@@ -40,7 +40,7 @@
                     mountpoint = "/home";
                     # Параметры монтирования для /home (нет необходимости повторять общесистемные параметры)
                     mountOptions = [
-                      "compress-force=zstd:3"
+                      "compress-force=zstd:1"
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
@@ -51,7 +51,7 @@
                   "@nix" = {
                     mountpoint = "/nix";
                     mountOptions = [
-                      "compress-force=zstd:3"
+                      "compress-force=zstd:1"
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
@@ -62,7 +62,7 @@
                   "@var/log" = {
                     mountpoint = "/var/log";
                     mountOptions = [
-                      "compress-force=zstd:3"
+                      "compress-force=zstd:1"
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
@@ -73,7 +73,7 @@
                   "@var/cache" = {
                     mountpoint = "/var/cache";
                     mountOptions = [
-                      "compress-force=zstd:3"
+                      "compress-force=zstd:1"
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
@@ -84,7 +84,7 @@
                   "@.snapshots" = {
                     mountpoint = "/.snapshots";
                     mountOptions = [
-                      "compress-force=zstd:3"
+                      "compress-force=zstd:1"
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"
@@ -95,7 +95,7 @@
                   "@srv" = {
                     mountpoint = "/srv";
                     mountOptions = [
-                      "compress-force=zstd:3"
+                      "compress-force=zstd:1"
                       "noatime"
                       "space_cache=v2"
                       "nodiscard"

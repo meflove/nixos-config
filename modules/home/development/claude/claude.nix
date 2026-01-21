@@ -1,4 +1,5 @@
 {
+  inputs,
   pkgs,
   lib,
   config,
@@ -19,14 +20,18 @@
   # Wrapped claude-code package that injects secrets as environment variables
   claude-wrapped = pkgs.symlinkJoin {
     name = "claude-code-wrapped";
-    paths = [pkgs.claude-code];
+    paths = [inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.claude-code-bun];
     buildInputs = [pkgs.makeWrapper];
     postBuild = ''
+      # Create symlink claude -> claude-bun for programs.claude-code compatibility
+      ln -s $out/bin/claude-bun $out/bin/claude
+
       wrapProgram $out/bin/claude \
-        --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.sops.secrets."claude/zai_api_key".path})' \
+        --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.sops.secrets."ai/zai_api_key".path})' \
         --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.sops.secrets."github/github_pat".path})' \
-        --run 'export CONTEXT7_API_KEY=$(cat ${config.sops.secrets."context7/context7_api_key".path})' \
-        --run 'export HUGGINGFACE_API_KEY=$(cat ${config.sops.secrets."huggingface/huggingface_api_key".path})' \
+        --run 'export CONTEXT7_API_KEY=$(cat ${config.sops.secrets."mcp/context7_api_key".path})' \
+        --run 'export HUGGINGFACE_API_KEY=$(cat ${config.sops.secrets."mcp/huggingface_api_key".path})' \
+        --run 'export BRIGHTDATA_API_KEY=$(cat ${config.sops.secrets."mcp/brightdata_api_key".path})'
     '';
   };
 in {
@@ -41,7 +46,7 @@ in {
   config = mkIf cfg.enable {
     sops = {
       secrets = lib.angl.flattenSecrets {
-        claude = {
+        ai = {
           zai_api_key = {};
         };
       };

@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   namespace,
@@ -17,10 +18,14 @@ in {
   };
 
   config = mkIf cfg.enable {
-    sops = {
+    sops = let
+      wpaRestartUnits = config.networking.wireless.interfaces |> lib.map (iface: "wpa_supplicant-${iface}");
+    in {
       secrets = lib.angl.flattenSecrets {
         wifi = {
-          Keenetic_home = {};
+          Keenetic_home = {
+            restartUnits = wpaRestartUnits;
+          };
         };
       };
 
@@ -31,7 +36,10 @@ in {
         owner = "wpa_supplicant";
       };
     };
-    systemd.services."wpa_supplicant-wlp4s0".after = ["sops-nix.service"];
+
+    environment.systemPackages = with pkgs; [
+      lsof
+    ];
 
     boot = {
       extraModulePackages = with config.boot.kernelPackages; [r8125];
@@ -51,10 +59,8 @@ in {
 
       wireless = {
         enable = true;
-        userControlled = true;
         driver = "nl80211";
         secretsFile = config.sops.templates."wireless.conf".path;
-
         interfaces = ["wlp4s0"];
 
         networks = {
@@ -73,13 +79,6 @@ in {
       };
 
       nameservers = ["192.168.1.1"];
-
-      networkmanager = {
-        enable = false;
-        dhcp = "dhcpcd";
-        dns = "systemd-resolved";
-        wifi.backend = "iwd";
-      };
     };
 
     systemd = {
@@ -90,17 +89,34 @@ in {
         networks = {
           "10-lan" = {
             matchConfig.Path = "pci-0000:03:00.0";
+
+            # Higher priority route (lower = higher priority)
+            dhcpV4Config.RouteMetric = 100;
+            dhcpV6Config.RouteMetric = 100;
+
             networkConfig = {
               DHCP = "yes";
+              MulticastDNS = "yes";
             };
+
+            # Wait for routable state instead of just carrier
+            linkConfig.RequiredForOnline = "routable";
+
             address = ["192.168.1.100/24"];
           };
           "10-wlan" = {
             matchConfig.Path = "pci-0000:04:00.0";
+
+            # Lower priority route (higher = lower priority)
+            dhcpV4Config.RouteMetric = 600;
+            dhcpV6Config.RouteMetric = 600;
+
             linkConfig.RequiredForOnline = "no";
+
             networkConfig = {
               DHCP = "yes";
               IgnoreCarrierLoss = "3s";
+              MulticastDNS = "yes";
             };
           };
         };
@@ -116,7 +132,6 @@ in {
             matchConfig.Path = "pci-0000:04:00.0";
             linkConfig = {
               Name = "wlp4s0";
-              WakeOnLan = "magic";
             };
           };
         };
@@ -126,14 +141,21 @@ in {
     services = {
       resolved = {
         enable = true;
-        dnssec = "false";
-        domains = ["~."];
-        fallbackDns = [
-          "1.1.1.1"
-          "8.8.8.8"
-          "9.9.9.9"
-        ];
-        dnsovertls = "false";
+        settings = {
+          Resolve = {
+            Domains = ["~."];
+            DNS = config.networking.nameservers;
+            DNSOverTLS = false;
+            DNSSEC = false;
+            MulticastDNS = "yes";
+            LLMNR = "no";
+            FallbackDNS = [
+              "1.1.1.1"
+              "8.8.8.8"
+              "9.9.9.9"
+            ];
+          };
+        };
       };
     };
   };

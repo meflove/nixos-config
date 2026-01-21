@@ -18,6 +18,8 @@ in {
   };
 
   config = mkIf cfg.enable {
+    users.users.angeldust.extraGroups = ["transmission"];
+
     services.transmission = {
       enable = true;
       package = pkgs.transmission_4;

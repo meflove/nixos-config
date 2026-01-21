@@ -17,3 +17,5 @@ devenv.local.yaml
 # trash
 2.bash
 index.html
+.cache
+*.bak

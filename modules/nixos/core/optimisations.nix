@@ -81,6 +81,11 @@ in {
 
         # Watchdog timers
         "kernel.watchdog" = 0;
+
+        # Network optimizations (complementing kernel-level BBR)
+        "net.ipv4.tcp_slow_start_after_idle" = 0;
+        "net.ipv4.tcp_fastopen" = 3;
+        "net.ipv4.tcp_mtu_probing" = 1;
       };
 
       tmp.useZram = true;
@@ -94,6 +99,8 @@ in {
       };
 
       dbus.implementation = "broker";
+
+      fwupd.enable = true;
     };
   };
 }

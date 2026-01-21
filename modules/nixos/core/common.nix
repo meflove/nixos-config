@@ -16,7 +16,10 @@ in {
 
   config = mkIf cfg.enable {
     programs = {
-      fish.enable = true;
+      fish = {
+        enable = true;
+        package = pkgs.fish;
+      };
 
       dconf.enable = true;
 

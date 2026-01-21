@@ -70,7 +70,7 @@ in {
         httpParams = lib.optionalString (
           cfg.httpMode == "first"
         ) "ct original packets 1-6";
-        udpPorts = lib.concatStringsSep "," cfgZapret.udpPorts;
+        udpPorts = cfgZapret.udpPorts |> lib.concatStringsSep ",";
       in ''
         chain postrouting {
           type filter hook postrouting priority mangle; policy accept;

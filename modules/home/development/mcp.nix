@@ -22,11 +22,10 @@ in {
       github = {
         github_pat = {};
       };
-      context7 = {
+      mcp = {
         context7_api_key = {};
-      };
-      huggingface = {
         huggingface_api_key = {};
+        brightdata_api_key = {};
       };
     };
 
@@ -71,6 +70,19 @@ in {
           url = "https://huggingface.co/mcp";
           headers = {
             Authorization = "Bearer \${HUGGINGFACE_API_KEY}";
+          };
+        };
+
+        mcp-read-website-fast = {
+          command = "${lib.getExe' pkgs.bun "bunx"}";
+          args = ["-y" "@just-every/mcp-read-website-fast"];
+        };
+
+        BrightData = {
+          command = "${lib.getExe' pkgs.bun "bunx"}";
+          args = ["-y" "@brightdata/mcp"];
+          env = {
+            "API_TOKEN" = "\${BRIGHTDATA_API_KEY}";
           };
         };
       };

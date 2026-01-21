@@ -17,7 +17,9 @@
         github_pat_devenv = {};
         github_auth_token = {};
       };
-      pass = {};
+      pass = {
+        neededForUsers = true;
+      };
     };
 
     templates = {
@@ -52,6 +54,7 @@
         "https://nvim-treesitter-main.cachix.org"
         "https://niri.cachix.org"
         "https://watersucks.cachix.org"
+        "https://claude-code.cachix.org"
       ];
       trusted-public-keys = [
         "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
@@ -64,6 +67,7 @@
         "nvim-treesitter-main.cachix.org-1:cbwE6blfW5+BkXXyeAXoVSu1gliqPLHo2m98E4hWfZQ="
         "niri.cachix.org-1:Wv0OmO7PsuocRKzfDoJ3mulSl7Z6oezYhGhR+3W2964="
         "watersucks.cachix.org-1:6gadPC5R8iLWQ3EUtfu3GFrVY7X6I4Fwz/ihW25Jbv8="
+        "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
       ];
 
       experimental-features = [
@@ -71,6 +75,7 @@
         "flakes"
         "auto-allocate-uids"
         "cgroups"
+        "pipe-operator"
       ];
 
       auto-allocate-uids = true;

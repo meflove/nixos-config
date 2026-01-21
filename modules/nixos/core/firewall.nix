@@ -26,13 +26,6 @@ in {
   config = mkIf cfg.enable {
     # Assertions to validate firewall configuration
     networking = {
-      # Enable NAT for Waydroid container
-      nat = {
-        enable = true;
-        internalInterfaces = ["waydroid0"];
-        externalInterface = "enp3s0";
-      };
-
       nftables = {
         enable = true;
 
@@ -59,11 +52,6 @@ in {
                 "enp3s0"
               ];
             };
-
-            # Waydroid Android container zone
-            waydroid = {
-              interfaces = ["waydroid0"];
-            };
           };
 
           rules = {
@@ -76,34 +64,13 @@ in {
             private-ssh = {
               from = "all";
               to = ["private"];
-              allowedTCPPorts = [22];
+              allowedTCPPorts = [2222];
             };
 
             private-fastapi-dev = {
               from = "all";
               to = ["private"];
               allowedTCPPorts = [8000];
-            };
-
-            # DNS for Waydroid container
-            waydroid-dns = {
-              from = ["waydroid"];
-              to = ["fw"];
-              allowedUDPPorts = [53 67];
-            };
-
-            # Allow Waydroid to access internet (forwarding to uplink)
-            waydroid-forward = {
-              from = ["waydroid"];
-              to = ["uplink"];
-              verdict = "accept";
-            };
-
-            # Allow traffic from Waydroid to host (for ADB, etc)
-            waydroid-to-host = {
-              from = ["waydroid"];
-              to = ["fw"];
-              verdict = "accept";
             };
 
             private-wake-on-lan = {

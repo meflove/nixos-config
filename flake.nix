@@ -121,6 +121,9 @@
     angeldust-nixCats = {
       url = "github:meflove/angeldust-nixCats";
     };
+    claude-code = {
+      url = "github:sadjow/claude-code-nix";
+    };
     otter-launcher = {
       url = "github:kuokuo123/otter-launcher";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -171,6 +174,7 @@
         lix-module.overlays.default
         snowfall-flake.overlays.default
         niri.overlays.niri
+        claude-code.overlays.default
       ];
 
       src = builtins.path {

@@ -36,9 +36,8 @@ in {
 
         clean = {
           enable = true;
-
           dates = "daily";
-          extraArgs = "--delete-older-than 10d";
+          extraArgs = "--keep-since 7d --keep 10";
         };
       };
     };

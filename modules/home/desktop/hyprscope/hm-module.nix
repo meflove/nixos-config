@@ -44,11 +44,13 @@ in {
       ++ lib.optionals cfg.gamemodeIntegration [pkgs.gamemode];
 
     xdg.configFile."hypr/hyprscope.conf" = {
-      text = lib.concatStringsSep "\n" (
-        # Автоматически добавляем -G при gamemodeIntegration
-        (lib.optionals cfg.gamemodeIntegration ["-G"])
-        ++ cfg.gamescopeArgs
-      );
+      text =
+        (
+          # Автоматически добавляем -G при gamemodeIntegration
+          lib.optionals cfg.gamemodeIntegration ["-G"]
+          ++ cfg.gamescopeArgs
+        )
+        |> lib.concatStringsSep "\n";
     };
   };
 }

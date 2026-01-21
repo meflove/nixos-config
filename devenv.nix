@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  inputs,
   ...
 }: let
   inherit (pkgs) git-lfs;
@@ -63,7 +64,10 @@ in {
       # Nix specific hooks
       alejandra.enable = true;
       deadnix.enable = true;
-      statix.enable = true;
+      statix = {
+        enable = true;
+        package = inputs.statix.packages.${pkgs.stdenv.hostPlatform.system}.statix;
+      };
     };
     # Git LFS hooks
     # // (builtins.listToAttrs (map (stage: {

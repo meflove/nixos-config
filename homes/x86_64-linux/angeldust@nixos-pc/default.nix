@@ -36,6 +36,7 @@
         "flakes"
         "auto-allocate-uids"
         "cgroups"
+        "pipe-operator"
       ];
 
       auto-allocate-uids = true;
@@ -146,6 +147,10 @@
       tlrc # Simplified man pages
       chafa # Image to terminal converter
       tui-journal
+      bitwarden-cli # CLI for Bitwarden password manager
+
+      # Video & Media
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.yot
     ];
 
     stateVersion = "25.05";

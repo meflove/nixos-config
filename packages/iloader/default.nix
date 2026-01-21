@@ -3,12 +3,12 @@
   appimageTools,
   fetchurl,
 }: let
-  version = "1.1.5";
+  version = "1.1.6";
   pname = "iloader";
 
   src = fetchurl {
     url = "https://github.com/nab138/iloader/releases/download/v${version}/iloader-linux-amd64.AppImage";
-    hash = "sha256-Ll2F2ncW6/8OBf/egOohhiHeu830EohLBU5LCuprLHc=";
+    hash = "sha256-L1fFwFjdIrrhviBlwORhSDXsNYgrT1NcVKAKlss6h4o=";
   };
 in
   appimageTools.wrapType2 {

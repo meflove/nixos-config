@@ -15,16 +15,18 @@
     buildInputs = [pkgs.makeWrapper];
     postBuild = ''
       wrapProgram $out/bin/gemini \
-        --run 'export GEMINI_API_KEY=$(cat ${config.sops.secrets."gemini/gemini_api_key".path})' \
+        --run 'export GEMINI_API_KEY=$(cat ${config.sops.secrets."ai/gemini_api_key".path})' \
         --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.sops.secrets."github/github_pat".path})' \
-        --run 'export CONTEXT7_API_KEY=$(cat ${config.sops.secrets."context7/context7_api_key".path})' \
-        --run 'export HUGGINGFACE_API_KEY=$(cat ${config.sops.secrets."huggingface/huggingface_api_key".path})' \
+        --run 'export CONTEXT7_API_KEY=$(cat ${config.sops.secrets."mcp/context7_api_key".path})' \
+        --run 'export HUGGINGFACE_API_KEY=$(cat ${config.sops.secrets."mcp/huggingface_api_key".path})' \
+        --run 'export BRIGHTDATA_API_KEY=$(cat ${config.sops.secrets."mcp/brightdata_api_key".path})'
     '';
   };
 
   # Remove 'type' key from MCP server configuration for compatibility
   removeTypeFromServers = servers:
-    lib.mapAttrs (_: server: lib.removeAttrs server ["type"]) servers;
+    servers
+    |> lib.mapAttrs (_: server: lib.removeAttrs server ["type"]);
 in {
   options.home.${namespace}.development.gemini = {
     enable =
@@ -37,7 +39,7 @@ in {
   config = mkIf cfg.enable {
     sops = {
       secrets = lib.angl.flattenSecrets {
-        gemini = {
+        ai = {
           gemini_api_key = {};
         };
       };

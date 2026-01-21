@@ -103,7 +103,10 @@ in {
 
       kernel.sysctl."kernel.sysrq" = 1;
       kernelParams = [
-        "systemd.show_status=auto"
+        "rd.systemd.show_status=false"
+        "rd.udev.log_level=3"
+        "udev.log_priority=3"
+        "quiet"
         "splash"
         "mitigations=off"
         "vt.global_cursor_default=0"

@@ -4,11 +4,11 @@
   fetchurl,
 }: let
   pname = "soundcloud-desktop";
-  version = "4.1.3";
+  version = "4.1.4";
 
   src = fetchurl {
     url = "https://github.com/zxcloli666/SoundCloud-Desktop/releases/download/${version}/SoundCloud-${version}-x64.AppImage";
-    hash = "sha256-1b+625mXWfur8ZoQ0rry/sE/YOwS2zkQy6hS08UZCZo=";
+    hash = "sha256-0OgK4Y2BVsHLswNy+fNbG5owo90tjpp05/jjkFYQ0vs=";
   };
 in
   appimageTools.wrapType2 {

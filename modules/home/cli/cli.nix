@@ -19,6 +19,10 @@ in {
   };
 
   config = mkIf cfg.enable {
+    sops = {
+      secrets.pass = {};
+    };
+
     home.packages = with pkgs; [
       # === File System & Disk Utilities ===
       # Modern alternatives to standard tools
@@ -69,7 +73,6 @@ in {
       bat = {
         enable = true;
         config = {
-          pager = "builtin";
           theme = "Catppuccin Macchiato";
         };
         themes = {
