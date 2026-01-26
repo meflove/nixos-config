@@ -17,8 +17,6 @@ in {
         enable niri
       ''
       // {default = false;};
-
-    autologin.enable = lib.mkEnableOption ''Enable automatic login for a specified user. '' // {default = false;};
   };
 
   config = mkIf cfg.enable {

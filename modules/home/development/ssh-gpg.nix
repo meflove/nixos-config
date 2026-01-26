@@ -6,9 +6,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.home.${namespace}.development.ssh-and-gpg;
+  cfg = config.home.${namespace}.development.ssh-gpg;
 in {
-  options.home.${namespace}.development.ssh-and-gpg = {
+  options.home.${namespace}.development.ssh-gpg = {
     enable =
       lib.mkEnableOption ''
         enable SSH and GPG configuration

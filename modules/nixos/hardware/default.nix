@@ -1,8 +1,8 @@
 {
   imports = [
     ./bluetooth.nix
+    ./btrfs-maintenance.nix
     ./iphone.nix
-    ./network.nix
     ./nvidia.nix
     ./sound.nix
   ];

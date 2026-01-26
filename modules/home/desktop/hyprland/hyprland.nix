@@ -53,8 +53,6 @@ in {
         - Quick settings and application menu
       ''
       // {default = false;};
-
-    autologin.enable = lib.mkEnableOption ''Enable automatic login for a specified user.'' // {default = false;};
   };
 
   config = mkIf cfg.enable {

@@ -9,6 +9,7 @@
   imports = [
     # Disko config
     ./nixos-pc-disk.nix
+    ./zfs-test.nix
   ];
 
   sops = {
@@ -101,8 +102,9 @@
   angl = {
     nixos = {
       boot = {
-        kernelOptimisations = {
+        kernel-optimisations = {
           enable = true;
+          enableZfs = true;
           kernelPackage = pkgs.linuxPackages_cachyos.cachyOverride {
             mArch = "GENERIC_V3";
           };
@@ -114,15 +116,18 @@
         };
       };
       cli = {
-        basicStuff.enable = true;
+        basic-stuff.enable = true;
       };
 
-      core = {
+      networking = {
+        core.enable = true;
         vpn.enable = true;
+        firewall.enable = true;
+        zapret.enable = true;
       };
 
       desktop = {
-        dankMaterialShell.enable = true;
+        dank-material-shell.enable = true;
         flatpak = {
           enable = true;
           flatpakPackages = [
@@ -218,7 +223,10 @@
     wl-clipboard
   ];
 
-  networking.hostName = "nixos-pc";
+  networking = {
+    hostName = "nixos-pc";
+    hostId = "78172da6";
+  };
 
   system.stateVersion = "25.05";
 }

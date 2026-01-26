@@ -7,9 +7,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.nixos.core.vpn;
+  cfg = config.${namespace}.nixos.networking.vpn;
 in {
-  options.${namespace}.nixos.core.vpn = {
+  options.${namespace}.nixos.networking.vpn = {
     enable =
       lib.mkEnableOption "Enable VPN services"
       // {

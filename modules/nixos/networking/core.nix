@@ -7,9 +7,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.nixos.hardware.network;
+  cfg = config.${namespace}.nixos.networking.core;
 in {
-  options.${namespace}.nixos.hardware.network = {
+  options.${namespace}.nixos.networking.core = {
     enable =
       lib.mkEnableOption "enable network configuration with systemd-networkd and wpa_supplicant"
       // {
@@ -88,7 +88,7 @@ in {
 
         networks = {
           "10-lan" = {
-            matchConfig.Path = "pci-0000:03:00.0";
+            matchConfig.PermanentMACAddress = "04:7c:16:59:5c:65";
 
             # Higher priority route (lower = higher priority)
             dhcpV4Config.RouteMetric = 100;
@@ -105,7 +105,7 @@ in {
             address = ["192.168.1.100/24"];
           };
           "10-wlan" = {
-            matchConfig.Path = "pci-0000:04:00.0";
+            matchConfig.PermanentMACAddress = "2c:33:58:12:68:03";
 
             # Lower priority route (higher = lower priority)
             dhcpV4Config.RouteMetric = 600;
@@ -122,14 +122,14 @@ in {
         };
         links = {
           "10-lan" = {
-            matchConfig.Path = "pci-0000:03:00.0";
+            matchConfig.PermanentMACAddress = "04:7c:16:59:5c:65";
             linkConfig = {
               Name = "enp3s0";
               WakeOnLan = "magic";
             };
           };
           "10-wlan" = {
-            matchConfig.Path = "pci-0000:04:00.0";
+            matchConfig.PermanentMACAddress = "2c:33:58:12:68:03";
             linkConfig = {
               Name = "wlp4s0";
             };

@@ -7,11 +7,11 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.nixos.boot.kernelOptimisations;
+  cfg = config.${namespace}.nixos.boot.kernel-optimisations;
 in {
-  options.${namespace}.nixos.boot.kernelOptimisations = {
+  options.${namespace}.nixos.boot.kernel-optimisations = {
     enable =
-      lib.mkEnableOption "kernelOptimisations"
+      lib.mkEnableOption "kernel-optimisations"
       // {
         default = false;
         description = "Enable kernel optimisations for better performance.";
@@ -30,6 +30,12 @@ in {
         CPU frequency governor to use. Options include "performance", "powersave", "ondemand", etc.
       '';
     };
+
+    enableZfs = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Enable ZFS support.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -47,6 +53,8 @@ in {
 
     boot = {
       kernelPackages = cfg.kernelPackage;
+      zfs.package = lib.mkIf cfg.enableZfs pkgs.zfs_cachyos;
+      supportedFilesystems = lib.mkIf cfg.enableZfs ["zfs"];
       kernelPatches = [
         {
           name = "optimisations";

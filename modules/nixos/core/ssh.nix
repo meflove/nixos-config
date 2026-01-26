@@ -31,7 +31,7 @@ in {
     # Assertions to validate SSH configuration
     assertions = [
       {
-        assertion = config.${namespace}.nixos.core.firewall.enable || builtins.hasAttr "allowedTCPPorts" config.networking.firewall && builtins.elem 2222 config.networking.firewall.allowedTCPPorts;
+        assertion = config.${namespace}.nixos.networking.firewall.enable || builtins.hasAttr "allowedTCPPorts" config.networking.firewall && builtins.elem 2222 config.networking.firewall.allowedTCPPorts;
         message = "SSH requires port 2222 to be open in the firewall. Enable firewall module or add port 2222 to allowedTCPPorts.";
       }
     ];

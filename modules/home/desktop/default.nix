@@ -11,7 +11,7 @@
     ./nixcord.nix
     ./theming.nix
     ./xdg.nix
-    ./zen.nix
+    ./zen-browser.nix
     ./gaming.nix
     ./hyprscope/hyprscope.nix
   ];

@@ -8,9 +8,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.nixos.desktop.dankMaterialShell;
+  cfg = config.${namespace}.nixos.desktop.dank-material-shell;
 in {
-  options.${namespace}.nixos.desktop.dankMaterialShell = {
+  options.${namespace}.nixos.desktop.dank-material-shell = {
     enable =
       lib.mkEnableOption ''
         enable quickShell

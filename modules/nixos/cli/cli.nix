@@ -8,9 +8,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.nixos.cli.basicStuff;
+  cfg = config.${namespace}.nixos.cli.basic-stuff;
 in {
-  options.${namespace}.nixos.cli.basicStuff = {
+  options.${namespace}.nixos.cli.basic-stuff = {
     enable =
       lib.mkEnableOption ''
         enable basic CLI tools and configurations

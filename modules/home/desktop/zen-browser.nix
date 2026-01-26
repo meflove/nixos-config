@@ -8,9 +8,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.home.${namespace}.desktop.zenBrowser;
+  cfg = config.home.${namespace}.desktop.zen-browser;
 in {
-  options.home.${namespace}.desktop.zenBrowser = {
+  options.home.${namespace}.desktop.zen-browser = {
     enable =
       lib.mkEnableOption "enable Zen Browser with custom configuration"
       // {

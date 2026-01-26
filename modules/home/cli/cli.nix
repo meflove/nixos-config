@@ -8,9 +8,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.home.${namespace}.cli.basicStuff;
+  cfg = config.home.${namespace}.cli.basic-stuff;
 in {
-  options.home.${namespace}.cli.basicStuff = {
+  options.home.${namespace}.cli.basic-stuff = {
     enable =
       lib.mkEnableOption "enable basic CLI tools and configurations"
       // {

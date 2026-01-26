@@ -6,7 +6,7 @@
     ./git.nix
     ./nvim/nvim.nix
     ./zed.nix
-    ./ssh-and-gpg.nix
+    ./ssh-gpg.nix
     ./mcp.nix
   ];
 }

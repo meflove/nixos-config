@@ -3,7 +3,7 @@
     disk = {
       main = {
         type = "disk";
-        device = "/dev/nvme0n1"; # Используем настраиваемую опцию
+        device = "/dev/disk/by-id/nvme-Samsung_SSD_980_1TB_S649NL0W301613B";
         content = {
           type = "gpt";
           partitions = {

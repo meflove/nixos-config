@@ -8,10 +8,10 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.nixos.core.common;
+  cfg = config.${namespace}.nixos.core.base-settings;
 in {
-  options.${namespace}.nixos.core.common = {
-    enable = lib.mkEnableOption "Enable common core settings and programs for all hosts." // {default = true;};
+  options.${namespace}.nixos.core.base-settings = {
+    enable = lib.mkEnableOption "Enable base settings for all hosts (locale, timezone, shell)." // {default = true;};
   };
 
   config = mkIf cfg.enable {

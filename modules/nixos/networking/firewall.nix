@@ -6,9 +6,9 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.nixos.core.firewall;
+  cfg = config.${namespace}.nixos.networking.firewall;
 in {
-  options.${namespace}.nixos.core.firewall = {
+  options.${namespace}.nixos.networking.firewall = {
     enable =
       lib.mkEnableOption ''
         Enable advanced firewall configuration with nftables.

@@ -5,6 +5,6 @@
     ./gaming/gaming.nix
     ./torrent.nix
     ./niri.nix
-    ./dankMaterialShell.nix
+    ./dank-material-shell.nix
   ];
 }

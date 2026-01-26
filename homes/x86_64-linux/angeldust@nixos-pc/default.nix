@@ -62,7 +62,6 @@
       hyprland = {
         enable = true;
         hyprlock.enable = false;
-        autologin.enable = true;
       };
 
       ghostty.enable = true;

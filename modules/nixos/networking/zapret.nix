@@ -6,10 +6,10 @@
 }: let
   inherit (lib) mkIf;
 
-  cfg = config.${namespace}.nixos.core.zapret;
+  cfg = config.${namespace}.nixos.networking.zapret;
   cfgZapret = config.services.zapret;
 in {
-  options.${namespace}.nixos.core.zapret = {
+  options.${namespace}.nixos.networking.zapret = {
     enable =
       lib.mkEnableOption ''
         enable zapret service
