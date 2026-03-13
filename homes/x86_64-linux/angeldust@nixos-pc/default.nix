@@ -10,7 +10,6 @@
   sops = {
     secrets = lib.angl.flattenSecrets {
       github = {
-        github_pat_devenv = {};
         github_auth_token = {};
       };
       pass = {};
@@ -23,6 +22,13 @@
     };
   };
 
+  nixpkgs = {
+    config = {
+      cudaSupport = true;
+      allowUnfree = true;
+    };
+  };
+
   nix = {
     inherit (inputs.self.nixosConfigurations.nixos-pc.config.nix) package;
 
@@ -31,7 +37,7 @@
     settings = {
       use-xdg-base-directories = true;
 
-      experimental-features = [
+      extra-experimental-features = [
         "nix-command"
         "flakes"
         "auto-allocate-uids"
@@ -53,46 +59,47 @@
     '';
   };
 
-  home.angl = {
-    cli = {
-      yazi.enable = true;
-    };
-
-    desktop = {
-      hyprland = {
-        enable = true;
-        hyprlock.enable = false;
-      };
-
-      ghostty.enable = true;
-
-      niri.enable = false;
-
-      gaming = {
-        enable = true;
-        hyprscope.enable = true;
-
-        # wine.package = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-tkg;
-        wine = {
-          enable = true;
-          package = pkgs.wineWowPackages.stagingFull;
-        };
-
-        lutris.enable = false;
-        minecraft.enable = true;
-        osu.enable = false;
-      };
-      kitty.enable = true;
-      nixcord.enable = true;
-    };
-
-    development = {
-      gemini.enable = true;
-      claude.enable = true;
-    };
-  };
-
   home = {
+    angl = {
+      cli = {
+        yazi.enable = true;
+      };
+
+      desktop = {
+        hyprland = {
+          enable = false;
+          hyprlock.enable = true;
+        };
+        davinci.enable = false;
+
+        ghostty.enable = true;
+        waybar.enable = true;
+
+        niri.enable = true;
+
+        gaming = {
+          enable = true;
+          hyprscope.enable = false;
+
+          # wine.package = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.wine-tkg;
+          wine = {
+            enable = true;
+            package = pkgs.wineWow64Packages.stagingFull;
+          };
+
+          lutris.enable = false;
+          minecraft.enable = true;
+          osu.enable = false;
+        };
+        kitty.enable = true;
+        nixcord.enable = true;
+      };
+
+      development = {
+        gemini.enable = true;
+        claude.enable = true;
+      };
+    };
     preferXdgDirectories = true;
 
     packages = with pkgs; [
@@ -105,7 +112,7 @@
 
       # Productivity & Notes
       obsidian
-      libreoffice
+      master.libreoffice
       papers # PDF viewer
       calcure # Modern TUI calendar and task manager
 

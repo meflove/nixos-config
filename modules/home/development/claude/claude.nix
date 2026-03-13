@@ -31,7 +31,6 @@
         --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.sops.secrets."github/github_pat".path})' \
         --run 'export CONTEXT7_API_KEY=$(cat ${config.sops.secrets."mcp/context7_api_key".path})' \
         --run 'export HUGGINGFACE_API_KEY=$(cat ${config.sops.secrets."mcp/huggingface_api_key".path})' \
-        --run 'export BRIGHTDATA_API_KEY=$(cat ${config.sops.secrets."mcp/brightdata_api_key".path})'
     '';
   };
 in {
@@ -92,6 +91,7 @@ in {
           ANTHROPIC_BASE_URL = "https://api.z.ai/api/anthropic";
           API_TIMEOUT_MS = 3000000;
           DISABLE_TELEMETRY = 1;
+          CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = 1;
           DISABLE_AUTOUPDATER = 1;
           MAX_THINKING_TOKENS = 10000;
         };

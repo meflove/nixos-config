@@ -121,7 +121,7 @@ Secrets are defined using `lib.angl.flattenSecrets` helper:
 sops = {
   secrets = lib.angl.flattenSecrets {
     github = {
-      github_pat_devenv = {};
+      github_auth_token = {};
     };
     pass = {};
   };

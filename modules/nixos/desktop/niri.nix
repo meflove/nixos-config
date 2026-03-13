@@ -25,12 +25,16 @@
       }
     '';
 
-    systemPackages = with pkgs; [xdg-utils pkgs.niri-unstable];
+    systemPackages = with pkgs; [xdg-utils];
+  };
+  programs.niri = {
+    enable = true;
+    package = pkgs.niri-unstable;
+    useNautilus = false;
   };
 
-  xdg.portal.configPackages = [pkgs.niri-unstable];
-
-  security.polkit.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.swaylock = {};
+  security = {
+    polkit.enable = true;
+    pam.services.swaylock = {};
+  };
 }

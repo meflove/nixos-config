@@ -26,12 +26,8 @@ in {
       xwayland.enable = true;
       hyprland = {
         enable = true;
-        # set the flake package
         package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-        # inherit (inputs.self.homeConfigurations."angeldust@nixos-pc".config.wayland.windowManager.hyprland) package;
-        # # make sure to also set the portal package, so that they are in sync
         portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-        # inherit (inputs.self.homeConfigurations."angeldust@nixos-pc".config.wayland.windowManager.hyprland) portalPackage;
       };
     };
 

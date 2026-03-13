@@ -10,4 +10,9 @@
   };
 
   master = import inputs.nixpkgs-master overlaysSettings;
+  # nixpkgs-patched = inputs.nixpkgs-patcher.lib.patchNixpkgs {
+  #   inherit inputs;
+  #   inherit (pkgs) system;
+  # };
+  # patched = import nixpkgs-patched overlaysSettings;
 }

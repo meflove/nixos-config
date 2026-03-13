@@ -43,12 +43,11 @@ in {
 
     services.clipse = {
       enable = true;
+      package = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.clipse;
 
-      historySize = 10000;
+      historySize = 5000;
       imageDisplay.type = "sixel";
     };
-
-    systemd.user.services.clipse = lib.mkForce {};
 
     programs = {
       eza = {
@@ -114,9 +113,13 @@ in {
           embed-metadata = true;
           embed-subs = true;
           sub-langs = "all";
-          downloader = lib.getExe pkgs.aria2;
-          downloader-args = "aria2c:'-c -x8 -s8 -k1M'";
+          # Use internal downloader to avoid 403 errors from YouTube
+          # downloader = lib.getExe pkgs.aria2;
+          # downloader-args = "aria2c:'-c -x8 -s8 -k1M'";
         };
+        extraConfig = ''
+          -S res,ext:mp4:m4a --recode mp4
+        '';
       };
 
       nix-index = {

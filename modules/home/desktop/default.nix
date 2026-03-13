@@ -11,8 +11,10 @@
     ./nixcord.nix
     ./theming.nix
     ./xdg.nix
-    ./zen-browser.nix
+    ./waybar/waybar.nix
+    ./zen-browser/zen-browser.nix
     ./gaming.nix
+    ./davinci.nix
     ./hyprscope/hyprscope.nix
   ];
 }

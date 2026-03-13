@@ -62,7 +62,7 @@ rm "$temp_file"
 
 selected_path=$(echo "$selected_line" | cut -d ":" -f 2-)
 
-hyprctl dispatch exec gtk-launch "$(basename "$selected_path")"
+niri msg action spawn-sh -- "gtk-launch "$(basename "$selected_path")""
 """
 
 [[modules]]

@@ -26,6 +26,7 @@ writeShellApplication {
     ORIGINAL_AUDIO=true  # Include original audio as secondary track
     CACHE_DIR="''${XDG_CACHE_HOME:-''${HOME}/.cache}/yot"
     KEEP_FILES=false
+    VERBOSE=false  # Verbose/debug mode
 
     # Create cache directory
     mkdir -p "$CACHE_DIR"
@@ -43,12 +44,14 @@ writeShellApplication {
         -l, --lang <code>          Translation language (default: ru)
         -o, --only-translation     Only play translated audio (no original)
         -k, --keep-files           Keep downloaded files in cache
+        -v, --verbose              Enable verbose/debug output
         -h, --help                 Show this help message
 
     Examples:
         yot https://youtube.com/watch?v=xxx
         yot -l en https://youtube.com/watch?v=xxx
         yot -o https://youtube.com/watch?v=xxx
+        yot -v https://youtube.com/watch?v=xxx
 
     Supported languages: ru, en, de, fr, es, it, pt, zh, ja, ko, etc.
 
@@ -66,6 +69,12 @@ writeShellApplication {
 
     log_step() {
         echo -e "''${YELLOW}→''${NC} $*"
+    }
+
+    log_debug() {
+        if [[ "$VERBOSE" == true ]]; then
+            echo -e "''${YELLOW}[DEBUG]''${NC} $*" >&2
+        fi
     }
 
     cleanup() {
@@ -90,6 +99,11 @@ writeShellApplication {
                 ;;
             -k|--keep-files)
                 KEEP_FILES=true
+                shift
+                ;;
+            -v|--verbose)
+                VERBOSE=true
+                set -x  # Enable shell debugging
                 shift
                 ;;
             -h|--help)
@@ -117,6 +131,15 @@ writeShellApplication {
     VIDEO_FILE="$CACHE_DIR/video_$SESSION_ID.mp4"
     AUDIO_FILE="$CACHE_DIR/translation_$SESSION_ID.mp3"
 
+    log_debug "Configuration:"
+    log_debug "  Translation language: $TRANSLATE_LANG"
+    log_debug "  Original audio: $ORIGINAL_AUDIO"
+    log_debug "  Keep files: $KEEP_FILES"
+    log_debug "  Cache directory: $CACHE_DIR"
+    log_debug "  Session ID: $SESSION_ID"
+    log_debug "  Video file: $VIDEO_FILE"
+    log_debug "  Audio file: $AUDIO_FILE"
+
     log_info "YouTube Translate - Session ID: $SESSION_ID"
     echo
 
@@ -124,10 +147,20 @@ writeShellApplication {
     log_step "Step 1/3: Getting translated audio..."
     log_info "Language: $TRANSLATE_LANG"
 
-    AUDIO_LINK=$(bunx vot-cli --reslang="$TRANSLATE_LANG" --output="$CACHE_DIR" "$YOUTUBE_URL" 2>&1 | grep -oP 'Audio Link.*: "\K[^"]+')
+    log_debug "Running: bunx vot-cli --reslang=\"$TRANSLATE_LANG\" --output=\"$CACHE_DIR\" \"$YOUTUBE_URL\""
+
+    if [[ "$VERBOSE" == true ]]; then
+        VOT_OUTPUT=$(bunx vot-cli --reslang="$TRANSLATE_LANG" --output="$CACHE_DIR" "$YOUTUBE_URL" 2>&1 | tee /dev/stderr)
+    else
+        VOT_OUTPUT=$(bunx vot-cli --reslang="$TRANSLATE_LANG" --output="$CACHE_DIR" "$YOUTUBE_URL" 2>&1)
+    fi
+
+    AUDIO_LINK=$(echo "$VOT_OUTPUT" | grep -oP 'Audio Link.*: "\K[^"]+')
+    log_debug "Extracted audio link: $AUDIO_LINK"
 
     if [[ -z "$AUDIO_LINK" ]]; then
         log_error "Failed to get translation link"
+        log_debug "Full vot-cli output: $VOT_OUTPUT"
         exit 1
     fi
 
@@ -137,9 +170,15 @@ writeShellApplication {
     if [[ -z "$DOWNLOADED_AUDIO" ]]; then
         # Try to download directly with spinner
         log_step "Downloading translation..."
-        (
-            curl -L -o "$AUDIO_FILE" "$AUDIO_LINK" --silent --show-error
-        ) &
+        if [[ "$VERBOSE" == true ]]; then
+            (
+                curl -L -o "$AUDIO_FILE" "$AUDIO_LINK" --show-error
+            ) &
+        else
+            (
+                curl -L -o "$AUDIO_FILE" "$AUDIO_LINK" --silent --show-error
+            ) &
+        fi
 
         CURL_PID=$!
         while kill -0 $CURL_PID 2>/dev/null; do
@@ -165,17 +204,30 @@ writeShellApplication {
 
     # Step 2: Download video with spinner
     log_step "Step 2/3: Downloading video..."
-    (
-        yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" \
-            -o "$VIDEO_FILE" \
-            --no-playlist \
-            --restrict-filenames \
-            --newline \
-            --no-warnings \
-            --no-colors \
-            --quiet \
-            "$YOUTUBE_URL" &>/dev/null
-    ) &
+
+    if [[ "$VERBOSE" == true ]]; then
+        (
+            yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" \
+                -o "$VIDEO_FILE" \
+                --no-playlist \
+                --restrict-filenames \
+                --newline \
+                --no-colors \
+                "$YOUTUBE_URL"
+        ) &
+    else
+        (
+            yt-dlp -f "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best" \
+                -o "$VIDEO_FILE" \
+                --no-playlist \
+                --restrict-filenames \
+                --newline \
+                --no-warnings \
+                --no-colors \
+                --quiet \
+                "$YOUTUBE_URL" &>/dev/null
+        ) &
+    fi
 
     # Show spinner while downloading
     YT_DLP_PID=$!
@@ -224,6 +276,10 @@ writeShellApplication {
             --no-audio
             --keep-open
         )
+    fi
+
+    if [[ "$VERBOSE" == true ]]; then
+        log_debug "MPV command: ''${MPV_CMD[*]}"
     fi
 
     # Trap cleanup on exit

@@ -1,64 +1,146 @@
 {
-  lib,
+  config,
+  inputs,
   pkgs,
+  lib,
   ...
 }: let
   super = "Super";
-  term = "ghostty";
-  editor = "nvim";
+  shift = "Shift";
+  alt = "Alt";
+
+  term = lib.getExe config.programs.ghostty.package;
+
+  spawn-sh = cmd: {
+    spawn = ["sh" "-c" cmd];
+  };
+
+  msg = cmd: spawn-sh "niri msg action ${cmd}";
+
+  jq = lib.getExe pkgs.jq;
+
+  toggleApp = pkg: appId: title:
+    (pkgs.writeShellScriptBin "${title}-toggle-niri" ''
+      TERMINAL=${lib.getExe config.programs.ghostty.package}
+
+      if [[ -z $(niri msg windows | grep 'Title: "${title}"') ]]
+      then
+        $TERMINAL --class=${appId} --title=${title} -e sh -c 'sleep 0.02 && ${lib.getExe pkg}';
+      else
+          if [[ -z $(niri msg -j windows | ${jq} '.[] | select(.is_focused==true).app_id' | ${lib.getExe pkgs.ripgrep} ${appId}) ]];
+        then
+          niri msg action focus-window --id $(niri msg -j windows | ${jq} ".[] | select(.app_id==\"${appId}\").id");
+        else
+          niri msg action close-window;
+          fi
+      fi
+    '')
+    |> lib.getExe;
 in {
+  # ====================
   # Essentials
+  # ====================
   "${super}+T".action.spawn = ["${term}"];
   "${super}+Return".action.spawn = ["${term}"];
 
+  # ====================
   # Actions
-  "${super}+V".action.spawn = ["${term}" "--class=com.free.clipse" "--title=clipse" "-e" "clipse"];
-  "${super}+N".action.spawn = ["sh" "-c" "pkill tjournal || ${term} --class=com.note.tjournal --title=tjournal -e tjournal"];
-  "${super}+Period".action.spawn = ["sh" "-c" "pkill smile || ${lib.getExe pkgs.smile}"];
-  "Print".action.spawn = ["${lib.getExe pkgs.grimblast}" "-nf" "copy" "area"];
-  "${super}+Ctrl+T".action.spawn = [
+  # ====================
+  "${super}+V" = {
+    repeat = false;
+    action.spawn = "${toggleApp config.services.clipse.package "com.free.clipse" "clipse"}";
+  };
+  "${super}+G" = {
+    repeat = false;
+    action.spawn = "${toggleApp pkgs.kalker "com.free.kalker" "kalker"}";
+  };
+
+  "${super}+Space" = {
+    repeat = false;
+    action.spawn = "${toggleApp inputs.otter-launcher.packages.${pkgs.stdenv.hostPlatform.system}.default "com.free.otter-launcher" "otter-launcher"}";
+  };
+
+  "${super}+Ctrl+L".action.spawn = ["hyprlock"];
+
+  # Screenshots
+  "Print".action = msg "screenshot -p false";
+  "${shift}+Print".action = msg "screenshot-screen -p false";
+  "${alt}+Print".action = msg "screenshot-window -p false";
+
+  "Ctrl+${super}+T".action.spawn = [
     "sh"
     "-c"
-    "${lib.getExe pkgs.grim} -g \"${lib.getExe pkgs.slurp} $SLURP_ARGS\" \"tmp.png\" && ${lib.getExe pkgs.tesseract} -l eng \"tmp.png\" - | wl-copy && rm \"tmp.png\""
+    "${lib.getExe pkgs.grim} -g \"${lib.getExe pkgs.slurp}\" \"tmp.png\" && ${lib.getExe pkgs.tesseract} -l eng \"tmp.png\" - | wl-copy && rm \"tmp.png\""
   ];
   "${super}+Shift+C".action.spawn = ["${lib.getExe pkgs.hyprpicker}" "-ar"];
 
-  # Session
-  "${super}+G".action.spawn = ["sh" "-c" "pkill kalker || ${term} --class=com.free.kalker --title=kalker -e kalker"];
-  "${super}+L".action.spawn = ["hyprlock"];
-
+  # ====================
   # Window management
+  # ====================
+  "${super}+Q".action.close-window = {};
+  "${super}+O".action.toggle-overview = {};
+
   "${super}+Left".action.focus-column-left = {};
   "${super}+Right".action.focus-column-right = {};
   "${super}+Up".action.focus-window-up = {};
   "${super}+Down".action.focus-window-down = {};
-  "${super}+BracketLeft".action.focus-column-left = {};
-  "${super}+BracketRight".action.focus-column-right = {};
-  "${super}+Q".action.close-window = {};
-  "${super}+O".action.toggle-overview = {};
+  "${super}+H".action.focus-column-left = {};
+  "${super}+J".action.focus-window-down = {};
+  "${super}+K".action.focus-window-up = {};
+  "${super}+L".action.focus-column-right = {};
 
+  # ====================
   # Window arrangement
+  # ====================
   "${super}+Shift+Left".action.move-column-left = {};
   "${super}+Shift+Right".action.move-column-right = {};
   "${super}+Shift+Up".action.move-window-up = {};
   "${super}+Shift+Down".action.move-window-down = {};
+  "${super}+Shift+H".action.move-column-left = {};
+  "${super}+Shift+J".action.move-window-down = {};
+  "${super}+Shift+K".action.move-window-up = {};
+  "${super}+Shift+L".action.move-column-right = {};
+
   "${super}+Alt+Space".action.toggle-window-floating = {};
   "${super}+F".action.fullscreen-window = {};
   "${super}+D".action.maximize-column = {};
 
-  # Workspace navigation
-  "${super}+1".action.focus-workspace = 1;
-  "${super}+2".action.focus-workspace = 2;
-  "${super}+3".action.focus-workspace = 3;
-  "${super}+4".action.focus-workspace = 4;
-  "${super}+5".action.focus-workspace = 5;
-  "${super}+6".action.focus-workspace = 6;
-  "${super}+7".action.focus-workspace = 7;
-  "${super}+8".action.focus-workspace = 8;
-  "${super}+9".action.focus-workspace = 9;
-  "${super}+0".action.focus-workspace = 10;
+  # Column/Window width
+  "${super}+S".action.switch-preset-column-width = {};
+  "${super}+Minus".action.set-column-width = "-10%";
+  "${super}+Equal".action.set-column-width = "+10%";
 
+  # Consume/Expel windows
+  "${super}+Comma".action.consume-window-into-column = {};
+  "${super}+Period".action.expel-window-from-column = {};
+
+  # ====================
+  # Workspace navigation
+  # ====================
+  "${super}+1".action.focus-workspace = "telegram";
+  "${super}+2".action.focus-workspace = "browser";
+  "${super}+3".action.focus-workspace = "cli";
+  "${super}+4".action.focus-workspace = "games";
+  # "${super}+5".action.focus-workspace = 5;
+  # "${super}+6".action.focus-workspace = 6;
+  # "${super}+7".action.focus-workspace = 7;
+  # "${super}+8".action.focus-workspace = 8;
+  # "${super}+9".action.focus-workspace = 9;
+  # "${super}+0".action.focus-workspace = 10;
+
+  # Workspace scroll
+  "${super}+WheelScrollDown" = {
+    cooldown-ms = 150;
+    action.focus-workspace-down = {};
+  };
+  "${super}+WheelScrollUp" = {
+    cooldown-ms = 150;
+    action.focus-workspace-up = {};
+  };
+
+  # ====================
   # Workspace management
+  # ====================
   "${super}+Alt+1".action.move-column-to-workspace = 1;
   "${super}+Alt+2".action.move-column-to-workspace = 2;
   "${super}+Alt+3".action.move-column-to-workspace = 3;
@@ -69,39 +151,34 @@ in {
   "${super}+Alt+8".action.move-column-to-workspace = 8;
   "${super}+Alt+9".action.move-column-to-workspace = 9;
   "${super}+Alt+0".action.move-column-to-workspace = 10;
+
   "Ctrl+${super}+Shift+Right".action.move-window-to-workspace = "+1";
   "Ctrl+${super}+Shift+Left".action.move-window-to-workspace = "-1";
   "Ctrl+${super}+BracketLeft".action.focus-workspace = "-1";
   "Ctrl+${super}+BracketRight".action.focus-workspace = "+1";
   "Ctrl+${super}+Up".action.focus-workspace = "-5";
   "Ctrl+${super}+Down".action.focus-workspace = "+5";
-  "${super}+Shift+WheelScrollDown".action.move-window-to-workspace = "-1";
-  "${super}+Shift+WheelScrollUp".action.move-window-to-workspace = "+1";
-  "${super}+Alt+WheelScrollDown".action.move-window-to-workspace = "-1";
-  "${super}+Alt+WheelScrollUp".action.move-window-to-workspace = "+1";
-  "${super}+Alt+Page_Down".action.move-window-to-workspace = "+1";
-  "${super}+Alt+Page_Up".action.move-window-to-workspace = "-1";
-  "${super}+Shift+Page_Down".action.move-window-to-workspace = "+1";
-  "${super}+Shift+Page_Up".action.move-window-to-workspace = "-1";
+
   "Alt+Tab".action.focus-window-previous = {};
 
-  # Widgets
-  "${super}+Space" = {
-    repeat = false;
-    action.spawn = [
-      "sh"
-      "-c"
-      "pkill otter-launcher || ${term} --class=com.free.otter-launcher --title=otter-launcher -e sh -c 'sleep 0.05 && otter-launcher'"
-    ];
-  };
-
+  # ====================
   # Apps
-  "Ctrl+Shift+${super}+T".action.spawn = ["kitty"];
-  "${super}+C".action.spawn = ["${term}" "-e" "${editor}"];
-  "${super}+E".action.spawn = ["${term}" "-e" "yazi"];
-  "${super}+W".action.spawn = ["zen-beta"];
-  "Ctrl+${super}+V".action.spawn = ["pavucontrol"];
-  "${super}+Shift+T".action.spawn = ["AyuGram"];
-  "${super}+Shift+D".action.spawn = ["discord"];
-  "${super}+K".action.spawn = ["${term}" "-e" "calcure"];
+  # ====================
+  "${super}+W".action.spawn = lib.getExe config.programs.zen-browser.package;
+  "Ctrl+${super}+V".action.spawn = lib.getExe pkgs.pwvucontrol;
+  "${super}+Shift+T".action.spawn = lib.getExe inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  "${super}+Shift+D".action.spawn = ["Discord"];
+
+  # ====================
+  # Media keys
+  # ====================
+  "XF86AudioMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"];
+  "XF86AudioMicMute".action.spawn = ["wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"];
+  "XF86AudioRaiseVolume".action.spawn = ["wpctl" "set-volume" "-l" "1" "@DEFAULT_AUDIO_SINK@" "5%+"];
+  "XF86AudioLowerVolume".action.spawn = ["wpctl" "set-volume" "-l" "1" "@DEFAULT_AUDIO_SINK@" "5%-"];
+
+  # ====================
+  # Help
+  # ====================
+  "${super}+Shift+Slash".action.show-hotkey-overlay = {};
 }

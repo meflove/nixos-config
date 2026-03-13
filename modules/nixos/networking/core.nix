@@ -19,12 +19,15 @@ in {
 
   config = mkIf cfg.enable {
     sops = let
-      wpaRestartUnits = config.networking.wireless.interfaces |> lib.map (iface: "wpa_supplicant-${iface}");
+      restartUnits = config.networking.wireless.interfaces |> lib.map (iface: "wpa_supplicant-${iface}");
     in {
       secrets = lib.angl.flattenSecrets {
         wifi = {
           Keenetic_home = {
-            restartUnits = wpaRestartUnits;
+            inherit restartUnits;
+          };
+          iphone_hotspot = {
+            inherit restartUnits;
           };
         };
       };
@@ -32,6 +35,7 @@ in {
       templates."wireless.conf" = {
         content = ''
           psk_home=${config.sops.placeholder."wifi/Keenetic_home"}
+          psk_iphone_hotspot=${config.sops.placeholder."wifi/iphone_hotspot"}
         '';
         owner = "wpa_supplicant";
       };
@@ -59,6 +63,7 @@ in {
 
       wireless = {
         enable = true;
+        userControlled = true;
         driver = "nl80211";
         secretsFile = config.sops.templates."wireless.conf".path;
         interfaces = ["wlp4s0"];
@@ -74,6 +79,10 @@ in {
               "FT-PSK"
               "FT-SAE"
             ];
+          };
+          iPhone-16-pro = {
+            # ssid = "найди меня если сможешь";
+            pskRaw = "ext:psk_iphone_hotspot";
           };
         };
       };

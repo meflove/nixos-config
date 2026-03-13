@@ -14,7 +14,7 @@ in {
     enable =
       lib.mkEnableOption "enable desktop theming settings"
       // {
-        default = config.home.${namespace}.desktop.hyprland.enable;
+        default = config.home.${namespace}.desktop.hyprland.enable || config.home.${namespace}.desktop.niri.enable;
       };
   };
 
@@ -74,6 +74,10 @@ in {
       enable = true;
       platformTheme.name = "adwaita";
       style.name = "adwaita-dark";
+    };
+
+    services.swww = {
+      enable = true;
     };
   };
 }

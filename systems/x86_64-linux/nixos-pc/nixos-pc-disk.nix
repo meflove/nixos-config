@@ -8,100 +8,58 @@
           type = "gpt";
           partitions = {
             ESP = {
-              size = "1G"; # Минимум 512M, 1G рекомендуется для гибкости
-              type = "EF00"; # Тип раздела EFI System Partition
+              size = "1G";
+              type = "EF00";
               content = {
                 type = "filesystem";
                 format = "vfat";
-                mountpoint = "/efi"; # Точка монтирования EFI
+                mountpoint = "/efi";
                 mountOptions = ["umask=0077"];
               };
             };
             btrfs = {
-              size = "100%"; # Использовать оставшееся пространство для Btrfs
-              label = "disk-main-btrfs"; # Явно задаем метку раздела
+              size = "100%";
+              label = "disk-main-btrfs";
               content = {
-                type = "btrfs"; # Важно: используйте тип "btrfs" для поддержки подтомов
-                extraArgs = ["-f"]; # Принудительное создание файловой системы
-                subvolumes = {
+                type = "btrfs";
+                extraArgs = ["-f"];
+                subvolumes = let
+                  mountOptions = [
+                    "compress=zstd:1"
+                    "noatime"
+                    "space_cache=v2"
+                    "nodiscard"
+                    "ssd_spread"
+                    "commit=300"
+                  ];
+                in {
                   "@root" = {
                     mountpoint = "/";
-                    # Параметры монтирования для основного монтирования Btrfs (применяются ко всей файловой системе)
-                    mountOptions = [
-                      "compress-force=zstd:1"
-                      "noatime"
-                      "space_cache=v2"
-                      "nodiscard"
-                      "ssd_spread"
-                      "commit=300"
-                    ];
+                    inherit mountOptions;
                   };
                   "@home" = {
                     mountpoint = "/home";
-                    # Параметры монтирования для /home (нет необходимости повторять общесистемные параметры)
-                    mountOptions = [
-                      "compress-force=zstd:1"
-                      "noatime"
-                      "space_cache=v2"
-                      "nodiscard"
-                      "ssd_spread"
-                      "commit=300"
-                    ]; # noatime применяется для каждой точки монтирования
+                    inherit mountOptions;
                   };
                   "@nix" = {
                     mountpoint = "/nix";
-                    mountOptions = [
-                      "compress-force=zstd:1"
-                      "noatime"
-                      "space_cache=v2"
-                      "nodiscard"
-                      "ssd_spread"
-                      "commit=300"
-                    ]; # noatime применяется для каждой точки монтирования
+                    inherit mountOptions;
                   };
                   "@var/log" = {
                     mountpoint = "/var/log";
-                    mountOptions = [
-                      "compress-force=zstd:1"
-                      "noatime"
-                      "space_cache=v2"
-                      "nodiscard"
-                      "ssd_spread"
-                      "commit=300"
-                    ];
+                    inherit mountOptions;
                   };
                   "@var/cache" = {
                     mountpoint = "/var/cache";
-                    mountOptions = [
-                      "compress-force=zstd:1"
-                      "noatime"
-                      "space_cache=v2"
-                      "nodiscard"
-                      "ssd_spread"
-                      "commit=300"
-                    ];
+                    inherit mountOptions;
                   };
                   "@.snapshots" = {
                     mountpoint = "/.snapshots";
-                    mountOptions = [
-                      "compress-force=zstd:1"
-                      "noatime"
-                      "space_cache=v2"
-                      "nodiscard"
-                      "ssd_spread"
-                      "commit=300"
-                    ];
+                    inherit mountOptions;
                   };
                   "@srv" = {
                     mountpoint = "/srv";
-                    mountOptions = [
-                      "compress-force=zstd:1"
-                      "noatime"
-                      "space_cache=v2"
-                      "nodiscard"
-                      "ssd_spread"
-                      "commit=300"
-                    ];
+                    inherit mountOptions;
                   };
                 };
               };

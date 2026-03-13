@@ -20,8 +20,10 @@ in {
   config = mkIf cfg.enable {
     programs.nixcord = {
       enable = true; # Enable Nixcord (It also installs Discord)
+      discord.equicord.enable = true;
+      discord.vencord.enable = false;
       vesktop = {
-        enable = true; # Vesktop
+        enable = false; # Vesktop
         package = pkgs.vesktop;
       };
 

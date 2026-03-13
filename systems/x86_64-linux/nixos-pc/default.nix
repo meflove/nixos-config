@@ -15,8 +15,9 @@
   sops = {
     secrets = lib.angl.flattenSecrets {
       github = {
-        github_pat_devenv = {};
-        github_auth_token = {};
+        github_auth_token = {
+          mode = "0444";
+        };
       };
       pass = {
         neededForUsers = true;
@@ -30,6 +31,12 @@
     };
   };
 
+  environment.extraInit = ''
+    if [ -f ${config.sops.secrets."github/github_auth_token".path} ]; then
+      export GITHUB_TOKEN=$(cat ${config.sops.secrets."github/github_auth_token".path})
+    fi
+  '';
+
   nix = {
     package = pkgs.lix;
 
@@ -42,13 +49,17 @@
       allowed-users = ["@wheel"];
       trusted-users = ["@wheel"];
 
-      substituters = lib.mkForce [
+      connect-timeout = 4;
+      stalled-download-timeout = 4;
+
+      substituters = [
         "https://nixos-cache-proxy.cofob.dev"
-        "https://nixos-cache-proxy.sweetdogs.ru"
+        "https://mirror.yandex.ru/nixos"
         "https://cache.nixos-cuda.org"
         "https://nix-gaming.cachix.org"
         "https://chaotic-nyx.cachix.org"
         "https://nix-community.cachix.org"
+        "https://hyprland.cachix.org"
         "https://cache.garnix.io"
         "https://yazi.cachix.org"
         "https://devenv.cachix.org"
@@ -62,6 +73,7 @@
         "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
         "chaotic-nyx.cachix.org-1:HfnXSw4pj95iI/n17rIDy40agHj12WfF+Gqk6SonIT8="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+        "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
         "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
@@ -71,7 +83,7 @@
         "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
       ];
 
-      experimental-features = [
+      extra-experimental-features = [
         "nix-command"
         "flakes"
         "auto-allocate-uids"
@@ -96,6 +108,7 @@
   nixpkgs = {
     config = {
       cudaSupport = true;
+      allowUnfree = true;
     };
   };
 
@@ -127,7 +140,7 @@
       };
 
       desktop = {
-        dank-material-shell.enable = true;
+        # dank-material-shell.enable = true;
         flatpak = {
           enable = true;
           flatpakPackages = [
@@ -147,7 +160,7 @@
       development = {
         ollama.enable = false;
         podman.enable = true;
-        virtManager.enable = true;
+        virtManager.enable = false;
       };
 
       hardware = {
@@ -212,7 +225,6 @@
     # === Nix Ecosystem ===
     # Nix package management tools
     inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager
-    snowfallorg.flake
 
     # === Graphics & Display System ===
     # GUI framework and clipboard utilities

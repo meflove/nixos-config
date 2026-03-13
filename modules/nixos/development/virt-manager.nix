@@ -24,7 +24,7 @@ in {
         "vfio-pci.ids=1002:67b0,1002:aac8,144d:a80a"
       ];
 
-      initrd.kernelModules = [
+      kernelModules = [
         "vfio_pci"
         "vfio"
         "vfio_iommu_type1"

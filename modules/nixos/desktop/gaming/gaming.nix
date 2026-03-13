@@ -18,7 +18,6 @@ in {
         - Steam with Gamescope integration for improved gaming experience
         - GameMode for CPU/GPU optimization during gaming
         - ntsync kernel module for improved Windows game compatibility
-        - Solaar for Logitech gaming device management
         - Wine/Proton integration through home-manager modules
 
         Designed for both native Linux gaming and Windows compatibility.
@@ -45,6 +44,14 @@ in {
       "ntsync"
     ];
 
+    services.udev.packages = [
+      (pkgs.writeTextFile {
+        name = "ntsync-udev-rules";
+        text = ''KERNEL=="ntsync", MODE="0660", TAG+="uaccess"'';
+        destination = "/etc/udev/rules.d/70-ntsync.rules";
+      })
+    ];
+
     programs = {
       gamemode = {
         enable = true;
@@ -57,17 +64,6 @@ in {
         package = pkgs.steam;
 
         gamescopeSession.enable = true;
-      };
-    };
-
-    services = {
-      solaar = {
-        enable = true; # Enable the service
-        package = pkgs.solaar; # The package to use
-
-        window = "hide"; # Show the window on startup (show, *hide*, only [window only])
-        batteryIcons = "regular"; # Which battery icons to use (*regular*, symbolic, solaar)
-        extraArgs = ""; # Extra arguments to pass to solaar on startup
       };
     };
 
@@ -92,10 +88,6 @@ in {
     hardware = {
       xone.enable = true;
       new-lg4ff.enable = true;
-      opentabletdriver = {
-        enable = true;
-        daemon.enable = true;
-      };
     };
 
     environment.systemPackages = with pkgs; [

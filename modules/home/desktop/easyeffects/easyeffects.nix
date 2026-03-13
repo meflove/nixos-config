@@ -31,7 +31,7 @@ in {
 
     home = {
       file = {
-        ".loca/share/easyeffects/irs/accudio48khz.irs".source = ./accudio48khz.irs;
+        ".local/share/easyeffects/irs/accudio48khz.irs".source = ./accudio48khz.irs;
       };
     };
   };

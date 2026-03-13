@@ -13,7 +13,7 @@ in {
     enable =
       lib.mkEnableOption "enable otter-launcher"
       // {
-        default = config.home.${namespace}.desktop.hyprland.enable;
+        default = config.home.${namespace}.desktop.hyprland.enable || config.home.${namespace}.desktop.niri.enable;
       };
   };
 

@@ -32,7 +32,7 @@ in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs;
       [
-        handbrake # for compressing videos
+        # handbrake # for compressing videos
         v4l-utils
         ffmpeg
       ]

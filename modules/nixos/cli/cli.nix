@@ -19,6 +19,10 @@ in {
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      comma
+    ];
+
     services = {
       locate = {
         enable = true;
@@ -36,7 +40,7 @@ in {
 
         clean = {
           enable = true;
-          dates = "daily";
+          dates = "weekly";
           extraArgs = "--keep-since 7d --keep 10";
         };
       };

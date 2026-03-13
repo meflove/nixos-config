@@ -30,6 +30,7 @@
         rootFsOptions = {
           compression = "zstd";
           atime = "off";
+          xattr = "sa";
           mountpoint = "none";
         };
 
@@ -39,6 +40,7 @@
           test = {
             type = "zfs_fs";
             mountpoint = "/data";
+            mountOptions = ["noauto"];
             options = {
               recordsize = "128K";
             };
@@ -47,14 +49,13 @@
           test2 = {
             type = "zfs_fs";
             mountpoint = "/data2";
+            mountOptions = ["noauto"];
             options = {
               recordsize = "16K";
               compression = "lz4";
             };
           };
         };
-
-        postCreateHook = "zfs snapshot ztest/test@blank";
       };
     };
   };

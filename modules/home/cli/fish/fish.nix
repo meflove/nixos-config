@@ -176,7 +176,7 @@ in {
           __magic-enter
 
           if test -z "$DISPLAY" && test "$XDG_VTNR" = 1
-            exec ${config.wayland.windowManager.hyprland.package}/bin/start-hyprland
+            exec ${lib.getExe' config.programs.niri.package "niri-session"} -l
           end
         '';
       };

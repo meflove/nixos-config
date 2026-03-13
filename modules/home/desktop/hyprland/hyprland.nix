@@ -59,7 +59,6 @@ in {
     home = {
       packages = with pkgs; [
         libnotify
-        swww
         hyprpolkitagent
       ];
 
@@ -98,14 +97,13 @@ in {
         settings
         // {
           exec-once = [
+            "systemctl --user start hyprland-session.target"
             "systemctl --user start hyprpolkitagent"
-            "dms run &"
-            "${lib.getExe pkgs.clipse} -listen"
-            "${lib.getExe pkgs.easyeffects} --gapplication-service &"
+            "${lib.getExe pkgs.swww} img ${../../../../pics/lock_screen.png}"
 
-            "[workspace 1 silent] AyuGram"
-            "[workspace 2 silent] zen"
-            "[workspace special silent] soundcloud-desktop"
+            "[workspace 1 silent] ${lib.getExe inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.default}"
+            "[workspace 2 silent] ${lib.getExe config.programs.zen-browser.package}"
+            "[workspace special silent] ${lib.getExe inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.soundcloud-desktop}"
           ];
 
           bind = binds;
@@ -117,6 +115,17 @@ in {
           windowrule = rules.windowRules;
           layerrule = rules.layerRules;
         };
+    };
+
+    xdg = {
+      portal = {
+        enable = true;
+        extraPortals = with pkgs; [
+          xdg-desktop-portal-gtk
+          xdg-desktop-portal-wlr
+          xdg-desktop-portal-gnome
+        ];
+      };
     };
   };
 }

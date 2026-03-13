@@ -1,0 +1,113 @@
+{
+  "placements": {
+    "widget-overflow-fixed-list": [],
+    "unified-extensions-area": [
+      "_testpilot-containers-browser-action",
+      "_74145f27-f039-47ce-a470-a662b129930a_-browser-action",
+      "_c2c003ee-bd69-42a2-b0e9-6f34222cb046_-browser-action",
+      "canvasblocker_kkapsner_de-browser-action",
+      "_canvas-shadow-browser-action",
+      "_9a41dee2-b924-4161-a971-7fb35c053a4a_-browser-action",
+      "_762f9885-5a13-4abd-9c77-433dcd38b8fd_-browser-action",
+      "enhancerforyoutube_maximerf_addons_mozilla_org-browser-action",
+      "_036a55b4-5e72-4d05-a06c-cba2dfcc134a_-browser-action",
+      "_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action",
+      "admin_csgo_com-browser-action",
+      "videochat_extension_addons_mozilla_org_id-browser-action",
+      "user-agent-switcher_ninetailed_ninja-browser-action",
+      "_2e5ff8c8-32fe-46d0-9fc8-6b8986621f3c_-browser-action",
+      "_aecec67f-0d10-4fa7-b7c7-609a2db280cf_-browser-action",
+      "addon_vknext_net-browser-action",
+      "_29f42579-9618-4dc7-8647-eaad7cd3343e_-browser-action"
+    ],
+    "nav-bar": [
+      "customizableui-special-spring1",
+      "customizableui-special-spring8",
+      "customizableui-special-spring7",
+      "customizableui-special-spring6",
+      "customizableui-special-spring5",
+      "customizableui-special-spring4",
+      "vertical-spacer",
+      "back-button",
+      "forward-button",
+      "urlbar-container",
+      "stop-reload-button",
+      "customizableui-special-spring2",
+      "customizableui-special-spring11",
+      "customizableui-special-spring10",
+      "customizableui-special-spring12",
+      "customizableui-special-spring9",
+      "unified-extensions-button",
+      "_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action",
+      "addon_darkreader_org-browser-action",
+      "ublock0_raymondhill_net-browser-action",
+      "_3c6bf0cc-3ae2-42fb-9993-0d33104fdcaf_-browser-action",
+      "_91aa3897-2634-4a8a-9092-279db23a7689_-browser-action",
+      "jid0-ofxt2goakyukfl7yp42kq_jetpack-browser-action",
+      "_d7742d87-e61d-4b78-b8a1-b469842139fa_-browser-action",
+      "_b216c277-278a-4651-8448-d34382845efb_-browser-action",
+      "sponsorblocker_ajay_app-browser-action"
+    ],
+    "toolbar-menubar": [
+      "menubar-items"
+    ],
+    "TabsToolbar": [
+      "tabbrowser-tabs"
+    ],
+    "vertical-tabs": [],
+    "PersonalToolbar": [
+      "import-button",
+      "personal-bookmarks"
+    ],
+    "zen-sidebar-top-buttons": [
+      "preferences-button"
+    ],
+    "zen-sidebar-foot-buttons": [
+      "downloads-button",
+      "zen-workspaces-button",
+      "zen-create-new-button"
+    ]
+  },
+  "seen": [
+    "developer-button",
+    "screenshot-button",
+    "_c2c003ee-bd69-42a2-b0e9-6f34222cb046_-browser-action",
+    "_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action",
+    "canvasblocker_kkapsner_de-browser-action",
+    "_canvas-shadow-browser-action",
+    "addon_darkreader_org-browser-action",
+    "_74145f27-f039-47ce-a470-a662b129930a_-browser-action",
+    "_9a41dee2-b924-4161-a971-7fb35c053a4a_-browser-action",
+    "sponsorblocker_ajay_app-browser-action",
+    "_762f9885-5a13-4abd-9c77-433dcd38b8fd_-browser-action",
+    "enhancerforyoutube_maximerf_addons_mozilla_org-browser-action",
+    "_testpilot-containers-browser-action",
+    "_036a55b4-5e72-4d05-a06c-cba2dfcc134a_-browser-action",
+    "_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action",
+    "admin_csgo_com-browser-action",
+    "ublock0_raymondhill_net-browser-action",
+    "videochat_extension_addons_mozilla_org_id-browser-action",
+    "_b216c277-278a-4651-8448-d34382845efb_-browser-action",
+    "_3c6bf0cc-3ae2-42fb-9993-0d33104fdcaf_-browser-action",
+    "user-agent-switcher_ninetailed_ninja-browser-action",
+    "_2e5ff8c8-32fe-46d0-9fc8-6b8986621f3c_-browser-action",
+    "_aecec67f-0d10-4fa7-b7c7-609a2db280cf_-browser-action",
+    "jid0-ofxt2goakyukfl7yp42kq_jetpack-browser-action",
+    "addon_vknext_net-browser-action",
+    "_91aa3897-2634-4a8a-9092-279db23a7689_-browser-action",
+    "_d7742d87-e61d-4b78-b8a1-b469842139fa_-browser-action",
+    "_29f42579-9618-4dc7-8647-eaad7cd3343e_-browser-action"
+  ],
+  "dirtyAreaCache": [
+    "nav-bar",
+    "vertical-tabs",
+    "zen-sidebar-foot-buttons",
+    "toolbar-menubar",
+    "TabsToolbar",
+    "PersonalToolbar",
+    "zen-sidebar-top-buttons",
+    "unified-extensions-area"
+  ],
+  "currentVersion": 23,
+  "newElementCount": 13
+}

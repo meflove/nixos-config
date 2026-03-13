@@ -125,6 +125,9 @@ in {
         "bgrt_disable"
         "nowatchdog"
         "ibt=off"
+        # Boot optimisations
+        "rd.udev.timeout=0" # Don't wait for USB devices
+        "8250.nr_uarts=0" # Disable serial ports (ttyS0-31)
       ];
     };
 

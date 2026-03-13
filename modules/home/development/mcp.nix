@@ -25,7 +25,6 @@ in {
       mcp = {
         context7_api_key = {};
         huggingface_api_key = {};
-        brightdata_api_key = {};
       };
     };
 
@@ -76,14 +75,6 @@ in {
         mcp-read-website-fast = {
           command = "${lib.getExe' pkgs.bun "bunx"}";
           args = ["-y" "@just-every/mcp-read-website-fast"];
-        };
-
-        BrightData = {
-          command = "${lib.getExe' pkgs.bun "bunx"}";
-          args = ["-y" "@brightdata/mcp"];
-          env = {
-            "API_TOKEN" = "\${BRIGHTDATA_API_KEY}";
-          };
         };
       };
     };

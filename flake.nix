@@ -1,10 +1,10 @@
 {
-  description = "Моя модульная конфигурация NixOS";
+  description = "My NixOS configuration managed with snowfall";
 
   inputs = {
     # Core
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
     chaotic.url = "github:lonerOrz/nyx-loner";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -14,14 +14,11 @@
       url = "github:meflove/lib";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    snowfall-flake = {
-      url = "github:snowfallorg/flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     devenv = {
       url = "github:cachix/devenv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
 
     # System & Boot
     disko = {
@@ -49,7 +46,6 @@
     ## Hyprland
     hyprland = {
       url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     hyprland-plugins = {
       url = "github:hyprwm/hyprland-plugins";
@@ -64,16 +60,16 @@
       url = "github:sodiboo/niri-flake";
     };
     ## DankMaterialShell
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
-    };
-    quickshell = {
-      url = "git+https://git.outfoxxed.me/quickshell/quickshell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # dms = {
+    #   url = "github:AvengeMedia/DankMaterialShell";
+    #   inputs = {
+    #     nixpkgs.follows = "nixpkgs";
+    #   };
+    # };
+    # quickshell = {
+    #   url = "git+https://git.outfoxxed.me/quickshell/quickshell";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
 
     # Home Manager & User Apps
     home-manager = {
@@ -94,6 +90,10 @@
         home-manager.follows = "home-manager";
       };
     };
+    firefox-addons = {
+      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     ayugram-desktop = {
       url = "https://github.com/ndfined-crp/ayugram-desktop/";
       type = "git";
@@ -104,10 +104,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
-      url = "github:kaylorben/nixcord";
+      url = "github:kaylorben/nixcord/5f38b1630b5af54ea7bad2a2308298fe10648a36";
     };
-    solaar = {
-      url = "github:Svenum/Solaar-Flake/main";
+    jonhermansen-nur-packages = {
+      url = "github:jonhermansen/nur-packages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ## TUI
@@ -120,6 +120,9 @@
     };
     angeldust-nixCats = {
       url = "github:meflove/angeldust-nixCats";
+    };
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
     };
     claude-code = {
       url = "github:sadjow/claude-code-nix";
@@ -172,9 +175,10 @@
 
       overlays = with inputs; [
         lix-module.overlays.default
-        snowfall-flake.overlays.default
         niri.overlays.niri
         claude-code.overlays.default
+        hyprland.overlays.default
+        llm-agents.overlays.default
       ];
 
       src = builtins.path {
@@ -203,11 +207,11 @@
             disko.nixosModules.disko
             lanzaboote.nixosModules.lanzaboote
             home-manager.nixosModules.home-manager
+            hyprland.nixosModules.default
             nnf.nixosModules.default
             nixos-hardware.nixosModules.common-cpu-intel-cpu-only
             chaotic.nixosModules.default
             nix-flatpak.nixosModules.nix-flatpak
-            solaar.nixosModules.default
             nix-index-database.nixosModules.nix-index
             sops-nix.nixosModules.sops
             zapret-presets.nixosModules.presets
