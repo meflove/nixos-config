@@ -12,13 +12,14 @@
   libappindicator-gtk3,
   glib,
   gst_all_1,
+  alsa-lib,
 }: let
   pname = "soundcloud-desktop";
-  version = "5.3.1";
+  version = "5.13.0";
 
   src = fetchurl {
     url = "https://github.com/zxcloli666/SoundCloud-Desktop/releases/download/${version}/soundcloud-desktop_${version}_amd64.deb";
-    hash = "sha256-xQIWP8e3IXu+y5rU/MhXNtAPY/57dquEblkos+eK5vU=";
+    hash = "sha256-KpzEqwF0om5QlHCkMLy9fUZbIzPup7zvM+EMYcxBGpI=";
   };
 in
   stdenv.mkDerivation {
@@ -40,6 +41,7 @@ in
       gst_all_1.gst-plugins-bad
       gst_all_1.gst-plugins-base
       gst_all_1.gstreamer
+      alsa-lib
     ];
 
     unpackPhase = ''

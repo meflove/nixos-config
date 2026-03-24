@@ -5,20 +5,35 @@
     # Core
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    import-tree.url = "github:vic/import-tree";
     flake-utils.url = "github:numtide/flake-utils";
     chaotic.url = "github:lonerOrz/nyx-loner";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
     nix-gaming.url = "github:fufexan/nix-gaming";
-    meflove-lib = {
-      url = "github:meflove/lib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
+    ## devenv deps
     devenv = {
       url = "github:cachix/devenv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
+    devenv-root = {
+      url = "file+file:///dev/null";
+      flake = false;
+    };
+    mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    statix = {
+      url = "github:molybdenumsoftware/statix";
+    };
+    nix2container = {
+      url = "github:nlewo/nix2container";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # System & Boot
     disko = {
@@ -59,17 +74,6 @@
     niri = {
       url = "github:sodiboo/niri-flake";
     };
-    ## DankMaterialShell
-    # dms = {
-    #   url = "github:AvengeMedia/DankMaterialShell";
-    #   inputs = {
-    #     nixpkgs.follows = "nixpkgs";
-    #   };
-    # };
-    # quickshell = {
-    #   url = "git+https://git.outfoxxed.me/quickshell/quickshell";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
 
     # Home Manager & User Apps
     home-manager = {
@@ -78,6 +82,17 @@
     };
     ## Utils
     nix-colors.url = "github:misterio77/nix-colors";
+    stylix = {
+      url = "github:nix-community/stylix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
+    color-schemes = {
+      url = "github:tinted-theming/schemes";
+      flake = false;
+    };
     nix-cursors = {
       url = "github:LilleAila/nix-cursors";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -95,7 +110,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ayugram-desktop = {
-      url = "https://github.com/ndfined-crp/ayugram-desktop/";
+      url = "https://github.com/ndfined-crp/ayugram-desktop";
       type = "git";
       submodules = true;
     };
@@ -169,76 +184,5 @@
     };
   };
 
-  outputs = inputs:
-    inputs.meflove-lib.mkFlake {
-      inherit inputs;
-
-      overlays = with inputs; [
-        lix-module.overlays.default
-        niri.overlays.niri
-        claude-code.overlays.default
-        hyprland.overlays.default
-        llm-agents.overlays.default
-      ];
-
-      src = builtins.path {
-        path = ./.;
-        name = "source";
-      };
-      supportedSystems = ["x86_64-linux"];
-
-      snowfall = {
-        root = ./.;
-        namespace = "angl";
-
-        meta = {
-          name = "nixos-config";
-          title = "angeldust`s NixOS Configuration";
-        };
-      };
-
-      channels-config = {
-        allowUnfree = true;
-      };
-
-      systems.hosts = {
-        nixos-pc = {
-          modules = with inputs; [
-            disko.nixosModules.disko
-            lanzaboote.nixosModules.lanzaboote
-            home-manager.nixosModules.home-manager
-            hyprland.nixosModules.default
-            nnf.nixosModules.default
-            nixos-hardware.nixosModules.common-cpu-intel-cpu-only
-            chaotic.nixosModules.default
-            nix-flatpak.nixosModules.nix-flatpak
-            nix-index-database.nixosModules.nix-index
-            sops-nix.nixosModules.sops
-            zapret-presets.nixosModules.presets
-          ];
-        };
-      };
-
-      homes.users = {
-        "angeldust@nixos-pc" = {
-          modules = with inputs; [
-            zen-browser.homeModules.default
-            otter-launcher.homeModules.default
-            hyprland.homeManagerModules.default
-            niri.homeModules.niri
-            nixcord.homeModules.nixcord
-            nix-colors.homeManagerModules.default
-            chaotic.homeManagerModules.default
-            nix-index-database.homeModules.nix-index
-            sops-nix.homeManagerModules.sops
-          ];
-        };
-      };
-
-      outputs-builder = channels: {
-        # Outputs in the outputs builder are transformed to support each system. This
-        # entry will be turned into multiple different outputs like `formatter.x86_64-linux.*`.
-        formatter = channels.nixpkgs.alejandra;
-      };
-    };
+  outputs = args: import ./lib args;
 }
