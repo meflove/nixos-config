@@ -10,12 +10,7 @@
       hostPlatform = "x86_64-linux";
       stateVersion = "26.05";
       hostId = "78172da6";
-      flakeDir = "/home/${userName}/.config/nixox-config";
-
-      stylix = {
-        theme = "paradise";
-        image = ../../pics/lock_screen.png;
-      };
+      flakeDir = "/home/${userName}/.config/nixos-config";
 
       extraModules = with config.nixosModules; [
         # Boot modules
@@ -78,6 +73,7 @@
         direnv
         editor
         git
+        jj
         podman
         virt-manager
         database

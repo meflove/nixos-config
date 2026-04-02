@@ -2,6 +2,7 @@
   flake = _: {
     nixosModules.${baseNameOf ./.} = _: {
       networking = {
+        firewall.checkReversePath = true;
         nftables = {
           enable = true;
 

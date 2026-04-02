@@ -1,7 +1,7 @@
 [general]
 default_module = "gg" # The module to run when no prefix is matched
 empty_module = "app"  # run with an empty prompt
-exec_cmd = "sh -c"    # The exec command of your shell, default to sh
+exec_cmd = "/usr/bin/env bash -c"    # The exec command of your shell, default to sh
 # for example: "bach -c" for bash; "zsh -c" for zsh. This can also runs wm exec commands, like hyprctl dispatch exec
 vi_mode = false                      # set true to use vi keybinds, false to use emacs keybinds; default to emacs
 esc_to_abort = true                  # allow to quit with esc keypress; a useful option for vi users
@@ -77,7 +77,7 @@ url_encode = true                                                           # "u
 [[modules]]
 description = "launch program in a new terminal"
 prefix = "sh"
-cmd = "hyprctl dispatch exec 'ghostty -e {}'"
+cmd = "hyprctl dispatch exec 'ghostty -e {}' || niri msg action spawn-sh -- 'ghostty -e {}'"
 with_argument = true
 
 

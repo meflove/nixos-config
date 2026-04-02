@@ -7,7 +7,7 @@
       inputs,
       ...
     }: let
-      settings = import ./settings.nix {inherit pkgs;};
+      settings = import ./settings.nix {inherit config;};
       rules = import ./rules.nix;
       binds = import ./binds.nix {inherit config lib pkgs inputs;};
     in {

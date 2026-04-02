@@ -11,7 +11,6 @@ let
 
   nxosModules = with inputs; [
     disko.nixosModules.disko
-    lix-module.nixosModules.default
     lanzaboote.nixosModules.lanzaboote
     home-manager.nixosModules.home-manager
     hyprland.nixosModules.default
@@ -23,6 +22,7 @@ let
     sops-nix.nixosModules.sops
     zapret-presets.nixosModules.presets
     stylix.nixosModules.default
+    determinate.nixosModules.default
   ];
 
   homeModules = with inputs; [
@@ -31,22 +31,10 @@ let
     hyprland.homeManagerModules.default
     niri.homeModules.niri
     nixcord.homeModules.nixcord
-    nix-colors.homeManagerModules.default
     chaotic.homeManagerModules.default
     nix-index-database.homeModules.nix-index
     sops-nix.homeManagerModules.sops
   ];
-
-  overlays = import ./overlays.nix {
-    inherit inputs nixConfig;
-  };
-
-  nixConfig = {
-    allowBroken = true;
-    allowInsecure = true;
-    allowUnfree = true;
-    cudaSupport = true;
-  };
 in
   # WARN:
   # touch here only in cases
@@ -58,27 +46,27 @@ in
       stateVersion ? "25.05",
       hostId ? throw "Set 'hostId'",
       extraModules ? [],
-      secretsFile ? {},
       flakeDir ? "/etc/nixos",
-      stylix ? {
-        theme = "${inputs.color-schemes}/base16/catppuccin-macchiato.yaml";
-        image = ../pics/lock_screen.png;
-      },
     }: let
       specialArgs = {
-        inherit
-          self
-          inputs
-          ;
+        inherit self inputs;
       };
 
       pkgs = import inputs.nixpkgs {
         system = hostPlatform;
-        config = nixConfig;
-        inherit
-          hostPlatform
-          overlays
-          ;
+        config = {
+          allowBroken = true;
+          allowInsecure = true;
+          allowUnfree = true;
+          cudaSupport = true;
+        };
+        overlays = with inputs; [
+          niri.overlays.niri
+          claude-code.overlays.default
+          hyprland.overlays.default
+
+          self.overlays.default
+        ];
       };
 
       # INFO:
@@ -87,28 +75,12 @@ in
       lib = nxosLib.extend (
         _final: _prev:
           {
-            inherit
-              (homeLib)
-              hm
-              ;
+            inherit (homeLib) hm;
 
-            inherit
-              configurationName
-              hostName
-              userName
-              hostPlatform
-              secretsFile
-              flakeDir
-              stylix
-              hostId
-              ;
+            inherit configurationName hostName userName hostPlatform flakeDir hostId;
           }
           // (import ./functions.nix {
-            inherit
-              inputs
-              pkgs
-              lib
-              ;
+            inherit inputs pkgs lib;
           })
       );
     in
@@ -116,11 +88,7 @@ in
       # main system builder
       {
         ${configurationName} = nxosLib.nixosSystem {
-          inherit
-            pkgs
-            lib
-            specialArgs
-            ;
+          inherit pkgs lib specialArgs;
 
           modules =
             nxosModules
@@ -192,11 +160,7 @@ in
 
                     environment.systemPackages = [sops-update-keys pkgs.sops];
 
-                    nixpkgs = {
-                      inherit
-                        hostPlatform
-                        ;
-                    };
+                    nixpkgs = {inherit hostPlatform;};
 
                     system = {inherit stateVersion;};
                   };
@@ -208,8 +172,5 @@ in
         };
       };
 
-    inherit
-      nxosLib
-      homeLib
-      ;
+    inherit nxosLib homeLib;
   }

@@ -4,13 +4,12 @@
       pkgs,
       lib,
       config,
-      inputs,
       ...
     }: {
       users.users.${lib.userName}.shell = config.programs.fish.package;
       programs.fish = {
         enable = true;
-        package = pkgs.fish;
+        package = pkgs.master.fish;
       };
 
       hm = {
@@ -38,8 +37,9 @@
 
               # Zellij
               set -x ZELLIJ_CONFIG_DIR "$HOME/.config/zellij"
+              set -x ZELLIJ_AUTO_ATTACH true
+
               if test "$TERM" = "xterm-ghostty"
-                  set ZELLIJ_AUTO_ATTACH true
                   eval (${lib.getExe config.hm.programs.zellij.package} setup --generate-auto-start fish | string collect)
 
                   ${lib.getExe config.hm.programs.fastfetch.package}
@@ -116,14 +116,12 @@
               fml = "poweroff";
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-              n = lib.getExe inputs.angeldust-nixCats.packages.${lib.hostPlatform}.default;
+              n = lib.getExe pkgs.nixCats;
               py = "python";
               dif = lib.getExe config.hm.programs.delta.package;
               ssh = lib.getExe pkgs.ggh;
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Git и инструменты ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-              g = lib.getExe config.hm.programs.git.package;
-              gitignore = "${lib.getExe pkgs.curlFull} -sL https://www.gitignore.io/api/$argv";
               icat = "${lib.getExe' pkgs.kitty "kitten"} icat";
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Сеть и интернет ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
@@ -136,7 +134,7 @@
               c = "clear && ${lib.getExe config.hm.programs.fastfetch.package}";
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Sudo и безопасность ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-              visudo = "EDITOR=${lib.getExe inputs.angeldust-nixCats.packages.${lib.hostPlatform}.default} command sudo visudo";
+              visudo = "EDITOR=${lib.getExe pkgs.nixCats} command sudo visudo";
               se = "sudoedit";
             };
 
@@ -145,6 +143,8 @@
               rm = "rm -rf";
               cp = "cp -r";
               bd = lib.getExe pkgs.blobdrop;
+              g = "git";
+              j = "jj";
               "--help" = {
                 position = "anywhere";
                 expansion = "--help | ${lib.getExe config.hm.programs.bat.package} -plhelp";
@@ -152,24 +152,10 @@
             };
 
             # Функции
-            functions =
-              (import ./magic-enter.nix {inherit config lib;})
-              // {
-                sudo = {
-                  body = ''
-                    if functions -q -- $argv[1]
-                        set -l new_args (string join ' ' -- (string escape -- $argv))
-                        set argv fish -c "$new_args"
-                    end
-
-                    command sudo $argv
-                  '';
-                };
-              };
+            functions = import ./magic-enter.nix {inherit config lib;};
 
             # Код, который выполняется при запуске оболочки
             shellInit = ''
-              source ${./catppuccin-machiato.fish}
               ${lib.getExe pkgs.any-nix-shell} fish --info-right | source
               __magic-enter
 
@@ -184,23 +170,6 @@
         home = {
           packages = with pkgs; [
             grc # Generic Colouriser for command output
-          ];
-
-          sessionVariables = {
-            SUDO_PROMPT = "$(tput setaf 1 bold)Password:$(tput sgr0) ";
-            LIBVIRT_DEFAULT_URI = "qemu:///system";
-            RIP_GRAVEYARD = "~/.local/share/Trash";
-            no_proxy = "127.0.0.1";
-            SPACEFISH_USER_SHOW = "always";
-            GDK_BACKEND = "wayland";
-            npm_config_prefix = "$HOME/.local";
-          };
-
-          # Пути
-          sessionPath = [
-            "/home/angeldust/.cargo/bin"
-            "$HOME/.ZAP_D/webdriver/linux/64"
-            "/home/angeldust/.local/bin"
           ];
         };
       };

@@ -8,6 +8,7 @@
         nmap
         httpie
         xh
+        mtr
       ];
     };
   };

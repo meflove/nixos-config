@@ -5,7 +5,6 @@
 }: {
   mainBar = let
     mkIcon = col: icon: "<span color='${col}'>${icon}</span>";
-    color = import ./colors.nix;
 
     ico = import ./icons.nix {};
   in
@@ -66,12 +65,12 @@
             headphone = [""];
             headset = [""];
             bluetooth = "";
-            bluetooth-muted = mkIcon color.base04 "󰂲";
+            bluetooth-muted = mkIcon config.lib.stylix.colors.withHashtag.base04 "󰂲";
           };
-          format-muted = "{format_source} / ${mkIcon color.base04 " "}";
+          format-muted = "{format_source} / ${mkIcon config.lib.stylix.colors.withHashtag.base04 " "}";
 
           format-source = "󰍬";
-          format-source-muted = mkIcon color.base04 "󰍭";
+          format-source-muted = mkIcon config.lib.stylix.colors.withHashtag.base04 "󰍭";
 
           scroll-step = 5;
           max-volume = 100;

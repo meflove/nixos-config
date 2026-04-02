@@ -6,6 +6,9 @@
 
         tunMode.enable = true;
       };
+      environment.sessionVariables = {
+        no_proxy = "127.0.0.1";
+      };
     };
   };
 }

@@ -8,30 +8,30 @@
       ...
     }: {
       environment = {
-        etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text = ''
+        etc."nvidia/nvidia-application-profiles-rc.d/50-limit-free-buffer-pool-in-wayland-compositors.json".text =
+          lib.toJSON
           {
-            "rules": [
+            rules = [
               {
-                "pattern": {
-                  "feature": "procname",
-                  "matches": "niri"
-                },
-                "profile": "Limit Free Buffer Pool On Wayland Compositors"
+                pattern = {
+                  feature = "procname";
+                  matches = "niri";
+                };
+                profile = "Limit Free Buffer Pool On Wayland Compositors";
               }
-            ],
-            "profiles": [
+            ];
+            profiles = [
               {
-                "name": "Limit Free Buffer Pool On Wayland Compositors",
-                "settings": [
+                name = "Limit Free Buffer Pool On Wayland Compositors";
+                settings = [
                   {
-                    "key": "GLVidHeapReuseRatio",
-                    "value": 0
+                    key = "GLVidHeapReuseRatio";
+                    value = 0;
                   }
-                ]
+                ];
               }
-            ]
-          }
-        '';
+            ];
+          };
 
         systemPackages = with pkgs; [xdg-utils];
       };
@@ -56,6 +56,7 @@
             WLR_NO_HARDWARE_CURSORS = "1";
 
             XDG_SESSION_TYPE = "wayland";
+            GDK_BACKEND = "wayland";
             WLR_RENDERER = "vulkan";
             ELECTRON_OZONE_PLATFORM_HINT = "wayland";
             NIXOS_OZONE_WL = "1";
@@ -94,7 +95,7 @@
             ExecStart = lib.concatStringsSep " " [
               (lib.getExe pkgs.swww)
               "img"
-              lib.stylix.image
+              config.stylix.image
             ];
 
             Type = "simple";

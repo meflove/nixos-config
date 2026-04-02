@@ -9,7 +9,8 @@
     }: {
       environment.systemPackages = with pkgs; [
         # Essential CLI tools for system administration
-        coreutils
+        uutils-coreutils-noprefix
+        uutils-util-linux
         file
         killall
         rsync
@@ -26,7 +27,6 @@
         # Nix related tools
         comma
         nix-output-monitor
-        inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager
       ];
 
       services = {
@@ -42,7 +42,7 @@
           enable = true;
           package = inputs.nh.packages.${lib.hostPlatform}.default;
 
-          flake = "/home/angeldust/.config/nixos-config"; # sets NH_OS_FLAKE variable for you
+          flake = lib.flakeDir; # sets NH_OS_FLAKE variable for you
 
           clean = {
             enable = true;

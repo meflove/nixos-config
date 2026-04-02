@@ -86,12 +86,10 @@ in
     "${shift}+Print".action = msg "screenshot-screen -p false";
     "${alt}+Print".action = msg "screenshot-window -p false";
 
-    "Ctrl+${super}+T".action.spawn = [
-      "sh"
-      "-c"
-      "${lib.getExe pkgs.grim} -g \"${lib.getExe pkgs.slurp}\" \"tmp.png\" && ${lib.getExe pkgs.tesseract} -l eng \"tmp.png\" - | wl-copy && rm \"tmp.png\""
-    ];
-    "${super}+Shift+C".action.spawn = ["${lib.getExe pkgs.hyprpicker}" "-ar"];
+    "${super}+Ctrl+T".action =
+      spawn-sh
+      ''${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp} $SLURP_ARGS)" "tmp.png" && ${lib.getExe pkgs.tesseract} -l "rus+eng" "tmp.png" - | wl-copy && rm "tmp.png"'';
+    "${super}+Ctrl+C".action.spawn = ["${lib.getExe pkgs.hyprpicker}" "-ar"];
 
     # ====================
     # Window management
@@ -136,16 +134,6 @@ in
     # ====================
     # Workspace navigation
     # ====================
-    # "${super}+1".action.focus-workspace = "telegram";
-    # "${super}+2".action.focus-workspace = "browser";
-    # "${super}+3".action.focus-workspace = "cli";
-    # "${super}+4".action.focus-workspace = "games";
-    #
-    # "${super}+Alt+1".action.move-column-to-workspace = "telegram";
-    # "${super}+Alt+2".action.move-column-to-workspace = "browser";
-    # "${super}+Alt+3".action.move-column-to-workspace = "cli";
-    # "${super}+Alt+4".action.move-column-to-workspace = "games";
-
     # Workspace scroll
     "${super}+WheelScrollDown" = {
       cooldown-ms = 150;
@@ -159,12 +147,12 @@ in
     # ====================
     # Workspace management
     # ====================
-    "Ctrl+${super}+Shift+Right".action.move-window-to-workspace = "+1";
-    "Ctrl+${super}+Shift+Left".action.move-window-to-workspace = "-1";
-    "Ctrl+${super}+BracketLeft".action.focus-workspace = "-1";
-    "Ctrl+${super}+BracketRight".action.focus-workspace = "+1";
-    "Ctrl+${super}+Up".action.focus-workspace = "-5";
-    "Ctrl+${super}+Down".action.focus-workspace = "+5";
+    "${super}+Ctrl+Shift+Right".action.move-window-to-workspace = "+1";
+    "${super}+Ctrl+Shift+Left".action.move-window-to-workspace = "-1";
+    "${super}+Ctrl+BracketLeft".action.focus-workspace = "-1";
+    "${super}+Ctrl+BracketRight".action.focus-workspace = "+1";
+    "${super}+Ctrl+Up".action.focus-workspace = "-5";
+    "${super}+Ctrl+Down".action.focus-workspace = "+5";
 
     "Alt+Tab".action.focus-window-previous = {};
 
@@ -172,9 +160,10 @@ in
     # Apps
     # ====================
     "${super}+W".action.spawn = lib.getExe config.hm.programs.zen-browser.package;
-    "Ctrl+${super}+V".action.spawn = lib.getExe pkgs.pwvucontrol;
+    "${super}+Ctrl+V".action.spawn = lib.getExe pkgs.pwvucontrol;
+    "${super}+Shift+M".action.spawn = lib.getExe inputs.self.packages.${lib.hostPlatform}.soundcloud-desktop;
     "${super}+Shift+T".action.spawn = lib.getExe inputs.ayugram-desktop.packages.${lib.hostPlatform}.default;
-    "${super}+Shift+D".action.spawn = ["Discord"];
+    "${super}+Shift+D".action.spawn = ["equibop"];
 
     # ====================
     # Media keys

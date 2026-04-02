@@ -6,13 +6,16 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
     import-tree.url = "github:vic/import-tree";
-    flake-utils.url = "github:numtide/flake-utils";
-    chaotic.url = "github:lonerOrz/nyx-loner";
+    chaotic = {
+      url = "github:lonerOrz/nyx-loner";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-flatpak.url = "github:gmodena/nix-flatpak/";
     nix-gaming.url = "github:fufexan/nix-gaming";
-    nixpkgs-patcher.url = "github:gepbird/nixpkgs-patcher";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     ## devenv deps
     devenv = {
       url = "github:cachix/devenv";
@@ -32,6 +35,11 @@
     };
     nix2container = {
       url = "github:nlewo/nix2container";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ## bun2nix
+    bun2nix = {
+      url = "github:nix-community/bun2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -62,10 +70,6 @@
     hyprland = {
       url = "github:hyprwm/Hyprland";
     };
-    hyprland-plugins = {
-      url = "github:hyprwm/hyprland-plugins";
-      inputs.hyprland.follows = "hyprland";
-    };
     hyprpanel = {
       url = "github:Jas-SinghFSU/HyprPanel";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -81,17 +85,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ## Utils
-    nix-colors.url = "github:misterio77/nix-colors";
     stylix = {
       url = "github:nix-community/stylix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
       };
-    };
-    color-schemes = {
-      url = "github:tinted-theming/schemes";
-      flake = false;
     };
     nix-cursors = {
       url = "github:LilleAila/nix-cursors";
@@ -136,9 +135,6 @@
     angeldust-nixCats = {
       url = "github:meflove/angeldust-nixCats";
     };
-    llm-agents = {
-      url = "github:numtide/llm-agents.nix";
-    };
     claude-code = {
       url = "github:sadjow/claude-code-nix";
     };
@@ -165,18 +161,8 @@
     };
 
     # Services & Networking
-    lix = {
-      url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
-      flake = false;
-    };
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.lix.follows = "lix";
-    };
     nnf = {
       url = "github:thelegy/nixos-nftables-firewall";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     zapret-presets = {
       url = "github:kotudemo/zapret-presets";

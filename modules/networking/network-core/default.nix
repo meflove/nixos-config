@@ -69,7 +69,7 @@
               ];
             };
             iPhone-16-pro = {
-              # ssid = "найди меня если сможешь";
+              ssid = "kto_kto_rkn";
               pskRaw = "ext:psk_iphone_hotspot";
             };
           };

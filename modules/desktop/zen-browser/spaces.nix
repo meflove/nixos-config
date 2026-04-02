@@ -94,11 +94,11 @@ rec {
       editedTitle = true;
       position = 105;
     };
-    "amneziawg" = {
+    "amnezia" = {
       id = "131b372b-cb90-4e49-b66f-d1b00a45d3b1";
       workspace = spaces."Main".id;
       folderParentId = pins."Hostoff".id;
-      url = "https://angeldust.mooo.com/amnezia/";
+      url = "http://angeldust.mooo.com:51821/";
       position = 106;
     };
     "3xui" = {

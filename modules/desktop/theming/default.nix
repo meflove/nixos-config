@@ -12,47 +12,94 @@
         enableGhostscriptFonts = true;
         fontDir.enable = true;
 
-        packages = with pkgs.nerd-fonts; [jetbrains-mono lilex];
+        packages = lib.attrValues {
+          inherit (pkgs.nerd-fonts) lilex jetbrains-mono;
+        };
         fontconfig = {
           enable = true;
           defaultFonts = {
-            serif = ["JetBrainsMono NF SemiBold"];
-            sansSerif = ["JetBrainsMono NF SemiBold"];
-            monospace = ["JetBrainsMono NF SemiBold"];
+            serif = [config.stylix.fonts.monospace.name];
+            sansSerif = [config.stylix.fonts.monospace.name];
+            monospace = [config.stylix.fonts.monospace.name];
           };
         };
       };
+      stylix = {
+        enable = true;
+        autoEnable = false;
+
+        image = ../../../pics/catppuccin-colors.png;
+
+        # base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-storm.yaml";
+        base16Scheme = {
+          scheme = "Tokyo-Night-Storm-MD3e";
+          name = "TokyoNightStormMD3e";
+          base00 = "#24283b";
+          base01 = "#1f2335";
+          base02 = "#292e42";
+          base03 = "#565f89";
+          base04 = "#a9b1d6";
+          base05 = "#c0caf5";
+          base06 = "#cdd6f4";
+          base07 = "#d5d6db";
+          base08 = "#f7768e";
+          base09 = "#ff9e64";
+          base0A = "#e0af68";
+          base0B = "#9ece6a";
+          base0C = "#7dcfff";
+          base0D = "#7aa2f7";
+          base0E = "#bb9af7";
+          base0F = "#ff007c";
+        };
+        polarity = "dark";
+
+        fonts = {
+          monospace = {
+            package = pkgs.nerd-fonts.lilex;
+            name = "Lilex Nerd Font Mono";
+          };
+
+          serif = config.stylix.fonts.monospace;
+          sansSerif = config.stylix.fonts.monospace;
+          emoji = config.stylix.fonts.monospace;
+        };
+
+        cursor = {
+          name = "Bibata-Modern-Custom";
+          package = inputs.nix-cursors.packages.${lib.hostPlatform}.bibata-modern-cursor.override {
+            background_color = config.lib.stylix.colors.withHashtag.magenta;
+            outline_color = config.lib.stylix.colors.withHashtag.base00;
+            accent_color = config.lib.stylix.colors.withHashtag.base00;
+          };
+          size = 20;
+        };
+      };
       hm = {
+        stylix.targets = lib.genAttrs [
+          "ghostty"
+          "fish"
+        ] (_: {enable = true;});
+
         home = {
-          packages = with pkgs; [
-            gtk3
-            gtk4
-            base16-schemes
-          ];
+          packages = lib.attrValues {
+            inherit (pkgs) gtk3 gtk4;
+          };
 
           pointerCursor = {
             gtk.enable = true;
             hyprcursor.enable = true;
-
-            package = inputs.nix-cursors.packages.${lib.hostPlatform}.bibata-modern-cursor.override {
-              background_color = "#${config.hm.colorScheme.palette.base00}";
-              outline_color = "#${config.hm.colorScheme.palette.base06}";
-              accent_color = "#${config.hm.colorScheme.palette.base00}";
-            };
-            name = "Bibata-Modern-Custom";
-            size = 20;
+            dotIcons.enable = true;
+            x11.enable = true;
           };
         };
-
-        colorScheme = inputs.nix-colors.colorSchemes.tokyo-night-storm;
 
         fonts = {
           fontconfig = {
             enable = true;
             defaultFonts = {
-              serif = ["JetBrainsMono NF SemiBold"];
-              sansSerif = ["JetBrainsMono NF SemiBold"];
-              monospace = ["JetBrainsMono NF SemiBold"];
+              serif = [config.stylix.fonts.monospace.name];
+              sansSerif = [config.stylix.fonts.monospace.name];
+              monospace = [config.stylix.fonts.monospace.name];
             };
           };
         };

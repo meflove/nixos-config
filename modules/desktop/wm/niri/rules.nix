@@ -33,6 +33,27 @@ in
     (makeFloatingWindowRule "com.free.bluetui" 900 750)
   ]
   ++ [
+    {
+      open-on-workspace = "browser";
+      matches = [
+        {
+          app-id = "^zen-twilight$";
+        }
+      ];
+    }
+
+    {
+      open-on-workspace = "telegram";
+      matches = [
+        {
+          app-id = "^com.ayugram.desktop$";
+        }
+        {
+          app-id = "^soundcloud-desktop$";
+        }
+      ];
+    }
+
     # Blobdrop
     {
       open-floating = true;
@@ -81,7 +102,7 @@ in
         }
         {
           app-id = "ayugram";
-          title = "^Media";
+          title = "Media viewer";
         }
       ];
     }
@@ -102,10 +123,5 @@ in
           title = ''^notificationtoasts_\d+_desktop$'';
         }
       ];
-    }
-
-    {
-      open-maximized = false;
-      open-fullscreen = false;
     }
   ]

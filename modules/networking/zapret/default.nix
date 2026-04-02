@@ -10,42 +10,7 @@
       services.zapret = {
         enable = true;
         configureFirewall = lib.mkForce false;
-        # whitelist = [
-        #   # Dicord domains
-        #   "airhorn.solutions"
-        #   "airhornbot.com"
-        #   "bigbeans.solutions"
-        #   "dis.gd"
-        #   "discord-activities.com"
-        #   "discord-attachments-uploads-prd.storage.googleapis.com"
-        #   "discord.co"
-        #   "discord.com"
-        #   "discord.design"
-        #   "discord.dev"
-        #   "discord.gg"
-        #   "discord.gift"
-        #   "discord.gifts"
-        #   "discord.media"
-        #   "discord.new"
-        #   "discord.store"
-        #   "discord.tools"
-        #   "discordactivities.com"
-        #   "discordapp.com"
-        #   "discordapp.io"
-        #   "discordapp.net"
-        #   "discordcdn.com"
-        #   "discordmerch.com"
-        #   "discordpartygames.com"
-        #   "discordsays.com"
-        #   "discordstatus.com"
-        #   "hammerandchisel.ssl.zendesk.com"
-        #   "watchanimeattheoffice.com"
-        #
-        #   # Soundcloud domains
-        #   "sndcdn.com"
-        #   "soundcloud.cloud"
-        #   "soundcloud.com"
-        # ];
+
         sf_presets = {
           enable = true;
 

@@ -47,10 +47,10 @@
           memory.source = ./CLAUDE.md;
 
           commands = {
-            commit = ./commands/COMMIT.md;
             code_review = ./commands/CODE_REVIEW.md;
             full_review = ./commands/FULL_REVIEW.md;
           };
+          skillsDir = ./skills;
 
           mcpServers = config.hm.programs.mcp.servers;
 

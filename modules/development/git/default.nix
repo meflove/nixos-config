@@ -3,7 +3,6 @@
     nixosModules.${baseNameOf ./.} = {
       pkgs,
       lib,
-      inputs,
       ...
     }: {
       hm = {
@@ -29,7 +28,7 @@
               };
 
               core = {
-                editor = lib.getExe inputs.angeldust-nixCats.packages.${lib.hostPlatform}.default;
+                editor = lib.getExe pkgs.nixCats;
                 whitespace = "error";
                 preloadindex = true;
               };

@@ -11,8 +11,8 @@
       packages = with pkgs; [
         glow # for md files
         sops # secret management
-        git-lfs # git large file storage
-        inputs'.disko.packages.disko-install
+        bun
+        inputs'.bun2nix.packages.default
       ];
 
       enterShell = ''

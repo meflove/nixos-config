@@ -2,6 +2,11 @@
   flake = _: {
     nixosModules.${baseNameOf ./.} = _: {
       time.timeZone = "Asia/Barnaul";
+      services = {
+        ntpd-rs = {
+          enable = true;
+        };
+      };
 
       i18n = {
         extraLocales = [

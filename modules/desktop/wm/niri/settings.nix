@@ -4,9 +4,7 @@
   lib,
   config,
   ...
-}: let
-  colors = import ./colors.nix {inherit pkgs lib;};
-in {
+}: {
   screenshot-path = null;
 
   outputs = {
@@ -47,6 +45,11 @@ in {
       ;
   };
 
+  cursor = {
+    theme = config.stylix.cursor.name;
+    size = config.stylix.cursor.size;
+  };
+
   input = {
     keyboard = {
       xkb = {
@@ -63,18 +66,13 @@ in {
       accel-profile = "adaptive";
     };
 
-    trackpoint = {
-      scroll-method = "on-button-down";
-      accel-profile = "flat";
-    };
-
     power-key-handling.enable = false;
     focus-follows-mouse.enable = true;
     workspace-auto-back-and-forth = false;
   };
 
   layout = {
-    background-color = colors.base00;
+    background-color = config.lib.stylix.colors.withHashtag.base00;
 
     border = let
       mk = from: to: {
@@ -88,28 +86,15 @@ in {
       enable = true;
       width = 1;
 
-      active = mk colors.mauve colors.rosewater;
-      inactive.color = colors.base00;
+      active = mk config.lib.stylix.colors.withHashtag.magenta config.lib.stylix.colors.withHashtag.brown;
+      inactive.color = config.lib.stylix.colors.withHashtag.base00;
 
-      # urgent = mk colors.base08 colors.base09;
-      urgent = mk colors.mauve colors.rosewater;
+      # urgent = mk config.lib.stylix.colors.withHashtag.base08 config.lib.stylix.colors.withHashtag.base09;
+      urgent = mk config.lib.stylix.colors.withHashtag.magenta config.lib.stylix.colors.withHashtag.brown;
     };
-    # // (
-    #   if false
-    #   then {
-    #     active = mk colors.base0B colors.base0A;
-    #     inactive.color = colors.base00;
-    #     urgent = mk colors.base08 colors.base09;
-    #   }
-    #   else {
-    #     active.color = colors.mauve;
-    #     inactive.color = "#595959aa";
-    #     urgent.color = colors.base08;
-    #   }
-    # );
 
     insert-hint = {
-      display.color = colors.base01 + "CC";
+      display.color = config.lib.stylix.colors.withHashtag.base01 + "CC";
     };
 
     gaps = 10;
@@ -125,8 +110,8 @@ in {
       enable = true;
       softness = 30;
       draw-behind-window = true;
-      color = colors.base00 + "70";
-      inactive-color = colors.base00 + "70";
+      color = config.lib.stylix.colors.withHashtag.base00 + "70";
+      inactive-color = config.lib.stylix.colors.withHashtag.base00 + "70";
     };
 
     default-column-width = {
@@ -219,11 +204,11 @@ in {
 
   overview = {
     zoom = 0.95;
-    backdrop-color = colors.base00;
+    backdrop-color = config.lib.stylix.colors.withHashtag.base00;
     workspace-shadow = {
       softness = 20;
       spread = 14;
-      color = colors.base00;
+      color = config.lib.stylix.colors.withHashtag.base00;
     };
   };
 
@@ -233,8 +218,7 @@ in {
   prefer-no-csd = true;
 
   environment = {
-    DISPLAY = ":0";
-    SLURP_ARGS = "-b ${colors.base00}CC -c ${colors.base0F}FF -B ${colors.base02}CC";
+    SLURP_ARGS = "-b ${config.lib.stylix.colors.withHashtag.base00}CC -c ${config.lib.stylix.colors.withHashtag.base0F}FF -B ${config.lib.stylix.colors.withHashtag.base02}CC";
   };
 
   debug.deactivate-unfocused-windows = false;
@@ -249,6 +233,21 @@ in {
         "WAYLAND_DISPLAY"
         "XDG_CURRENT_DESKTOP"
         "NIRI_SOCKET"
+      ];
+    }
+    {
+      argv = [
+        (lib.getExe config.hm.programs.zen-browser.package)
+      ];
+    }
+    {
+      argv = [
+        (lib.getExe inputs.self.packages.${lib.hostPlatform}.soundcloud-desktop)
+      ];
+    }
+    {
+      argv = [
+        (lib.getExe inputs.ayugram-desktop.packages.${lib.hostPlatform}.default)
       ];
     }
   ];

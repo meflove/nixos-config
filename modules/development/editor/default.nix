@@ -3,18 +3,40 @@
     nixosModules.${baseNameOf ./.} = {
       inputs,
       lib,
+      pkgs,
+      config,
       ...
-    }: let
-      nixCats = inputs.angeldust-nixCats.packages.${lib.hostPlatform}.default;
-    in {
+    }: {
+      nixpkgs.overlays = [
+        (_final: prev: {
+          nixCats = prev.symlinkJoin {
+            name = "nixCats-wrapped";
+            meta.mainProgram = "nixCats";
+            paths = [inputs.angeldust-nixCats.packages.${lib.hostPlatform}.default];
+            buildInputs = [prev.makeWrapper];
+            postBuild = ''
+              wrapProgram $out/bin/nixCats \
+                --run 'export GITHUB_COPILOT_TOKEN=$(cat ${config.hm.sops.secrets."ai/copilot_oauth".path})'
+            '';
+          };
+        })
+      ];
       hm = {
+        sops = {
+          secrets = lib.flattenSecrets {
+            ai = {
+              copilot_oauth = {};
+            };
+          };
+        };
+
         home = {
           packages = [
-            nixCats
+            pkgs.nixCats
           ];
 
           sessionVariables = {
-            EDITOR = lib.getExe nixCats;
+            EDITOR = lib.getExe pkgs.nixCats;
             NVIM_APPNAME = "nvim-og";
           };
         };

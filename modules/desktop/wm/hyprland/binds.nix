@@ -7,7 +7,7 @@
 }: let
   super = "Super";
   term = lib.getExe config.programs.ghostty.package;
-  editor = lib.getExe inputs.angeldust-nixCats.packages.${pkgs.stdenv.hostPlatform.system}.default;
+  editor = lib.getExe pkgs.nixCats;
 in
   [
     # Essentials
@@ -19,7 +19,7 @@ in
     ''${super}, V, exec, ${term} --class="com.free.clipse" --title="clipse" -e ${lib.getExe config.services.clipse.package}''
     "${super}, Period, exec, pkill smile || ${lib.getExe pkgs.smile}"
     ",Print, exec, ${lib.getExe pkgs.grimblast} -nf copy area"
-    ''${super}+Ctrl,T,exec, ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp} $SLURP_ARGS)" "tmp.png" && ${lib.getExe pkgs.tesseract} -l eng "tmp.png" - | wl-copy && rm "tmp.png"''
+    ''${super}+Ctrl,T,exec, ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp} -d -b 1B1F2866 -c 89b4faff -w 1)" "tmp.png" && ${lib.getExe pkgs.tesseract} -l "rus+eng" --psm 3 "tmp.png" - | wl-copy && rm "tmp.png"''
     ''${super}+Shift, C, exec, ${lib.getExe pkgs.hyprpicker} -ar''
 
     # Session

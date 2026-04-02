@@ -62,9 +62,5 @@
   # Alias for dot-notation (useful for Firefox/Zen browser settings)
   flattenAttrsDot = flattenAttrsWithSep ".";
 in {
-  inherit
-    flattenSecrets
-    flattenAttrsWithSep
-    flattenAttrsDot
-    ;
+  inherit flattenSecrets flattenAttrsWithSep flattenAttrsDot;
 }

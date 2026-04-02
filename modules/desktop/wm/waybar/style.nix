@@ -1,9 +1,8 @@
-_: let
-  # Catppuccin Macchiato colors
-  c = import ./colors.nix;
+{config, ...}: let
+  c = config.lib.stylix.colors.withHashtag;
 
   # Fonts from system
-  fontName = "JetBrainsMono NF";
+  fontName = config.stylix.fonts.monospace.name;
   fontSize = 16;
 
   rounding = "14px";
@@ -18,6 +17,7 @@ in
 
     window#waybar {
       background-color: ${c.base00};
+
       color: ${c.base05};
     }
 

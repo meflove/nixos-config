@@ -1,12 +1,10 @@
-_: let
-  colors = import ./colors.nix;
-in {
+{config}: {
   "general" = {
     gaps_in = 5;
     gaps_out = 12;
     gaps_workspaces = 50;
     border_size = 1;
-    "col.active_border" = "rgb(${colors.mauve})";
+    "col.active_border" = "rgb(${config.lib.stylix.colors.withHashtag.magenta})";
     "col.inactive_border" = "rgba(595959aa)";
     resize_on_border = true;
     no_focus_fallback = true;

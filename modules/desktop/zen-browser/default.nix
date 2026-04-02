@@ -109,7 +109,7 @@
                   };
                   gfx.x11-egl.force-enabled = true;
                   widget = {
-                    transparent-windows = false;
+                    transparent-windows = true;
                     dmabuf.force-enabled = true;
                   };
 

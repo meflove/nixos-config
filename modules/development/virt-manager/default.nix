@@ -31,6 +31,10 @@
       };
       programs.virt-manager.enable = true;
       security.polkit.enable = true;
+
+      environment.sessionVariables = {
+        LIBVIRT_DEFAULT_URI = "qemu:///system";
+      };
     };
   };
 }
