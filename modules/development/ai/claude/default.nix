@@ -3,7 +3,6 @@
     nixosModules.${baseNameOf ./.} = {
       pkgs,
       lib,
-      inputs,
       config,
       ...
     }: let
@@ -17,12 +16,9 @@
       # Wrapped claude-code package that injects secrets as environment variables
       claude-wrapped = pkgs.symlinkJoin {
         name = "claude-code-wrapped";
-        paths = [inputs.claude-code.packages.${pkgs.stdenv.hostPlatform.system}.claude-code-bun pkgs.python3];
+        paths = [pkgs.llm-agents.claude-code pkgs.python3];
         buildInputs = [pkgs.makeWrapper];
         postBuild = ''
-          # Create symlink claude -> claude-bun for programs.claude-code compatibility
-          ln -s $out/bin/claude-bun $out/bin/claude
-
           wrapProgram $out/bin/claude \
             --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.hm.sops.secrets."ai/zai_api_key".path})' \
             --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.hm.sops.secrets."github/github_pat".path})' \
@@ -42,6 +38,7 @@
 
         programs.claude-code = {
           enable = true;
+          enableMcpIntegration = true;
           package = claude-wrapped;
 
           memory.source = ./CLAUDE.md;
@@ -51,8 +48,6 @@
             full_review = ./commands/FULL_REVIEW.md;
           };
           skillsDir = ./skills;
-
-          mcpServers = config.hm.programs.mcp.servers;
 
           settings = {
             alwaysThinkingEnabled = true;

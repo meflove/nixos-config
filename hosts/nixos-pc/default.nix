@@ -19,7 +19,8 @@
 
         # Hardware modules
         bluetooth
-        btrfs-maintenance
+        btrfs
+        zfs
         iphone
         nvidia
         sound
@@ -49,6 +50,7 @@
         time-locale
         users
         nix-config
+        debloat
 
         # Desktop modules
         flatpak
@@ -68,6 +70,7 @@
         hyprlock
         niri
         waybar
+        dunst
 
         # Development modules
         direnv

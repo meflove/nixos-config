@@ -242,7 +242,7 @@
     }
     {
       argv = [
-        (lib.getExe inputs.self.packages.${lib.hostPlatform}.soundcloud-desktop)
+        (lib.getExe pkgs.mefPkgs.soundcloud-desktop)
       ];
     }
     {

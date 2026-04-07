@@ -73,12 +73,38 @@
           };
           size = 20;
         };
+        targets = {
+          gtk.enable = true;
+          qt.enable = true;
+        };
       };
       hm = {
-        stylix.targets = lib.genAttrs [
-          "ghostty"
-          "fish"
-        ] (_: {enable = true;});
+        stylix = {
+          targets =
+            lib.genAttrs [
+              "ghostty"
+              "fish"
+              "kitty"
+              "dunst"
+              "qt"
+            ] (_: {enable = true;})
+            // {
+              gtk = {
+                enable = true;
+                fonts.enable = false;
+              };
+              qt = {
+                enable = true;
+                standardDialogs = "gtk3";
+              };
+            };
+
+          icons = {
+            enable = true;
+            dark = "Rose-Pine-Dark";
+            package = pkgs.rose-pine-icon-theme;
+          };
+        };
 
         home = {
           packages = lib.attrValues {
@@ -117,25 +143,13 @@
 
         gtk = {
           enable = true;
-
-          theme = {
-            name = "Adwaita-dark";
-            package = pkgs.gnome-themes-extra;
-          };
-
-          iconTheme = {
-            package = pkgs.adwaita-icon-theme;
-            name = "Adwaita";
-          };
         };
 
         qt = {
           enable = true;
-          platformTheme.name = "adwaita";
-          style.name = "adwaita-dark";
         };
 
-        services.swww = {
+        services.awww = {
           enable = true;
         };
       };

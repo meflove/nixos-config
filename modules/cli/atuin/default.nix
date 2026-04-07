@@ -4,6 +4,7 @@
       hm.programs.atuin = {
         enable = true;
         enableFishIntegration = true;
+        enableNushellIntegration = true;
 
         settings = {
           auto_sync = false;

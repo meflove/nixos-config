@@ -2,8 +2,8 @@
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       pkgs,
-      inputs,
       config,
+      lib,
       ...
     }: {
       hm = {
@@ -20,48 +20,67 @@
             xdgOpenUsePortal = true;
           };
 
+          terminal-exec = {
+            enable = true;
+            package = pkgs.xdg-terminal-exec;
+
+            settings = {
+              default = [
+                "ghostty.desktop"
+              ];
+            };
+          };
+
           mimeApps = {
             enable = true;
 
-            associations.added = {
-              "image/jpeg" = ["imv.desktop"];
-              "image/png" = ["imv.desktop"];
-              "inode/directory" = ["${config.programs.yazi.package}/share/applications/yazi.desktop"];
+            associations.added = config.hm.xdg.mimeApps.defaultApplications;
+            defaultApplications = let
+              mkMime = assocs:
+                lib.pipe assocs [
+                  (lib.mapAttrsToList (
+                    prog:
+                      map (type: {
+                        "${type}" = prog;
+                      })
+                  ))
+                  lib.flatten
+                  lib.zipAttrs
+                ];
+            in
+              mkMime {
+                "mpv.desktop" = [
+                  "audio/*"
+                  "video/*"
+                ];
+                "imv-dir.desktop" = [
+                  "image/*"
+                  "image/gif"
+                  "image/jpeg"
+                  "image/png"
+                  "image/webp"
+                ];
 
-              "x-scheme-handler/tg" = [
-                "${
-                  inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
-                }/share/applications/com.ayugram.desktop.desktop"
-              ];
-              "x-scheme-handler/tonsite" = [
-                "${
-                  inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
-                }/share/applications/com.ayugram.desktop.desktop"
-              ];
+                "yazi.desktop" = [
+                  "inode/directory"
+                ];
 
-              "x-scheme-handler/discord" = ["discord.desktop"];
-            };
+                "nixCats.desktop" = [
+                  "text/plain"
+                  "text/markdown"
+                  "text/x-toml"
+                  "application/x-wine-extension-ini"
+                ];
 
-            defaultApplications = {
-              "image/jpeg" = ["imv.desktop"];
-              "image/png" = ["imv.desktop"];
-              "inode/directory" = [
-                "${config.programs.yazi.package}/share/applications/yazi.desktop"
-              ];
+                "com.ayugram.desktop.desktop" = [
+                  "x-scheme-handler/tg"
+                  "x-scheme-handler/tonsite"
+                ];
 
-              "x-scheme-handler/tg" = [
-                "${
-                  inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
-                }/share/applications/com.ayugram.desktop.desktop"
-              ];
-              "x-scheme-handler/tonsite" = [
-                "${
-                  inputs.ayugram-desktop.packages.${pkgs.stdenv.hostPlatform.system}.ayugram-desktop
-                }/share/applications/com.ayugram.desktop.desktop"
-              ];
-
-              "x-scheme-handler/discord" = ["discord.desktop"];
-            };
+                "discord.desktop" = [
+                  "x-scheme-handler/discord"
+                ];
+              };
           };
         };
       };

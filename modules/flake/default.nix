@@ -37,6 +37,7 @@
         "watersucks.cachix.org-1:6gadPC5R8iLWQ3EUtfu3GFrVY7X6I4Fwz/ihW25Jbv8="
         "claude-code.cachix.org-1:YeXf2aNu7UTX8Vwrze0za1WEDS+4DuI2kVeWEE4fsRk="
       ];
+      extra-experimental-features = ["pipe-operators"];
     };
   };
 }

@@ -51,7 +51,7 @@
 
                 "[workspace 1 silent] ${lib.getExe inputs.ayugram-desktop.packages.${lib.hostPlatform}.default}"
                 "[workspace 2 silent] ${lib.getExe config.programs.zen-browser.package}"
-                "[workspace special silent] ${lib.getExe inputs.self.packages.${lib.hostPlatform}.soundcloud-desktop}"
+                "[workspace special silent] ${lib.getExe pkgs.mefPkgs.soundcloud-desktop}"
               ];
 
               bind = binds;

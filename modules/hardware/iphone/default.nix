@@ -1,11 +1,6 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      inputs,
-      lib,
-      ...
-    }: {
+    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
       services.usbmuxd = {
         enable = true;
         package = pkgs.usbmuxd2;
@@ -15,7 +10,7 @@
         libimobiledevice
         idevicerestore
 
-        inputs.self.packages.${lib.hostPlatform}.iloader
+        mefPkgs.iloader
 
         ifuse # optional, to mount using 'ifuse'
       ];

@@ -1,20 +1,11 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
+    nixosModules.${baseNameOf ./.} = _: {
       hm = {
         programs.kitty = {
           enable = true;
           enableGitIntegration = true;
           shellIntegration.enableFishIntegration = true;
-
-          font = {
-            package = pkgs.nerd-fonts.jetbrains-mono;
-            name = "JetBrainsMono NF";
-
-            size = 12;
-          };
-
-          themeFile = "Catppuccin-Macchiato";
 
           settings = {
             window_padding_width = 15;
@@ -26,11 +17,6 @@
             copy_on_select = "yes";
 
             scrollback_lines = 10000;
-
-            font_family = "family='JetBrainsMono NF'";
-            bold_font = "family='JetBrainsMono NF' style=SemiBold";
-            italic_font = "auto";
-            bold_italic_font = "auto";
 
             clipboard_control = "write-clipboard read-clipboard";
 

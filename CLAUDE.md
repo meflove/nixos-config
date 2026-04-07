@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is a modular NixOS configuration using [flake-parts](https://flake.parts) for modular architecture with automatic module discovery via [import-tree](https://github.com/vic/import-tree). The configuration targets `x86_64-linux` systems with a focus on gaming, development, and Niri/Hyprland Wayland desktop.
 
 **Key architectural decisions:**
+
 - Uses Lix as Nix replacement
 - Module discovery via import-tree - no manual imports needed
 - Unified modules (can configure both system and home-manager in one module)
@@ -66,6 +67,7 @@ direnv allow
 ### Flake Structure
 
 The flake uses flake-parts with custom library extensions:
+
 - **lib/generator.nix**: Builds system configurations with `buildConfiguration` function
 - **lib/functions.nix**: Custom utility functions (`flattenSecrets`, `flattenAttrsDot`, etc.)
 - **import-tree**: Auto-discovers all `default.nix` files in `modules/` and `hosts/`
@@ -90,6 +92,7 @@ modules/
 ```
 
 **Module pattern:**
+
 - Each module exports `flake.nixosModules.${baseNameOf ./.}`
 - Can configure both NixOS and home-manager in one module via `hm` attr
 - No namespace prefix - modules use directory name (e.g., `nix-config`, `fish`)
@@ -133,6 +136,7 @@ Hosts in `hosts/` use `extendedLib.buildConfiguration`:
 ### Custom Packages
 
 Local package definitions in `pkgs/`:
+
 - `clipse.nix` - Clipboard manager
 - `iloader.nix` - Image loader
 - `soundcloud-desktop.nix` - Soundcloud desktop client
@@ -158,10 +162,12 @@ sops = {
 ```
 
 This flattens nested attrs into sops-compatible format:
+
 - `github/github_auth_token`
 - `pass`
 
 **Available in lib:**
+
 - `lib.flattenSecrets` - Flatten with "/" separator (for sops)
 - `lib.flattenAttrsDot` - Flatten with "." separator (for browser settings)
 - `lib.flattenAttrsWithSep` - Universal flatten with custom separator
@@ -199,6 +205,7 @@ Modules export `flake.nixosModules.${baseNameOf ./.}`:
 ### Special Arguments Available in Modules
 
 Extended lib provides these from `buildConfiguration`:
+
 - `lib.configurationName` - Name of the configuration
 - `lib.hostName` - System hostname
 - `lib.userName` - Username
@@ -238,6 +245,7 @@ Before committing changes:
 ## Gaming & Performance Stack
 
 This configuration includes extensive gaming optimizations:
+
 - **CachyOS Kernel** with LTO and tuned for gaming
 - **SCX lavd scheduler** for low-latency
 - **ZRAM compression** (100% RAM) with 2 devices

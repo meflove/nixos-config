@@ -9,7 +9,7 @@
     }: let
       gemini-wrapped = pkgs.symlinkJoin {
         name = "gemini-cli-wrapped";
-        paths = [pkgs.gemini-cli];
+        paths = [pkgs.llm-agents.gemini-cli];
         buildInputs = [pkgs.makeWrapper];
         postBuild = ''
           wrapProgram $out/bin/gemini \

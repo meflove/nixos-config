@@ -3,102 +3,194 @@
 
   inputs = {
     # Core
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:NixOS/nixpkgs";
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    pkgs-by-name-for-flake-parts.url = "github:drupol/pkgs-by-name-for-flake-parts";
-    import-tree.url = "github:vic/import-tree";
-    chaotic = {
-      url = "github:lonerOrz/nyx-loner";
+    nixpkgs = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      ref = "nixos-unstable";
+    };
+    nixpkgs-master = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+    };
+    ## flake-parts
+    flake-parts = {
+      type = "github";
+      owner = "hercules-ci";
+      repo = "flake-parts";
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
+    pkgs-by-name-for-flake-parts = {
+      type = "github";
+      owner = "drupol";
+      repo = "pkgs-by-name-for-flake-parts";
+    };
+    import-tree = {
+      type = "github";
+      owner = "vic";
+      repo = "import-tree";
+    };
+    treefmt-nix = {
+      type = "github";
+      owner = "numtide";
+      repo = "treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    nix-flatpak.url = "github:gmodena/nix-flatpak/";
-    nix-gaming.url = "github:fufexan/nix-gaming";
-    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
-    ## devenv deps
+    ### devenv deps
     devenv = {
-      url = "github:cachix/devenv";
+      type = "github";
+      owner = "cachix";
+      repo = "devenv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     devenv-root = {
       url = "file+file:///dev/null";
       flake = false;
     };
-    mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
+    mk-shell-bin = {
+      type = "github";
+      owner = "rrbutani";
+      repo = "nix-mk-shell-bin";
+    };
     git-hooks = {
-      url = "github:cachix/git-hooks.nix";
+      type = "github";
+      owner = "cachix";
+      repo = "git-hooks.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     statix = {
-      url = "github:molybdenumsoftware/statix";
+      type = "github";
+      owner = "molybdenumsoftware";
+      repo = "statix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nix2container = {
-      url = "github:nlewo/nix2container";
+      type = "github";
+      owner = "nlewo";
+      repo = "nix2container";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ## other
+    chaotic = {
+      type = "github";
+      owner = "lonerOrz";
+      repo = "nyx-loner";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-hardware = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixos-hardware";
+      ref = "master";
+    };
+    nix-flatpak = {
+      type = "github";
+      owner = "gmodena";
+      repo = "nix-flatpak";
+    };
+    nix-gaming = {
+      type = "github";
+      owner = "fufexan";
+      repo = "nix-gaming";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
+    determinate = {
+      type = "github";
+      owner = "DeterminateSystems";
+      repo = "determinate";
+      inputs = {
+        nix.inputs.flake-parts.follows = "flake-parts";
+        nix.inputs.git-hooks-nix.follows = "git-hooks";
+      };
     };
     ## bun2nix
     bun2nix = {
-      url = "github:nix-community/bun2nix";
+      type = "github";
+      owner = "nix-community";
+      repo = "bun2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # System & Boot
     disko = {
-      url = "github:nix-community/disko";
+      type = "github";
+      owner = "nix-community";
+      repo = "disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     lanzaboote = {
-      url = "github:nix-community/lanzaboote";
-      inputs = {
-        rust-overlay.follows = "rust-overlay";
-      };
+      type = "github";
+      owner = "nix-community";
+      repo = "lanzaboote";
+      inputs.rust-overlay.follows = "rust-overlay";
     };
     ## Fix build for lanzaboote
     rust-overlay = {
-      url = "github:oxalica/rust-overlay";
+      type = "github";
+      owner = "oxalica";
+      repo = "rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ## secrets
     sops-nix = {
-      url = "github:Mic92/sops-nix";
+      type = "github";
+      owner = "Mic92";
+      repo = "sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Desktop Environment
     ## Hyprland
     hyprland = {
-      url = "github:hyprwm/Hyprland";
+      type = "github";
+      owner = "hyprwm";
+      repo = "Hyprland";
     };
     hyprpanel = {
-      url = "github:Jas-SinghFSU/HyprPanel";
+      type = "github";
+      owner = "Jas-SinghFSU";
+      repo = "HyprPanel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ## Niri
     niri = {
-      url = "github:sodiboo/niri-flake";
+      type = "github";
+      owner = "sodiboo";
+      repo = "niri-flake";
     };
 
     # Home Manager & User Apps
     home-manager = {
-      url = "github:nix-community/home-manager";
+      type = "github";
+      owner = "nix-community";
+      repo = "home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ## Utils
     stylix = {
-      url = "github:nix-community/stylix";
+      type = "github";
+      owner = "nix-community";
+      repo = "stylix";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
       };
     };
     nix-cursors = {
-      url = "github:LilleAila/nix-cursors";
+      type = "github";
+      owner = "LilleAila";
+      repo = "nix-cursors";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ## GUI
     zen-browser = {
-      url = "github:0xc000022070/zen-browser-flake";
+      type = "github";
+      owner = "0xc000022070";
+      repo = "zen-browser-flake";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
@@ -109,63 +201,100 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ayugram-desktop = {
-      url = "https://github.com/ndfined-crp/ayugram-desktop";
       type = "git";
+      url = "https://github.com/ndfined-crp/ayugram-desktop";
       submodules = true;
     };
     freesmlauncher = {
-      url = "github:FreesmTeam/FreesmLauncher";
+      type = "github";
+      owner = "FreesmTeam";
+      repo = "FreesmLauncher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixcord = {
-      url = "github:kaylorben/nixcord/5f38b1630b5af54ea7bad2a2308298fe10648a36";
+      type = "github";
+      owner = "kaylorben";
+      repo = "nixcord";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        nixpkgs.follows = "nixpkgs"; # does not need cache hit
+        nixpkgs-nixcord.follows = "nixpkgs";
+      };
     };
     jonhermansen-nur-packages = {
-      url = "github:jonhermansen/nur-packages";
+      type = "github";
+      owner = "jonhermansen";
+      repo = "nur-packages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     ## TUI
     ghostty = {
-      url = "github:ghostty-org/ghostty";
+      type = "github";
+      owner = "ghostty-org";
+      repo = "ghostty";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
       };
     };
     angeldust-nixCats = {
-      url = "github:meflove/angeldust-nixCats";
+      type = "github";
+      owner = "meflove";
+      repo = "angeldust-nixCats";
     };
-    claude-code = {
-      url = "github:sadjow/claude-code-nix";
+    llm-agents = {
+      type = "github";
+      owner = "sadjow";
+      repo = "claude-code-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     otter-launcher = {
-      url = "github:kuokuo123/otter-launcher";
+      type = "github";
+      owner = "kuokuo123";
+      repo = "otter-launcher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     fsel = {
-      url = "github:Mjoyufull/fsel";
+      type = "github";
+      owner = "Mjoyufull";
+      repo = "fsel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     yazi = {
-      url = "github:sxyazi/yazi";
+      type = "github";
+      owner = "sxyazi";
+      repo = "yazi";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nh = {
-      url = "github:nix-community/nh";
+      type = "github";
+      owner = "nix-community";
+      repo = "nh";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-index = {
-      url = "github:nix-community/nix-index";
+      type = "github";
+      owner = "nix-community";
+      repo = "nix-index";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-index-database = {
-      url = "github:nix-community/nix-index-database";
+      type = "github";
+      owner = "nix-community";
+      repo = "nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Services & Networking
     nnf = {
-      url = "github:thelegy/nixos-nftables-firewall";
+      type = "github";
+      owner = "thelegy";
+      repo = "nixos-nftables-firewall";
     };
     zapret-presets = {
-      url = "github:kotudemo/zapret-presets";
+      type = "github";
+      owner = "kotudemo";
+      repo = "zapret-presets";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

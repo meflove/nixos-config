@@ -4,6 +4,7 @@
       pkgs,
       lib,
       config,
+      inputs,
       ...
     }: {
       users.users.${lib.userName}.shell = config.programs.fish.package;
@@ -14,6 +15,19 @@
 
       hm = {
         programs = {
+          nix-index = {
+            enable = true;
+            enableFishIntegration = true;
+            enableNushellIntegration = true;
+            package = inputs.nix-index.packages.${lib.hostPlatform}.default;
+          };
+          nix-your-shell = {
+            enable = true;
+            enableFishIntegration = true;
+            enableNushellIntegration = true;
+            nix-output-monitor.enable = true;
+          };
+
           fish = {
             inherit (config.programs.fish) enable package;
 
@@ -37,7 +51,7 @@
 
               # Zellij
               set -x ZELLIJ_CONFIG_DIR "$HOME/.config/zellij"
-              set -x ZELLIJ_AUTO_ATTACH true
+              # set -x ZELLIJ_AUTO_ATTACH true
 
               if test "$TERM" = "xterm-ghostty"
                   eval (${lib.getExe config.hm.programs.zellij.package} setup --generate-auto-start fish | string collect)
@@ -80,10 +94,6 @@
               {
                 name = "fishtape";
                 inherit (fishtape) src;
-              }
-              {
-                name = "forgit";
-                inherit (forgit) src;
               }
               {
                 name = "colored-man-pages";
@@ -156,7 +166,7 @@
 
             # Код, который выполняется при запуске оболочки
             shellInit = ''
-              ${lib.getExe pkgs.any-nix-shell} fish --info-right | source
+              # ${lib.getExe pkgs.any-nix-shell} fish --info-right | source
               __magic-enter
 
               if test -z "$DISPLAY" && test "$XDG_VTNR" = 1

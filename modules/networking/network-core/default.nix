@@ -89,7 +89,6 @@
 
               # Higher priority route (lower = higher priority)
               dhcpV4Config.RouteMetric = 100;
-              dhcpV6Config.RouteMetric = 100;
 
               networkConfig = {
                 DHCP = "yes";
@@ -106,7 +105,6 @@
 
               # Lower priority route (higher = lower priority)
               dhcpV4Config.RouteMetric = 600;
-              dhcpV6Config.RouteMetric = 600;
 
               linkConfig.RequiredForOnline = "no";
 

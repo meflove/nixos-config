@@ -35,7 +35,7 @@
               # or use an online theme
               "https://raw.githubusercontent.com/refact0r/system24/refs/heads/main/theme/flavors/system24-catppuccin-mocha.theme.css"
             ];
-            enabledThemes = ["catppuccin-mocha.theme.css"];
+            enabledThemes = ["catppuccin-mocha.theme.css" "system24 (catppuccin mocha)"];
 
             frameless = true; # Set some Vencord options
             plugins = {
@@ -87,7 +87,14 @@
               showHiddenChannels.enable = true;
               webKeybinds.enable = true;
               webScreenShareFixes.enable = true;
-              allCallTimers.enable = true;
+              callTimer = {
+                enable = true;
+                allCallTimers = true;
+                showRoleColor = true;
+                showSeconds = true;
+                showWithoutHover = true;
+                trackSelf = true;
+              };
               translate = {
                 enable = true;
                 target = "ru";

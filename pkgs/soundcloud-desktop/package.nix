@@ -27,7 +27,7 @@
   pulseaudioFull,
 }: let
   pname = "soundcloud-desktop";
-  version = "6.3.0";
+  version = "6.6.0";
 in
   rustPlatform.buildRustPackage (finalAttrs: {
     inherit pname version;
@@ -36,11 +36,11 @@ in
       owner = "zxcloli666";
       repo = "SoundCloud-Desktop";
       rev = version;
-      hash = "sha256-PcsvC8+8QZC7sXa3TdcVqgUS+OXFBO7MKCyLWKdPb10=";
+      hash = "sha256-rwkVc/EyY5lfbtMQjXeIgJvT5G1wxxdSQNrp8zMK+ZA=";
     };
 
     cargoRoot = "desktop/src-tauri";
-    cargoHash = "sha256-m1BybTy9+cHPcagO34dfmLTIjpx5QWodxcgKG+1lO6g=";
+    cargoHash = "sha256-onoPGnt6S/I4BbtIC924ZYPrlX2dIs6SWYMlzpSPOzA=";
 
     buildAndTestSubdir = finalAttrs.cargoRoot;
     doCheck = false;
@@ -50,7 +50,7 @@ in
       pnpm = pnpm_10;
       fetcherVersion = 1;
       sourceRoot = "${finalAttrs.src.name}/desktop";
-      hash = "sha256-V+W85Cd8tIuq2f9nK9QpxyNena49/uUAazc6ilXMJ9s=";
+      hash = "sha256-ukT4Ccg32CxCEJ+RG4iLaFkujrUuLn2ED1VRHJtVHZk=";
     };
 
     pnpmRoot = "desktop";
@@ -96,7 +96,9 @@ in
 
     postInstall = ''
       wrapProgram $out/bin/soundcloud-desktop \
-        --prefix PATH : ${lib.makeBinPath [pulseaudioFull]}
+        --argv0 soundcloud-desktop \
+        --prefix PATH : ${lib.makeBinPath [pulseaudioFull]} \
     '';
+
     meta.mainProgram = finalAttrs.pname;
   })

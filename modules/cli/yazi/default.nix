@@ -17,6 +17,7 @@
         programs.yazi = {
           enable = true;
           enableFishIntegration = true;
+          enableNushellIntegration = true;
           package = inputs.yazi.packages.${lib.hostPlatform}.default.override {
             _7zz = pkgs._7zz-rar;
           };

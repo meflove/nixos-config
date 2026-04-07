@@ -62,8 +62,8 @@ in
         };
         overlays = with inputs; [
           niri.overlays.niri
-          claude-code.overlays.default
           hyprland.overlays.default
+          # llm-agents.overlays.default
 
           self.overlays.default
         ];

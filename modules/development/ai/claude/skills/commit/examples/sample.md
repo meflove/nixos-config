@@ -3,6 +3,7 @@
 ## Context
 
 **Git Status:**
+
 ```
 On branch main
 Your branch is up to date with 'origin/main'.
@@ -13,6 +14,7 @@ Changes to be committed:
 ```
 
 **Git Diff:**
+
 ```diff
 diff --git a/modules/desktop/wm/hyprland/default.nix b/modules/desktop/wm/hyprland/default.nix
 index 1234567..abcdefg 100644
@@ -41,26 +43,32 @@ index 1234567..abcdefg 100644
 ## Analysis
 
 ### Changed Files
+
 - `modules/desktop/wm/hyprland/default.nix` - modified gap settings
 - `modules/desktop/wm/hyprland/settings.nix` - no functional changes
 
 ### Change Type
+
 **Type:** `style` (🎨)
 **Reason:** This is a pure formatting/visual change that doesn't affect logic or behavior
 
 ### Scope
+
 **Scope:** `(hyprland)`
 **Reason:** Changes are specific to Hyprland window manager configuration
 
 ### Description
+
 "increase inner gaps for better spacing" - 38 characters, lowercase, no period
 
 ### Bullet Points
+
 - **WHY:** Improve visual spacing between windows for better aesthetics
 - **WHAT:** Changed gaps_in value from 5 to 8
 - **CONTEXT:** Maintains proportional relationship with gaps_out (20)
 
 ## Convention Checklist
+
 - [x] Title ≤ 50 characters: ✅ (38 chars)
 - [x] Type matches change: ✅ (style for formatting)
 - [x] Scope appropriate: ✅ (hyprland-specific)
@@ -68,4 +76,5 @@ index 1234567..abcdefg 100644
 - [x] Grammar and spelling: ✅
 
 ---
-*This commit message follows Conventional Commits format with emoji prefix*
+
+_This commit message follows Conventional Commits format with emoji prefix_

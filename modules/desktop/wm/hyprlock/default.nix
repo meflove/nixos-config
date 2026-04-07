@@ -1,12 +1,7 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {
-      inputs,
-      config,
-      ...
-    }: {
+    nixosModules.${baseNameOf ./.} = {config, ...}: {
       hm = {
-        home.file."Pictures/wallpaper/lock_screen.png".source = ../../../../pics/lock_screen.png;
         programs.hyprlock = {
           enable = true;
           settings = {
@@ -14,7 +9,7 @@
               hide_cursor = true;
             };
             background = {
-              path = "${inputs.self}/pics/lock_screen.png";
+              path = config.stylix.image;
               blur_passes = 3;
               color = "rgb(${config.lib.stylix.colors.base00})";
             };

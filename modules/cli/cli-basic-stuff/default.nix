@@ -90,7 +90,7 @@
           wl-clipboard
 
           # Video & Media
-          inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.yot
+          mefPkgs.yot
 
           # === Download & Media ===
           python313Packages.downloader-cli # CLI downloader with progress bars
@@ -144,11 +144,13 @@
           zoxide = {
             enable = true;
             enableFishIntegration = true;
+            enableNushellIntegration = true;
           };
 
           starship = {
             enable = true;
             enableFishIntegration = true;
+            enableNushellIntegration = true;
 
             settings = {
               os = {
@@ -177,12 +179,6 @@
               # --cookies ${config.hm.sops.secrets.youtube_cookies.path}
               --cookies-from-browser firefox:~/.config/zen
             '';
-          };
-
-          nix-index = {
-            enable = true;
-            enableFishIntegration = true;
-            package = inputs.nix-index.packages.${lib.hostPlatform}.default;
           };
         };
       };

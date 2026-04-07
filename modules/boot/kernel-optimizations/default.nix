@@ -21,7 +21,6 @@
         kernelPackages = pkgs.linuxPackages_cachyos.cachyOverride {
           mArch = "GENERIC_V3";
         };
-        zfs.package = pkgs.zfs_cachyos;
 
         kernelPatches = [
           {
@@ -71,6 +70,8 @@
         kernelModules = [
           "v4l2loopback"
         ];
+
+        blacklistedKernelModules = ["intel_oc_wdt"];
 
         initrd = {
           verbose = false;

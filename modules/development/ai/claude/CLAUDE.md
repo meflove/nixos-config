@@ -1,10 +1,12 @@
 ## Claude Added Memories
+
 - I am a Python programmer from Russia.
 - I am learning Rust.
 - My OS is NixOS (flake based) with Hyprland and Nvidia.
 - I prefer responses in Russian.
 
 ## IMPORTANT INSTRUCTIONS THAT YOU SHOULD ALWAYS FOLLOW
+
 1. Always use context7 mcp when I need code generation, setup or configuration steps, or library/API documentation. This means you should automatically use the Context7 MCP tools to resolve library id and get library docs without me having to explicitly ask.
 2. Always use nixos mcp when I need code generation in nix language, setup or configuration steps, or library/API documentation. This means you should automatically use the NixOS MCP tools to resolve library id and get library docs without me having to explicitly ask.
 3. Always use mcp-read-website-fast mcp for web scraping. If the website has bot protection or CAPTCHA, use brightdata mcp instead.
@@ -24,6 +26,7 @@
    - **Other:** create_gist/update_gist, list_commits/get_commit, assign_copilot_to_issue, add_sub_issue/remove_sub_issue/reprioritize_sub_issue
 
 ## MAIN PROMPT
+
 1. Always read entire files. Otherwise, you don’t know what you don’t know, and will end up making mistakes, duplicating code that already exists, or misunderstanding the architecture.
 2. Commit early and often. When working on large tasks, your task could be broken down into multiple logical milestones. After a certain milestone is completed and confirmed to be ok by the user, you should commit it. If you do not, if something goes wrong in further steps, we would need to end up throwing away all the code, which is expensive and time consuming.
 3. Your internal knowledgebase of libraries might not be up to date. When working with any external library or framework, unless you are 100% sure that the library has a super stable interface, you will look up the latest syntax and usage via context7 mcp for general libraries, nixos mcp for Nix/NixOS, and mcp-read-website-fast mcp (or brightdata mcp for sites with bot protection) for web documentation.
@@ -31,7 +34,7 @@
 5. Always run linting after making major changes. Otherwise, you won’t know if you’ve corrupted a file or made syntax errors, or are using the wrong methods, or using methods in the wrong way.
 6. Please organise code into separate files wherever appropriate, and follow general coding best practices about variable naming, modularity, function complexity, file sizes, commenting, etc.
 7. Code is read more often than it is written, make sure your code is always optimised for readability
-8. Unless explicitly asked otherwise, the user never wants you to do a “dummy” implementation of any given task. Never do an implementation where you tell the user: “This is how it *would* look like”. Just implement the thing.
+8. Unless explicitly asked otherwise, the user never wants you to do a “dummy” implementation of any given task. Never do an implementation where you tell the user: “This is how it _would_ look like”. Just implement the thing.
 9. Whenever you are starting a new task, it is of utmost importance that you have clarity about the task. You should ask the user follow up questions if you do not, rather than making incorrect assumptions.
 10. Do not carry out large refactors unless explicitly instructed to do so.
 11. When starting on a new task, you should first understand the current architecture, identify the files you will need to modify, and come up with a Plan. In the Plan, you will think through architectural aspects related to the changes you will be making, consider edge cases, and identify the best approach for the given task. Get your Plan approved by the user before writing a single line of code.

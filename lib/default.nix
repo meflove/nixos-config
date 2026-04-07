@@ -28,6 +28,7 @@ in
       inputs.flake-parts.flakeModules.bundlers
       inputs.home-manager.flakeModules.default
       inputs.pkgs-by-name-for-flake-parts.flakeModule
+      inputs.treefmt-nix.flakeModule
     ];
 
     flake = {config, ...}: {

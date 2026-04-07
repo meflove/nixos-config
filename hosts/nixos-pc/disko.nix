@@ -108,7 +108,6 @@
           test = {
             type = "zfs_fs";
             mountpoint = "/data";
-            mountOptions = ["noauto"];
             options = {
               recordsize = "128K";
             };
@@ -117,7 +116,6 @@
           test2 = {
             type = "zfs_fs";
             mountpoint = "/data2";
-            mountOptions = ["noauto"];
             options = {
               recordsize = "16K";
               compression = "lz4";

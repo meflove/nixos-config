@@ -40,8 +40,8 @@
 
         settings = {
           inherit (inputs.self.nixConfig) extra-substituters extra-trusted-public-keys;
-          connect-timeout = 4;
-          stalled-download-timeout = 4;
+          connect-timeout = 5;
+          stalled-download-timeout = 10;
 
           use-xdg-base-directories = true;
 
@@ -56,19 +56,13 @@
             "pipe-operators"
           ];
 
-          # extra-deprecated-features = [
-          #   "or-as-identifier"
-          #   "broken-string-indentation"
-          # ];
-
           auto-allocate-uids = true;
           use-cgroups = true;
 
           auto-optimise-store = true;
           allow-import-from-derivation = true;
 
-          # With Lix, i cant use this option
-          # download-buffer-size = 2097152000;
+          download-buffer-size = 2048 * 1024 * 1024; # 2 GB
         };
 
         extraOptions = ''
