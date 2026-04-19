@@ -1,11 +1,9 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      lib,
-      inputs,
-      ...
-    }: {
+    nixosModules.${baseNameOf ./.} = {pkgs, ...}: let
+      wine = pkgs.nix-gaming.wine-tkg;
+      # gamePkgs = inputs.nix-gaming.packages.${lib.hostPlatform};
+    in {
       boot.kernelModules = [
         "ntsync"
       ];
@@ -19,6 +17,12 @@
       ];
 
       programs = {
+        wine = {
+          enable = true;
+          package = wine;
+          binfmt = true;
+          ntsync = true;
+        };
         gamemode = {
           enable = true;
 
@@ -28,8 +32,30 @@
         steam = {
           enable = true; # install steam
           package = pkgs.steam;
+          extraCompatPackages = [
+            pkgs.proton-ge-bin
+          ];
 
-          gamescopeSession.enable = true;
+          gamescopeSession = {
+            enable = true;
+            args = [
+              "-W 2560"
+              "-H 1440"
+              "-r 144"
+            ];
+          };
+        };
+
+        gamescope = {
+          enable = true;
+          capSysNice = true;
+          package = pkgs.gamescope_git;
+
+          args = [
+            "-W 2560"
+            "-H 1440"
+            "-r 144"
+          ];
         };
       };
 
@@ -58,12 +84,16 @@
 
       environment.systemPackages = with pkgs; [
         logiops
+        gamescope-wsi_git
+        gamescope-wsi32_git
+
+        nix-gaming.vkd3d-proton
+        nix-gaming.dxvk
+        nix-gaming.dxvk-nvapi
+        nix-gaming.dxvk-nvapi-vkreflex-layer
       ];
 
-      hm = let
-        wine = pkgs.wineWow64Packages.stagingFull;
-        # gamePkgs = inputs.nix-gaming.packages.${lib.hostPlatform};
-      in {
+      hm = {
         home = {
           packages = with pkgs; [
             protonup-ng
@@ -77,21 +107,12 @@
             winetricks
 
             # Fonts for proper Wine UI rendering
-            corefonts # Microsoft Core Fonts (Arial, Times New Roman, Courier New)
-            vista-fonts # Vista fonts (Calibri, Cambria, Candara, Consolas, Constantia, Corbel)
             wineWow64Packages.fonts # Wine replacement fonts
 
             # (gamePkgs.osu-stable.override {
             #   useGameMode = false;
             # })
-
-            (inputs.freesmlauncher.packages.${lib.hostPlatform}.freesmlauncher.overrideAttrs (_: previousAttrs: {
-              meta =
-                previousAttrs.meta
-                // {
-                  maintainers = with lib.maintainers; [s0me1newithhand7s];
-                };
-            }))
+            freesmlauncher
           ];
 
           sessionVariables = {
@@ -102,6 +123,7 @@
         programs = {
           mangohud = {
             enable = true;
+            package = pkgs.mangohud_git;
             settings = {
               winesync = true;
               full = true;

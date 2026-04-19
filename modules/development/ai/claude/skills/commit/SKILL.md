@@ -1,9 +1,9 @@
 ---
 name: commit
 description: Creates well-formatted commits with conventional commit messages and emoji. Use when committing changes with proper commit message format.
-argument-hint: [language]
+argument-hint: [language] [vcs_backend]
 disable-model-invocation: true
-allowed-tools: Bash(git *)
+allowed-tools: Bash(git *) Bash(jj *)
 ---
 
 # Commit Expert
@@ -12,10 +12,28 @@ You are a Git workflow specialist with deep expertise in version control, commit
 
 ## Context
 
+### VCS Detection
+
+Check if `$ARGUMENTS` contains backend argument (git or jj):
+
+- **Git**: Use traditional Git commands (default)
+- **Jujutsu (jj)**: Use jj commands when `$ARGUMENTS` contains "jj", "jj" = "jujutsu"
+
+### Git Commands (default)
+
 - **Current git status**: !`git status`
 - **Current git diff**: !`git diff HEAD`
 - **Recent commits**: !`git log --oneline -5`
-- **User language**: $ARGUMENTS (default: English)
+
+### Jujutsu (jj) Commands (when "jj" in $ARGUMENTS)
+
+This commands will work only if the repository is using Jujutsu as the VCS backend. Jujutsu has a different workflow and command set compared to Git, so ensure you are in a jj repository before using these commands.
+
+- **Current jj status**: !`jj status || true`
+- **Current jj diff**: !`jj diff --git || true`
+- **Recent commits**: !`jj log || true`
+
+- **User language**: Detected from `$ARGUMENTS`, defaults to English
 
 ## Core Responsibilities
 
@@ -150,10 +168,116 @@ Before finalizing:
 
 ## Communication Protocol
 
+### For Git (default)
+
 1. **Present analysis**: Show what you found in the diff
 2. **Propose message**: Suggest commit message
 3. **Request confirmation**: Ask for approval or changes
 4. **Execute commit**: Run `git commit -m "<message>"` after approval
+
+### For Jujutsu/jj (when "jj" in $ARGUMENTS)
+
+1. **Present analysis**: Show jj status and diff
+2. **Describe current commit**: Set message with `jj describe -m "<title>"`
+3. **Request confirmation**: Ask for approval or changes
+4. **Finalize commit**: Create new commit with `jj new` after approval
+
+**Note**: Jujutsu has no staging area - all working copy changes are automatically tracked.
+
+## Jujutsu (jj) Backend Guide
+
+### Real Example from Repository
+
+```
+@  ywoykrsy meflov3r@icloud.com 2026-04-09 01:17:34 feature-new a9809dbd
+│  new feat
+○  lvlqlqut meflov3r@icloud.com 2026-04-09 01:17:32 352e15ee
+│  new feat
+○  mvnzurlp meflov3r@icloud.com 2026-04-09 01:15:04 cb141f2d
+│  (empty) Версия 2
+○  nrrkynqs meflov3r@icloud.com 2026-04-09 01:13:47 7aeb122f
+│  Версия 2
+◆  xsntpmql meflov3r@icloud.com 2026-04-01 01:34:57 main 2cd5a7b6
+│  test-test1
+~
+```
+
+**Symbols:**
+
+- `@` - Current working copy commit
+- `○` - Regular commit
+- `◆` - Branch/divergent commit (git heads)
+
+### Key jj Workflow Differences
+
+**No Staging Area:**
+
+- All working copy changes are automatically tracked
+- No `git add` needed - modifications are immediate
+- Use `jj status` to see what's changed since parent commit
+
+**Auto-Commit Model:**
+
+- Working copy IS a commit (mutable)
+- `jj describe` sets the commit message
+- `jj new` finalizes current commit and creates new empty working copy
+
+### jj Common Commands
+
+```bash
+# View current changes (automatically tracked)
+jj status
+
+# View diff in git format
+jj diff --git
+
+# View commit history
+jj log
+
+# Set commit message for current working copy
+jj describe -m "feat: add new feature"
+
+# Create new commit (finalizes current, creates new working copy)
+jj new
+
+# Edit specific commit (makes it working copy)
+jj edit <commit-id>
+
+# Abandon current working copy commit
+jj abandon
+```
+
+### jj Commit Message Format
+
+Same Conventional Commits format, but set with `jj describe`:
+
+```bash
+# Single line
+jj describe -m "feat(api): add user authentication"
+
+# Multi-line (use -m multiple times for body)
+jj describe -m "feat(api): add user authentication
+Implement OAuth2 flow for Google and GitHub
+ Add JWT token validation middleware
+"
+```
+
+### jj Commit Process
+
+1. **Modify files**: Changes auto-tracked in working copy
+2. **Review changes**: `jj diff --git` to see modifications
+3. **Set message**: `jj describe -m "<title>"`
+4. **Finalize**: `jj new` creates new commit on top
+5. **Verify**: `jj log` confirms commit was created
+
+### jj Advantages
+
+- **Simpler workflow**: No staging area complexity
+- **Stacked diffs**: Work on multiple commits simultaneously
+- **Immutable history**: Commits never change once created
+- **Git-compatible**: Works with Git repositories transparently
+- **Change-based**: Focuses on changes rather than snapshots
+- **Modern UI**: Intuitive commit graph visualization
 
 ## Additional Resources
 

@@ -240,11 +240,11 @@
         (lib.getExe config.hm.programs.zen-browser.package)
       ];
     }
-    {
-      argv = [
-        (lib.getExe pkgs.mefPkgs.soundcloud-desktop)
-      ];
-    }
+    # {
+    #   argv = [
+    #     (lib.getExe pkgs.mefPkgs.soundcloud-desktop)
+    #   ];
+    # }
     {
       argv = [
         (lib.getExe inputs.ayugram-desktop.packages.${lib.hostPlatform}.default)

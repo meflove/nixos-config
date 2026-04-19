@@ -42,7 +42,12 @@
       type = "github";
       owner = "cachix";
       repo = "devenv";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        git-hooks.follows = "git-hooks";
+        rust-overlay.follows = "rust-overlay";
+      };
     };
     devenv-root = {
       url = "file+file:///dev/null";
@@ -63,7 +68,10 @@
       type = "github";
       owner = "molybdenumsoftware";
       repo = "statix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
     };
     nix2container = {
       type = "github";
@@ -76,7 +84,11 @@
       type = "github";
       owner = "lonerOrz";
       repo = "nyx-loner";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+        rust-overlay.follows = "rust-overlay";
+      };
     };
     nixos-hardware = {
       type = "github";
@@ -96,6 +108,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
+        git-hooks.follows = "git-hooks";
       };
     };
     determinate = {
@@ -106,13 +119,6 @@
         nix.inputs.flake-parts.follows = "flake-parts";
         nix.inputs.git-hooks-nix.follows = "git-hooks";
       };
-    };
-    ## bun2nix
-    bun2nix = {
-      type = "github";
-      owner = "nix-community";
-      repo = "bun2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # System & Boot
@@ -126,7 +132,10 @@
       type = "github";
       owner = "nix-community";
       repo = "lanzaboote";
-      inputs.rust-overlay.follows = "rust-overlay";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+      };
     };
     ## Fix build for lanzaboote
     rust-overlay = {
@@ -142,6 +151,13 @@
       repo = "sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ## kernel
+    nix-cachyos-kernel = {
+      type = "github";
+      owner = "xddxdd";
+      repo = "nix-cachyos-kernel";
+      inputs.flake-parts.follows = "flake-parts";
+    };
 
     # Desktop Environment
     ## Hyprland
@@ -149,12 +165,6 @@
       type = "github";
       owner = "hyprwm";
       repo = "Hyprland";
-    };
-    hyprpanel = {
-      type = "github";
-      owner = "Jas-SinghFSU";
-      repo = "HyprPanel";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     ## Niri
     niri = {
@@ -204,6 +214,10 @@
       type = "git";
       url = "https://github.com/ndfined-crp/ayugram-desktop";
       submodules = true;
+      inputs = {
+        git-hooks.follows = "git-hooks";
+        flake-parts.follows = "flake-parts";
+      };
     };
     freesmlauncher = {
       type = "github";
@@ -252,7 +266,11 @@
       type = "github";
       owner = "kuokuo123";
       repo = "otter-launcher";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        home-manager.follows = "home-manager";
+      };
     };
     fsel = {
       type = "github";
@@ -264,7 +282,10 @@
       type = "github";
       owner = "sxyazi";
       repo = "yazi";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+      };
     };
     nh = {
       type = "github";

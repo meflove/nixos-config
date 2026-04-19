@@ -47,7 +47,7 @@
               exec-once = [
                 "systemctl --user start hyprland-session.target"
                 "systemctl --user start hyprpolkitagent"
-                "${lib.getExe pkgs.swww} img ${../../../../pics/lock_screen.png}"
+                "${lib.getExe pkgs.awww} img ${../../../../pics/lock_screen.png}"
 
                 "[workspace 1 silent] ${lib.getExe inputs.ayugram-desktop.packages.${lib.hostPlatform}.default}"
                 "[workspace 2 silent] ${lib.getExe config.programs.zen-browser.package}"

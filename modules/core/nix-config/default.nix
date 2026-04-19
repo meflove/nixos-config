@@ -39,7 +39,8 @@
         channel.enable = false;
 
         settings = {
-          inherit (inputs.self.nixConfig) extra-substituters extra-trusted-public-keys;
+          substituters = inputs.self.nixConfig.extra-substituters;
+          trusted-public-keys = inputs.self.nixConfig.extra-trusted-public-keys;
           connect-timeout = 5;
           stalled-download-timeout = 10;
 

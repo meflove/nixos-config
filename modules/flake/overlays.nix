@@ -17,12 +17,33 @@
       };
     in {
       master = import inputs.nixpkgs-master branch-config;
+
       mefPkgs = {
         soundcloud-desktop = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.soundcloud-desktop;
         yot = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.yot;
         iloader = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.iloader;
       };
+
       llm-agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+      nix-gaming = inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system};
+
+      freesmlauncher = inputs.freesmlauncher.packages.${pkgs.stdenv.hostPlatform.system}.freesmlauncher.override {
+        gamemodeSupport = true;
+        controllerSupport = true;
+        textToSpeechSupport = false;
+
+        jdks = _old.lib.attrValues {
+          inherit
+            (_old)
+            # its all LTS
+            # https://adoptium.net/temurin/releases
+            temurin-jre-bin-25
+            temurin-jre-bin-21
+            temurin-jre-bin-17
+            temurin-jre-bin-8
+            ;
+        };
+      };
     };
   };
 }

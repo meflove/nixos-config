@@ -41,6 +41,7 @@
         otter-launcher
         yazi
         zellij
+        gopass
 
         # Core modules
         easyeffects
@@ -51,6 +52,7 @@
         users
         nix-config
         debloat
+        ccache
 
         # Desktop modules
         flatpak
@@ -76,7 +78,7 @@
         direnv
         editor
         git
-        jj
+        jujutsu
         podman
         virt-manager
         database

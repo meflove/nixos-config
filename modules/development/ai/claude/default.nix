@@ -41,13 +41,13 @@
           enableMcpIntegration = true;
           package = claude-wrapped;
 
-          memory.source = ./CLAUDE.md;
+          context = ./CLAUDE.md;
 
           commands = {
             code_review = ./commands/CODE_REVIEW.md;
             full_review = ./commands/FULL_REVIEW.md;
           };
-          skillsDir = ./skills;
+          skills = ./skills;
 
           settings = {
             alwaysThinkingEnabled = true;

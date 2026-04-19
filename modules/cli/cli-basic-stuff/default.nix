@@ -87,6 +87,7 @@
           tlrc # Simplified man pages
           chafa # Image to terminal converter
           bitwarden-cli # CLI for Bitwarden password manager
+          gopass # CLI password manager
           wl-clipboard
 
           # Video & Media
@@ -126,19 +127,6 @@
 
           bat = {
             enable = true;
-            config = {
-              theme = "Catppuccin Macchiato";
-            };
-            themes = {
-              catppuccinMacchiato = {
-                src = pkgs.fetchurl {
-                  url = "https://raw.githubusercontent.com/catppuccin/bat/refs/heads/main/themes/Catppuccin%20Macchiato.tmTheme";
-                  sha256 = "sha256-EQCQ9lW5cOVp2C+zeAwWF2m1m6I0wpDQA5wejEm7WgY=";
-                };
-
-                file = "Catppuccin Macchiato.tmTheme";
-              };
-            };
           };
 
           zoxide = {

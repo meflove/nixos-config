@@ -148,6 +148,14 @@
             enable = true;
             enableFishIntegration = true;
             enableNushellIntegration = true;
+
+            defaultCacheTtl = 3600;
+            maxCacheTtl = 7200;
+
+            pinentry = {
+              package = pkgs.pinentry-curses;
+              program = "pinentry-curses";
+            };
           };
           ssh-agent = {
             enable = true;

@@ -7,7 +7,7 @@
           # Appearance
           session_name = "angeldust";
           attach_to_session = true;
-          theme = "catppuccin-mocha";
+          # theme = "catppuccin-mocha";
           pane_frames = false;
           simplified_ui = false;
           styled_underlines = true;
@@ -35,7 +35,7 @@
           session_serialization = true;
         };
 
-        themes = import ./themes.nix;
+        # themes = import ./themes.nix;
 
         layouts = import ./layouts.nix;
 

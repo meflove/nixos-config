@@ -1,7 +1,15 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
-      boot.zfs.package = pkgs.zfs_cachyos;
+    nixosModules.${baseNameOf ./.} = {
+      config,
+      pkgs,
+      inputs,
+      ...
+    }: {
+      boot.zfs.package = config.boot.kernelPackages.zfs_cachyos;
+      # boot.zfs.package = pkgs.cachyosKernels.zfs-cachyos.override {
+      #   kernel = config.boot.kernelPackages.kernel;
+      # };
       services.zfs = {
         zed = {
           settings = {

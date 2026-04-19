@@ -7,7 +7,7 @@
       boost-amount = 6;
       boost-threshold = -72;
       bypass = false;
-      dry = -100;
+      dry = -80;
       hpf-frequency = 10;
       hpf-mode = "off";
       input-gain = 0;
@@ -180,7 +180,7 @@
       bypass = false;
       curve-threshold = -50;
       curve-zone = -2;
-      dry = -100;
+      dry = -80;
       hpf-frequency = 10;
       hpf-mode = "off";
       hysteresis = true;

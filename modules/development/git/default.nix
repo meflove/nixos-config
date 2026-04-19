@@ -33,10 +33,6 @@
                 preloadindex = true;
               };
 
-              init = {
-                defaultBranch = "dev";
-              };
-
               diff = {
                 renames = "copies";
                 interHunkContext = 10;

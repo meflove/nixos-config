@@ -73,18 +73,6 @@
           inherit settings;
         };
 
-        # XDG portal configuration
-        xdg.portal = {
-          config.niri = {
-            default = ["gtk" "gnome"];
-          };
-
-          extraPortals = [
-            pkgs.xdg-desktop-portal-gnome
-            pkgs.xdg-desktop-portal-gtk
-          ];
-        };
-
         systemd.user.services.stylix-bg-niri = {
           Unit = {
             Description = "Sets stylix image as background for niri";
@@ -93,7 +81,7 @@
 
           Service = {
             ExecStart = lib.concatStringsSep " " [
-              (lib.getExe pkgs.swww)
+              (lib.getExe pkgs.awww)
               "img"
               config.stylix.image
             ];

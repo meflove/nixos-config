@@ -26,31 +26,31 @@
       };
       stylix = {
         enable = true;
-        autoEnable = false;
+        autoEnable = true;
 
         image = ../../../pics/catppuccin-colors.png;
 
-        # base16Scheme = "${pkgs.base16-schemes}/share/themes/tokyo-night-storm.yaml";
-        base16Scheme = {
-          scheme = "Tokyo-Night-Storm-MD3e";
-          name = "TokyoNightStormMD3e";
-          base00 = "#24283b";
-          base01 = "#1f2335";
-          base02 = "#292e42";
-          base03 = "#565f89";
-          base04 = "#a9b1d6";
-          base05 = "#c0caf5";
-          base06 = "#cdd6f4";
-          base07 = "#d5d6db";
-          base08 = "#f7768e";
-          base09 = "#ff9e64";
-          base0A = "#e0af68";
-          base0B = "#9ece6a";
-          base0C = "#7dcfff";
-          base0D = "#7aa2f7";
-          base0E = "#bb9af7";
-          base0F = "#ff007c";
-        };
+        base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine-moon.yaml";
+        # base16Scheme = {
+        #   scheme = "Tokyo-Night-Storm-MD3e";
+        #   name = "TokyoNightStormMD3e";
+        #   base00 = "#24283b";
+        #   base01 = "#1f2335";
+        #   base02 = "#292e42";
+        #   base03 = "#565f89";
+        #   base04 = "#a9b1d6";
+        #   base05 = "#c0caf5";
+        #   base06 = "#cdd6f4";
+        #   base07 = "#d5d6db";
+        #   base08 = "#f7768e";
+        #   base09 = "#ff9e64";
+        #   base0A = "#e0af68";
+        #   base0B = "#9ece6a";
+        #   base0C = "#7dcfff";
+        #   base0D = "#7aa2f7";
+        #   base0E = "#bb9af7";
+        #   base0F = "#ff007c";
+        # };
         polarity = "dark";
 
         fonts = {
@@ -58,44 +58,42 @@
             package = pkgs.nerd-fonts.lilex;
             name = "Lilex Nerd Font Mono";
           };
+          emoji = {
+            package = pkgs.noto-fonts-color-emoji;
+            name = "Noto Color Emoji";
+          };
 
           serif = config.stylix.fonts.monospace;
           sansSerif = config.stylix.fonts.monospace;
-          emoji = config.stylix.fonts.monospace;
+          sizes = {
+            terminal = 12;
+          };
         };
 
         cursor = {
           name = "Bibata-Modern-Custom";
           package = inputs.nix-cursors.packages.${lib.hostPlatform}.bibata-modern-cursor.override {
-            background_color = config.lib.stylix.colors.withHashtag.magenta;
+            background_color = config.lib.stylix.colors.withHashtag.base0D;
             outline_color = config.lib.stylix.colors.withHashtag.base00;
             accent_color = config.lib.stylix.colors.withHashtag.base00;
           };
           size = 20;
-        };
-        targets = {
-          gtk.enable = true;
-          qt.enable = true;
         };
       };
       hm = {
         stylix = {
           targets =
             lib.genAttrs [
-              "ghostty"
-              "fish"
-              "kitty"
-              "dunst"
-              "qt"
-            ] (_: {enable = true;})
+              "hyprlock"
+              "zen-browser"
+              "obsidian"
+              "nixcord"
+              "gnome"
+            ]
+            (_: {enable = false;})
             // {
               gtk = {
-                enable = true;
                 fonts.enable = false;
-              };
-              qt = {
-                enable = true;
-                standardDialogs = "gtk3";
               };
             };
 
@@ -108,7 +106,11 @@
 
         home = {
           packages = lib.attrValues {
-            inherit (pkgs) gtk3 gtk4;
+            inherit
+              (pkgs)
+              gtk3
+              gtk4
+              ;
           };
 
           pointerCursor = {
@@ -132,9 +134,6 @@
 
         dconf = {
           settings = {
-            "org/gnome/desktop/background" = {
-              picture-uri-dark = "file://${pkgs.nixos-artwork.wallpapers.nineish-dark-gray.src}";
-            };
             "org/gnome/desktop/interface" = {
               color-scheme = "prefer-dark";
             };

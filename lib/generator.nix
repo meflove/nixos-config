@@ -23,6 +23,7 @@ let
     zapret-presets.nixosModules.presets
     stylix.nixosModules.default
     determinate.nixosModules.default
+    nix-gaming.nixosModules.wine
   ];
 
   homeModules = with inputs; [
@@ -63,7 +64,7 @@ in
         overlays = with inputs; [
           niri.overlays.niri
           hyprland.overlays.default
-          # llm-agents.overlays.default
+          nix-cachyos-kernel.overlays.default
 
           self.overlays.default
         ];

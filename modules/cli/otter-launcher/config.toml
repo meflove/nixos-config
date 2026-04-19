@@ -36,13 +36,10 @@ description = "launch desktop applications with fzf"
 prefix = "app"
 cmd = """
 desktop_file() {
-    # find /usr/share/applications -name "*.desktop" 2>/dev/null
-    # find /usr/local/share/applications -name "*.desktop" 2>/dev/null
-    # find "$HOME/.local/share/applications" -name "*.desktop" 2>/dev/null
-    # find /var/lib/flatpak/exports/share/applications -name "*.desktop" 2>/dev/null
-    find "$HOME/.local/share/flatpak/exports/share/applications" -name "*.desktop" 2>/dev/null
-    find /run/current-system/sw/share/applications -name "*.desktop" 2>/dev/null
-    find "$HOME/.nix-profile/share/applications/" -name "*.desktop" 2>/dev/null
+    fd '^.*\\.desktop$' --follow $HOME/.local/share/flatpak/exports/share/applications 2>/dev/null
+    fd '^.*\\.desktop$' --follow /run/current-system/sw/share/applications/ 2>/dev/null
+    fd '^.*\\.desktop$' --follow $HOME/.nix-profile/share/applications 2>/dev/null
+    fd '^.*\\.desktop$' --follow /etc/profiles/per-user/angeldust/
 }
 
 temp_file=$(mktemp)

@@ -53,16 +53,18 @@
 
           wireplumber = {
             enable = true;
-            extraConfig = lib.mkIf config.services.pipewire.alsa.enable {
-              "99-alsa-lowlatency"."monitor.alsa.rules" = [
-                {
-                  matches = [{"node.name" = "~alsa_output.*";}];
-                  actions.update-props = {
-                    "audio.format" = "S32LE";
-                    "audio.rate" = defaultRate;
-                  };
-                }
-              ];
+            extraConfig = {
+              "99-alsa-lowlatency" = lib.mkIf config.services.pipewire.alsa.enable {
+                "monitor.alsa.rules" = [
+                  {
+                    matches = [{"node.name" = "~alsa_output.*";}];
+                    actions.update-props = {
+                      "audio.format" = "S32LE";
+                      "audio.rate" = defaultRate;
+                    };
+                  }
+                ];
+              };
             };
           };
 
@@ -124,23 +126,27 @@
               };
             };
 
-            pipewire-pulse."20-upmix" = upmixConfig;
+            pipewire-pulse = {
+              "20-upmix" = upmixConfig;
 
-            pipewire-pulse."99-lowlatency" = {
-              "pulse.properties" = {
-                "server.address" = ["unix:native"];
-                "pulse.min.req" = qr;
-                "pulse.min.quantum" = qr;
-                "pulse.min.frag" = qr;
+              "99-lowlatency" = {
+                "pulse.properties" = {
+                  "server.address" = ["unix:native"];
+                  "pulse.min.req" = qr;
+                  "pulse.min.quantum" = qr;
+                  "pulse.min.frag" = qr;
+                };
               };
             };
 
-            client."20-upmix" = upmixConfig;
+            client = {
+              "20-upmix" = upmixConfig;
 
-            client."99-lowlatency" = {
-              "stream.properties" = {
-                "node.latency" = qr;
-                "resample.quality" = 1;
+              "99-lowlatency" = {
+                "stream.properties" = {
+                  "node.latency" = qr;
+                  "resample.quality" = 1;
+                };
               };
             };
           };

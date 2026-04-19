@@ -17,10 +17,23 @@
         ];
       };
 
-      boot = {
-        kernelPackages = pkgs.linuxPackages_cachyos.cachyOverride {
-          mArch = "GENERIC_V3";
+      boot = let
+        kernel = pkgs.cachyosKernels.linux-cachyos-latest.override {
+          pname = "linux-cachyos-lto-x86_64-v3";
+
+          cpusched = "bore";
+          performanceGovernor = true;
+          tickrate = "nohz_full";
+          lto = "full";
+          processorOpt = "x86_64-v3";
+          autofdo = true;
+          bbr3 = true;
+          hardened = false;
         };
+        # Additional args are available. See kernel-cachyos/mkCachyKernel.nix
+      in {
+        # kernelPackages = pkgs.linuxKernel.packagesFor kernel;
+        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
         kernelPatches = [
           {

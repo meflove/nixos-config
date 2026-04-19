@@ -27,7 +27,7 @@
   pulseaudioFull,
 }: let
   pname = "soundcloud-desktop";
-  version = "6.6.0";
+  version = "6.8.0";
 in
   rustPlatform.buildRustPackage (finalAttrs: {
     inherit pname version;
@@ -36,11 +36,11 @@ in
       owner = "zxcloli666";
       repo = "SoundCloud-Desktop";
       rev = version;
-      hash = "sha256-rwkVc/EyY5lfbtMQjXeIgJvT5G1wxxdSQNrp8zMK+ZA=";
+      hash = "sha256-P7H/hQX5LPzadNzp7qXtyw0dde0N7A3xI4OCq1wZJBw=";
     };
 
     cargoRoot = "desktop/src-tauri";
-    cargoHash = "sha256-onoPGnt6S/I4BbtIC924ZYPrlX2dIs6SWYMlzpSPOzA=";
+    cargoHash = "sha256-Cx2i6mlqtwfnOi1txJYJTpn8AGKv3TYlyUzqFS0uAm4=";
 
     buildAndTestSubdir = finalAttrs.cargoRoot;
     doCheck = false;

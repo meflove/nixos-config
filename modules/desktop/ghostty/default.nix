@@ -29,12 +29,11 @@
               "${cursorSmear}"
             ];
 
-            font-family = config.stylix.fonts.monospace.name;
-            font-size = 12;
+            # font-family = config.stylix.fonts.monospace.name;
+            # font-size = 12;
             adjust-cell-height = "15%";
 
             window-theme = "ghostty";
-            window-colorspace = "display-p3";
 
             gtk-titlebar = false;
             app-notifications = false;

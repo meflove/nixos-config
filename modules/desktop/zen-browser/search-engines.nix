@@ -4,6 +4,8 @@
   privateDefault = "ddg";
 
   engines = {
+    google.metaData.alias = "g";
+    perplexity.metaData.alias = "perp";
     "Nix Packages" = {
       urls = [
         {
@@ -88,26 +90,27 @@
           ];
         }
       ];
+      icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
       definedAliases = ["noo"];
     };
-    "Perplexity" = {
-      urls = [
-        {
-          template = "https://www.perplexity.ai/search";
-          params = [
-            {
-              name = "q";
-              value = "{searchTerms}";
-            }
-            {
-              name = "s";
-              value = "o";
-            }
-          ];
-        }
-      ];
-      definedAliases = ["@perp"];
-    };
+    # "Perplexity" = {
+    #   urls = [
+    #     {
+    #       template = "https://www.perplexity.ai/search";
+    #       params = [
+    #         {
+    #           name = "q";
+    #           value = "{searchTerms}";
+    #         }
+    #         {
+    #           name = "s";
+    #           value = "o";
+    #         }
+    #       ];
+    #     }
+    #   ];
+    #   definedAliases = ["@perp"];
+    # };
     "Ru to En" = {
       urls = [
         {

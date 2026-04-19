@@ -18,7 +18,7 @@
       boost-amount = 6;
       boost-threshold = -72;
       bypass = false;
-      dry = -100;
+      dry = -80;
       hpf-frequency = 10;
       hpf-mode = "off";
       input-gain = 0;
@@ -30,7 +30,7 @@
       output-gain = 0;
       ratio = 2;
       release = 250;
-      release-threshold = -100;
+      release-threshold = -80;
       sidechain = {
         lookahead = 0;
         mode = "RMS";

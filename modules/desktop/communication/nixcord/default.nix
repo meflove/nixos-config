@@ -33,9 +33,9 @@
             useQuickCss = true; # use out quickCSS
             themeLinks = [
               # or use an online theme
-              "https://raw.githubusercontent.com/refact0r/system24/refs/heads/main/theme/flavors/system24-catppuccin-mocha.theme.css"
+              "https://raw.githubusercontent.com/refact0r/system24/refs/heads/main/theme/flavors/system24-rose-pine-moon.theme.css"
             ];
-            enabledThemes = ["catppuccin-mocha.theme.css" "system24 (catppuccin mocha)"];
+            enabledThemes = ["system24-rose-pine-moon.theme.css"];
 
             frameless = true; # Set some Vencord options
             plugins = {

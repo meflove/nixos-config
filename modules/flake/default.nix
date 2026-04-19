@@ -8,6 +8,7 @@
   flake = _: {
     nixConfig = {
       extra-substituters = [
+        "https://cache.nixos.org?priority=100"
         "https://nixos-cache-proxy.cofob.dev"
         "https://mirror.yandex.ru/nixos"
         "https://cache.nixos-cuda.org"

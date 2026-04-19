@@ -15,7 +15,6 @@ devenv.local.yaml
 .pre-commit-config.yaml
 
 # trash
-2.bash
-index.html
 .cache
 *.bak
+ignore/
