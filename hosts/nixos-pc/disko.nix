@@ -25,14 +25,15 @@
                 type = "btrfs";
                 extraArgs = ["-f"];
                 subvolumes = let
-                  mountOptions = [
-                    "compress=zstd:1"
+                  mountOptionsGenerator = {compress ? 1}: [
+                    "compress=zstd:${toString compress}"
                     "noatime"
                     "space_cache=v2"
                     "nodiscard"
                     "ssd_spread"
                     "commit=300"
                   ];
+                  mountOptions = mountOptionsGenerator {compress = 1;};
                 in {
                   "@root" = {
                     mountpoint = "/";
@@ -44,7 +45,7 @@
                   };
                   "@nix" = {
                     mountpoint = "/nix";
-                    inherit mountOptions;
+                    mountOptions = mountOptionsGenerator {compress = 3;};
                   };
                   "@var/log" = {
                     mountpoint = "/var/log";
@@ -99,14 +100,12 @@
           compression = "zstd";
           atime = "off";
           xattr = "sa";
-          mountpoint = "none";
         };
-
-        mountpoint = "/data";
 
         datasets = {
           test = {
             type = "zfs_fs";
+
             mountpoint = "/data";
             options = {
               recordsize = "128K";
@@ -115,6 +114,7 @@
 
           test2 = {
             type = "zfs_fs";
+
             mountpoint = "/data2";
             options = {
               recordsize = "16K";
@@ -122,14 +122,6 @@
             };
           };
         };
-      };
-    };
-    nodev = {
-      "/tmp" = {
-        fsType = "tmpfs";
-        mountOptions = [
-          "size=8192M"
-        ];
       };
     };
   };

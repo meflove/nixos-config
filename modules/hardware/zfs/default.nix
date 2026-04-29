@@ -2,14 +2,18 @@
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       config,
-      pkgs,
+      lib,
       inputs,
       ...
     }: {
-      boot.zfs.package = config.boot.kernelPackages.zfs_cachyos;
-      # boot.zfs.package = pkgs.cachyosKernels.zfs-cachyos.override {
-      #   kernel = config.boot.kernelPackages.kernel;
-      # };
+      boot.zfs = {
+        package = config.boot.kernelPackages.zfs_cachyos;
+        extraPools =
+          if config.boot.supportedFilesystems ? "zfs"
+          then lib.attrNames inputs.self.diskoConfigurations.${lib.configurationName}.disko.devices.zpool
+          else [];
+      };
+
       services.zfs = {
         zed = {
           settings = {

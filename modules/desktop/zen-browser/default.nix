@@ -9,7 +9,7 @@
     }: let
       inherit (lib) flattenAttrsDot;
       search = import ./search-engines.nix {inherit pkgs;};
-      extensions = import ./extensions.nix {inherit inputs pkgs;};
+      extensions = import ./extensions.nix {inherit lib pkgs;};
       spaces = import ./spaces.nix;
       mods = import ./mods.nix {inherit lib;};
     in {
@@ -81,14 +81,23 @@
             HardwareAcceleration = true;
           };
 
+          extraPrefs = builtins.readFile (builtins.fetchurl {
+            url = "https://raw.githubusercontent.com/MrOtherGuy/fx-autoconfig/master/program/config.js";
+            sha256 = "sha256-gNxCEmSj6gQnXhckt7VyNPiSVOlYKmwX6akRtlw6ptc=";
+          });
+
           profiles = {
             "angeldust" = {
               inherit search;
               inherit extensions;
               inherit (spaces) spaces pins;
-              inherit (mods) mods;
+              # inherit (mods) mods;
               pinsForce = false;
               spacesForce = true;
+              sine = {
+                enable = true;
+                inherit (mods) mods;
+              };
 
               settings = let
                 zenPackage = config.hm.programs.zen-browser.package;

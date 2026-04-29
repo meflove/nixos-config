@@ -12,7 +12,7 @@
         webHome = "${pkgs.flood-for-transmission}";
 
         home = "/home/${lib.userName}/Torrents";
-        downloadDirPermissions = "777";
+        downloadDirPermissions = "664";
 
         settings = {
           download-dir = "${config.services.transmission.home}";
@@ -22,6 +22,11 @@
           watch-dir = "${config.services.transmission.home}/torrent_files";
         };
       };
+
+      users.users.${lib.userName}.extraGroups = [
+        # torrent
+        config.services.transmission.group
+      ];
     };
   };
 }

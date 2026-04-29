@@ -7,27 +7,25 @@
       config,
       ...
     }: {
-      environment.systemPackages = with pkgs; [
-        # Essential CLI tools for system administration
-        uutils-coreutils-noprefix
-        uutils-util-linux
-        file
-        killall
-        rsync
-        tree
-        pcre
-
-        # File management and compression
-        unzip
-        zip
-        rar
-        unrar
-        _7zz-rar
-
-        # Nix related tools
-        comma
-        nix-output-monitor
-      ];
+      environment.systemPackages = lib.attrValues {
+        inherit
+          (pkgs)
+          # Essential CLI tools for system administration
+          uutils-coreutils-noprefix
+          uutils-util-linux
+          file
+          killall
+          rsync
+          tree
+          pcre
+          # File management and compression
+          unzip
+          zip
+          rar
+          unrar
+          _7zz-rar
+          ;
+      };
 
       services = {
         locate = {
@@ -37,20 +35,6 @@
         };
       };
 
-      programs = {
-        nh = {
-          enable = true;
-          package = inputs.nh.packages.${lib.hostPlatform}.default;
-
-          flake = lib.flakeDir; # sets NH_OS_FLAKE variable for you
-
-          clean = {
-            enable = true;
-            dates = "weekly";
-            extraArgs = "--keep-since 7d --keep 10";
-          };
-        };
-      };
       hm = {
         sops = {
           secrets = {
@@ -61,41 +45,47 @@
           };
         };
 
-        home.packages = with pkgs; [
-          # === File System & Disk Utilities ===
-          # Modern alternatives to standard tools
-          dust # Disk usage visualization (du alternative)
-          duf # Disk usage/free tool with colors (df alternative)
+        home.packages = lib.attrValues {
+          inherit
+            (pkgs)
+            # === File System & Disk Utilities ===
+            # Modern alternatives to standard tools
+            dust # Disk usage visualization (du alternative)
+            duf # Disk usage/free tool with colors (df alternative)
 
-          # === System Monitoring & Progress ===
-          progress # Coreutils progress viewer
-          viddy # Modern watch command with TUI
-          btop # `top` alternative
+            # === System Monitoring & Progress ===
+            progress # Coreutils progress viewer
+            viddy # Modern watch command with TUI
+            btop # `top` alternative
 
-          # === CLI Tools & Utilities ===
-          blobdrop # TUI for drag-and-drop file transfers to browser/desktop apps
-          unixtools.net-tools # Network tools
+            # === CLI Tools & Utilities ===
+            blobdrop # TUI for drag-and-drop file transfers to browser/desktop apps
 
-          # Replacements for standard commands
-          ripgrep # `grep` alternative
-          ripgrep-all
-          sd # `sed` alternative
+            # Replacements for standard commands
+            ripgrep # `grep` alternative
+            ripgrep-all
+            sd # `sed` alternative
 
-          # Productivity & Helpers
-          fzf # Fuzzy finder
-          ggh # SSH connection manager
-          tlrc # Simplified man pages
-          chafa # Image to terminal converter
-          bitwarden-cli # CLI for Bitwarden password manager
-          gopass # CLI password manager
-          wl-clipboard
-
-          # Video & Media
-          mefPkgs.yot
-
-          # === Download & Media ===
-          python313Packages.downloader-cli # CLI downloader with progress bars
-        ];
+            # Productivity & Helpers
+            fzf # Fuzzy finder
+            ggh # SSH connection manager
+            tlrc # Simplified man pages
+            chafa # Image to terminal converter
+            bitwarden-cli # CLI for Bitwarden password manager
+            gopass # CLI password manager
+            wl-clipboard
+            ;
+          inherit
+            (pkgs.mefPkgs)
+            # Video & Media
+            yot
+            ;
+          inherit
+            (pkgs.python3Packages)
+            # === Download & Media ===
+            downloader-cli # CLI downloader with progress bars
+            ;
+        };
 
         services.clipse = {
           enable = true;
@@ -151,7 +141,7 @@
 
           yt-dlp = {
             enable = true;
-            package = inputs.chaotic.packages.${lib.hostPlatform}.yt-dlp_git;
+            # package = inputs.chaotic.packages.${lib.hostPlatform}.yt-dlp_git;
 
             settings = {
               embed-thumbnail = true;

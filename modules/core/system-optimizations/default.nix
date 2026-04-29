@@ -1,6 +1,6 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = _: {
+    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
       zramSwap = {
         enable = true;
         priority = 100;
@@ -29,6 +29,23 @@
         cpu.intel.updateMicrocode = true;
       };
 
+      services.udev.packages = [
+        (pkgs.writeTextFile {
+          name = "IO-schedulers-udev-rules";
+          text = ''
+            # HDD
+            ACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
+
+            # SSD
+            ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="adios"
+
+            # NVMe SSD
+            ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="adios"
+          '';
+          destination = "/etc/udev/rules.d/60-ioschedulers.rules";
+        })
+      ];
+
       boot = {
         extraModprobeConfig = ''
           # HDD optimisations
@@ -45,8 +62,8 @@
           "vm.page-cluster" = 0;
 
           # Page Trashing
-          "vm.dirty_background_bytes" = 268435456;
-          "vm.dirty_bytes" = 1073741824;
+          "vm.dirty_background_bytes" = 256 * 1024 * 1024; # 256MB = 268435456
+          "vm.dirty_bytes" = 1 * 1024 * 1024 * 1024; # 2GB = 2147483648
 
           "vm.dirty_expire_centisecs" = 1500;
           "vm.dirty_writeback_centisecs" = 100;
@@ -70,12 +87,12 @@
       };
 
       services = {
-        earlyoom = {
+        ananicy = {
           enable = true;
+          package = pkgs.ananicy-cpp;
 
-          enableNotifications = true;
+          rulesProvider = pkgs.ananicy-rules-cachyos_git;
         };
-
         dbus.implementation = "broker";
 
         fwupd.enable = true;

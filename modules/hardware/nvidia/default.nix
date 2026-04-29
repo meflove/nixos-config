@@ -11,21 +11,29 @@
       hardware = {
         graphics = {
           enable = true;
-          enable32Bit = true;
+
           extraPackages = lib.attrValues {
             inherit
               (pkgs)
               nvidia-vaapi-driver
               libvdpau-va-gl
               vulkan-hdr-layer-kwin6
-              ;
-            inherit
-              (pkgs.vulkanPackages_latest)
+              gamescope-wsi_git
               vulkan-extension-layer
-              vulkan-headers
               vulkan-loader
-              vulkan-tools
+              vulkan-headers
               vulkan-validation-layers
+              ;
+            # inherit
+            #   (pkgs.vulkanPackages_latest)
+            #   vulkan-extension-layer
+            #   vulkan-loader
+            #   vulkan-headers
+            #   vulkan-validation-layers
+            #   ;
+            inherit
+              (pkgs.nix-gaming)
+              dxvk-nvapi-vkreflex-layer
               ;
           };
         };

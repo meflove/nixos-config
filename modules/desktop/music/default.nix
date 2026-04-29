@@ -1,11 +1,21 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      pkgs,
+      lib,
+      ...
+    }: {
       hm = {
-        home.packages = with pkgs; [
-          mefPkgs.soundcloud-desktop
-          # master.cliamp
-        ];
+        home.packages = lib.attrValues {
+          inherit
+            (pkgs.mefPkgs)
+            soundcloud-desktop
+            ;
+          # inherit
+          #   (pkgs)
+          #   cliamp
+          #   ;
+        };
       };
     };
   };

@@ -28,7 +28,7 @@
         enable = true;
         autoEnable = true;
 
-        image = ../../../pics/catppuccin-colors.png;
+        image = ../../../pics/nix-tyan.png;
 
         base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine-moon.yaml";
         # base16Scheme = {

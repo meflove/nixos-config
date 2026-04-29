@@ -1,13 +1,16 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = _: {
+    nixosModules.${baseNameOf ./.} = {
+      pkgs,
+      lib,
+      ...
+    }: {
       hm.programs.zellij = {
         enable = true;
         settings = {
           # Appearance
           session_name = "angeldust";
           attach_to_session = true;
-          # theme = "catppuccin-mocha";
           pane_frames = false;
           simplified_ui = false;
           styled_underlines = true;
@@ -26,7 +29,7 @@
           # Clipboard & Scrolling
           copy_on_select = true;
           scroll_buffer_size = 10000;
-          scrollback_editor = "nvim";
+          scrollback_editor = lib.getExe pkgs.nixCats;
           scrollback_lines_to_serialize = 10000;
 
           # Session Management
@@ -34,8 +37,6 @@
           serialize_pane_viewport = true;
           session_serialization = true;
         };
-
-        # themes = import ./themes.nix;
 
         layouts = import ./layouts.nix;
 

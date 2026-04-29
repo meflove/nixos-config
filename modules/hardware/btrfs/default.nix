@@ -6,9 +6,12 @@
       config,
       ...
     }: {
-      environment.systemPackages = with pkgs; [
-        btrfs-progs
-      ];
+      environment.systemPackages = lib.attrValues {
+        inherit
+          (pkgs)
+          btrfs-progs
+          ;
+      };
 
       services = lib.mkIf (config.boot.supportedFilesystems ? "btrfs") {
         btrfs.autoScrub = {

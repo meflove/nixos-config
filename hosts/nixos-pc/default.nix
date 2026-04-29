@@ -12,80 +12,78 @@
       hostId = "78172da6";
       flakeDir = "/home/${userName}/.config/nixos-config";
 
-      extraModules = with config.nixosModules; [
-        # Boot modules
-        kernel-optimizations
-        secureboot
-
-        # Hardware modules
-        bluetooth
-        btrfs
-        zfs
-        iphone
-        nvidia
-        sound
-
-        # Networking modules
-        firewall
-        network-core
-        vpn
-        zapret
-        network-tools
-
-        # Cli modules
-        atuin
-        cli-basic-stuff
-        fastfetch
-        fish
-        nushell
-        otter-launcher
-        yazi
-        zellij
-        gopass
-
-        # Core modules
-        easyeffects
-        security
-        ssh-gpg
-        system-optimizations
-        time-locale
-        users
-        nix-config
-        debloat
-        ccache
-
-        # Desktop modules
-        flatpak
-        gaming
-        ghostty
-        kitty
-        media-tools
-        theming
-        torrent
-        xdg
-        zen-browser
-        music
-        productivity
-        communication
-        nixcord
-        ## Wm modules
-        hyprlock
-        niri
-        waybar
-        dunst
-
-        # Development modules
-        direnv
-        editor
-        git
-        jujutsu
-        podman
-        virt-manager
-        database
-        ## AI modules
-        claude
-        mcp
-      ];
+      extraModules = extendedLib.nxosLib.attrValues {
+        inherit
+          (config.nixosModules)
+          # Boot modules
+          kernel-optimizations
+          secureboot
+          # Hardware modules
+          bluetooth
+          btrfs
+          zfs
+          iphone
+          nvidia
+          sound
+          # Networking modules
+          firewall
+          network-core
+          vpn
+          zapret
+          network-tools
+          # Cli modules
+          atuin
+          cli-basic-stuff
+          nix-cli
+          fastfetch
+          fish
+          nushell
+          otter-launcher
+          yazi
+          zellij
+          gopass
+          # Core modules
+          easyeffects
+          security
+          ssh-gpg
+          system-optimizations
+          oom-killer
+          time-locale
+          users
+          nix-config
+          debloat
+          # Desktop modules
+          flatpak
+          gaming
+          ghostty
+          kitty
+          media-tools
+          theming
+          torrent
+          xdg
+          zen-browser
+          music
+          productivity
+          communication
+          nixcord
+          ## Wm modules
+          hyprlock
+          niri
+          waybar
+          dunst
+          # Development modules
+          direnv
+          editor
+          git
+          jujutsu
+          podman
+          virt-manager
+          database
+          ## AI modules
+          claude
+          mcp
+          ;
+      };
     };
 
     diskoConfigurations.${baseNameOf ./.} = import ./disko.nix {

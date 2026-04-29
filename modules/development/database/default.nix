@@ -1,12 +1,19 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      pkgs,
+      lib,
+      ...
+    }: {
       hm = {
-        home.packages = with pkgs; [
-          dbeaver-bin
-          sqlite
-          postgresql
-        ];
+        home.packages = lib.attrValues {
+          inherit
+            (pkgs)
+            dbeaver-bin
+            sqlite
+            postgresql
+            ;
+        };
       };
     };
   };

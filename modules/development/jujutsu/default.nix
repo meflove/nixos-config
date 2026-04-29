@@ -7,10 +7,13 @@
       ...
     }: {
       hm = {
-        home.packages = with pkgs; [
-          diffnav # Diff viewer for git
-          delta # diff viewer
-        ];
+        home.packages = lib.attrValues {
+          inherit
+            (pkgs)
+            diffnav # Diff viewer for git
+            delta # diff viewer
+            ;
+        };
         programs = {
           jjui.enable = true;
           delta = {
@@ -69,7 +72,7 @@
                     fi
 
                     # Get the bookmark from the parent commit directly
-                    bookmark=$(jj log -r 'ancestors(@) & bookmarks()' -n 1 --no-graph --color never -T 'bookmarks' | ${sed} 's/\\*$//' | tr -d ' ')
+                    bookmark=$(jj log -r 'ancestors(@) & bookmarks()' -n 1 --no-graph --color never -T 'bookmarks' | ${sed} 's/\\*$//' | tr -d ' ' | xargs)
 
                     if [ -z "$bookmark" ]; then
                         echo "No bookmark found on parent commit"

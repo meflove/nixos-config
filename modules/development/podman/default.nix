@@ -1,6 +1,19 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      pkgs,
+      lib,
+      ...
+    }: {
+      users.users = {
+        ${lib.userName} = {
+          extraGroups = [
+            "docker"
+            "podman"
+          ];
+        };
+      };
+
       virtualisation = {
         podman = {
           enable = true;
@@ -17,10 +30,13 @@
 
           defaultNetwork.settings.dns_enabled = true;
 
-          extraPackages = with pkgs; [
-            podman-compose
-            podman-tui
-          ];
+          extraPackages = lib.attrValues {
+            inherit
+              (pkgs)
+              podman-compose
+              podman-tui
+              ;
+          };
         };
       };
 

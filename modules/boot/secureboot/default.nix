@@ -25,7 +25,12 @@
         };
       };
 
-      environment.systemPackages = with pkgs; [sbctl];
+      environment.systemPackages = lib.attrValues {
+        inherit
+          (pkgs)
+          sbctl
+          ;
+      };
     };
   };
 }

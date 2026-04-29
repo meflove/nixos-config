@@ -1,19 +1,27 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      pkgs,
+      lib,
+      ...
+    }: {
       services.usbmuxd = {
         enable = true;
         package = pkgs.usbmuxd2;
       };
 
-      environment.systemPackages = with pkgs; [
-        libimobiledevice
-        idevicerestore
-
-        mefPkgs.iloader
-
-        ifuse # optional, to mount using 'ifuse'
-      ];
+      environment.systemPackages = lib.attrValues {
+        inherit
+          (pkgs)
+          libimobiledevice
+          idevicerestore
+          ifuse # optional, to mount using 'ifuse'
+          ;
+        inherit
+          (pkgs.mefPkgs)
+          iloader
+          ;
+      };
     };
   };
 }

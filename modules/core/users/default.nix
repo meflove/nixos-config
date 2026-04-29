@@ -47,17 +47,7 @@
               "video"
               "users"
 
-              "adbusers"
-              "docker"
-              "gamemode"
-              "libvirtd"
-              "kvm"
-              "networkmanager"
-              "podman"
               "wheel"
-
-              # torrent
-              "transmission"
             ];
 
             description = "nixos system user, owner of ${lib.hostName}!";

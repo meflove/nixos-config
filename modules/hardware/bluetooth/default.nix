@@ -1,28 +1,34 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      pkgs,
+      lib,
+      ...
+    }: {
       hardware = {
         enableRedistributableFirmware = true;
         enableAllHardware = true;
 
         bluetooth = {
-          enable = true; # Включает поддержку Bluetooth [20]
-          powerOnBoot = true; # Включает Bluetooth-контроллер при загрузке [20]
+          enable = true;
+          powerOnBoot = true;
 
-          # Настройки для Bluetooth-гарнитур с PulseAudio [20]
           settings = {
             General = {
-              Enable = "Source,Sink,Media,Socket"; # Включает A2DP Sink [20]
               Experimental = true;
+              KernelExperimental = "6fbaf188-05e0-496a-9885-d6ddfdb4e03e";
             };
           };
         };
       };
 
-      environment.systemPackages = with pkgs; [
-        bluetui
-        bluez-experimental
-      ];
+      environment.systemPackages = lib.attrValues {
+        inherit
+          (pkgs)
+          bluetui
+          bluez-experimental
+          ;
+      };
     };
   };
 }

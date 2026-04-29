@@ -1,5 +1,5 @@
 {
-  inputs,
+  lib,
   pkgs,
   ...
 }: {
@@ -32,22 +32,25 @@
       userFilters = "";
     };
   };
-  packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
-    ublock-origin
-    bitwarden
-    darkreader
-    zen-internet
-    offline-qr-code-generator
-    sponsorblock
-    multi-account-containers
-    clearurls
-    auto-tab-discard
-    canvasblocker
-    enhanced-h264ify
-    return-youtube-dislikes
-    # enhancer-for-youtube
-    stylus
-    violentmonkey
-    media-url-timestamper
-  ];
+  packages = lib.attrValues {
+    inherit
+      (pkgs.firefox-addons)
+      ublock-origin
+      bitwarden
+      darkreader
+      zen-internet
+      offline-qr-code-generator
+      sponsorblock
+      multi-account-containers
+      clearurls
+      auto-tab-discard
+      canvasblocker
+      enhanced-h264ify
+      return-youtube-dislikes
+      # enhancer-for-youtube
+      stylus
+      violentmonkey
+      media-url-timestamper
+      ;
+  };
 }

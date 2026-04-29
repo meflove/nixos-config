@@ -210,9 +210,7 @@ Extended lib provides these from `buildConfiguration`:
 - `lib.hostName` - System hostname
 - `lib.userName` - Username
 - `lib.hostPlatform` - Platform (e.g., "x86_64-linux")
-- `lib.secretsFile` - SOPS secrets file reference
 - `lib.flakeDir` - Path to flake directory
-- `lib.stylix` - Stylix theme configuration
 - `lib.hostId` - Network host ID
 
 ### Inputs Usage

@@ -39,7 +39,7 @@ desktop_file() {
     fd '^.*\\.desktop$' --follow $HOME/.local/share/flatpak/exports/share/applications 2>/dev/null
     fd '^.*\\.desktop$' --follow /run/current-system/sw/share/applications/ 2>/dev/null
     fd '^.*\\.desktop$' --follow $HOME/.nix-profile/share/applications 2>/dev/null
-    fd '^.*\\.desktop$' --follow /etc/profiles/per-user/angeldust/
+    fd '^.*\\.desktop$' --follow /etc/profiles/per-user/@username@
 }
 
 temp_file=$(mktemp)

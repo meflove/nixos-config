@@ -29,12 +29,20 @@
         };
       };
 
-      environment.systemPackages = with pkgs; [
-        lsof
-      ];
+      environment.systemPackages = lib.attrValues {
+        inherit
+          (pkgs)
+          lsof
+          ;
+      };
 
       boot = {
-        extraModulePackages = with config.boot.kernelPackages; [r8125];
+        extraModulePackages = lib.attrValues {
+          inherit
+            (config.boot.kernelPackages)
+            r8125
+            ;
+        };
         kernelModules = ["r8125"];
         blacklistedKernelModules = ["r8169"];
       };

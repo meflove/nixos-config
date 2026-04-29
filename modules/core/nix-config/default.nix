@@ -39,8 +39,11 @@
         channel.enable = false;
 
         settings = {
-          substituters = inputs.self.nixConfig.extra-substituters;
-          trusted-public-keys = inputs.self.nixConfig.extra-trusted-public-keys;
+          inherit
+            (inputs.self.nixConfig)
+            extra-substituters
+            extra-trusted-public-keys
+            ;
           connect-timeout = 5;
           stalled-download-timeout = 10;
 
@@ -54,7 +57,8 @@
             "flakes"
             "auto-allocate-uids"
             "cgroups"
-            "pipe-operators"
+            # "pipe-operators"
+            "pipe-operator" # lix
           ];
 
           auto-allocate-uids = true;
@@ -63,7 +67,7 @@
           auto-optimise-store = true;
           allow-import-from-derivation = true;
 
-          download-buffer-size = 2048 * 1024 * 1024; # 2 GB
+          # download-buffer-size = 2048 * 1024 * 1024; # 2 GB
         };
 
         extraOptions = ''

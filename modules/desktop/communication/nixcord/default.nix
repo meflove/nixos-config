@@ -16,7 +16,7 @@
           vesktop.enable = false; # Vesktop
           equibop = {
             enable = true; # Equibot
-            package = pkgs.master.equibop;
+            # package = pkgs.master.equibop;
           };
 
           quickCss = ''

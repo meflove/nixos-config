@@ -1,12 +1,25 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: let
+    nixosModules.${baseNameOf ./.} = {
+      pkgs,
+      lib,
+      config,
+      ...
+    }: let
       wine = pkgs.nix-gaming.wine-tkg;
       # gamePkgs = inputs.nix-gaming.packages.${lib.hostPlatform};
     in {
       boot.kernelModules = [
         "ntsync"
       ];
+
+      users.users = {
+        ${lib.userName} = {
+          extraGroups = [
+            "gamemode"
+          ];
+        };
+      };
 
       services.udev.packages = [
         (pkgs.writeTextFile {
@@ -82,38 +95,99 @@
         new-lg4ff.enable = true;
       };
 
-      environment.systemPackages = with pkgs; [
-        logiops
-        gamescope-wsi_git
-        gamescope-wsi32_git
+      environment.systemPackages = lib.attrValues {
+        inherit
+          (pkgs)
+          logiops
+          gamescope-wsi_git
+          ;
+        inherit
+          (pkgs.nix-gaming)
+          dxvk
+          dxvk-nvapi
+          vkd3d-proton
+          ;
+      };
 
-        nix-gaming.vkd3d-proton
-        nix-gaming.dxvk
-        nix-gaming.dxvk-nvapi
-        nix-gaming.dxvk-nvapi-vkreflex-layer
-      ];
+      system.userActivationScripts = {
+        kron4ekDlls = let
+          installDlls = game: dir:
+          # bash
+          ''
+            GAME_DIR="/home/${lib.userName}/Games/${dir}"
+
+            if [[ -d "$GAME_DIR" ]]; then
+              mkdir -p "$GAME_DIR/game_info/dlls"
+
+              ln -sf ${pkgs.nix-gaming.dxvk-w64}/bin/*.dll "$GAME_DIR/game_info/dlls/"
+              ln -sf ${pkgs.nix-gaming.dxvk-nvapi-w64}/bin/*.dll "$GAME_DIR/game_info/dlls/"
+              ln -sf ${pkgs.nix-gaming.vkd3d-proton-w64}/bin/*.dll "$GAME_DIR/game_info/dlls/"
+              ln -sf ${config.hardware.nvidia.package}/lib/nvidia/wine/*.dll "$GAME_DIR/game_info/dlls/"
+              echo "Succesfully installed dlls for ${game}"
+            else
+              echo "There is no ${game} dir \"$GAME_DIR\""
+
+              exit 0
+            fi
+          '';
+        in {
+          text =
+            (installDlls "Cyberpunk 2077" "Cyberpunk 2077")
+            + (installDlls "No Man's Sky" "NoMansSky_Linux");
+          # ''
+          #   CYBERPUNK_DIR="/home/${lib.userName}/Games/Cyberpunk 2077"
+          #
+          #   if [[ -d "$CYBERPUNK_DIR" ]]; then
+          #     ln -sf ${pkgs.nix-gaming.dxvk-w64}/bin/*.dll "$CYBERPUNK_DIR/game_info/dlls/"
+          #     ln -sf ${pkgs.nix-gaming.dxvk-nvapi-w64}/bin/*.dll "$CYBERPUNK_DIR/game_info/dlls/"
+          #     ln -sf ${pkgs.nix-gaming.vkd3d-proton-w64}/bin/*.dll "$CYBERPUNK_DIR/game_info/dlls/"
+          #     ln -sf ${config.hardware.nvidia.package}/lib/nvidia/wine/*.dll "$CYBERPUNK_DIR/game_info/dlls/"
+          #     echo "Succesfully installed dlls for Cyberpunk 2077"
+          #   else
+          #     echo "There is no Cyberpunk 2077 dir"
+          #
+          #     exit 0
+          #   fi
+          #
+          #   NOMANSSKY_DIR="/home/${lib.userName}/Games/NoMansSky_Linux"
+          #
+          #   if [[ -d "$CYBERPUNK_DIR" ]]; then
+          #     ln -sf ${pkgs.nix-gaming.dxvk-w64}/bin/*.dll "$NOMANSSKY_DIR/game_info/dlls/"
+          #     ln -sf ${pkgs.nix-gaming.dxvk-nvapi-w64}/bin/*.dll "$NOMANSSKY_DIR/game_info/dlls/"
+          #     ln -sf ${pkgs.nix-gaming.vkd3d-proton-w64}/bin/*.dll "$NOMANSSKY_DIR/game_info/dlls/"
+          #     ln -sf ${config.hardware.nvidia.package}/lib/nvidia/wine/*.dll "$NOMANSSKY_DIR/game_info/dlls/"
+          #     echo "Succesfully installed dlls for No Mans Sky"
+          #   else
+          #     echo "There is no No Mans Sky dir"
+          #
+          #     exit 0
+          #   fi
+          # '';
+        };
+      };
 
       hm = {
         home = {
-          packages = with pkgs; [
-            protonup-ng
-
-            # veloren
-            # mindustry-wayland
-            # shattered-pixel-dungeon
-            # osu-lazer-bin
-
-            wine
-            winetricks
-
-            # Fonts for proper Wine UI rendering
-            wineWow64Packages.fonts # Wine replacement fonts
-
-            # (gamePkgs.osu-stable.override {
-            #   useGameMode = false;
-            # })
-            freesmlauncher
-          ];
+          packages = lib.attrValues {
+            inherit
+              (pkgs)
+              # stuff
+              protonup-ng
+              ## Games
+              freesmlauncher
+              # (gamePkgs.osu-stable.override {
+              #   useGameMode = false;
+              # })
+              # veloren
+              # mindustry-wayland
+              # shattered-pixel-dungeon
+              # osu-lazer-bin
+              ;
+            inherit
+              (pkgs.nix-gaming)
+              winetricks-git
+              ;
+          };
 
           sessionVariables = {
             STEAM_COMPAT_TOOLS_PATH = "\${HOME}/.steam/root/compatibilitytools.d";
@@ -129,19 +203,46 @@
               full = true;
             };
           };
-
           lutris = {
             enable = true;
+            package = pkgs.lutris.override {
+              # Intercept buildFHSEnv to modify target packages
+              buildFHSEnv = args:
+                pkgs.buildFHSEnv (args
+                  // {
+                    multiPkgs = envPkgs: let
+                      # Fetch original package list
+                      originalPkgs = args.multiPkgs envPkgs;
 
+                      # Disable tests for openldap
+                      customLdap = envPkgs.openldap.overrideAttrs (_: {doCheck = false;});
+                    in
+                      # Replace broken openldap with the custom one
+                      builtins.filter (p: (p.pname or "") != "openldap") originalPkgs ++ [customLdap];
+                  });
+            };
+
+            runners = {
+              wine = {
+                settings = {
+                  system.game_path = "/home/${lib.userName}/Lutris";
+                  runner = {
+                    runner_executable = "${wine}/bin/wine";
+                    version = "system";
+                  };
+                };
+              };
+            };
             extraPackages = with pkgs; [
-              mangohud
-              winetricks
-              gamescope
+              config.hm.programs.mangohud.package
+              config.programs.gamescope.package
               gamemode
+              nix-gaming.winetricks-git
               umu-launcher
+              vulkan-tools
             ];
-            defaultWinePackage = wine;
-            steamPackage = pkgs.steam;
+            protonPackages = config.programs.steam.extraCompatPackages;
+            steamPackage = config.programs.steam.package;
           };
         };
       };

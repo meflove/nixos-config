@@ -6,13 +6,16 @@
       ...
     }: {
       hm = {
-        home.packages = with pkgs; [
-          diffnav # Diff viewer for git
-          delta # diff viewer
-          lazygit # Git TUI
-          git-filter-repo
-          gh
-        ];
+        home.packages = lib.attrValues {
+          inherit
+            (pkgs)
+            diffnav # Diff viewer for git
+            delta # diff viewer
+            lazygit # Git TUI
+            git-filter-repo
+            gh
+            ;
+        };
 
         programs = {
           git = {

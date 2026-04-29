@@ -68,19 +68,25 @@
         xdg = {
           portal = {
             enable = true;
-            extraPortals = with pkgs; [
-              xdg-desktop-portal-gtk
-              xdg-desktop-portal-wlr
-              xdg-desktop-portal-gnome
-            ];
+            extraPortals = lib.attrValues {
+              inherit
+                (pkgs)
+                xdg-desktop-portal-gtk
+                xdg-desktop-portal-wlr
+                xdg-desktop-portal-gnome
+                ;
+            };
           };
         };
 
         home = {
-          packages = with pkgs; [
-            libnotify
-            hyprpolkitagent
-          ];
+          packages = lib.attrValues {
+            inherit
+              (pkgs)
+              libnotify
+              hyppolkitagent
+              ;
+          };
 
           sessionVariables = {
             QT_QPA_PLATFORM = "wayland";

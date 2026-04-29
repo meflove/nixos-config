@@ -3,6 +3,7 @@
     nixosModules.${baseNameOf ./.} = {
       pkgs,
       lib,
+      inputs,
       ...
     }: {
       services.scx = {
@@ -23,17 +24,22 @@
 
           cpusched = "bore";
           performanceGovernor = true;
-          tickrate = "nohz_full";
-          lto = "full";
+          tickrate = "full";
+          lto = "thin";
           processorOpt = "x86_64-v3";
           autofdo = true;
           bbr3 = true;
-          hardened = false;
         };
-        # Additional args are available. See kernel-cachyos/mkCachyKernel.nix
+
+        kernelPackages = (pkgs.linuxKernel.packagesFor kernel).extend (final: _prev: {
+          zfs_cachyos = final.callPackage "${inputs.nix-cachyos-kernel.outPath}/zfs-cachyos" {
+            inherit (inputs.nix-cachyos-kernel) inputs;
+            variant = "latest-lto";
+          };
+        });
       in {
-        # kernelPackages = pkgs.linuxKernel.packagesFor kernel;
-        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+        inherit kernelPackages;
+        # kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
         kernelPatches = [
           {
@@ -52,6 +58,7 @@
               DEFAULT_CUBIC = no;
               TCP_CONG_BBR = yes;
               DEFAULT_BBR = yes;
+              DEFAULT_TCP_CONG = freeform "bbr";
               NET_SCH_FQ_CODEL = module;
               NET_SCH_FQ = yes;
               CONFIG_DEFAULT_FQ_CODEL = no;

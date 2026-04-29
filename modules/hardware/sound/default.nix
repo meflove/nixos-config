@@ -6,10 +6,13 @@
       config,
       ...
     }: {
-      environment.systemPackages = with pkgs; [
-        uxplay
-        pwvucontrol
-      ];
+      environment.systemPackages = lib.attrValues {
+        inherit
+          (pkgs)
+          uxplay
+          pwvucontrol
+          ;
+      };
 
       security = {
         rtkit.enable = true;

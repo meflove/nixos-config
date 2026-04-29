@@ -9,11 +9,10 @@
       sops = {
         secrets = lib.flattenSecrets {
           pass = {
-            mode = "0400";
+            mode = "0444";
           };
         };
       };
-
       environment = {
         extraInit = ''
           if [ -f ${config.sops.secrets.pass.path} ]; then
@@ -34,7 +33,7 @@
             package = pkgs.gopass;
             settings = {
               PASSWORD_STORE_DIR = "${config.hm.xdg.dataHome}/gopass/stores/root";
-              PASSWORD_STORE_KEY = "age1hwfdncsemngkf4ekvpfegpgyt6z9ktc6pkxcsaq79shr72n4gg0sxeyrpa";
+              PASSWORD_STORE_KEY = "";
             };
           };
         };

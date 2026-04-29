@@ -8,30 +8,42 @@
     devenv.shells.default = {
       name = "nixland";
 
-      packages = with pkgs; [
-        glow # for md files
-        sops # secret management
-      ];
+      packages = lib.attrValues {
+        inherit
+          (pkgs)
+          glow # for md files
+          sops # secret management
 
-      enterShell = ''
-        echo -e "\n\e[33m⚙ Welcome\e[0m \e[37mto the\e[0m \e[36m NixOS\e[0m \e[35mconfiguration development\e[0m \e[32mshell!\e[0m"
+          # enterShell deps
+          ncurses
+          ;
+      };
 
-        timestamp=${toString inputs.nixpkgs.sourceInfo.lastModified}
+      enterShell =
+        # bash
+        ''
+          printf "\n%s⚙  Welcome%s to the %s NixOS %sconfiguration development %sshell!\n" \
+            "$(tput setaf 3)" \
+            "$(tput sgr0)" \
+            "$(tput setaf 6)" \
+            "$(tput setaf 5)" \
+            "$(tput setaf 2)"
 
-        if [ -n "$timestamp" ] && [ "$timestamp" != "null" ] && [ "$timestamp" != "" ]; then
-          date_str=$(date -d "@$timestamp" +"%Y.%m.%d" 2>/dev/null)
+          timestamp=${toString inputs.nixpkgs.sourceInfo.lastModified}
+          rev=${toString inputs.nixpkgs.sourceInfo.shortRev}
+          url=https://github.com/NixOS/nixpkgs/tree/$rev
+          date_str=$(date -d "@$timestamp" +"%Y.%m.%d")
 
-          if [ $? -eq 0 ] && [ -n "$date_str" ]; then
-            echo -e "\033[36m \033[33mNixpkgs pinned in the flake.lock: \e[36m$date_str\033[0m \n"
-          else
-            echo -e "\033[36m \033[33mNixpkgs timestamp: \e[36m$timestamp\033[0m \n"
-          fi
-        else
-          echo -e "\033[33m⚠ Could not determine Nixpkgs timestamp\033[0m \n"
-        fi
+          printf "%s%s %sNixpkgs pinned in the flake.lock:%s %s\e]8;;$url\a$rev\e]8;;\a%s ($date_str)\n" \
+            "$(tput setaf 6 bold)" \
+            "$(tput sgr0)" \
+            "$(tput setaf 3)" \
+            "$(tput sgr 0)" \
+            "$(tput setaf 6 bold)"\
+            "$(tput sgr0)"
 
-        ${lib.getExe pkgs.jujutsu} status --no-pager
-      '';
+          ${lib.getExe pkgs.jujutsu} status --no-pager
+        '';
 
       git-hooks = {
         package = pkgs.prek;

@@ -34,6 +34,16 @@
           };
         };
 
+        home = {
+          packages = lib.attrValues {
+            inherit
+              (pkgs)
+              geminicommit
+              nodejs
+              ;
+          };
+        };
+
         programs.gemini-cli = {
           enable = true;
           package = gemini-wrapped;
@@ -65,13 +75,6 @@
               };
             };
           };
-        };
-
-        home = {
-          packages = with pkgs; [
-            geminicommit
-            nodejs
-          ];
         };
       };
     };

@@ -20,10 +20,11 @@ let
     nix-flatpak.nixosModules.nix-flatpak
     nix-index-database.nixosModules.nix-index
     sops-nix.nixosModules.sops
+    nixos-cli.nixosModules.nixos-cli
     zapret-presets.nixosModules.presets
     stylix.nixosModules.default
-    determinate.nixosModules.default
     nix-gaming.nixosModules.wine
+    lix-module.nixosModules.default
   ];
 
   homeModules = with inputs; [
@@ -113,6 +114,8 @@ in
                       extraSpecialArgs = specialArgs;
                       useGlobalPkgs = true;
                       useUserPackages = true;
+                      backupFileExtension = "hm.bak";
+
                       sharedModules =
                         [
                           {
@@ -126,24 +129,23 @@ in
                             };
 
                             sops = let
-                              secretSettings = {
-                                sopsFile = ../secrets/ssh/${userName}.yaml;
+                              secretSettings = name: {
+                                sopsFile = ../secrets/ssh/hosts/${userName}.yaml;
+                                path = "/home/${userName}/.ssh/id_ed25519${
+                                  if name == "angl_ssh_pub"
+                                  then ".pub"
+                                  else ""
+                                }";
                               };
                             in {
                               age.sshKeyPaths = ["/home/${userName}/.ssh/id_ed25519"];
                               defaultSopsFile = ../secrets/secrets.yaml;
-                              secrets = {
-                                angl_ssh_priv =
-                                  secretSettings
-                                  // {
-                                    path = "/home/${userName}/.ssh/id_ed25519";
-                                  };
-                                angl_ssh_pub =
-                                  secretSettings
-                                  // {
-                                    path = "/home/${userName}/.ssh/id_ed25519.pub";
-                                  };
-                              };
+                              secrets =
+                                nxosLib.mapAttrs (_: secretSettings)
+                                (nxosLib.genAttrs [
+                                  "angl_ssh_priv"
+                                  "angl_ssh_pub"
+                                ] (x: x));
                             };
                           }
                         ]

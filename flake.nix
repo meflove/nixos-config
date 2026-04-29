@@ -14,6 +14,27 @@
       owner = "NixOS";
       repo = "nixpkgs";
     };
+    lix = {
+      url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
+      flake = false;
+    };
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        lix.follows = "lix";
+      };
+    };
+    nix-update = {
+      type = "github";
+      owner = "Mic92";
+      repo = "nix-update";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
     ## flake-parts
     flake-parts = {
       type = "github";
@@ -111,14 +132,33 @@
         git-hooks.follows = "git-hooks";
       };
     };
-    determinate = {
+    unazikx-nix-packages = {
       type = "github";
-      owner = "DeterminateSystems";
-      repo = "determinate";
+      owner = "unazikx";
+      repo = "nix-packages";
       inputs = {
-        nix.inputs.flake-parts.follows = "flake-parts";
-        nix.inputs.git-hooks-nix.follows = "git-hooks";
+        nixpkgs-unstable.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        pkgs-by-name.follows = "pkgs-by-name-for-flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
+        nur.follows = "nur";
+        emmanuelrosa-nix.follows = "emmanuelrosa-nix";
       };
+    };
+    nur = {
+      type = "github";
+      owner = "nix-community";
+      repo = "NUR";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
+    emmanuelrosa-nix = {
+      type = "github";
+      owner = "emmanuelrosa";
+      repo = "erosanix";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # System & Boot
@@ -304,6 +344,21 @@
       owner = "nix-community";
       repo = "nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-cli = {
+      type = "github";
+      owner = "nix-community";
+      repo = "nixos-cli";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
+    purple = {
+      type = "github";
+      owner = "erickochen";
+      repo = "purple";
+      flake = false;
     };
 
     # Services & Networking

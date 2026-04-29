@@ -121,8 +121,7 @@
               err = "journalctl -b -p err";
               syslog_emerg = "sudo dmesg --level=emerg,alert,crit";
               watch = lib.getExe pkgs.viddy;
-              nrs = "${lib.getExe config.hm.programs.nh.package} os switch";
-              hms = "${lib.getExe config.hm.programs.nh.package} home switch";
+              nrs = "${lib.getExe config.programs.nixos-cli.package} switch";
               fml = "poweroff";
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
@@ -161,10 +160,8 @@
               };
             };
 
-            # Функции
             functions = import ./magic-enter.nix {inherit config lib;};
 
-            # Код, который выполняется при запуске оболочки
             shellInit = ''
               # ${lib.getExe pkgs.any-nix-shell} fish --info-right | source
               __magic-enter
@@ -178,9 +175,12 @@
 
         # Переменные окружения
         home = {
-          packages = with pkgs; [
-            grc # Generic Colouriser for command output
-          ];
+          packages = lib.attrValues {
+            inherit
+              (pkgs)
+              grc # Generic Colouriser for command output
+              ;
+          };
         };
       };
     };

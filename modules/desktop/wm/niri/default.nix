@@ -33,7 +33,12 @@
             ];
           };
 
-        systemPackages = with pkgs; [xdg-utils];
+        systemPackages = lib.attrValues {
+          inherit
+            (pkgs)
+            xdg-utils
+            ;
+        };
       };
       programs = {
         xwayland.enable = true;

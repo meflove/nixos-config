@@ -1,12 +1,19 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      pkgs,
+      lib,
+      ...
+    }: {
       hm = {
-        home.packages = with pkgs; [
-          obsidian
-          master.libreoffice
-          papers # PDF viewer
-        ];
+        home.packages = lib.attrValues {
+          inherit
+            (pkgs)
+            obsidian
+            libreoffice
+            # papers # PDF viewer
+            ;
+        };
       };
     };
   };

@@ -21,10 +21,13 @@
         };
 
         # Add required packages for waybar modules
-        home.packages = with pkgs; [
-          playerctl # For MPRIS module
-          waybar-mpris
-        ];
+        home.packages = lib.attrValues {
+          inherit
+            (pkgs)
+            playerctl # For MPRIS module
+            waybar-mpris
+            ;
+        };
 
         # Wayland window manager settings
         wayland.windowManager.hyprland = lib.mkIf config.programs.hyprland.enable {

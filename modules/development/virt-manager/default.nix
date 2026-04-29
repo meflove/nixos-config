@@ -1,17 +1,30 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      pkgs,
+      lib,
+      ...
+    }: {
       boot = {
         kernelParams = [
           "intel_iommu=on"
-          "vfio-pci.ids=1002:67b0,1002:aac8,144d:a80a"
+          # "iommu=pt"
+          # "vfio-pci.ids=10de:2504,10de:228e"
         ];
-
-        kernelModules = [
+        initrd.kernelModules = [
           "vfio_pci"
           "vfio"
           "vfio_iommu_type1"
         ];
+      };
+
+      users.users = {
+        ${lib.userName} = {
+          extraGroups = [
+            "libvirtd"
+            "kvm"
+          ];
+        };
       };
 
       virtualisation = {
@@ -19,21 +32,36 @@
         libvirtd = {
           enable = true;
           qemu = {
-            package = pkgs.qemu;
+            package = pkgs.qemu_kvm;
             runAsRoot = true;
             swtpm.enable = true;
 
-            vhostUserPackages = with pkgs; [virtiofsd];
+            vhostUserPackages = lib.attrValues {
+              inherit
+                (pkgs)
+                virtiofsd
+                ;
+            };
           };
 
           firewallBackend = "nftables";
         };
       };
+
       programs.virt-manager.enable = true;
       security.polkit.enable = true;
 
-      environment.sessionVariables = {
-        LIBVIRT_DEFAULT_URI = "qemu:///system";
+      networking.firewall.trustedInterfaces = ["virbr0"];
+      environment = {
+        systemPackages = lib.attrValues {
+          inherit
+            (pkgs)
+            dnsmasq
+            ;
+        };
+        sessionVariables = {
+          LIBVIRT_DEFAULT_URI = "qemu:///system";
+        };
       };
     };
   };
