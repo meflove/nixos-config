@@ -1,7 +1,6 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       config,
       ...
     }: {

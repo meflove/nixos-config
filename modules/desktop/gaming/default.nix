@@ -133,61 +133,46 @@
         in {
           text =
             (installDlls "Cyberpunk 2077" "Cyberpunk 2077")
-            + (installDlls "No Man's Sky" "NoMansSky_Linux");
-          # ''
-          #   CYBERPUNK_DIR="/home/${lib.userName}/Games/Cyberpunk 2077"
-          #
-          #   if [[ -d "$CYBERPUNK_DIR" ]]; then
-          #     ln -sf ${pkgs.nix-gaming.dxvk-w64}/bin/*.dll "$CYBERPUNK_DIR/game_info/dlls/"
-          #     ln -sf ${pkgs.nix-gaming.dxvk-nvapi-w64}/bin/*.dll "$CYBERPUNK_DIR/game_info/dlls/"
-          #     ln -sf ${pkgs.nix-gaming.vkd3d-proton-w64}/bin/*.dll "$CYBERPUNK_DIR/game_info/dlls/"
-          #     ln -sf ${config.hardware.nvidia.package}/lib/nvidia/wine/*.dll "$CYBERPUNK_DIR/game_info/dlls/"
-          #     echo "Succesfully installed dlls for Cyberpunk 2077"
-          #   else
-          #     echo "There is no Cyberpunk 2077 dir"
-          #
-          #     exit 0
-          #   fi
-          #
-          #   NOMANSSKY_DIR="/home/${lib.userName}/Games/NoMansSky_Linux"
-          #
-          #   if [[ -d "$CYBERPUNK_DIR" ]]; then
-          #     ln -sf ${pkgs.nix-gaming.dxvk-w64}/bin/*.dll "$NOMANSSKY_DIR/game_info/dlls/"
-          #     ln -sf ${pkgs.nix-gaming.dxvk-nvapi-w64}/bin/*.dll "$NOMANSSKY_DIR/game_info/dlls/"
-          #     ln -sf ${pkgs.nix-gaming.vkd3d-proton-w64}/bin/*.dll "$NOMANSSKY_DIR/game_info/dlls/"
-          #     ln -sf ${config.hardware.nvidia.package}/lib/nvidia/wine/*.dll "$NOMANSSKY_DIR/game_info/dlls/"
-          #     echo "Succesfully installed dlls for No Mans Sky"
-          #   else
-          #     echo "There is no No Mans Sky dir"
-          #
-          #     exit 0
-          #   fi
-          # '';
+            + (installDlls "No Man's Sky" "NoMansSky_Linux")
+            + (installDlls "Man Eater" "Maneater_Linux");
         };
       };
 
       hm = {
         home = {
-          packages = lib.attrValues {
-            inherit
-              (pkgs)
-              # stuff
-              protonup-ng
-              ## Games
-              freesmlauncher
-              # (gamePkgs.osu-stable.override {
-              #   useGameMode = false;
-              # })
-              # veloren
-              # mindustry-wayland
-              # shattered-pixel-dungeon
-              # osu-lazer-bin
-              ;
-            inherit
-              (pkgs.nix-gaming)
-              winetricks-git
-              ;
-          };
+          packages = let
+            heroic = pkgs.heroic.override {
+              extraPkgs = pkgs':
+                with pkgs'; [
+                  config.programs.gamescope.package
+                  gamemode
+                ];
+            };
+          in
+            lib.attrValues
+            {
+              inherit
+                (pkgs)
+                # stuff
+                protonup-ng
+                ## Games
+                # freesmlauncher
+                # (gamePkgs.osu-stable.override {
+                #   useGameMode = false;
+                # })
+                # veloren
+                # mindustry-wayland
+                # shattered-pixel-dungeon
+                # osu-lazer-bin
+                ;
+              inherit
+                (pkgs.nix-gaming)
+                winetricks-git
+                ;
+              inherit
+                heroic
+                ;
+            };
 
           sessionVariables = {
             STEAM_COMPAT_TOOLS_PATH = "\${HOME}/.steam/root/compatibilitytools.d";

@@ -2,14 +2,13 @@
   appimageTools,
   fetchurl,
   makeDesktopItem,
-  copyDesktopItems,
 }: let
-  version = "2.2.5";
+  version = "2.2.6";
   pname = "iloader";
 
   src = fetchurl {
     url = "https://github.com/nab138/iloader/releases/download/v${version}/iloader-linux-amd64.AppImage";
-    hash = "sha256-19PzDGn/Sq10xzY1HDwyo02yFrfGRD+0w56OWL1vArg=";
+    hash = "sha256-rLsDVXct9hFu3cyDv5i7NQX820WDxMfFEMfiUPGrOjU=";
   };
 
   desktopItem = makeDesktopItem {

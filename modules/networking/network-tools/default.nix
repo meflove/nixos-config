@@ -16,7 +16,24 @@
           xh
           mtr
           net-tools
+          wireshark
           ;
+      };
+
+      users.users = {
+        ${lib.userName} = {
+          extraGroups = [
+            "wireshark"
+          ];
+        };
+      };
+
+      programs = {
+        wireshark = {
+          enable = true;
+          dumpcap.enable = true;
+          usbmon.enable = true;
+        };
       };
     };
   };

@@ -6,6 +6,14 @@
       lib,
       ...
     }: {
+      environment.sessionVariables.TERMINAL = lib.getExe config.hm.programs.kitty.package;
+      xdg = {
+        portal = {
+          enable = true;
+          wlr.enable = true;
+          xdgOpenUsePortal = true;
+        };
+      };
       hm = {
         xdg = {
           enable = true;
@@ -26,6 +34,7 @@
 
             settings = {
               default = [
+                "kitty.desktop"
                 "ghostty.desktop"
               ];
             };

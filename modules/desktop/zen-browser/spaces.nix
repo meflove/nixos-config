@@ -70,20 +70,28 @@ rec {
       isEssential = true;
       position = 102;
     };
+    "SoundCloud Likes" = {
+      id = "f6ab7192-bcd0-4a31-ba92-d7a3bfd6a0a9";
+      workspace = spaces."Main".id;
+      url = "https://soundcloud.com/you/likes";
+      isEssential = true;
+      position = 103;
+    };
+
     # Main space
     "reddit" = {
       id = "e065db26-1d3f-4490-b0d7-179bd7888234";
       workspace = spaces."Main".id;
       url = "https://www.reddit.com";
       isEssential = false;
-      position = 103;
+      position = 104;
     };
     "youtube" = {
       id = "162480ce-c6f5-4e29-98e2-b3c33403c3c2";
       workspace = spaces."Main".id;
       url = "https://www.youtube.com";
       isEssential = false;
-      position = 104;
+      position = 105;
     };
     ## Hostoff folder
     "Hostoff" = {
@@ -92,28 +100,28 @@ rec {
       isGroup = true;
       isFolderCollapsed = true;
       editedTitle = true;
-      position = 105;
+      position = 106;
     };
     "amnezia" = {
       id = "131b372b-cb90-4e49-b66f-d1b00a45d3b1";
       workspace = spaces."Main".id;
       folderParentId = pins."Hostoff".id;
       url = "http://angeldust.mooo.com:51821/";
-      position = 106;
+      position = 107;
     };
     "3xui" = {
       id = "78f29e48-8795-434d-8d46-30fa5c9e512c";
       workspace = spaces."Main".id;
       folderParentId = pins."Hostoff".id;
       url = "https://angeldust.mooo.com/G0o4omNdaB/panel";
-      position = 107;
+      position = 108;
     };
     "hostoff-panel" = {
       id = "a5ac318e-6fca-4356-92f3-2181576a138c";
       workspace = spaces."Main".id;
       folderParentId = pins."Hostoff".id;
       url = "https://panel.hostoff.net/services/virtual-servers";
-      position = 108;
+      position = 109;
     };
     # Learning space
     "google-docs" = {

@@ -11,7 +11,7 @@
   inherit (inputs) purple;
   cargoToml = lib.importTOML "${purple.outPath}/Cargo.toml";
 in
-  rustPlatform.buildRustPackage (finalAttrs: {
+  rustPlatform.buildRustPackage (_finalAttrs: {
     pname = "purple";
     version = "${cargoToml.package.version}-${rev}";
 

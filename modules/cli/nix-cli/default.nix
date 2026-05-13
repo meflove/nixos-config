@@ -12,7 +12,6 @@
           inherit
             (pkgs)
             # Nix related tools
-            comma
             nix-output-monitor
             nix-update
             ;
@@ -52,6 +51,14 @@
             };
             rollback.enable = true;
           };
+        };
+
+        nix-index = {
+          enableFishIntegration = true;
+        };
+        nix-index-database = {
+          enable = true;
+          comma.enable = true;
         };
       };
     };

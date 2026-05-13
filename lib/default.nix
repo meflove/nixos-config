@@ -1,9 +1,24 @@
 inputs @ {self, ...}: let
   extendedLib = import ./generator.nix {
-    inherit self inputs;
+    inherit
+      self
+      inputs
+      overlays
+      ;
   };
 
-  inherit (extendedLib) nxosLib;
+  overlays = with inputs; [
+    niri.overlays.niri
+    hyprland.overlays.default
+    nix-cachyos-kernel.overlays.default
+    (import "${statix}/overlay.nix")
+    self.overlays.default
+  ];
+
+  inherit
+    (extendedLib)
+    nxosLib
+    ;
 in
   inputs.flake-parts.lib.mkFlake
   {
@@ -20,8 +35,7 @@ in
         ../modules
         ../hosts
       ])
-      (inputs.import-tree [../shells])
-      (inputs.import-tree [../modules/flake])
+      (inputs.import-tree [../persystem])
 
       inputs.devenv.flakeModule
       inputs.disko.flakeModule
@@ -33,18 +47,35 @@ in
 
     flake = {config, ...}: {
       _module.args = {
-        inherit extendedLib inputs;
-        partsConfig = config;
+        inherit
+          extendedLib
+          self
+          inputs
+          ;
+
+        _config = config;
       };
 
       # INFO:
       # nixosConfigurations,
-      # diskoConfigurations are in ../hosts
+      # diskoConfigurations are in ../machines
       #
       # homeConfigurations,
     };
 
-    perSystem = _: {
-      _module.args = {inherit extendedLib inputs;};
+    perSystem = {system, ...}: {
+      _module.args = {
+        inherit
+          extendedLib
+          inputs
+          ;
+
+        pkgs = import inputs.nixpkgs {
+          inherit
+            system
+            overlays
+            ;
+        };
+      };
     };
   }

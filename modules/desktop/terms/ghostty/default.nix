@@ -29,8 +29,6 @@
               "${cursorSmear}"
             ];
 
-            # font-family = config.stylix.fonts.monospace.name;
-            # font-size = 12;
             adjust-cell-height = "15%";
 
             window-theme = "ghostty";

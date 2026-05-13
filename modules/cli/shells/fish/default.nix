@@ -4,7 +4,6 @@
       pkgs,
       lib,
       config,
-      inputs,
       ...
     }: {
       users.users.${lib.userName}.shell = config.programs.fish.package;
@@ -15,12 +14,6 @@
 
       hm = {
         programs = {
-          nix-index = {
-            enable = true;
-            enableFishIntegration = true;
-            enableNushellIntegration = true;
-            package = inputs.nix-index.packages.${lib.hostPlatform}.default;
-          };
           nix-your-shell = {
             enable = true;
             enableFishIntegration = true;
@@ -33,38 +26,40 @@
 
             generateCompletions = true;
 
-            interactiveShellInit = ''
-              set fish_greeting
+            interactiveShellInit =
+              # fish
+              ''
+                set fish_greeting
 
-              # Atuin
-              set -x ATUIN_NOBIND true
-              bind ctrl-r _atuin_search
-              bind up _atuin_bind_up
-              bind \eOA _atuin_bind_up
-              bind \e\[A _atuin_bind_up
-              if bind -M insert >/dev/null 2>&1
-                  bind -M insert ctrl-r _atuin_search
-                  bind -M insert up _atuin_bind_up
-                  bind -M insert \eOA _atuin_bind_up
-                  bind -M insert \e\[A _atuin_bind_up
-              end
+                # Atuin
+                set -x ATUIN_NOBIND true
+                bind ctrl-r _atuin_search
+                bind up _atuin_bind_up
+                bind \eOA _atuin_bind_up
+                bind \e\[A _atuin_bind_up
+                if bind -M insert >/dev/null 2>&1
+                    bind -M insert ctrl-r _atuin_search
+                    bind -M insert up _atuin_bind_up
+                    bind -M insert \eOA _atuin_bind_up
+                    bind -M insert \e\[A _atuin_bind_up
+                end
 
-              # Zellij
-              set -x ZELLIJ_CONFIG_DIR "$HOME/.config/zellij"
-              # set -x ZELLIJ_AUTO_ATTACH true
+                # Zellij
+                set -x ZELLIJ_CONFIG_DIR "$HOME/.config/zellij"
+                # set -x ZELLIJ_AUTO_ATTACH true
 
-              if test "$TERM" = "xterm-ghostty"
-                  eval (${lib.getExe config.hm.programs.zellij.package} setup --generate-auto-start fish | string collect)
+                if test "$TERM" = xterm-ghostty; or test "$TERM" = xterm-kitty
+                    eval (${lib.getExe config.hm.programs.zellij.package} setup --generate-auto-start fish | string collect)
 
-                  ${lib.getExe config.hm.programs.fastfetch.package}
-              end
+                    ${lib.getExe config.hm.programs.fastfetch.package}
+                end
 
-              # Wayland vars for root
-              if test (id -u) -eq 0
-                  set -gx XDG_RUNTIME_DIR /run/user/1000
-                  set -gx WAYLAND_DISPLAY wayland-1
-              end
-            '';
+                # Wayland vars for root
+                if test (id -u) -eq 0
+                    set -gx XDG_RUNTIME_DIR /run/user/1000
+                    set -gx WAYLAND_DISPLAY wayland-1
+                end
+              '';
 
             plugins = with pkgs.fishPlugins; [
               {
@@ -162,14 +157,16 @@
 
             functions = import ./magic-enter.nix {inherit config lib;};
 
-            shellInit = ''
-              # ${lib.getExe pkgs.any-nix-shell} fish --info-right | source
-              __magic-enter
+            shellInit =
+              # fish
+              ''
+                # ${lib.getExe pkgs.any-nix-shell} fish --info-right | source
+                __magic-enter
 
-              if test -z "$DISPLAY" && test "$XDG_VTNR" = 1
-                exec ${lib.getExe' config.programs.niri.package "niri-session"} -l
-              end
-            '';
+                if test -z "$DISPLAY" && test "$XDG_VTNR" = 1
+                  exec ${lib.getExe' config.programs.niri.package "niri-session"} -l
+                end
+              '';
           };
         };
 

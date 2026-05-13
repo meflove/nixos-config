@@ -8,6 +8,7 @@
     }: {
       boot.zfs = {
         package = config.boot.kernelPackages.zfs_cachyos;
+        forceImportRoot = false;
         extraPools =
           if config.boot.supportedFilesystems ? "zfs"
           then lib.attrNames inputs.self.diskoConfigurations.${lib.configurationName}.disko.devices.zpool

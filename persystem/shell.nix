@@ -2,7 +2,6 @@
   perSystem = {
     pkgs,
     lib,
-    inputs',
     ...
   }: {
     devenv.shells.default = {
@@ -68,7 +67,6 @@
           deadnix.enable = true;
           statix = {
             enable = true;
-            package = inputs'.statix.packages.statix;
           };
         };
       };

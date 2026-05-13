@@ -32,8 +32,7 @@
               err = "journalctl -b -p err";
               syslog_emerg = "sudo dmesg --level=emerg,alert,crit";
               watch = lib.getExe pkgs.viddy;
-              nrs = "${lib.getExe config.hm.programs.nh.package} os switch";
-              hms = "${lib.getExe config.hm.programs.nh.package} home switch";
+              nrs = "${lib.getExe config.programs.nixos-cli.package} apply";
               fml = "poweroff";
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Редакторы и разработка ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
@@ -50,8 +49,8 @@
               ipv6 = "${ip} addr show | grep 'inet6 ' | cut -d ' ' -f6 | sed -n '2p'";
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Управление терминалом ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-              cls = "clear; ${lib.getExe config.hm.programs.fastfetch.package}";
-              c = "clear; ${lib.getExe config.hm.programs.fastfetch.package}";
+              cls = "clear; fastfetch";
+              c = "clear; fastfetch";
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Sudo и безопасность ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
               visudo = "^sudo visudo";

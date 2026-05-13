@@ -17,20 +17,22 @@
               (pkgs)
               nvidia-vaapi-driver
               libvdpau-va-gl
-              vulkan-hdr-layer-kwin6
               gamescope-wsi_git
+              vulkan-hdr-layer-kwin6
               vulkan-extension-layer
               vulkan-loader
               vulkan-headers
               vulkan-validation-layers
+              vulkan-tools
               ;
-            # inherit
-            #   (pkgs.vulkanPackages_latest)
-            #   vulkan-extension-layer
-            #   vulkan-loader
-            #   vulkan-headers
-            #   vulkan-validation-layers
-            #   ;
+            inherit
+              (pkgs.vulkanPackages_latest)
+              # vulkan-extension-layer
+              # vulkan-loader
+              # vulkan-headers
+              # vulkan-validation-layers
+              # vulkan-tools
+              ;
             inherit
               (pkgs.nix-gaming)
               dxvk-nvapi-vkreflex-layer
@@ -39,7 +41,7 @@
         };
 
         nvidia = {
-          package = config.boot.kernelPackages.nvidiaPackages.beta;
+          package = config.boot.kernelPackages.nvidiaPackages.latest;
 
           modesetting.enable = true;
 

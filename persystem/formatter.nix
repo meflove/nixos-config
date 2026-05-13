@@ -1,5 +1,5 @@
 {
-  perSystem = {inputs', ...}: {
+  perSystem = _: {
     treefmt = {
       programs = {
         # nix
@@ -7,7 +7,6 @@
         alejandra.enable = true;
         statix = {
           enable = true;
-          package = inputs'.statix.packages.statix;
         };
 
         # md

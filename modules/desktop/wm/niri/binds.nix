@@ -9,7 +9,7 @@
   shift = "Shift";
   alt = "Alt";
 
-  term = lib.getExe config.hm.programs.ghostty.package;
+  term = config.environment.sessionVariables.TERMINAL;
 
   spawn-sh = cmd: {
     spawn = ["sh" "-c" cmd];
@@ -20,21 +20,23 @@
   jq = lib.getExe pkgs.jq;
 
   toggleApp = pkg: appId: title:
-    (pkgs.writeShellScriptBin "${title}-toggle-niri" ''
-      TERMINAL=${term}
+    (pkgs.writeShellScriptBin "${title}-toggle-niri"
+      # bash
+      ''
+        TERMINAL=${term}
 
-      if [[ -z $(niri msg windows | grep 'Title: "${title}"') ]]
-      then
-        $TERMINAL --class=${appId} --title=${title} -e sh -c 'sleep 0.02 && ${lib.getExe pkg}';
-      else
-          if [[ -z $(niri msg -j windows | ${jq} '.[] | select(.is_focused==true).app_id' | ${lib.getExe pkgs.ripgrep} ${appId}) ]];
+        if [[ -z $(niri msg windows | grep 'Title: "${title}"') ]]
         then
-          niri msg action focus-window --id $(niri msg -j windows | ${jq} ".[] | select(.app_id==\"${appId}\").id");
+          $TERMINAL --class=${appId} --title=${title} -e sh -c 'sleep 0.02 && ${lib.getExe pkg}';
         else
-          niri msg action close-window;
-          fi
-      fi
-    '')
+            if [[ -z $(niri msg -j windows | ${jq} '.[] | select(.is_focused==true).app_id' | ${lib.getExe pkgs.ripgrep} ${appId}) ]];
+          then
+            niri msg action focus-window --id $(niri msg -j windows | ${jq} ".[] | select(.app_id==\"${appId}\").id");
+          else
+            niri msg action close-window;
+            fi
+        fi
+      '')
     |> lib.getExe;
 
   names = ["telegram" "browser" "cli" "games"];

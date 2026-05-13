@@ -68,6 +68,8 @@
         flake-parts.follows = "flake-parts";
         git-hooks.follows = "git-hooks";
         rust-overlay.follows = "rust-overlay";
+        flake-compat.follows = "flake-compat";
+        ghostty.follows = "ghostty";
       };
     };
     devenv-root = {
@@ -83,7 +85,10 @@
       type = "github";
       owner = "cachix";
       repo = "git-hooks.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
+      };
     };
     statix = {
       type = "github";
@@ -99,6 +104,11 @@
       owner = "nlewo";
       repo = "nix2container";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    flake-compat = {
+      type = "github";
+      owner = "NixOS";
+      repo = "flake-compat";
     };
     ## other
     chaotic = {
@@ -158,7 +168,10 @@
       type = "github";
       owner = "emmanuelrosa";
       repo = "erosanix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
+      };
     };
 
     # System & Boot
@@ -196,7 +209,10 @@
       type = "github";
       owner = "xddxdd";
       repo = "nix-cachyos-kernel";
-      inputs.flake-parts.follows = "flake-parts";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        flake-compat.follows = "flake-compat";
+      };
     };
 
     # Desktop Environment
@@ -228,6 +244,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
+        nur.follows = "nur";
       };
     };
     nix-cursors = {
@@ -254,16 +271,14 @@
       type = "git";
       url = "https://github.com/ndfined-crp/ayugram-desktop";
       submodules = true;
-      inputs = {
-        git-hooks.follows = "git-hooks";
-        flake-parts.follows = "flake-parts";
-      };
     };
     freesmlauncher = {
       type = "github";
       owner = "FreesmTeam";
       repo = "FreesmLauncher";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
     };
     nixcord = {
       type = "github";
@@ -273,6 +288,7 @@
         flake-parts.follows = "flake-parts";
         nixpkgs.follows = "nixpkgs"; # does not need cache hit
         nixpkgs-nixcord.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
       };
     };
     jonhermansen-nur-packages = {
@@ -289,6 +305,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
+        flake-compat.follows = "flake-compat";
       };
     };
     angeldust-nixCats = {
@@ -337,7 +354,10 @@
       type = "github";
       owner = "nix-community";
       repo = "nix-index";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-compat.follows = "flake-compat";
+      };
     };
     nix-index-database = {
       type = "github";
@@ -352,6 +372,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
+        flake-compat.follows = "flake-compat";
       };
     };
     purple = {

@@ -1,6 +1,7 @@
 {
   self,
   inputs,
+  overlays,
   ...
 }:
 # WARN:
@@ -45,13 +46,16 @@ in
       hostName ? throw "Set 'hostName'",
       userName ? throw "Set 'userName'",
       hostPlatform ? throw "Set 'hostPlatform'",
-      stateVersion ? "25.05",
+      stateVersion ? "26.05",
       hostId ? throw "Set 'hostId'",
       extraModules ? [],
       flakeDir ? "/etc/nixos",
     }: let
       specialArgs = {
-        inherit self inputs;
+        inherit
+          self
+          inputs
+          ;
       };
 
       pkgs = import inputs.nixpkgs {
@@ -62,13 +66,7 @@ in
           allowUnfree = true;
           cudaSupport = true;
         };
-        overlays = with inputs; [
-          niri.overlays.niri
-          hyprland.overlays.default
-          nix-cachyos-kernel.overlays.default
-
-          self.overlays.default
-        ];
+        inherit overlays;
       };
 
       # INFO:
@@ -77,12 +75,26 @@ in
       lib = nxosLib.extend (
         _final: _prev:
           {
-            inherit (homeLib) hm;
+            inherit
+              (homeLib)
+              hm
+              ;
 
-            inherit configurationName hostName userName hostPlatform flakeDir hostId;
+            inherit
+              configurationName
+              hostName
+              userName
+              hostPlatform
+              flakeDir
+              hostId
+              ;
           }
           // (import ./functions.nix {
-            inherit inputs pkgs lib;
+            inherit
+              inputs
+              pkgs
+              lib
+              ;
           })
       );
     in
@@ -90,7 +102,11 @@ in
       # main system builder
       {
         ${configurationName} = nxosLib.nixosSystem {
-          inherit pkgs lib specialArgs;
+          inherit
+            pkgs
+            lib
+            specialArgs
+            ;
 
           modules =
             nxosModules
@@ -99,9 +115,12 @@ in
               self.diskoConfigurations.${configurationName}
               (
                 {config, ...}: let
-                  sops-update-keys = pkgs.writeShellScriptBin "sops-update-keys" ''
-                    for file in $(${nxosLib.getExe pkgs.gnugrep} -lr "sops:" secrets/); do ${nxosLib.getExe pkgs.sops} updatekeys -y $file; done
-                  '';
+                  sops-update-keys =
+                    pkgs.writeShellScriptBin "sops-update-keys"
+                    # bash
+                    ''
+                      for file in $(${nxosLib.getExe pkgs.gnugrep} -lr "sops:" secrets/); do ${nxosLib.getExe pkgs.sops} updatekeys -y $file; done
+                    '';
                 in {
                   config = {
                     networking = {inherit hostName hostId;};
@@ -175,5 +194,8 @@ in
         };
       };
 
-    inherit nxosLib homeLib;
+    inherit
+      nxosLib
+      homeLib
+      ;
   }

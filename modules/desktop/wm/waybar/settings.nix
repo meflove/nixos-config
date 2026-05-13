@@ -7,6 +7,7 @@
     mkIcon = col: icon: "<span color='${col}'>${icon}</span>";
 
     ico = import ./icons.nix {};
+    term = config.environment.sessionVariables.TERMINAL;
   in
     lib.mkMerge [
       {
@@ -154,7 +155,7 @@
           format-connected-battery = "󰂯";
           tooltip-format-connected = "{device_enumerate}";
           tooltip-format-enumerate-connected = "{device_alias} 󰂄{device_battery_percentage}% {device_address}";
-          on-click = "${lib.getExe config.hm.programs.ghostty.package} --class='com.free.bluetui' -e bluetui";
+          on-click = "${term} --class='com.free.bluetui' -e bluetui";
           tooltip = true;
         };
 

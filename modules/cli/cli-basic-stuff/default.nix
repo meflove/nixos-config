@@ -11,8 +11,8 @@
         inherit
           (pkgs)
           # Essential CLI tools for system administration
-          uutils-coreutils-noprefix
-          uutils-util-linux
+          coreutils-full
+          util-linux
           file
           killall
           rsync

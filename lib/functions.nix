@@ -1,4 +1,8 @@
-{lib, ...}: let
+{
+  lib,
+  pkgs,
+  ...
+}: let
   # Valid sops-nix secret options (from sops-nix documentation)
   sopsSecretOptions = [
     "neededForUsers"
@@ -61,6 +65,24 @@
 
   # Alias for dot-notation (useful for Firefox/Zen browser settings)
   flattenAttrsDot = flattenAttrsWithSep ".";
+
+  mkStylixImage = image: colors:
+    pkgs.runCommand "stylix-image.png" {} (
+      lib.concatStringsSep " " [
+        (lib.getExe pkgs.lutgen)
+        "apply"
+        image
+        "-o"
+        "$out"
+        "--"
+        (builtins.concatStringsSep " " colors)
+      ]
+    );
 in {
-  inherit flattenSecrets flattenAttrsWithSep flattenAttrsDot;
+  inherit
+    flattenSecrets
+    flattenAttrsWithSep
+    flattenAttrsDot
+    mkStylixImage
+    ;
 }

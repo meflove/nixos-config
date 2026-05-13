@@ -224,6 +224,7 @@
   debug.deactivate-unfocused-windows = false;
 
   spawn-at-startup = [
+    {sh = "echo $NIRI_SOCKET > ~/.niri-socket";}
     {
       argv = [
         "${pkgs.dbus}/bin/dbus-update-activation-environment"

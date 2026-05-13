@@ -6,7 +6,7 @@
   ...
 }: let
   super = "Super";
-  term = lib.getExe config.programs.ghostty.package;
+  term = lib.getExe config.environment.sessionVariables.TERMINAL;
   editor = lib.getExe pkgs.nixCats;
 in
   [

@@ -28,7 +28,8 @@
         enable = true;
         autoEnable = true;
 
-        image = ../../../pics/nix-tyan.png;
+        image =
+          lib.mkStylixImage ../../../pics/nix-tyan.png config.lib.stylix.colors.toList;
 
         base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine-moon.yaml";
         # base16Scheme = {
@@ -85,7 +86,6 @@
           targets =
             lib.genAttrs [
               "hyprlock"
-              "zen-browser"
               "obsidian"
               "nixcord"
               "gnome"
@@ -95,6 +95,10 @@
               gtk = {
                 fonts.enable = false;
               };
+              qt = {
+                standardDialogs = "xdgdesktopportal";
+              };
+              zen-browser.profileNames = ["angeldust"];
             };
 
           icons = {

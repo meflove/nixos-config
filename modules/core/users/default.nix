@@ -42,7 +42,6 @@
             openssh.authorizedKeys.keys = import ./ssh-keys.nix;
 
             extraGroups = [
-              "audio"
               "input"
               "video"
               "users"

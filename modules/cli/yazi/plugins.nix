@@ -36,7 +36,7 @@ in
   # custom
   // (
     makePlugin "parent-arrow" # lua
-
+    
     ''
       --- @sync entry
       local function entry(_, job)
@@ -54,7 +54,7 @@ in
   )
   // (
     makePlugin "smart-tab" # lua
-
+    
     ''
       --- @sync entry
       return {

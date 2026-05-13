@@ -5,10 +5,12 @@
         programs.kitty = {
           enable = true;
           enableGitIntegration = true;
-          shellIntegration.enableFishIntegration = true;
+          shellIntegration = {
+            enableFishIntegration = true;
+          };
 
           settings = {
-            window_padding_width = 15;
+            window_padding_width = 9;
 
             cursor_trail = 3;
             cursor_trail_decay = "0.1 0.4";

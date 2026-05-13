@@ -45,7 +45,7 @@
         niri = {
           enable = true;
           package = pkgs.niri-unstable;
-          useNautilus = false;
+          useNautilus = true;
         };
       };
 

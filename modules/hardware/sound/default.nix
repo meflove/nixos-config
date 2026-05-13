@@ -6,6 +6,13 @@
       config,
       ...
     }: {
+      users.users = {
+        ${lib.userName} = {
+          extraGroups = [
+            "audio"
+          ];
+        };
+      };
       environment.systemPackages = lib.attrValues {
         inherit
           (pkgs)
@@ -61,8 +68,8 @@
                 "monitor.alsa.rules" = [
                   {
                     matches = [{"node.name" = "~alsa_output.*";}];
-                    actions.update-props = {
-                      "audio.format" = "S32LE";
+                    "actions.update-props" = {
+                      "audio.format" = "S16LE";
                       "audio.rate" = defaultRate;
                     };
                   }
