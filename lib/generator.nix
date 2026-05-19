@@ -149,7 +149,7 @@ in
 
                             sops = let
                               secretSettings = name: {
-                                sopsFile = ../secrets/ssh/hosts/${userName}.yaml;
+                                sopsFile = ../secrets/ssh-gpg/hosts/${userName}-ssh.yaml;
                                 path = "/home/${userName}/.ssh/id_ed25519${
                                   if name == "angl_ssh_pub"
                                   then ".pub"

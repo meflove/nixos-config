@@ -26,14 +26,6 @@
               vulkan-tools
               ;
             inherit
-              (pkgs.vulkanPackages_latest)
-              # vulkan-extension-layer
-              # vulkan-loader
-              # vulkan-headers
-              # vulkan-validation-layers
-              # vulkan-tools
-              ;
-            inherit
               (pkgs.nix-gaming)
               dxvk-nvapi-vkreflex-layer
               ;

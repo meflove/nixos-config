@@ -35,8 +35,13 @@
       };
 
       nix = {
-        nixPath = ["nixpkgs=${inputs.nixpkgs}"];
         channel.enable = false;
+        nixPath = ["nixpkgs=${inputs.nixpkgs}"];
+        registry =
+          lib.mapAttrs (_: value: {
+            flake = value;
+          })
+          inputs;
 
         settings = {
           inherit

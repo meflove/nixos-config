@@ -18,12 +18,9 @@
     in {
       # pkgSets
       master = import inputs.nixpkgs-master branch-config;
-      mefPkgs = {
-        soundcloud-desktop = inputs.self.packages.${system}.soundcloud-desktop;
-        yot = inputs.self.packages.${system}.yot;
-        iloader = inputs.self.packages.${system}.iloader;
-      };
-      unazikxPkgs = inputs.unazikx-nix-packages.legacyPackages.${system};
+      angeldust-pkgs = inputs.angeldust-nix-packages.legacyPackages.${system};
+      unazikx-pkgs = inputs.unazikx-nix-packages.legacyPackages.${system};
+      jonhermansen-nur-pkgs = inputs.jonhermansen-nur-packages.legacyPackages.${system};
       llm-agents = inputs.llm-agents.packages.${system};
       nix-gaming = inputs.nix-gaming.packages.${system};
       firefox-addons = inputs.firefox-addons.packages.${system};
@@ -47,6 +44,7 @@
             ;
         };
       };
+      iloader = inputs.iloader.packages.${system}.iloader;
 
       # fixes
       nixos-cli = inputs.nixos-cli.packages.${system}.nixos-cli.override {nix = _old.lix;};

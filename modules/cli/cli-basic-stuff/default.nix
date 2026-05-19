@@ -2,7 +2,6 @@
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       pkgs,
-      inputs,
       lib,
       config,
       ...
@@ -76,7 +75,7 @@
             wl-clipboard
             ;
           inherit
-            (pkgs.mefPkgs)
+            (pkgs.angeldust-pkgs)
             # Video & Media
             yot
             ;
@@ -89,7 +88,7 @@
 
         services.clipse = {
           enable = true;
-          package = inputs.self.packages.${lib.hostPlatform}.clipse;
+          package = pkgs.angeldust-pkgs.clipse;
 
           historySize = 5000;
           imageDisplay.type = "sixel";

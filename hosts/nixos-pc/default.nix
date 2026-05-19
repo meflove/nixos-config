@@ -66,6 +66,7 @@
           productivity
           communication
           nixcord
+          pipewire-soundpad
           ## Wm modules
           hyprlock
           niri

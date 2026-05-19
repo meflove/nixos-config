@@ -1,9 +1,6 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {
-      config,
-      ...
-    }: {
+    nixosModules.${baseNameOf ./.} = {config, ...}: {
       hm = {
         programs.nixcord = {
           enable = true; # Enable Nixcord (It also installs Discord)

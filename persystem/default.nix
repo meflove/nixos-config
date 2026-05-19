@@ -1,7 +1,5 @@
 {
   perSystem = {inputs', ...}: {
-    pkgsDirectory = ../pkgs;
-
     packages.angeldust-nixCats = inputs'.angeldust-nixCats.packages.default;
   };
 

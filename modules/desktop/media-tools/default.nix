@@ -17,10 +17,6 @@
           gimp
           vlc
           ;
-        # inherit
-        #   (inputs.jonhermansen-nur-packages.packages.${lib.hostPlatform})
-        #   davinci-resolve-studio
-        #   ;
       };
 
       programs = {
@@ -28,7 +24,6 @@
 
         obs-studio = {
           enable = true;
-
           enableVirtualCamera = true;
 
           plugins = lib.attrValues {

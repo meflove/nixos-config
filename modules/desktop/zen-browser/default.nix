@@ -116,6 +116,7 @@
                     transparent-windows = true;
                     dmabuf.force-enabled = true;
                   };
+                  browser.nova.enabled = true;
 
                   zen = {
                     workspaces.continue-where-left-off = true;

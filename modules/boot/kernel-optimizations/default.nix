@@ -105,6 +105,7 @@
           "udev.log_priority=3"
           "quiet"
           "splash"
+          "pci=noaer"
           "mitigations=off"
           "vt.global_cursor_default=0"
           "lpj=2496000"

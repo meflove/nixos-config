@@ -8,14 +8,18 @@ keybinds clear-defaults=true {
             SwitchToMode "normal"
         }
         bind "Alt g" {
-            ToggleFocusFullscreen
-            SwitchToMode "normal"
+            SwitchToMode "Locked"
         }
         bind "Alt h" {
             SwitchToMode "move"
         }
         bind "Alt r" {
             SwitchToMode "resize"
+        }
+    }
+    locked {
+        bind "Alt g" {
+            SwitchToMode "Normal"
         }
     }
     pane {

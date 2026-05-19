@@ -2,17 +2,11 @@
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       pkgs,
+      inputs,
       lib,
       config,
       ...
     }: let
-      claudeAgents = pkgs.fetchFromGitHub {
-        owner = "contains-studio";
-        repo = "agents";
-        rev = "a5a480c324cac64b9c569bca0b2f297d517240cb";
-        sha256 = "sha256-yZ7llkqGBAmGPc7wooxzk0X7qWkW/zTv5VWISIyCYz8=";
-      };
-
       # Wrapped claude-code package that injects secrets as environment variables
       claude-wrapped = pkgs.symlinkJoin {
         name = "claude-code-wrapped";
@@ -94,7 +88,7 @@
             executable = true;
           };
           ".claude/agents" = {
-            source = "${claudeAgents}";
+            source = "${inputs.claude-agents.outPath}";
           };
         };
       };

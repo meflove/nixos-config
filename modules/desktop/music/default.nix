@@ -8,13 +8,9 @@
       hm = {
         home.packages = lib.attrValues {
           inherit
-            (pkgs.mefPkgs)
+            (pkgs.angeldust-pkgs)
             soundcloud-desktop
             ;
-          # inherit
-          #   (pkgs)
-          #   cliamp
-          #   ;
         };
       };
     };

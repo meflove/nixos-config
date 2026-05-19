@@ -126,6 +126,7 @@
       owner = "NixOS";
       repo = "nixos-hardware";
       ref = "master";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak = {
       type = "github";
@@ -153,6 +154,16 @@
         treefmt-nix.follows = "treefmt-nix";
         nur.follows = "nur";
         emmanuelrosa-nix.follows = "emmanuelrosa-nix";
+      };
+    };
+    angeldust-nix-packages = {
+      type = "github";
+      owner = "meflove";
+      repo = "nix-packages";
+      inputs = {
+        flake-parts.follows = "flake-parts";
+        pkgs-by-name.follows = "pkgs-by-name-for-flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
       };
     };
     nur = {
@@ -291,6 +302,16 @@
         flake-compat.follows = "flake-compat";
       };
     };
+    iloader = {
+      type = "github";
+      owner = "nab138";
+      repo = "iloader";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        treefmt-nix.follows = "treefmt-nix";
+        flake-compat.follows = "flake-compat";
+      };
+    };
     jonhermansen-nur-packages = {
       type = "github";
       owner = "jonhermansen";
@@ -318,6 +339,12 @@
       owner = "sadjow";
       repo = "claude-code-nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    claude-agents = {
+      type = "github";
+      owner = "contains-studio";
+      repo = "agents";
+      flake = false;
     };
     otter-launcher = {
       type = "github";
@@ -374,12 +401,6 @@
         flake-parts.follows = "flake-parts";
         flake-compat.follows = "flake-compat";
       };
-    };
-    purple = {
-      type = "github";
-      owner = "erickochen";
-      repo = "purple";
-      flake = false;
     };
 
     # Services & Networking

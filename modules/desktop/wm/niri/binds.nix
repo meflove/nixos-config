@@ -163,7 +163,7 @@ in
     # ====================
     "${super}+W".action.spawn = lib.getExe config.hm.programs.zen-browser.package;
     "${super}+Ctrl+V".action.spawn = lib.getExe pkgs.pwvucontrol;
-    "${super}+Shift+M".action.spawn = lib.getExe pkgs.mefPkgs.soundcloud-desktop;
+    "${super}+Shift+M".action.spawn = lib.getExe pkgs.angeldust-pkgs.soundcloud-desktop;
     "${super}+Shift+T".action.spawn = lib.getExe inputs.ayugram-desktop.packages.${lib.hostPlatform}.default;
     "${super}+Shift+D".action.spawn = ["equibop"];
 

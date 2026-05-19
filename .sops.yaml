@@ -3,7 +3,7 @@ keys:
   - &angeldust age1hwfdncsemngkf4ekvpfegpgyt6z9ktc6pkxcsaq79shr72n4gg0sxeyrpa
   - &nixos-pc age1v9ywaj5zwsxncha5ylh8semx33qhq0ygr4ur7k39q70nd7medd9qp2e6l9
 creation_rules:
-  - path_regex: secrets/(ssh/.*|\w+\.yaml)$
+  - path_regex: secrets/(ssh-gpg/.*|\w+\.yaml)$
     key_groups:
       - age:
           - *angeldust

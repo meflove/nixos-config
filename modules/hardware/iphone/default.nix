@@ -16,9 +16,6 @@
           libimobiledevice
           idevicerestore
           ifuse # optional, to mount using 'ifuse'
-          ;
-        inherit
-          (pkgs.mefPkgs)
           iloader
           ;
       };

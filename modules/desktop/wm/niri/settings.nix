@@ -243,7 +243,7 @@
     }
     # {
     #   argv = [
-    #     (lib.getExe pkgs.mefPkgs.soundcloud-desktop)
+    #     (lib.getExe pkgs.angeldust-pkgs.soundcloud-desktop)
     #   ];
     # }
     {

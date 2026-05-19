@@ -44,12 +44,6 @@
                 allowedTCPPorts = [2222];
               };
 
-              private-fastapi-dev = {
-                from = ["local"];
-                to = ["fw"];
-                allowedTCPPorts = [8000];
-              };
-
               private-webserver-dev = {
                 from = ["local"];
                 to = ["fw"];
@@ -60,6 +54,12 @@
                 from = "all";
                 to = ["private"];
                 allowedUDPPorts = [9];
+              };
+
+              private-fastapi = {
+                from = "all";
+                to = ["fw"];
+                allowedTCPPorts = [8000];
               };
 
               private-outgoing = {

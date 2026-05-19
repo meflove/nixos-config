@@ -22,7 +22,7 @@ in
       ;
 
     inherit
-      (pkgs.unazikxPkgs.yazi-plugins)
+      (pkgs.unazikx-pkgs.yazi-plugins)
       # keep-sorted start
       cba-preview
       convert

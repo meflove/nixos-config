@@ -28,6 +28,14 @@
               user = {
                 name = "meflove";
                 email = "meflov3r@icloud.com";
+                signingkey = "54B1AA165EA2E864";
+              };
+
+              commit = {
+                gpgsign = true;
+              };
+              tag = {
+                gpgsign = true;
               };
 
               core = {

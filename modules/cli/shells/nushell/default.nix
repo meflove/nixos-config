@@ -12,7 +12,16 @@
             enable = true;
             enableNushellIntegration = true;
           };
-          nushell = {
+          nushell = let
+            clearAndFastfetch =
+              pkgs.writeShellScriptBin
+              "clear-and-fastfetch"
+              ''
+                clear
+                fastfetch
+              ''
+              |> lib.getExe;
+          in {
             enable = true;
 
             shellAliases = let
@@ -49,8 +58,8 @@
               ipv6 = "${ip} addr show | grep 'inet6 ' | cut -d ' ' -f6 | sed -n '2p'";
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Управление терминалом ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
-              cls = "clear; fastfetch";
-              c = "clear; fastfetch";
+              cls = clearAndFastfetch;
+              c = clearAndFastfetch;
 
               # ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰ Sudo и безопасность ▰▰▰▰▰▰▰▰▰▰▰▰▰▰▰
               visudo = "^sudo visudo";
@@ -74,7 +83,7 @@
             };
 
             envFile.text =
-              #nu
+              # nu
               ''
                 $env.PATH = ($env.PATH |
                  split row (char esep) |
@@ -85,6 +94,8 @@
             extraConfig =
               #nu
               ''
+                ${clearAndFastfetch}
+
                 let carapace_completer = {|spans: list<string>|
                   carapace $spans.0 nushell ...$spans
                   | from json

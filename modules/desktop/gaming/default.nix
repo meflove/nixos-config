@@ -61,7 +61,7 @@
 
         gamescope = {
           enable = true;
-          capSysNice = true;
+          capSysNice = false;
           package = pkgs.gamescope_git;
 
           args = [
@@ -155,6 +155,7 @@
                 (pkgs)
                 # stuff
                 protonup-ng
+                cabextract
                 ## Games
                 # freesmlauncher
                 # (gamePkgs.osu-stable.override {

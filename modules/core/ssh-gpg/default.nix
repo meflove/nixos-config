@@ -44,7 +44,7 @@
       hm = {
         sops = let
           secretSettings = {
-            sopsFile = ../../../secrets/ssh/servers/hostoff.yaml;
+            sopsFile = ../../../secrets/ssh-gpg/servers/hostoff.yaml;
           };
         in {
           secrets = lib.genAttrs [
@@ -77,7 +77,7 @@
             includes = [
               "config.d/*"
             ];
-            matchBlocks = {
+            settings = {
               "github.com" = {
                 user = "meflove";
                 identityFile = "~/.ssh/id_ed25519";
