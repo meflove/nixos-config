@@ -34,6 +34,14 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
+    nix-ld = {
+      type = "github";
+      owner = "nix-community";
+      repo = "nix-ld";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
+    };
     ncro = {
       type = "github";
       owner = "feel-co";
@@ -147,6 +155,12 @@
         flake-parts.follows = "flake-parts";
         git-hooks.follows = "git-hooks";
       };
+    };
+    linuwowo = {
+      type = "github";
+      owner = "loystonpais";
+      repo = "linuwowo";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     angeldust-nix-packages = {
       type = "github";
@@ -333,11 +347,6 @@
         home-manager.follows = "home-manager";
         flake-compat.follows = "flake-compat";
       };
-    };
-    angeldust-nixCats = {
-      type = "github";
-      owner = "meflove";
-      repo = "angeldust-nixCats";
     };
     angeldust-nvimWrap = {
       type = "github";

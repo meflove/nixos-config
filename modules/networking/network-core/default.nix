@@ -68,7 +68,6 @@
         useDHCP = false;
 
         hosts = {
-          "nixos-pc.localdomain" = ["nixos-pc"];
           "192.168.1.1" = ["router"];
         };
 

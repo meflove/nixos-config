@@ -3,7 +3,6 @@
     nixosModules.${baseNameOf ./.} = {
       pkgs,
       lib,
-      # inputs,
       ...
     }: {
       environment.systemPackages = lib.attrValues {
@@ -50,6 +49,9 @@
           config = {
             profile = "high-quality";
             hwdec = "auto";
+
+            volume = 50;
+
             ytdl-format = "bestvideo+bestaudio";
 
             glsl-shaders = "${pkgs.anime4k}/Anime4K_Clamp_Highlights.glsl:${pkgs.anime4k}/Anime4K_Restore_CNN_VL.glsl:${pkgs.anime4k}/Anime4K_Upscale_CNN_x2_VL.glsl:${pkgs.anime4k}/Anime4K_Restore_CNN_M.glsl:${pkgs.anime4k}/Anime4K_AutoDownscalePre_x2.glsl:${pkgs.anime4k}/Anime4K_AutoDownscalePre_x4.glsl:${pkgs.anime4k}/Anime4K_Upscale_CNN_x2_M.glsl";

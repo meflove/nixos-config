@@ -1,0 +1,12 @@
+{
+  "cpuVendor": "intel",
+  "cpuFamily": 6,
+  "cpuModel": 151,
+  "modelName": "12th Gen Intel(R) Core(TM) i5-12400F",
+  "amdZenGen": 0,
+  "intelGen": 12,
+  "isSteamDeck": false,
+  "disableUmip": true,
+  "cpuidFaultEmulation": false,
+  "dmiProduct": "MS-7D98"
+}

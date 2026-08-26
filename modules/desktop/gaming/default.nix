@@ -9,9 +9,11 @@
       # wine = pkgs.wineWow64Packages.stagingFull;
       wine = pkgs.nix-gaming.wine-tkg;
     in {
-      boot.kernelModules = [
-        "ntsync"
-      ];
+      boot = {
+        kernelModules = [
+          "ntsync"
+        ];
+      };
 
       users.users = {
         ${lib.userName} = {
@@ -30,6 +32,15 @@
       ];
 
       programs = {
+        linuwowo = {
+          enable = true;
+          json = ./linuwowo.json;
+        };
+
+        nix-ld.dev = {
+          enable = true;
+        };
+
         wine = {
           enable = true;
           package = wine;
@@ -52,6 +63,7 @@
           extraCompatPackages = with pkgs; [
             proton-ge-bin
             nur.repos.vladexa.proton-cachyos-v3
+            angeldust-pkgs.proton-cachyos-linuwux
           ];
 
           gamescopeSession = {
@@ -179,7 +191,6 @@
                 echo "Succesfully installed dlls for \"Games\" dir"
               else
                 echo "There is no \"Games\" dir"
-                exit 0
               fi
             '';
         };
@@ -203,19 +214,46 @@
               echo "Succesfully installed dlls for ${game}"
             else
               echo "There is no ${game} dir \"$GAME_DIR\""
-              exit 0
             fi
           '';
         in {
           text =
             (installDlls "Cyberpunk 2077" "Cyberpunk 2077")
-            + (installDlls "Assassin’s Creed: Origins" "ACOrigins_Linux")
-            + (installDlls "Marvel’s Spider-Man Remastered" "SpiderMan_Linux");
+            + (installDlls "Marvel’s Spider-Man Remastered" "SpiderMan_Linux")
+            + (installDlls "The Farmer Was Replaced" "The_Farmer_Was_Replaced");
+        };
+        linuxRulez = let
+          setupLinuxRuleZ = dir:
+          # bash
+          ''
+            GAME_DIR="/home/${lib.userName}/Games/${dir}"
+
+            if [[ -d "$GAME_DIR/game/bin/umu" ]]; then
+              ln -sfn ${lib.getExe' pkgs.umu-launcher "umu-run"} "$GAME_DIR/game/bin/umu/umu-run"
+              mkdir -p "$GAME_DIR/game/home"
+              echo "Linked system umu-run for ${dir}"
+            fi
+
+            if [[ -d "$GAME_DIR/game/wine" ]]; then
+              [[ -L "$GAME_DIR/game/wine" ]] || rm -rf "$GAME_DIR/game/wine"
+              ln -sfn ${pkgs.angeldust-pkgs.proton-cachyos-linuwux} "$GAME_DIR/game/wine"
+              echo "Linked Proton-LinUwUx-patch for ${dir}"
+            fi
+          '';
+        in {
+          text = setupLinuxRuleZ "Assassins_Creed_Odyssey";
         };
       };
 
       hm = {
         home = {
+          file = {
+            ".config/heroic/tools/proton/GE-Proton11-1-LinUwUx-patch".source =
+              pkgs.angeldust-pkgs.proton-cachyos-linuwux;
+            ".steam/root/compatibilitytools.d/GE-Proton11-1-LinUwUx-patch".source =
+              pkgs.angeldust-pkgs.proton-cachyos-linuwux;
+          };
+
           packages = let
             heroic = pkgs.heroic.override {
               extraPkgs = pkgs':
@@ -232,6 +270,9 @@
                 # stuff
                 protonup-ng
                 cabextract
+                umu-launcher
+                # for linuxRuleZ scripts
+                zenity
                 ## Games
                 freesmlauncher
                 # (gamePkgs.osu-stable.override {

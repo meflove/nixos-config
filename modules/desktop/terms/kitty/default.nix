@@ -16,6 +16,8 @@
             cursor_trail_decay = "0.1 0.4";
             cursor_trail_start_threshold = 2;
 
+            progress_bar = "hidden";
+
             copy_on_select = "yes";
 
             scrollback_lines = 10000;

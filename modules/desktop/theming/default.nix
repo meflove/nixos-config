@@ -29,7 +29,7 @@
         autoEnable = true;
 
         image =
-          lib.mkStylixImage ../../../pics/nix-tyan.png config.lib.stylix.colors.toList;
+          lib.mkStylixImage ../../../pics/wallpapers/nix-tyan.png config.lib.stylix.colors.toList;
 
         base16Scheme = "${pkgs.base16-schemes}/share/themes/rose-pine-moon.yaml";
         # base16Scheme = {

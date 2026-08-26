@@ -1,6 +1,5 @@
 {
   perSystem = {inputs', ...}: {
-    packages.angeldust-nixCats = inputs'.angeldust-nixCats.packages.default;
-    packages.angeldust-nviwWrap = inputs'.angeldust-nviwWrap.packages.default;
+    packages.angeldust-nvimWrap = inputs'.angeldust-nvimWrap.packages.default;
   };
 }

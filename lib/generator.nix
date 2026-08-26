@@ -25,6 +25,8 @@ let
     proxy-suite-flake.nixosModules.default
     stylix.nixosModules.default
     nix-gaming.nixosModules.wine
+    linuwowo.nixosModules.default
+    nix-ld.nixosModules.nix-ld
     lix-module.nixosModules.default
     steam-config-nix.nixosModules.default
     ncro.nixosModules.default
