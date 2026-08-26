@@ -1,5 +1,6 @@
 ---
 name: full_review
+agent: plan
 description: Comprehensive review using multiple specialized agents in parallel. Performs coordinated code quality, security, architecture, performance, and testing reviews with consolidated report.
 ---
 
@@ -236,5 +237,5 @@ Track these metrics across all agents:
 
 ## Additional Resources
 
-- [template.md](template.md) - Consolidated report template
-- [examples/sample.md](examples/sample.md) - Full review example with all agent reports
+- [template.md](./template.md) - Consolidated report template
+- [examples/sample.md](./examples/sample.md) - Full review example with all agent reports

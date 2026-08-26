@@ -3,6 +3,7 @@
     nixosModules.${baseNameOf ./.} = {
       pkgs,
       lib,
+      config,
       ...
     }: {
       hm = {
@@ -23,7 +24,7 @@
               type = "http";
               url = "https://mcp.context7.com/mcp";
               headers = {
-                CONTEXT7_API_KEY = "\${CONTEXT7_API_KEY}";
+                CONTEXT7_API_KEY = "{env:CONTEXT7_API_KEY}";
               };
             };
 
@@ -38,7 +39,7 @@
                 "ghcr.io/github/github-mcp-server"
               ];
               env = {
-                GITHUB_PERSONAL_ACCESS_TOKEN = "\${GITHUB_PERSONAL_ACCESS_TOKEN}";
+                GITHUB_PERSONAL_ACCESS_TOKEN.file = config.hm.sops.secrets."github/github_pat".path;
               };
             };
 
@@ -54,7 +55,10 @@
 
             mcp-read-website-fast = {
               command = "${lib.getExe' pkgs.bun "bunx"}";
-              args = ["-y" "@just-every/mcp-read-website-fast"];
+              args = [
+                "-y"
+                "@just-every/mcp-read-website-fast"
+              ];
             };
           };
         };

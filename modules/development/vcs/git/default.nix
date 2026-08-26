@@ -42,6 +42,13 @@
                 editor = lib.getExe pkgs.editor;
                 whitespace = "error";
                 preloadindex = true;
+                excludesfile = builtins.path {
+                  path = pkgs.writeText "gitignore" ''
+                    **/.omc
+                    .cache
+                    **/.claude/settings.local.json
+                  '';
+                };
               };
 
               diff = {

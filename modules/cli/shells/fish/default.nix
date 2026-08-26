@@ -169,7 +169,7 @@
               nrs = "nixos switch --fallback --option access-tokens=(cat ${config.hm.sops.secrets."github/github_pat".path})";
               nbs = "nixos boot --fallback --option access-tokens=(cat ${config.hm.sops.secrets."github/github_pat".path})";
               nfu = "nix flake update --option access-tokens (cat ${config.hm.sops.secrets."github/github_pat".path})";
-              oc = "opencode2";
+              oc = "opencode";
               cl = "claude";
 
               "--help" = {

@@ -238,5 +238,5 @@ Track these metrics across all agents:
 
 ## Additional Resources
 
-- [template.md](template.md) - Consolidated report template
-- [examples/sample.md](examples/sample.md) - Full review example with all agent reports
+- [template.md](./template.md) - Consolidated report template
+- [examples/sample.md](./examples/sample.md) - Full review example with all agent reports

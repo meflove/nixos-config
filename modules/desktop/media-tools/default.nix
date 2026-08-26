@@ -13,7 +13,6 @@
           ffmpeg
           gpu-screen-recorder-gtk
           imv # Image viewer for Wayland
-          gimp
           vlc
           frame-media-converter
           ;

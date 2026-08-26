@@ -165,5 +165,5 @@ Rate each category 1-10:
 
 ## Additional Resources
 
-- [template.md](template.md) - Review report structure
-- [examples/sample.md](examples/sample.md) - Real-world review example
+- [template.md](./template.md) - Review report structure
+- [examples/sample.md](./examples/sample.md) - Real-world review example

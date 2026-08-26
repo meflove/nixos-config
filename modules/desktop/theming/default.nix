@@ -98,7 +98,9 @@
               qt = {
                 standardDialogs = "xdgdesktopportal";
               };
-              zen-browser.profileNames = ["angeldust"];
+              zen-browser = {
+                profileNames = ["angeldust"];
+              };
             };
 
           icons = {

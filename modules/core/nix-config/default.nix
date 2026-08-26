@@ -59,11 +59,18 @@
         url = "https://nixpkgs-unfree.cachix.org";
         public_key = "nixpkgs-unfree.cachix.org-1:hqvoInulhbV4nJ9yJOEr+4wxhDV4xq2d1DK7S6Nj6rs=";
       }
-      # {
-      #   url = "https://cache.nixos-cuda.org";
-      #   public_key = "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=";
-      #
-      # }
+      {
+        url = "https://ayugram-desktop.cachix.org";
+        public_key = "ayugram-desktop.cachix.org-1:AZ5EqHrJsAKL5YkZYLPEsb1FdD9QlypUwQ0REcJftgA=";
+      }
+      {
+        url = "https://tg-owt.cachix.org";
+        public_key = "tg-owt.cachix.org-1:lp0BukIhSK3EIyLcDhDZ5zABgT48nmNp6t4SnZ0wr8w=";
+      }
+      {
+        url = "https://cache.nixos-cuda.org";
+        public_key = "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=";
+      }
       {
         url = "https://cache.nixos.org";
         public_key = nixosOrgKey;

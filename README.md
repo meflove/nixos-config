@@ -1,3 +1,6 @@
+> [!NOTE]
+> **Moved to [Codeberg](https://codeberg.org/angeldust/nixos-config)** — GitHub now serves as a mirror.
+
 <h1 align="center"> My Nixos Configuration <img src="https://github.com/user-attachments/assets/5f064ed3-b558-426d-afef-d33940636c9d" width="32" alt="nixos"> </h1>
 
 [![NixOS](https://img.shields.io/badge/NixOS-unstable-blue.svg?style=for-the-badge&logo=NixOS)](https://nixos.org)

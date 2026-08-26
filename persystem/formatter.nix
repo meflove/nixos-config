@@ -52,6 +52,7 @@
           enable = true;
           includes = [
             "*.json"
+            "*.jsonc"
           ];
         };
 

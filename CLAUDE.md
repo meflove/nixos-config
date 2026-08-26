@@ -1,10 +1,15 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) and any other AI
+agents working in this repository. It is also exposed as `AGENTS.md` (a
+symlink to this file) for tooling that reads that filename.
 
-## Repository Overview
+**This repo uses JJ (jujutsu, colocated with git) as vcs backend!**
 
-A modular NixOS configuration built on [flake-parts](https://flake.parts) with automatic module discovery via [import-tree](https://github.com/vic/import-tree). Targets `x86_64-linux`, focused on gaming, development, and a Niri/Hyprland Wayland desktop.
+Personal NixOS config: NixOS unstable + Lix, flake-parts, single host
+`nixos-pc` (user `angeldust`, x86_64-linux, stateVersion 26.05). Focused on
+gaming, development, and a Niri Wayland desktop (a Hyprland module exists but
+is not enabled on the host).
 
 **Key architectural decisions:**
 
@@ -13,26 +18,28 @@ A modular NixOS configuration built on [flake-parts](https://flake.parts) with a
 - **import-tree** auto-discovers every `default.nix` under `modules/` and `hosts/` — no manual imports.
 - **Unified modules**: a single module can configure both NixOS and Home Manager via the `hm` alias (see below).
 - **Secrets** managed with **sops-nix + age**.
-- **Packages are external**: there is no local `pkgs/` tree. Custom packages come from external flake inputs and are exposed through `self.overlays.default` (see Packages).
+- **Packages are external**: there is no local `pkgs/` tree. Custom packages come from external flake inputs and are exposed through overlays (see persystem/overlays.nix).
 
 ## Common Commands
 
 ```bash
-# Apply system config via nixos-cli (the `nixos` binary, provided by the `nixos-cli` input/module).
-# Run from the repo root; Home Manager is bundled into the system config, so these apply both NixOS and HM together.
+# Apply system config via nixos-cli (the `nixos` binary).
+# Run from the repo root; Home Manager is bundled into the system build, so these
+# apply both NixOS and HM together. Use `nixos`, NOT `nixos-rebuild`.
 nixos switch            # build + activate + set as boot default        (alias for `apply`)
 nixos boot              # build + set as boot default, do NOT activate   (apply --no-activate)
 nixos test              # build + activate now, do NOT change boot        (apply --no-boot)
 
 # Inspect / build without applying
 nixos build             # build the configuration to ./result            (apply --no-activate --no-boot --output ./result)
-nixos dry-build         # dry-build check (no store writes)              (apply --no-activate --no-boot --dry)
+nixos dry-build         # cheap verification that the config evaluates/builds (no store writes)
 nixos dry-activate      # show what a switch WOULD do to the running system (apply --dry)
+nix build .#nixos-pc-toplevel   # alternative build check via the flake package
 
-# Format / lint (treefmt config in persystem/formatter.nix: deadnix, alejandra, statix, prettier)
+# Format everything (treefmt config in persystem/formatter.nix) — REQUIRED before commit
 nix fmt                 # or: treefmt
 
-# Enter the development shell (glow, sops, git-hooks via prek) — also auto-loaded by direnv
+# Enter the development shell (glow, sops, prek git-hooks) — also auto-loaded by direnv
 devenv shell
 
 # Secrets (sops-nix + age; .sops.yaml defines age recipients)
@@ -43,7 +50,46 @@ sops secrets/ssh-gpg/hosts/angeldust-gpg.yaml
 sops-update-keys        # custom script: updates sops recipients across all secret files
 ```
 
-Git hooks (prek, configured in `persystem/shell.nix`) run `alejandra`, `deadnix`, `statix`, `shellcheck`, `end-of-file-fixer`, `trim-trailing-whitespace`, `detect-private-keys` on commit. Run `nix fmt` after non-trivial changes regardless.
+### Formatting & git hooks
+
+- `nix fmt` (treefmt, `persystem/formatter.nix`): for `*.nix` — alejandra →
+  statix → deadnix (`--no-underscore`); plus prettier (`*.md`), jsonfmt,
+  kdlfmt, ruff-format, taplo, yamlfmt. `secrets/*`, `.sops.yaml`, `.gitignore`,
+  `.envrc` are excluded from formatting.
+- Git hooks (prek, configured in `persystem/shell.nix`) run on commit:
+  alejandra, deadnix, statix, shellcheck, end-of-file-fixer,
+  detect-private-keys. Note: statix checks the whole repo, not just staged
+  files.
+
+## Workflow for changes
+
+1. Edit modules / host config.
+2. `nix fmt` (hooks also run the formatters on commit).
+3. `nixos dry-build` to verify the config still builds.
+4. Touched secrets? Verify decryption: `sops -d secrets/secrets.yaml >/dev/null`.
+5. **Keep this file in sync.** Any change to architecture, commands, workflows,
+   conventions, or the module tree must be reflected in CLAUDE.md in the same
+   change — docs must never drift from the config.
+6. **Never commit unless the user asks.** The repo is colocated jj; the user
+   runs fmt/add/commits themselves — agents must not run `git`/`jj` commands.
+   Commit style, when asked to commit: `emoji type(scope): subject`.
+
+## CI
+
+**Woodpecker CI** (`.woodpecker/`) is hooked to the **Codeberg** mirror
+(`https://codeberg.org/angeldust/nixos-config.git`), which is the primary
+forge:
+
+- `mirror.yml` — on push to `main` (and manual runs) force-pushes `main` to
+  GitHub (`git@github.com:meflove/nixos-config.git`) and Tangled
+  (`git@tangled.org:did:plc:p35cbenhih5vk25dufk3fjns`). The clone step is
+  overridden to a full clone (`partial: false`, `depth: 0`) — required for
+  force-push mirroring. Requires repo secrets in the Woodpecker UI (enabled
+  for `push` + `manual` events): `private_ssh_key` (SSH key authorized on
+  GitHub and Tangled) and `known_hosts` (github.com + tangled.org host keys).
+
+(The old `.github/workflows/` mirror is superseded by this pipeline and kept
+only until archived.)
 
 ## Architecture
 
@@ -51,14 +97,18 @@ Git hooks (prek, configured in `persystem/shell.nix`) run `alejandra`, `deadnix`
 
 `flake.nix` → `outputs = args: import ./lib args`. The `lib/` directory is the output generator (inspired by [unazikx/flake](https://github.com/unazikx/flake)):
 
-- **`lib/default.nix`** — the `mkFlake` entry point. Declares `systems = ["x86_64-linux"]`, wires up `overlays` (niri, hyprland, nix-cachyos-kernel, statix, `self.overlays.default`), and imports `import-tree` for `modules/` + `hosts/` and all of `persystem/`, plus the flake-parts modules (devenv, disko, bundlers, home-manager, pkgs-by-name, treefmt). Injects module args `extendedLib`, `self`, `inputs`, `_config`.
+- **`lib/default.nix`** — the `mkFlake` entry point. Declares `systems = ["x86_64-linux"]`, wires up overlays (niri, hyprland, nix-cachyos-kernel, angeldust-nix-packages, nur, statix, `self.overlays.default`), and imports `import-tree` for `modules/` + `hosts/` and all of `persystem/`, plus the flake-parts modules (devenv, disko, bundlers, home-manager, pkgs-by-name, treefmt). Injects module args `extendedLib`, `self`, `inputs`, `_config`.
 - **`lib/generator.nix`** — `buildConfiguration`: the system builder. Extends nixpkgs `lib` with helper functions and per-host scalars (`hostName`, `userName`, `hostPlatform`, `flakeDir`, `hostId`, `configurationName`), applies the global `nxosModules`/`homeModules` from flake inputs, and applies the `hm` alias module. **Also materializes the user's SSH key** — `angl_ssh_priv`/`angl_ssh_pub` from `secrets/ssh-gpg/hosts/${userName}-ssh.yaml` are written to `/home/${userName}/.ssh/id_ed25519(.pub)`.
 - **`lib/functions.nix`** — `flattenSecrets`, `flattenAttrsWithSep`, `flattenAttrsDot`, `mkStylixImage`.
 - **`lib/aliases.nix`** — `mkAliasOptionModule ["hm"] ["home-manager" "users" <userName>]`, which is what lets every module write `hm = { ... }` instead of the full Home Manager path.
 
 ### Hosts
 
-`hosts/<name>/default.nix` calls `extendedLib.buildConfiguration`. `extraModules` is built with `nxosLib.attrValues` over an `inherit` block from `config.nixosModules`, so adding a module to the host means adding its name to that `inherit` list — import-tree already makes the module discoverable. Example shape (`hosts/nixos-pc`):
+Single host: `hosts/nixos-pc`. `hosts/<name>/default.nix` calls
+`extendedLib.buildConfiguration`. `extraModules` is built with
+`nxosLib.attrValues` over an `inherit` block from `config.nixosModules`, so
+adding a module to the host means adding its name to that `inherit` list —
+import-tree already makes the module discoverable. Shape:
 
 ```nix
 {
@@ -73,13 +123,13 @@ Git hooks (prek, configured in `persystem/shell.nix`) run `alejandra`, `deadnix`
 
       extraModules = extendedLib.nxosLib.attrValues {
         inherit
-            (config.nixosModules)
-            nix-config
-            fish
-            niri
-            nvidia
-            /* ... */
-            ;
+          (config.nixosModules)
+          nix-config
+          fish
+          niri
+          nvidia
+          /* ... */
+          ;
       };
     };
 
@@ -99,29 +149,34 @@ Git hooks (prek, configured in `persystem/shell.nix`) run `alejandra`, `deadnix`
 
 flake-parts `perSystem` output, auto-imported:
 
-- **`overlays.nix`** — defines `self.overlays.default`, which exposes external flake packages as package sets/attributes on `pkgs`: `pkgs.master` (nixpkgs-master), `pkgs.angeldust-pkgs`, `pkgs.unazikx-pkgs`, `pkgs.jonhermansen-nur-pkgs`, `pkgs.llm-agents`, `pkgs.nix-gaming`, `pkgs.firefox-addons`, and individual packages (`ayugram-desktop`, `freesmlauncher`, `iloader`, plus fixes for `nixos-cli`/`nix-update`/`fastfetch`). **This is how you reference custom packages — never look for a local `pkgs/` directory.**
+- **`overlays.nix`** — defines `self.overlays.default`:
+  - pkg sets on `pkgs`: `pkgs.master` (nixpkgs-master), `pkgs.unazikx-pkgs`, `pkgs.jonhermansen-nur-pkgs`, `pkgs.llm-agents`, `pkgs.nix-gaming`, `pkgs.firefox-addons`;
+  - individual packages: `ayugram-desktop`, `freesmlauncher`, `iloader`, `iris`;
+  - fixes: `nix` → lix, plus overrides for `nixos-cli`, `nix-update`, and `fastfetch` (zfs support).
+    Additional input overlays are wired in `lib/default.nix` and provide things like `pkgs.angeldust-pkgs` and `niri-unstable`. **This is how you reference custom packages — never look for a local `pkgs/` directory.**
 - **`shell.nix`** — devenv shell (`name = "nixland"`), git-hooks, and `flake.nixConfig` (binary caches + trusted keys).
 - **`formatter.nix`** — treefmt programs (see Commands).
 - **`default.nix`** — exposes a `<host>-toplevel` package per nixosConfiguration.
 
 ### Modules
 
-Auto-discovered by import-tree from `modules/`. Each module exports `flake.nixosModules.${baseNameOf ./.}` (directory name = module name, no namespace). Categories:
+Auto-discovered by import-tree from `modules/`. Each module exports `flake.nixosModules.${baseNameOf ./.}` (directory name = module name, no namespace). **Discovery is automatic; enabling is not** — a module only takes effect once added to the host's `inherit (config.nixosModules)` list.
 
 ```
 modules/
 ├── boot/            # kernel-optimizations (CachyOS LTO), secureboot (lanzaboote)
 ├── core/            # nix-config, security, ssh-gpg, users, system-optimizations, oom-killer,
 │                    #   easyeffects, time-locale, usb, debloat
-├── hardware/        # nvidia, sound, bluetooth, btrfs, zfs, iphone
+├── hardware/        # nvidia, sound, bluetooth, btrfs, zfs, mouse, iphone, openrgb
 ├── networking/      # firewall, network-core, network-tools, vpn, zapret (proxy-suite)
 ├── cli/             # shells/ (fish, nushell), yazi, zellij, atuin, fastfetch, gopass,
-│                    #   nix-cli, cli-basic-stuff, fsel, otter-launcher
-├── desktop/         # wm/ (niri, hyprland, waybar, hyprlock, dunst), gaming, flatpak,
-│                    #   theming, terms/ (ghostty, kitty), zen-browser, communication,
-│                    #   media-tools, music, productivity, torrent, pipewire-soundpad, xdg, ...
-└── development/     # editor (Neovim via angeldust-nixCats), git, jujutsu, direnv, podman,
-                     #   virt-manager, database, ai/ (claude, mcp, gemini, ollama)
+│                    #   nix-cli, cli-basic-stuff, fsel, iris, otter-launcher
+├── desktop/         # wm/ (niri, hyprland, hyprlock, waybar, vicinae, notifications/ (dunst, mako)),
+│                    #   terms/ (ghostty, kitty), gaming, flatpak, theming, zen-browser,
+│                    #   communication/ (nixcord), media-tools, music, productivity, torrent,
+│                    #   pipewire-soundpad, xdg, hyprscope
+└── development/     # editor (Neovim via angeldust-nixCats), vcs/ (git, jujutsu), direnv, podman,
+                     #   virt-manager, database, ai/ (claude, opencode, mcp, gemini, ollama)
 ```
 
 Standard module shape (NixOS + Home Manager in one):
@@ -144,11 +199,12 @@ Standard module shape (NixOS + Home Manager in one):
 
 ### Secrets with sops-nix
 
-`.sops.yaml` defines two age recipients (`angeldust`, `nixos-pc`) and encrypts everything matching `secrets/(ssh-gpg/.*|\w+\.yaml)$` to both. Files:
-
-- `secrets/secrets.yaml` — the main secrets store.
-- `secrets/ssh-gpg/hosts/<user|host>-{ssh,gpg}.yaml` — per-user SSH/GPG material.
-- `secrets/ssh-gpg/servers/` — server-specific secrets.
+- **Never write plaintext secrets**; they live in `secrets/*.yaml` (encrypted).
+  `.sops.yaml` defines two age recipients (`angeldust`, `nixos-pc`) and
+  encrypts everything matching `secrets/(ssh-gpg/.*|\w+\.yaml)$` to both. Files:
+  - `secrets/secrets.yaml` — the main secrets store.
+  - `secrets/ssh-gpg/hosts/<user|host>-{ssh,gpg}.yaml` — per-user SSH/GPG material.
+  - `secrets/ssh-gpg/servers/` — server-specific secrets.
 
 Define secrets with `lib.flattenSecrets`, which walks a nested attrset and flattens it with `/`, auto-detecting sops config leaves (a leaf is any attrset whose keys are all valid sops options — `mode`, `owner`, `path`, `sopsFile`, `restartUnits`, etc.):
 
@@ -160,16 +216,20 @@ sops.secrets = lib.flattenSecrets {
 };
 ```
 
-Reference a secret at runtime via `config.sops.secrets."ai/zai_api_key".path` (or `config.hm.sops.secrets.…` on the Home Manager side). Related helpers: `flattenAttrsWithSep <sep>`, `flattenAttrsDot` (dot separator, useful for browser prefs), `mkStylixImage`.
+Reference a secret at runtime via `config.sops.secrets."ai/zai_api_key".path` (or `config.hm.sops.secrets.…` on the Home Manager side). Related helpers: `flattenAttrsWithSep <sep>`, `flattenAttrsDot` (dot separator, useful for browser prefs), `mkStylixImage`. After changing `.sops.yaml` recipients, run `sops-update-keys`.
 
-## Testing & Workflow
+## Conventions & gotchas
 
-1. Format: `nix fmt` before committing.
-1. Dry-run build: `nixos dry-build` (or `nixos build` to materialize `./result`).
-1. Verify secrets decrypt: `sops -d secrets/secrets.yaml >/dev/null`.
+- alejandra indents with **2 spaces** (alejandra.toml); deadnix runs with
+  `--no-underscore` (prefix unused args with `_`).
+- `modules/development/ai/opencode/AGENTS.md` is NOT repo docs — it is the
+  user's global opencode context file deployed by the opencode module. Don't
+  reformat or "clean" it.
+- `ignore/` holds logs/coredumps — irrelevant to config.
+- Comments in nix files use `# INFO:` / `# WARN:` markers for important notes.
 
 ## Adding a New Module
 
 1. Create `modules/<category>/<name>/default.nix` exporting `flake.nixosModules.${baseNameOf ./.}`.
-1. Add the module's directory name to the host's `inherit (config.nixosModules) …` list in `hosts/<host>/default.nix`.
-1. import-tree handles discovery automatically — no other wiring needed.
+2. Add the module's directory name to the host's `inherit (config.nixosModules) …` list in `hosts/nixos-pc/default.nix`.
+3. import-tree handles discovery automatically — no other wiring needed.

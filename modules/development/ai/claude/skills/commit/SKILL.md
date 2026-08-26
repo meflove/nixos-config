@@ -189,14 +189,24 @@ Before finalizing:
 1. **Present analysis**: Show what you found in the diff
 2. **Propose message**: Suggest commit message
 3. **Request confirmation**: Ask for approval or changes
-4. **Execute commit**: Run `git commit -m "<message>"` after approval
+4. **Execute commit**: Run after approval
+
+```bash
+git commit -m "<title>
+<body>"
+```
 
 ### For Jujutsu/jj (jj repository)
 
 1. **Present analysis**: Show jj status and diff
-2. **Describe current commit**: Set message with `jj describe -m "<title>"`
+2. **Describe current commit**: Set message with
+
+```bash
+jj describe -m "<title>
+<body>"
+```
+
 3. **Request confirmation**: Ask for approval or changes
-4. **Finalize commit**: Create new commit with `jj new` after approval
 
 **Note**: Jujutsu has no staging area - all working copy changes are automatically tracked.
 
@@ -236,7 +246,6 @@ Before finalizing:
 
 - Working copy IS a commit (mutable)
 - `jj describe` sets the commit message
-- `jj new` finalizes current commit and creates new empty working copy
 
 ### jj Common Commands
 
@@ -251,10 +260,9 @@ jj diff --git
 jj log
 
 # Set commit message for current working copy
-jj describe -m "feat: add new feature"
-
-# Create new commit (finalizes current, creates new working copy)
-jj new
+jj describe -m "feat: add new feature
+- new
+- feature"
 
 # Edit specific commit (makes it working copy)
 jj edit <commit-id>
@@ -273,8 +281,8 @@ jj describe -m "feat(api): add user authentication"
 
 # Multi-line (use -m multiple times for body)
 jj describe -m "feat(api): add user authentication
-Implement OAuth2 flow for Google and GitHub
- Add JWT token validation middleware
+- Implement OAuth2 flow for Google and GitHub
+- Add JWT token validation middleware
 "
 ```
 
@@ -283,8 +291,7 @@ Implement OAuth2 flow for Google and GitHub
 1. **Modify files**: Changes auto-tracked in working copy
 2. **Review changes**: `jj diff --git` to see modifications
 3. **Set message**: `jj describe -m "<title>"`
-4. **Finalize**: `jj new` creates new commit on top
-5. **Verify**: `jj log` confirms commit was created
+4. **Verify**: `jj log` confirms commit was created
 
 ### jj Advantages
 
@@ -297,8 +304,8 @@ Implement OAuth2 flow for Google and GitHub
 
 ## Additional Resources
 
-- [template.md](template.md) - Commit message template structure
-- [examples/sample.md](examples/sample.md) - Real-world examples
+- [template.md](./template.md) - Commit message template structure
+- [examples/sample.md](./examples/sample.md) - Real-world examples
 
 ## Language Rules
 

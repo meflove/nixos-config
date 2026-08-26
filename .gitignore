@@ -14,6 +14,8 @@ devenv.local.yaml
 # pre-commit
 .pre-commit-config.yaml
 
+.omc
+
 # trash
 .cache
 dlls-install.log

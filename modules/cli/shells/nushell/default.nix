@@ -132,7 +132,7 @@
                   nrs: "nixos switch --fallback --option access-tokens=$env.GITHUB_TOKEN"
                   nbs: "nixos boot --fallback --option access-tokens=$env.GITHUB_TOKEN"
                   nfu: "nix flake update --option access-tokens $env.GITHUB_TOKEN"
-                  oc: opencode2
+                  oc: opencode
                   cl: claude
                 }
 
