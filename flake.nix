@@ -1,5 +1,5 @@
 {
-  description = "My NixOS configuration managed with snowfall";
+  description = "My NixOS configuration managed with flake-parts";
 
   inputs = {
     # Core
@@ -13,6 +13,12 @@
       type = "github";
       owner = "NixOS";
       repo = "nixpkgs";
+    };
+    nixpkgs-ananicy-cpp = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixpkgs";
+      rev = "148bab9c1c3c53136ecb44a6ea356a0ed5b39b06";
     };
     lix = {
       url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
@@ -31,9 +37,14 @@
       repo = "nix-update";
       inputs = {
         nixpkgs.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
         treefmt-nix.follows = "treefmt-nix";
       };
+    };
+    ncro = {
+      type = "github";
+      owner = "feel-co";
+      repo = "ncro";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     ## flake-parts
     flake-parts = {
@@ -49,7 +60,7 @@
     };
     import-tree = {
       type = "github";
-      owner = "vic";
+      owner = "denful";
       repo = "import-tree";
     };
     treefmt-nix = {
@@ -97,6 +108,7 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
+        import-tree.follows = "import-tree";
       };
     };
     nix2container = {
@@ -113,12 +125,11 @@
     ## other
     chaotic = {
       type = "github";
-      owner = "lonerOrz";
-      repo = "nyx-loner";
+      owner = "chaotic-cx";
+      repo = "nyx";
       inputs = {
         nixpkgs.follows = "nixpkgs";
         home-manager.follows = "home-manager";
-        rust-overlay.follows = "rust-overlay";
       };
     };
     nixos-hardware = {
@@ -141,19 +152,6 @@
         nixpkgs.follows = "nixpkgs";
         flake-parts.follows = "flake-parts";
         git-hooks.follows = "git-hooks";
-      };
-    };
-    unazikx-nix-packages = {
-      type = "github";
-      owner = "unazikx";
-      repo = "nix-packages";
-      inputs = {
-        nixpkgs-unstable.follows = "nixpkgs";
-        flake-parts.follows = "flake-parts";
-        pkgs-by-name.follows = "pkgs-by-name-for-flake-parts";
-        treefmt-nix.follows = "treefmt-nix";
-        nur.follows = "nur";
-        emmanuelrosa-nix.follows = "emmanuelrosa-nix";
       };
     };
     angeldust-nix-packages = {
@@ -236,7 +234,7 @@
     ## Niri
     niri = {
       type = "github";
-      owner = "sodiboo";
+      owner = "epireyn";
       repo = "niri-flake";
     };
 
@@ -291,6 +289,13 @@
         nixpkgs.follows = "nixpkgs";
       };
     };
+    steam-config-nix = {
+      url = "github:different-name/steam-config-nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
     nixcord = {
       type = "github";
       owner = "kaylorben";
@@ -299,8 +304,14 @@
         flake-parts.follows = "flake-parts";
         nixpkgs.follows = "nixpkgs"; # does not need cache hit
         nixpkgs-nixcord.follows = "nixpkgs";
-        flake-compat.follows = "flake-compat";
+        treefmt-nix.follows = "treefmt-nix";
       };
+    };
+    system24-theme = {
+      type = "github";
+      owner = "refact0r";
+      repo = "system24";
+      flake = false;
     };
     iloader = {
       type = "github";
@@ -334,11 +345,20 @@
       owner = "meflove";
       repo = "angeldust-nixCats";
     };
+    angeldust-nvimWrap = {
+      type = "github";
+      owner = "meflove";
+      repo = "angeldust-nvimWrap";
+    };
     llm-agents = {
       type = "github";
-      owner = "sadjow";
-      repo = "claude-code-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      owner = "numtide";
+      repo = "llm-agents.nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
+      };
     };
     claude-agents = {
       type = "github";
@@ -369,6 +389,25 @@
       inputs = {
         nixpkgs.follows = "nixpkgs";
         rust-overlay.follows = "rust-overlay";
+      };
+    };
+    zellij = {
+      type = "github";
+      owner = "a-kenji";
+      repo = "zellij-nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        rust-overlay.follows = "rust-overlay";
+        flake-compat.follows = "flake-compat";
+      };
+    };
+    iris = {
+      type = "github";
+      owner = "versenilvis";
+      repo = "iris";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
       };
     };
     nh = {
@@ -409,11 +448,22 @@
       owner = "thelegy";
       repo = "nixos-nftables-firewall";
     };
-    zapret-presets = {
+    proxy-suite-flake = {
       type = "github";
-      owner = "kotudemo";
-      repo = "zapret-presets";
-      inputs.nixpkgs.follows = "nixpkgs";
+      owner = "fufsob";
+      repo = "proxy-suite-flake";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        zapret.follows = "zapret-discord-youtube";
+      };
+    };
+    zapret-discord-youtube = {
+      type = "github";
+      owner = "kartavkun";
+      repo = "zapret-discord-youtube";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+      };
     };
   };
 

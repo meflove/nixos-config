@@ -96,11 +96,11 @@ in
           inherit fg;
         }
         {
-          name = "*";
+          url = "*";
           inherit fg;
         }
         {
-          name = "*/";
+          url = "*/";
           inherit fg;
         }
         {

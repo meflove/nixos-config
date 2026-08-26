@@ -22,6 +22,7 @@ in {
     "cb15abdb-0514-4e09-8ce5-722cf1f4a20f"
     "d8b79d4a-6cba-4495-9ff6-d6d30b0e94fe"
     "fd24f832-a2e6-4ce9-8b19-7aa888eb7f8e"
+    "c01d3e22-1cee-45c1-a25e-53c0f180eea8"
   ];
 
   mods-settings = flattenAttrsDot {
@@ -40,7 +41,7 @@ in {
       pins.stay-at-top = true;
       tabs = {
         show-separator = "essentials-shown";
-        dim-type = "both";
+        dim-type = "";
       };
       favicon.size = "normal";
       workspace.current.icon.size = "large";

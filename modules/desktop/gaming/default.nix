@@ -6,8 +6,8 @@
       config,
       ...
     }: let
+      # wine = pkgs.wineWow64Packages.stagingFull;
       wine = pkgs.nix-gaming.wine-tkg;
-      # gamePkgs = inputs.nix-gaming.packages.${lib.hostPlatform};
     in {
       boot.kernelModules = [
         "ntsync"
@@ -44,7 +44,11 @@
 
         steam = {
           enable = true; # install steam
-          package = pkgs.steam;
+          package = pkgs.steam.override {
+            extraProfile = ''
+              export PROTON_ENABLE_WAYLAND=1
+            '';
+          };
           extraCompatPackages = [
             pkgs.proton-ge-bin
           ];
@@ -57,12 +61,50 @@
               "-r 144"
             ];
           };
+
+          config = {
+            enable = true;
+            desktopEntries.enable = true;
+            onSteamRunning = "close";
+            defaultCompatTool = pkgs.proton-ge-bin;
+
+            apps = let
+              wrappers = [
+                (lib.getExe pkgs.gamemode)
+              ];
+
+              env = {
+                DXVK_CONFIG = "dxvk.trackPipelineLifetime = True; dxvk.enableAsync = True;";
+                PROTON_LOCAL_SHADER_CACHE = 1;
+                PROTON_USE_NTSYNC = 1;
+                PROTON_ENABLE_WAYLAND = 1;
+                LOW_LATENCY_LAYER = 1;
+                LOW_LATENCY_LAYER_REFLEX = 1;
+                "__GL_SHADER_DISK_CACHE_SKIP_CLEANUP" = 1;
+                "__GL_SHADER_DISK_CACHE_SIZE" = 12884901888;
+              };
+            in {
+              "2357570" = {
+                inherit wrappers;
+                env =
+                  {
+                    DXVK_HUD = "compiler";
+                    VKD3D_FEATURE_LEVEL = "12_2";
+                  }
+                  // env;
+                args = [
+                  "-dx12"
+                ];
+              };
+            };
+          };
         };
 
         gamescope = {
           enable = true;
+          enableWsi = true;
           capSysNice = false;
-          package = pkgs.gamescope_git;
+          # package = pkgs.gamescope_git;
 
           args = [
             "-W 2560"
@@ -99,17 +141,47 @@
         inherit
           (pkgs)
           logiops
-          gamescope-wsi_git
-          ;
-        inherit
-          (pkgs.nix-gaming)
-          dxvk
-          dxvk-nvapi
-          vkd3d-proton
           ;
       };
 
       system.userActivationScripts = {
+        gamesDirDlls = {
+          text =
+            # bash
+            ''
+              GAMES_DIR="/home/${lib.userName}/.wine"
+              wine=${lib.getExe config.programs.wine.package}
+
+              if [[ -d "$GAMES_DIR" ]]; then
+                export WINEPREFIX="$GAMES_DIR"
+
+                ln -sf ${pkgs.nix-gaming.dxvk-w64}/bin/*.dll "$GAMES_DIR/drive_c/windows/system32/"
+                ln -sf ${pkgs.nix-gaming.dxvk-nvapi-w64}/bin/*.dll "$GAMES_DIR/drive_c/windows/system32/"
+                ln -sf ${pkgs.nix-gaming.vkd3d-proton-w64}/bin/*.dll "$GAMES_DIR/drive_c/windows/system32/"
+                ln -sf ${config.hardware.nvidia.package}/lib/nvidia/wine/*.dll "$GAMES_DIR/drive_c/windows/system32/"
+
+                # dxvk
+                $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v d3d8 /d native,builtin /f
+                $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v d3d9 /d native,builtin /f
+                $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v d3d10core /d native,builtin /f
+                $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v d3d11 /d native,builtin /f
+                $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v dxgi /d native,builtin /f
+
+                # dxvk-nvapi
+                $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v nvapi /d native,builtin /f
+                $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v nvapi64 /d native,builtin /f
+
+                # vkd3d
+                $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v d3d12 /d native,builtin /f
+                $wine reg add 'HKEY_CURRENT_USER\Software\Wine\DllOverrides' /v d3d12core /d native,builtin /f
+
+                echo "Succesfully installed dlls for \"Games\" dir"
+              else
+                echo "There is no \"Games\" dir"
+                exit 0
+              fi
+            '';
+        };
         kron4ekDlls = let
           installDlls = game: dir:
           # bash
@@ -119,22 +191,25 @@
             if [[ -d "$GAME_DIR" ]]; then
               mkdir -p "$GAME_DIR/game_info/dlls"
 
+              ln -sf ${config.programs.wine.package}/lib/wine/x86_64-windows/d3dcompiler_*.dll "$GAME_DIR/game_info/dlls/"
+
               ln -sf ${pkgs.nix-gaming.dxvk-w64}/bin/*.dll "$GAME_DIR/game_info/dlls/"
               ln -sf ${pkgs.nix-gaming.dxvk-nvapi-w64}/bin/*.dll "$GAME_DIR/game_info/dlls/"
               ln -sf ${pkgs.nix-gaming.vkd3d-proton-w64}/bin/*.dll "$GAME_DIR/game_info/dlls/"
               ln -sf ${config.hardware.nvidia.package}/lib/nvidia/wine/*.dll "$GAME_DIR/game_info/dlls/"
+
+
               echo "Succesfully installed dlls for ${game}"
             else
               echo "There is no ${game} dir \"$GAME_DIR\""
-
               exit 0
             fi
           '';
         in {
           text =
             (installDlls "Cyberpunk 2077" "Cyberpunk 2077")
-            + (installDlls "No Man's Sky" "NoMansSky_Linux")
-            + (installDlls "Man Eater" "Maneater_Linux");
+            + (installDlls "Assassin’s Creed: Origins" "ACOrigins_Linux")
+            + (installDlls "Marvel’s Spider-Man Remastered" "SpiderMan_Linux");
         };
       };
 
@@ -157,7 +232,7 @@
                 protonup-ng
                 cabextract
                 ## Games
-                # freesmlauncher
+                freesmlauncher
                 # (gamePkgs.osu-stable.override {
                 #   useGameMode = false;
                 # })
@@ -176,7 +251,30 @@
             };
 
           sessionVariables = {
-            STEAM_COMPAT_TOOLS_PATH = "\${HOME}/.steam/root/compatibilitytools.d";
+            STEAM_COMPAT_TOOLS_PATH = "/home/${lib.userName}/.steam/root/compatibilitytools.d";
+          };
+        };
+
+        systemd.user.services = {
+          steam-autostart = {
+            Unit = {
+              PartOf = ["graphical-session.target"];
+              After = ["graphical-session.target"];
+            };
+
+            Install = {
+              WantedBy = ["graphical-session.target"];
+            };
+
+            Service = {
+              ExecStart = lib.concatStringsSep " " [
+                (lib.getExe config.programs.steam.package)
+                "-nochatui"
+                "-nofriendsui"
+                "-silent"
+              ];
+              Restart = "always";
+            };
           };
         };
 
@@ -184,29 +282,20 @@
           mangohud = {
             enable = true;
             package = pkgs.mangohud_git;
-            settings = {
-              winesync = true;
-              full = true;
+            settingsPerApplication = {
+              wine-Overwatch = {
+                fps = true;
+                display_server = true;
+                winesync = true;
+                frametime = false;
+                frame_timing = false;
+                cpu_stats = false;
+                gpu_stats = false;
+              };
             };
           };
           lutris = {
             enable = true;
-            package = pkgs.lutris.override {
-              # Intercept buildFHSEnv to modify target packages
-              buildFHSEnv = args:
-                pkgs.buildFHSEnv (args
-                  // {
-                    multiPkgs = envPkgs: let
-                      # Fetch original package list
-                      originalPkgs = args.multiPkgs envPkgs;
-
-                      # Disable tests for openldap
-                      customLdap = envPkgs.openldap.overrideAttrs (_: {doCheck = false;});
-                    in
-                      # Replace broken openldap with the custom one
-                      builtins.filter (p: (p.pname or "") != "openldap") originalPkgs ++ [customLdap];
-                  });
-            };
 
             runners = {
               wine = {

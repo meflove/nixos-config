@@ -3,7 +3,6 @@
     nixosModules.${baseNameOf ./.} = {
       pkgs,
       lib,
-      config,
       ...
     }: {
       environment.systemPackages = lib.attrValues {
@@ -38,9 +37,6 @@
         sops = {
           secrets = {
             pass = {};
-            youtube_cookies = {
-              mode = "0444";
-            };
           };
         };
 
@@ -73,6 +69,7 @@
             bitwarden-cli # CLI for Bitwarden password manager
             gopass # CLI password manager
             wl-clipboard
+            jq
             ;
           inherit
             (pkgs.angeldust-pkgs)
@@ -90,8 +87,10 @@
           enable = true;
           package = pkgs.angeldust-pkgs.clipse;
 
-          historySize = 5000;
-          imageDisplay.type = "sixel";
+          settings = {
+            maxHistory = 5000;
+            imageDisplay.type = "kitty";
+          };
         };
 
         programs = {
@@ -127,7 +126,6 @@
           starship = {
             enable = true;
             enableFishIntegration = true;
-            enableNushellIntegration = true;
 
             settings = {
               os = {
@@ -153,7 +151,6 @@
             };
             extraConfig = ''
               -S res,ext:mp4:m4a --recode mp4
-              # --cookies ${config.hm.sops.secrets.youtube_cookies.path}
               --cookies-from-browser firefox:~/.config/zen
             '';
           };

@@ -42,7 +42,9 @@
 
             differ = {
               tool = "command";
-              command = [(lib.getExe pkgs.nvd) "diff"];
+              command = [
+                (lib.getExe pkgs.dix)
+              ];
             };
             apply = {
               ignore_dirty_tree = true;

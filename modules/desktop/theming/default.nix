@@ -118,6 +118,7 @@
           };
 
           pointerCursor = {
+            enable = true;
             gtk.enable = true;
             hyprcursor.enable = true;
             dotIcons.enable = true;

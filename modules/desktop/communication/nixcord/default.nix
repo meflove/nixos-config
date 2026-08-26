@@ -1,6 +1,10 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {config, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      config,
+      inputs,
+      ...
+    }: {
       hm = {
         programs.nixcord = {
           enable = true; # Enable Nixcord (It also installs Discord)
@@ -27,17 +31,19 @@
             autoUpdate = false;
 
             useQuickCss = true; # use out quickCSS
-            themeLinks = [
-              # or use an online theme
-              "https://raw.githubusercontent.com/refact0r/system24/refs/heads/main/theme/flavors/system24-rose-pine-moon.theme.css"
+            themes = {
+              "system24-rose-pine-moon" = builtins.readFile "${inputs.system24-theme}/theme/flavors/system24-rose-pine-moon.theme.css";
+            }; # themeLinks not working, idk why :)
+            enabledThemes = [
+              "system24-rose-pine-moon.css"
             ];
-            enabledThemes = ["system24-rose-pine-moon.theme.css"];
 
             frameless = true; # Set some Vencord options
             plugins = {
-              alwaysAnimate.enable = true;
-              crashHandler.enable = true;
-              experiments.enable = true;
+              volumeBooster = {
+                enable = true;
+                multiplier = 2.0;
+              };
               fakeNitro = {
                 enable = true;
                 enableStickerBypass = true;
@@ -52,10 +58,7 @@
                 hyperLinkText = "{{NAME}}";
                 disableEmbedPermissionCheck = true;
               };
-              fakeProfileThemes.enable = true;
-              fixImagesQuality.enable = true;
-              gameActivityToggle.enable = true;
-              PinDMs = {
+              pinDms = {
                 enable = true;
                 userBasedCategoryList = {
                   "1037346438331514952" = [
@@ -77,12 +80,6 @@
                   ];
                 };
               };
-              readAllNotificationsButton.enable = true;
-              roleColorEverywhere.enable = true;
-              showAllMessageButtons.enable = true;
-              showHiddenChannels.enable = true;
-              webKeybinds.enable = true;
-              webScreenShareFixes.enable = true;
               callTimer = {
                 enable = true;
                 allCallTimers = true;
@@ -91,14 +88,26 @@
                 showWithoutHover = true;
                 trackSelf = true;
               };
-              translate = {
+              translatePlus = {
                 enable = true;
                 target = "ru";
                 toki = true;
                 sitelen = true;
                 shavian = true;
               };
-              UserPFP.enable = true;
+              alwaysAnimate.enable = true;
+              crashHandler.enable = true;
+              experiments.enable = true;
+              fakeProfileThemes.enable = true;
+              fixImagesQuality.enable = true;
+              gameActivityToggle.enable = true;
+              readAllNotificationsButton.enable = true;
+              roleColorEverywhere.enable = true;
+              showAllMessageButtons.enable = true;
+              showHiddenChannels.enable = true;
+              webKeybinds.enable = true;
+              webScreenShareFixes.enable = true;
+              userPfp.enable = true;
               webContextMenus.enable = true;
             };
           };

@@ -28,6 +28,31 @@ rec {
     texture = 0.55;
   };
 
+  # live folders
+  liveFolders = {
+    "My issues" = {
+      id = "0710a3a4-536a-4a8a-a7fe-e7be5e3706f2";
+      kind = "github:issues";
+      workspace = spaces."Main".id;
+      position = 106;
+      github = {
+        authorMe = true;
+        assignedMe = true; # default
+      };
+    };
+    "Pull requests" = {
+      id = "b7a3d5c1-9e2f-4a68-b0d4-6f1c8e5a2d93";
+      kind = "github:pull-requests";
+      workspace = spaces."Main".id;
+      position = 107;
+      github = {
+        authorMe = true;
+        assignedMe = true; # default
+        reviewRequested = true;
+      };
+    };
+  };
+
   spaces = {
     "Main" = {
       id = "65713d79-734c-4212-a94c-9c7f0124180e";
@@ -92,36 +117,6 @@ rec {
       url = "https://www.youtube.com";
       isEssential = false;
       position = 105;
-    };
-    ## Hostoff folder
-    "Hostoff" = {
-      id = "0610dad3-b4b9-4908-b308-4d8fc7c32f86";
-      workspace = spaces."Main".id;
-      isGroup = true;
-      isFolderCollapsed = true;
-      editedTitle = true;
-      position = 106;
-    };
-    "amnezia" = {
-      id = "131b372b-cb90-4e49-b66f-d1b00a45d3b1";
-      workspace = spaces."Main".id;
-      folderParentId = pins."Hostoff".id;
-      url = "http://angeldust.mooo.com:51821/";
-      position = 107;
-    };
-    "3xui" = {
-      id = "78f29e48-8795-434d-8d46-30fa5c9e512c";
-      workspace = spaces."Main".id;
-      folderParentId = pins."Hostoff".id;
-      url = "https://angeldust.mooo.com/G0o4omNdaB/panel";
-      position = 108;
-    };
-    "hostoff-panel" = {
-      id = "a5ac318e-6fca-4356-92f3-2181576a138c";
-      workspace = spaces."Main".id;
-      folderParentId = pins."Hostoff".id;
-      url = "https://panel.hostoff.net/services/virtual-servers";
-      position = 109;
     };
     # Learning space
     "google-docs" = {

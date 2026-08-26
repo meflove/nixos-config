@@ -75,7 +75,7 @@ in {
         (mkPluginMime "ouch --archive-icon=''" [
           "application/{*zip,tar,bzip2,7z*,rar,xz,zstd,java-archive}"
         ])
-        (mkPluginUrl ''faster-piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dracula -- "$1"'' [
+        (mkPluginUrl ''piper -- CLICOLOR_FORCE=1 glow -w=$w -s=dracula -- "$1"'' [
           "*.md"
         ])
         (mkPluginUrl "comicthumb" [
@@ -88,14 +88,14 @@ in {
 
       prepend_fetchers = [
         {
-          id = "git";
           url = "*";
           run = "git";
+          group = "git";
         }
         {
-          id = "git";
           url = "*/";
           run = "git";
+          group = "git";
         }
       ];
     };

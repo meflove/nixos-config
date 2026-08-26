@@ -7,6 +7,12 @@
       ...
     }: {
       services.xserver.videoDrivers = ["nvidia"];
+      environment.systemPackages = lib.attrValues {
+        inherit
+          (pkgs.nvtopPackages)
+          nvidia
+          ;
+      };
 
       hardware = {
         graphics = {
@@ -17,7 +23,6 @@
               (pkgs)
               nvidia-vaapi-driver
               libvdpau-va-gl
-              gamescope-wsi_git
               vulkan-hdr-layer-kwin6
               vulkan-extension-layer
               vulkan-loader

@@ -39,7 +39,7 @@
               };
 
               core = {
-                editor = lib.getExe pkgs.nixCats;
+                editor = lib.getExe pkgs.editor;
                 whitespace = "error";
                 preloadindex = true;
               };

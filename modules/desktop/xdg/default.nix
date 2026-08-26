@@ -74,7 +74,7 @@
                   "inode/directory"
                 ];
 
-                "nixCats.desktop" = [
+                "nvimWrap.desktop" = [
                   "text/plain"
                   "text/markdown"
                   "text/x-toml"

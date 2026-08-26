@@ -2,11 +2,19 @@
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       pkgs,
+      inputs,
       lib,
       ...
     }: {
       hm.programs.zellij = {
         enable = true;
+        package = inputs.zellij.packages.${lib.hostPlatform}.zellij;
+        plugins = lib.attrValues {
+          inherit
+            (pkgs.zellijPlugins)
+            zjstatus
+            ;
+        };
         settings = {
           # Appearance
           session_name = "angeldust";
@@ -18,18 +26,18 @@
 
           # Behavior
           auto_layout = true;
-          default_cwd = "~";
           default_layout = "default";
           default_shell = "fish";
           mouse_mode = true;
           show_release_notes = true;
           show_startup_tips = false;
           support_kitty_keyboard_protocol = true;
+          support_kitty_image_protocol = true;
 
           # Clipboard & Scrolling
           copy_on_select = true;
           scroll_buffer_size = 10000;
-          scrollback_editor = lib.getExe pkgs.nixCats;
+          scrollback_editor = lib.getExe pkgs.editor;
           scrollback_lines_to_serialize = 10000;
 
           # Session Management

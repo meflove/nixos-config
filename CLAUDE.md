@@ -4,111 +4,65 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a modular NixOS configuration using [flake-parts](https://flake.parts) for modular architecture with automatic module discovery via [import-tree](https://github.com/vic/import-tree). The configuration targets `x86_64-linux` systems with a focus on gaming, development, and Niri/Hyprland Wayland desktop.
+A modular NixOS configuration built on [flake-parts](https://flake.parts) with automatic module discovery via [import-tree](https://github.com/vic/import-tree). Targets `x86_64-linux`, focused on gaming, development, and a Niri/Hyprland Wayland desktop.
 
 **Key architectural decisions:**
 
-- Uses Lix as Nix replacement
-- Module discovery via import-tree - no manual imports needed
-- Unified modules (can configure both system and home-manager in one module)
-- Secrets managed via sops-nix with age encryption
-- Custom library functions in `lib/` for common patterns
+- **Lix** as the Nix implementation (via `lix` + `lix-module` inputs).
+- **flake-parts** as the flake framework; per-system output lives in `persystem/`.
+- **import-tree** auto-discovers every `default.nix` under `modules/` and `hosts/` — no manual imports.
+- **Unified modules**: a single module can configure both NixOS and Home Manager via the `hm` alias (see below).
+- **Secrets** managed with **sops-nix + age**.
+- **Packages are external**: there is no local `pkgs/` tree. Custom packages come from external flake inputs and are exposed through `self.overlays.default` (see Packages).
 
 ## Common Commands
 
-### Building and Applying Configuration
-
 ```bash
-# Apply system configuration for nixos-pc host
-sudo nixos-rebuild switch --flake .#nixos-pc
+# Apply system config via nixos-cli (the `nixos` binary, provided by the `nixos-cli` input/module).
+# Run from the repo root; Home Manager is bundled into the system config, so these apply both NixOS and HM together.
+nixos switch            # build + activate + set as boot default        (alias for `apply`)
+nixos boot              # build + set as boot default, do NOT activate   (apply --no-activate)
+nixos test              # build + activate now, do NOT change boot        (apply --no-boot)
 
-# Apply home-manager configuration for angeldust@nixos-pc
-home-manager switch --flake .#angeldust@nixos-pc
+# Inspect / build without applying
+nixos build             # build the configuration to ./result            (apply --no-activate --no-boot --output ./result)
+nixos dry-build         # dry-build check (no store writes)              (apply --no-activate --no-boot --dry)
+nixos dry-activate      # show what a switch WOULD do to the running system (apply --dry)
 
-# Build without applying (dry-run)
-sudo nixos-rebuild build --flake .#nixos-pc
-home-manager build --flake .#angeldust@nixos-pc
+# Format / lint (treefmt config in persystem/formatter.nix: deadnix, alejandra, statix, prettier)
+nix fmt                 # or: treefmt
 
-# Using nh wrapper (faster rebuilds)
-nh os switch . (nrs alias)
-nh home switch . (hms alias)
-```
-
-### Linting and Formatting
-
-The repository uses git hooks via devenv (pre-commit). Hooks run automatically on commit.
-
-### Secret Management
-
-```bash
-# Edit a secret file (automatically encrypts on save)
-sops secrets/secrets.yaml
-
-# Edit SSH secrets
-sops secrets/ssh/angeldust.yaml
-sops secrets/ssh/nixos-pc.yaml
-
-# Update sops keys if needed (custom script)
-sops-update-keys
-```
-
-### Development Environment
-
-```bash
-# Enter development shell (includes glow, sops)
+# Enter the development shell (glow, sops, git-hooks via prek) — also auto-loaded by direnv
 devenv shell
 
-# Or use direnv (automatically loads on cd)
-direnv allow
+# Secrets (sops-nix + age; .sops.yaml defines age recipients)
+sops secrets/secrets.yaml
+sops secrets/ssh-gpg/hosts/angeldust-ssh.yaml
+sops secrets/ssh-gpg/hosts/nixos-pc-ssh.yaml
+sops secrets/ssh-gpg/hosts/angeldust-gpg.yaml
+sops-update-keys        # custom script: updates sops recipients across all secret files
 ```
+
+Git hooks (prek, configured in `persystem/shell.nix`) run `alejandra`, `deadnix`, `statix`, `shellcheck`, `end-of-file-fixer`, `trim-trailing-whitespace`, `detect-private-keys` on commit. Run `nix fmt` after non-trivial changes regardless.
 
 ## Architecture
 
-### Flake Structure
+### Flake entry & build pipeline
 
-The flake uses flake-parts with custom library extensions:
+`flake.nix` → `outputs = args: import ./lib args`. The `lib/` directory is the output generator (inspired by [unazikx/flake](https://github.com/unazikx/flake)):
 
-- **lib/generator.nix**: Builds system configurations with `buildConfiguration` function
-- **lib/functions.nix**: Custom utility functions (`flattenSecrets`, `flattenAttrsDot`, etc.)
-- **import-tree**: Auto-discovers all `default.nix` files in `modules/` and `hosts/`
-- **Global config**: `allowUnfree = true`, `cudaSupport = true` for all systems
+- **`lib/default.nix`** — the `mkFlake` entry point. Declares `systems = ["x86_64-linux"]`, wires up `overlays` (niri, hyprland, nix-cachyos-kernel, statix, `self.overlays.default`), and imports `import-tree` for `modules/` + `hosts/` and all of `persystem/`, plus the flake-parts modules (devenv, disko, bundlers, home-manager, pkgs-by-name, treefmt). Injects module args `extendedLib`, `self`, `inputs`, `_config`.
+- **`lib/generator.nix`** — `buildConfiguration`: the system builder. Extends nixpkgs `lib` with helper functions and per-host scalars (`hostName`, `userName`, `hostPlatform`, `flakeDir`, `hostId`, `configurationName`), applies the global `nxosModules`/`homeModules` from flake inputs, and applies the `hm` alias module. **Also materializes the user's SSH key** — `angl_ssh_priv`/`angl_ssh_pub` from `secrets/ssh-gpg/hosts/${userName}-ssh.yaml` are written to `/home/${userName}/.ssh/id_ed25519(.pub)`.
+- **`lib/functions.nix`** — `flattenSecrets`, `flattenAttrsWithSep`, `flattenAttrsDot`, `mkStylixImage`.
+- **`lib/aliases.nix`** — `mkAliasOptionModule ["hm"] ["home-manager" "users" <userName>]`, which is what lets every module write `hm = { ... }` instead of the full Home Manager path.
 
-### Module Organization
+### Hosts
 
-Modules are auto-discovered by import-tree from `modules/`:
-
-```
-modules/
-├── boot/              # Kernel, secure boot (lanzaboote)
-├── core/              # Essential services (nix-config, security, ssh-gpg, users)
-├── hardware/          # Hardware support (nvidia, sound, bluetooth, btrfs)
-├── networking/        # Networking (firewall, vpn, zapret, network-core)
-├── cli/               # CLI tools and shell config (fish, nushell, yazi, etc.)
-├── desktop/           # GUI apps and services (gaming, flatpak, theming, etc.)
-│   └── wm/            # Window managers (niri, hyprland, waybar, hyprlock)
-├── development/       # Dev tools (editor, git, podman, database)
-│   └── ai/            # AI tools (claude, mcp, ollama, gemini)
-└── flake/             # Flake-specific configuration
-```
-
-**Module pattern:**
-
-- Each module exports `flake.nixosModules.${baseNameOf ./.}`
-- Can configure both NixOS and home-manager in one module via `hm` attr
-- No namespace prefix - modules use directory name (e.g., `nix-config`, `fish`)
-- Special args available: `lib.userName`, `lib.hostName`, `lib.hostPlatform`, etc.
-
-### System Configurations
-
-Hosts in `hosts/` use `extendedLib.buildConfiguration`:
+`hosts/<name>/default.nix` calls `extendedLib.buildConfiguration`. `extraModules` is built with `nxosLib.attrValues` over an `inherit` block from `config.nixosModules`, so adding a module to the host means adding its name to that `inherit` list — import-tree already makes the module discoverable. Example shape (`hosts/nixos-pc`):
 
 ```nix
 {
-  flake = {
-    extendedLib,
-    config,
-    ...
-  }: {
+  flake = { extendedLib, config, ... }: {
     nixosConfigurations = extendedLib.buildConfiguration (baseNameOf ./.) rec {
       hostName = "nixos-pc";
       userName = "angeldust";
@@ -117,139 +71,105 @@ Hosts in `hosts/` use `extendedLib.buildConfiguration`:
       hostId = "78172da6";
       flakeDir = "/home/${userName}/.config/nixos-config";
 
-      extraModules = with config.nixosModules; [
-        # List of modules to enable
-        nix-config
-        fish
-        niri
-        # ...
-      ];
+      extraModules = extendedLib.nxosLib.attrValues {
+        inherit
+            (config.nixosModules)
+            nix-config
+            fish
+            niri
+            nvidia
+            /* ... */
+            ;
+      };
     };
 
     diskoConfigurations.${baseNameOf ./.} = import ./disko.nix {
-      devices.main-disk = "/dev/disk/by-id/...";
+      devices = {
+        main-disk = "/dev/disk/by-id/...";
+        zfs-disk  = "/dev/disk/by-id/...";
+      };
     };
   };
 }
 ```
 
-### Custom Packages
+`disko.nix` takes a `devices` attrset (the host can pass several disks) and returns a `disko.devices` config.
 
-Local package definitions in `pkgs/`:
+### `persystem/` (per-system flake output)
 
-- `clipse.nix` - Clipboard manager
-- `iloader.nix` - Image loader
-- `soundcloud-desktop.nix` - Soundcloud desktop client
-- `yot.nix` - YouTube viewer
+flake-parts `perSystem` output, auto-imported:
 
-## Important Patterns
+- **`overlays.nix`** — defines `self.overlays.default`, which exposes external flake packages as package sets/attributes on `pkgs`: `pkgs.master` (nixpkgs-master), `pkgs.angeldust-pkgs`, `pkgs.unazikx-pkgs`, `pkgs.jonhermansen-nur-pkgs`, `pkgs.llm-agents`, `pkgs.nix-gaming`, `pkgs.firefox-addons`, and individual packages (`ayugram-desktop`, `freesmlauncher`, `iloader`, plus fixes for `nixos-cli`/`nix-update`/`fastfetch`). **This is how you reference custom packages — never look for a local `pkgs/` directory.**
+- **`shell.nix`** — devenv shell (`name = "nixland"`), git-hooks, and `flake.nixConfig` (binary caches + trusted keys).
+- **`formatter.nix`** — treefmt programs (see Commands).
+- **`default.nix`** — exposes a `<host>-toplevel` package per nixosConfiguration.
 
-### Secret Management with sops-nix
+### Modules
 
-Secrets are defined using `lib.flattenSecrets` helper:
+Auto-discovered by import-tree from `modules/`. Each module exports `flake.nixosModules.${baseNameOf ./.}` (directory name = module name, no namespace). Categories:
 
-```nix
-sops = {
-  secrets = lib.flattenSecrets {
-    github = {
-      github_auth_token = {
-        mode = "0444";
-      };
-    };
-    pass = {};
-  };
-};
+```
+modules/
+├── boot/            # kernel-optimizations (CachyOS LTO), secureboot (lanzaboote)
+├── core/            # nix-config, security, ssh-gpg, users, system-optimizations, oom-killer,
+│                    #   easyeffects, time-locale, usb, debloat
+├── hardware/        # nvidia, sound, bluetooth, btrfs, zfs, iphone
+├── networking/      # firewall, network-core, network-tools, vpn, zapret (proxy-suite)
+├── cli/             # shells/ (fish, nushell), yazi, zellij, atuin, fastfetch, gopass,
+│                    #   nix-cli, cli-basic-stuff, fsel, otter-launcher
+├── desktop/         # wm/ (niri, hyprland, waybar, hyprlock, dunst), gaming, flatpak,
+│                    #   theming, terms/ (ghostty, kitty), zen-browser, communication,
+│                    #   media-tools, music, productivity, torrent, pipewire-soundpad, xdg, ...
+└── development/     # editor (Neovim via angeldust-nixCats), git, jujutsu, direnv, podman,
+                     #   virt-manager, database, ai/ (claude, mcp, gemini, ollama)
 ```
 
-This flattens nested attrs into sops-compatible format:
-
-- `github/github_auth_token`
-- `pass`
-
-**Available in lib:**
-
-- `lib.flattenSecrets` - Flatten with "/" separator (for sops)
-- `lib.flattenAttrsDot` - Flatten with "." separator (for browser settings)
-- `lib.flattenAttrsWithSep` - Universal flatten with custom separator
-
-### Module Structure
-
-Modules export `flake.nixosModules.${baseNameOf ./.}`:
+Standard module shape (NixOS + Home Manager in one):
 
 ```nix
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {
-      config,
-      lib,
-      inputs,
-      pkgs,
-      ...
-    }: {
-      # NixOS configuration
-      programs.fish.enable = true;
+    nixosModules.${baseNameOf ./.} = { config, lib, pkgs, ... }: {
+      programs.foo.enable = true;          # NixOS side
 
-      # Home Manager configuration (via `hm`)
-      hm = {
-        programs.fish = {
-          shellAliases = {
-            ll = "eza -l";
-          };
-        };
+      hm = {                                # Home Manager side (via the `hm` alias)
+        programs.bar = { enable = true; };
       };
     };
   };
 }
 ```
 
-### Special Arguments Available in Modules
+**Special arguments available everywhere** (injected by flake-parts and the extended lib): `self`, `inputs`, `extendedLib`, `_config`, and on the extended lib `lib.hostName`, `lib.userName`, `lib.hostPlatform`, `lib.flakeDir`, `lib.hostId`, `lib.configurationName`. Home Manager helpers are reachable as `lib.hm`.
 
-Extended lib provides these from `buildConfiguration`:
+### Secrets with sops-nix
 
-- `lib.configurationName` - Name of the configuration
-- `lib.hostName` - System hostname
-- `lib.userName` - Username
-- `lib.hostPlatform` - Platform (e.g., "x86_64-linux")
-- `lib.flakeDir` - Path to flake directory
-- `lib.hostId` - Network host ID
+`.sops.yaml` defines two age recipients (`angeldust`, `nixos-pc`) and encrypts everything matching `secrets/(ssh-gpg/.*|\w+\.yaml)$` to both. Files:
 
-### Inputs Usage
+- `secrets/secrets.yaml` — the main secrets store.
+- `secrets/ssh-gpg/hosts/<user|host>-{ssh,gpg}.yaml` — per-user SSH/GPG material.
+- `secrets/ssh-gpg/servers/` — server-specific secrets.
 
-External flake inputs are available everywhere as `inputs`:
+Define secrets with `lib.flattenSecrets`, which walks a nested attrset and flattens it with `/`, auto-detecting sops config leaves (a leaf is any attrset whose keys are all valid sops options — `mode`, `owner`, `path`, `sopsFile`, `restartUnits`, etc.):
 
 ```nix
-{inputs, ...}: {
-  # Use inputs.hyprland.packages
-  # Use inputs.zen-browser.homeModules.default
-}
+sops.secrets = lib.flattenSecrets {
+  github = { github_pat = { mode = "0440"; }; };   # → github/github_pat
+  ai     = { zai_api_key = {}; };                   # → ai/zai_api_key
+  pass   = {};                                      # leaf (no config) → pass
+};
 ```
 
-## Testing Configuration
+Reference a secret at runtime via `config.sops.secrets."ai/zai_api_key".path` (or `config.hm.sops.secrets.…` on the Home Manager side). Related helpers: `flattenAttrsWithSep <sep>`, `flattenAttrsDot` (dot separator, useful for browser prefs), `mkStylixImage`.
 
-Before committing changes:
+## Testing & Workflow
 
-1. **Check syntax**: Run linters manually or let git hooks do it
-2. **Dry-run build**: `nixos-rebuild build --flake .#<host>` or `home-manager build --flake .#<user>@<host>`
-3. **Test secrets**: Ensure `sops` files are valid YAML and can be decrypted
+1. Format: `nix fmt` before committing.
+1. Dry-run build: `nixos dry-build` (or `nixos build` to materialize `./result`).
+1. Verify secrets decrypt: `sops -d secrets/secrets.yaml >/dev/null`.
 
-## Adding New Modules
+## Adding a New Module
 
-1. Create directory under `modules/<category>/`
-2. Add `default.nix` with module configuration
-3. Export as `flake.nixosModules.${baseNameOf ./.}`
-4. Add to host's `extraModules` list
-5. import-tree will auto-discover - no manual imports needed
-
-## Gaming & Performance Stack
-
-This configuration includes extensive gaming optimizations:
-
-- **CachyOS Kernel** with LTO and tuned for gaming
-- **SCX lavd scheduler** for low-latency
-- **ZRAM compression** (100% RAM) with 2 devices
-- **NVIDIA beta drivers** with open kernel modules
-- **Full Vulkan stack** with validation layers
-- **Wine/Proton** via nix-gaming overlays
-- **TCP BBR** congestion control
-
-See `modules/boot/kernel-optimizations/` and `modules/hardware/nvidia/` for details.
+1. Create `modules/<category>/<name>/default.nix` exporting `flake.nixosModules.${baseNameOf ./.}`.
+1. Add the module's directory name to the host's `inherit (config.nixosModules) …` list in `hosts/<host>/default.nix`.
+1. import-tree handles discovery automatically — no other wiring needed.

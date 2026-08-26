@@ -16,5 +16,6 @@ devenv.local.yaml
 
 # trash
 .cache
+dlls-install.log
 *.bak
 ignore/

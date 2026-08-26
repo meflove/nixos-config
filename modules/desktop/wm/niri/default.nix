@@ -51,7 +51,6 @@
 
       security = {
         polkit.enable = true;
-        pam.services.swaylock = {};
       };
 
       hm = {
@@ -65,6 +64,42 @@
             WLR_RENDERER = "vulkan";
             ELECTRON_OZONE_PLATFORM_HINT = "wayland";
             NIXOS_OZONE_WL = "1";
+          };
+        };
+
+        services.swayidle = let
+          niri = lib.getExe config.hm.programs.niri.package;
+          lock = "${lib.getExe config.hm.programs.hyprlock.package} --grace 0";
+
+          display = status: "${niri} msg action power-${status}-monitors";
+        in {
+          enable = true;
+
+          extraArgs = [
+            "-d"
+          ];
+
+          timeouts = [
+            {
+              timeout = 9 * 60; # in seconds
+              command = "${pkgs.libnotify}/bin/notify-send -i dialog-information -u normal 'LOCK' 'Locking in 1 minute' -t 60000";
+            }
+            {
+              timeout = 10 * 60;
+              command = lock;
+            }
+            {
+              timeout = 15 * 60;
+              command = display "off";
+              resumeCommand = display "on";
+            }
+          ];
+
+          events = {
+            before-sleep = (display "off") + "; " + lock;
+            after-resume = display "on";
+            lock = (display "off") + "; " + lock;
+            unlock = display "on";
           };
         };
 

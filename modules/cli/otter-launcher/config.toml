@@ -1,7 +1,7 @@
 [general]
-default_module = "gg" # The module to run when no prefix is matched
-empty_module = "app"  # run with an empty prompt
-exec_cmd = "/usr/bin/env bash -c"    # The exec command of your shell, default to sh
+default_module = "gg"             # The module to run when no prefix is matched
+empty_module = "app"              # run with an empty prompt
+exec_cmd = "/usr/bin/env bash -c" # The exec command of your shell, default to sh
 # for example: "bach -c" for bash; "zsh -c" for zsh. This can also runs wm exec commands, like hyprctl dispatch exec
 vi_mode = false                      # set true to use vi keybinds, false to use emacs keybinds; default to emacs
 esc_to_abort = true                  # allow to quit with esc keypress; a useful option for vi users
@@ -66,9 +66,9 @@ niri msg action spawn-sh -- "gtk-launch "$(basename "$selected_path")""
 description = "search with google"
 prefix = "gg"
 # try wm's exec command if 'setsid -f' does not work, eg. 'hyprctl dispatch exec'
-cmd = "hyprctl dispatch exec xdg-open 'https://www.google.com/search?q={}'"
-with_argument = true                                                        # If "with_argument" is true, the {} in the cmd value will be replaced with user input. If the field is not explicitly set, will be taken as false.
-url_encode = true                                                           # "url_encode" should be true if the module is set to call webpages, as this ensures special characters in url being readable to browsers. It'd better be false with shell scripts. If the field is not explicitly set, will be taken as false.
+cmd = "hyprctl dispatch exec xdg-open 'https://www.google.com/search?q={}' || niri msg actions spawn-wh -- 'xdg-open https://www.google.com/search?q={}"
+with_argument = true                                                                                                                                     # If "with_argument" is true, the {} in the cmd value will be replaced with user input. If the field is not explicitly set, will be taken as false.
+url_encode = true                                                                                                                                        # "url_encode" should be true if the module is set to call webpages, as this ensures special characters in url being readable to browsers. It'd better be false with shell scripts. If the field is not explicitly set, will be taken as false.
 
 
 [[modules]]

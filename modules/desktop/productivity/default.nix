@@ -11,7 +11,10 @@
             (pkgs)
             obsidian
             libreoffice
-            # papers # PDF viewer
+            papers # PDF viewer
+            # for libreoffice
+            corefonts
+            vista-fonts
             ;
         };
       };

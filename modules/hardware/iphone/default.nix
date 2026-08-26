@@ -16,8 +16,15 @@
           libimobiledevice
           idevicerestore
           ifuse # optional, to mount using 'ifuse'
-          iloader
+          # iloader
           ;
+      };
+
+      hm = {
+        programs.blueferry = {
+          enable = true;
+          package = pkgs.angeldust-pkgs.blueferry-quickshell;
+        };
       };
     };
   };

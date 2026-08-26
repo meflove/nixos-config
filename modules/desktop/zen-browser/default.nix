@@ -16,7 +16,7 @@
       hm = {
         programs.zen-browser = {
           enable = true;
-          package = inputs.zen-browser.packages.${lib.hostPlatform}.twilight;
+          package = inputs.zen-browser.packages.${lib.hostPlatform}.beta;
           setAsDefaultBrowser = true;
 
           nativeMessagingHosts = [pkgs.firefoxpwa];
@@ -85,7 +85,7 @@
             "angeldust" = {
               inherit search;
               inherit extensions;
-              inherit (spaces) spaces pins;
+              inherit (spaces) spaces pins liveFolders;
               inherit (mods) mods;
               pinsForce = false;
               spacesForce = true;

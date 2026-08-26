@@ -1,0 +1,11 @@
+--- a/kernel-open/common/inc/nv-linux.h
++++ b/kernel-open/common/inc/nv-linux.h
+@@ -1734,7 +1734,7 @@
+      * port and pin in args[0] and of_xlate sums per-port pin counts
+      * to produce the real offset.
+      */
+-    struct gpio_chip *chip = gpio_device_get_chip(gdev);
++    struct gpio_chip *chip = gpio_device_get_chip((struct gpio_device *)gdev);
+
+     if (chip->of_xlate)
+         return chip->of_xlate(chip, gpiospec, NULL);

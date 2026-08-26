@@ -22,10 +22,12 @@ let
     nix-index-database.nixosModules.nix-index
     sops-nix.nixosModules.sops
     nixos-cli.nixosModules.nixos-cli
-    zapret-presets.nixosModules.presets
+    proxy-suite-flake.nixosModules.default
     stylix.nixosModules.default
     nix-gaming.nixosModules.wine
     lix-module.nixosModules.default
+    steam-config-nix.nixosModules.default
+    ncro.nixosModules.default
   ];
 
   homeModules = with inputs; [
@@ -37,6 +39,8 @@ let
     chaotic.homeManagerModules.default
     nix-index-database.homeModules.nix-index
     sops-nix.homeManagerModules.sops
+    steam-config-nix.homeModules.default
+    angeldust-nix-packages.homeModules.default
   ];
 in
   # WARN:

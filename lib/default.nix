@@ -11,6 +11,9 @@ inputs @ {self, ...}: let
     niri.overlays.niri
     hyprland.overlays.default
     nix-cachyos-kernel.overlays.default
+    angeldust-nix-packages.overlays.default
+    # zellij.overlays.default
+
     (import "${statix}/overlay.nix")
     self.overlays.default
   ];

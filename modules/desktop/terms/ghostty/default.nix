@@ -29,12 +29,12 @@
               "${cursorSmear}"
             ];
 
-            adjust-cell-height = "15%";
+            # adjust-cell-height = "15%";
 
             window-theme = "ghostty";
 
             gtk-titlebar = false;
-            app-notifications = false;
+            app-notifications = true;
             confirm-close-surface = false;
 
             cursor-style = "block";

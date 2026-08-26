@@ -21,7 +21,7 @@
       enterShell =
         # bash
         ''
-          printf "\n%s⚙  Welcome%s to the %s NixOS %sconfiguration development %sshell!\n" \
+          printf "%s⚙  Welcome%s to the %s NixOS %sconfiguration development %sshell!\n" \
             "$(tput setaf 3)" \
             "$(tput sgr0)" \
             "$(tput setaf 6)" \
@@ -31,9 +31,9 @@
           timestamp=${toString inputs.nixpkgs.sourceInfo.lastModified}
           rev=${toString inputs.nixpkgs.sourceInfo.shortRev}
           url=https://github.com/NixOS/nixpkgs/tree/$rev
-          date_str=$(date -d "@$timestamp" +"%Y.%m.%d")
+          date_str=$(date -d "@$timestamp" +"%d.%m.%Y")
 
-          printf "%s%s %sNixpkgs pinned in the flake.lock:%s %s\e]8;;$url\a$rev\e]8;;\a%s ($date_str)\n" \
+          printf "%s%s %sNixpkgs pinned in the flake.lock:%s %s\e]8;;$url\a$rev\e]8;;\a%s ($date_str)\n\n" \
             "$(tput setaf 6 bold)" \
             "$(tput sgr0)" \
             "$(tput setaf 3)" \
@@ -47,27 +47,19 @@
       git-hooks = {
         package = pkgs.prek;
 
-        default_stages = [
-          "pre-commit"
-          "pre-push"
-          "post-checkout"
-          "post-commit"
-          "post-merge"
-        ];
-
         hooks = {
           # Basic hooks
           shellcheck.enable = true;
           end-of-file-fixer.enable = true;
-          trim-trailing-whitespace.enable = true;
           detect-private-keys.enable = true;
 
           # Nix specific hooks
           alejandra.enable = true;
-          deadnix.enable = true;
-          statix = {
+          deadnix = {
             enable = true;
+            settings.noUnderscore = true;
           };
+          statix.enable = true;
         };
       };
     };

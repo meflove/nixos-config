@@ -7,7 +7,7 @@
 }: let
   super = "Super";
   term = lib.getExe config.environment.sessionVariables.TERMINAL;
-  editor = lib.getExe pkgs.nixCats;
+  editor = lib.getExe pkgs.editor;
 in
   [
     # Essentials

@@ -61,6 +61,12 @@
                 to = ["fw"];
                 allowedTCPPorts = [8000];
               };
+              private-zellij = {
+                from = "all";
+                to = ["fw"];
+                allowedTCPPorts = [8082];
+                allowedUDPPorts = [8082];
+              };
 
               private-outgoing = {
                 from = ["private"];

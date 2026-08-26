@@ -86,7 +86,7 @@
           "vm.overcommit_memory" = 1;
         };
 
-        tmp.useZram = true;
+        tmp.cleanOnBoot = true;
       };
 
       services = {

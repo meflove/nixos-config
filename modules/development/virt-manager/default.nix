@@ -49,7 +49,6 @@
       programs.virt-manager.enable = true;
       security.polkit.enable = true;
 
-      networking.firewall.trustedInterfaces = ["virbr0"];
       environment = {
         systemPackages = lib.attrValues {
           inherit

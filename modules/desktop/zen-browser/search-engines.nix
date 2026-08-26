@@ -93,24 +93,34 @@
       icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
       definedAliases = ["noo"];
     };
-    # "Perplexity" = {
-    #   urls = [
-    #     {
-    #       template = "https://www.perplexity.ai/search";
-    #       params = [
-    #         {
-    #           name = "q";
-    #           value = "{searchTerms}";
-    #         }
-    #         {
-    #           name = "s";
-    #           value = "o";
-    #         }
-    #       ];
-    #     }
-    #   ];
-    #   definedAliases = ["@perp"];
-    # };
+    "RUTracker" = {
+      urls = [
+        {
+          template = "https://rutracker.org/forum/tracker.php";
+          params = [
+            {
+              name = "nm";
+              value = "{searchTerms}";
+            }
+          ];
+        }
+      ];
+      definedAliases = ["rut"];
+    };
+    "ProtonDB" = {
+      urls = [
+        {
+          template = "https://www.protondb.com/search";
+          params = [
+            {
+              name = "q";
+              value = "{searchTerms}";
+            }
+          ];
+        }
+      ];
+      definedAliases = ["pdb"];
+    };
     "Ru to En" = {
       urls = [
         {
@@ -162,20 +172,6 @@
         }
       ];
       definedAliases = ["en"];
-    };
-    "RUTracker" = {
-      urls = [
-        {
-          template = "https://rutracker.org/forum/tracker.php";
-          params = [
-            {
-              name = "nm";
-              value = "{searchTerms}";
-            }
-          ];
-        }
-      ];
-      definedAliases = ["rut"];
     };
   };
 }

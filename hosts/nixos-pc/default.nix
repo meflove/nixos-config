@@ -25,6 +25,7 @@
           iphone
           nvidia
           sound
+          openrgb
           # Networking modules
           firewall
           network-core
@@ -38,6 +39,7 @@
           fastfetch
           fish
           nushell
+          iris
           otter-launcher
           yazi
           zellij
@@ -52,6 +54,7 @@
           users
           nix-config
           debloat
+          usb
           # Desktop modules
           flatpak
           gaming
@@ -72,6 +75,7 @@
           niri
           waybar
           dunst
+          vicinae
           # Development modules
           direnv
           editor
@@ -82,6 +86,7 @@
           database
           ## AI modules
           claude
+          opencode
           mcp
           ;
       };

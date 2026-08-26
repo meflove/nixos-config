@@ -6,26 +6,43 @@
       lib,
       ...
     }: {
+      nixpkgs.overlays = [
+        (_self: super: {
+          wpa_supplicant = super.wpa_supplicant.overrideAttrs (oldAttrs: {
+            extraConfig =
+              oldAttrs.extraConfig
+              + ''
+                CONFIG_WEP=y
+              '';
+          });
+        })
+      ];
       sops = let
         restartUnits = config.networking.wireless.interfaces |> lib.map (iface: "wpa_supplicant-${iface}");
       in {
         secrets = lib.flattenSecrets {
-          wifi = {
-            Keenetic_home = {
-              inherit restartUnits;
-            };
-            iphone_hotspot = {
-              inherit restartUnits;
-            };
-          };
+          wifi =
+            lib.genAttrs [
+              "Keenetic_home"
+              "iphone_hotspot"
+            ]
+            (_: {inherit restartUnits;});
         };
 
         templates."wireless.conf" = {
+          owner = "wpa_supplicant";
           content = ''
             psk_home=${config.sops.placeholder."wifi/Keenetic_home"}
             psk_iphone_hotspot=${config.sops.placeholder."wifi/iphone_hotspot"}
           '';
-          owner = "wpa_supplicant";
+        };
+      };
+
+      users.users = {
+        ${lib.userName} = {
+          extraGroups = [
+            "wheel"
+          ];
         };
       };
 
@@ -51,9 +68,7 @@
         useDHCP = false;
 
         hosts = {
-          "130.255.77.28" = ["ntc.party"];
-          "30.255.77.28" = ["ntc.party"];
-          "144.31.113.60" = ["hostoff-pl"];
+          "nixos-pc.localdomain" = ["nixos-pc"];
           "192.168.1.1" = ["router"];
         };
 
@@ -103,10 +118,9 @@
                 MulticastDNS = "yes";
               };
 
-              # Wait for routable state instead of just carrier
-              linkConfig.RequiredForOnline = "routable";
+              linkConfig.RequiredForOnline = "carrier";
 
-              address = ["192.168.1.100/24"];
+              # address = ["192.168.1.100/24"];
             };
             "10-wlan" = {
               matchConfig.PermanentMACAddress = "2c:33:58:12:68:03";
@@ -114,13 +128,15 @@
               # Lower priority route (higher = lower priority)
               dhcpV4Config.RouteMetric = 600;
 
-              linkConfig.RequiredForOnline = "no";
-
               networkConfig = {
                 DHCP = "yes";
                 IgnoreCarrierLoss = "3s";
                 MulticastDNS = "yes";
               };
+
+              linkConfig.RequiredForOnline = "no";
+
+              # address = ["192.168.1.101/24"];
             };
           };
           links = {

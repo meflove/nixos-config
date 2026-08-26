@@ -9,7 +9,7 @@
         home.packages = lib.attrValues {
           inherit
             (pkgs)
-            session-desktop
+            # session-desktop
             ayugram-desktop
             ;
         };

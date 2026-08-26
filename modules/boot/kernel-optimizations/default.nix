@@ -19,6 +19,8 @@
       };
 
       boot = let
+        consoleLogLevel = 3;
+
         kernel = pkgs.cachyosKernels.linux-cachyos-latest.override {
           pname = "linux-cachyos-lto-x86_64-v3";
 
@@ -31,11 +33,25 @@
           bbr3 = true;
         };
 
-        kernelPackages = (pkgs.linuxKernel.packagesFor kernel).extend (final: _prev: {
+        kernelPackages = (pkgs.linuxKernel.packagesFor kernel).extend (final: prev: {
           zfs_cachyos = final.callPackage "${inputs.nix-cachyos-kernel.outPath}/zfs-cachyos" {
             inherit (inputs.nix-cachyos-kernel) inputs;
-            variant = "latest-lto";
+            variant = "linux-cachyos";
           };
+
+          nvidiaPackages =
+            prev.nvidiaPackages
+            // {
+              latest = prev.nvidiaPackages.latest.overrideAttrs (_: previous: {
+                passthru =
+                  previous.passthru
+                  // {
+                    open = previous.passthru.open.overrideAttrs (_: p: {
+                      patches = (p.patches or []) ++ [./nvidia-open-gpio-const.patch];
+                    });
+                  };
+              });
+            };
         });
       in {
         inherit kernelPackages;
@@ -97,27 +113,39 @@
           verbose = false;
           systemd.enable = true;
         };
+        plymouth.enable = true;
+
+        inherit consoleLogLevel;
+        loader.timeout = 0;
 
         kernel.sysctl."kernel.sysrq" = 1;
         kernelParams = [
-          "rd.systemd.show_status=false"
-          "rd.udev.log_level=3"
-          "udev.log_priority=3"
+          # Quiet / boot UI
           "quiet"
           "splash"
-          "pci=noaer"
-          "mitigations=off"
+          "rd.systemd.show_status=auto"
+          "rd.udev.log_level=${toString consoleLogLevel}"
+          "udev.log_priority=${toString consoleLogLevel}"
           "vt.global_cursor_default=0"
-          "lpj=2496000"
-          "page_alloc.shuffle=1"
-          "pci=pcie_bus_perf"
-          "intel_idle.max_cstate=1"
-          "bgrt_disable"
-          "nowatchdog"
-          "ibt=off"
+          # "bgrt_disable"
+
           # Boot optimisations
           "rd.udev.timeout=0" # Don't wait for USB devices
           "8250.nr_uarts=0" # Disable serial ports (ttyS0-31)
+
+          # Performance / hardware behavior
+          "pci=pcie_bus_perf"
+          "intel_idle.max_cstate=1"
+          "page_alloc.shuffle=1"
+          "lpj=2496000"
+
+          # Diagnostics / noise suppression
+          "pci=noaer"
+          "nowatchdog"
+
+          # Security trade-offs
+          "mitigations=off"
+          "ibt=off"
         ];
       };
 

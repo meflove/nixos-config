@@ -1,17 +1,10 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      lib,
-      ...
-    }: {
+    nixosModules.${baseNameOf ./.} = {lib, ...}: {
       hm = {
-        home.packages = lib.attrValues {
-          inherit
-            (pkgs.angeldust-pkgs)
-            soundcloud-desktop
-            ;
-        };
+        home.packages =
+          lib.attrValues {
+          };
       };
     };
   };

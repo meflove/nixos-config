@@ -9,35 +9,40 @@
     }: {
       nixpkgs.overlays = [
         (_final: prev: {
-          nixCats = prev.symlinkJoin {
-            name = "nixCats-wrapped";
-            meta.mainProgram = "nixCats";
-            paths = [inputs.angeldust-nixCats.packages.${lib.hostPlatform}.default];
+          editor = prev.symlinkJoin {
+            name = "nvimWrap-wrapped";
+            meta.mainProgram = "nvim";
+            paths = [inputs.angeldust-nvimWrap.packages.${lib.hostPlatform}.default];
             buildInputs = [prev.makeWrapper];
-            postBuild = ''
-              wrapProgram $out/bin/nixCats \
-                --run 'export GITHUB_COPILOT_TOKEN=$(cat ${config.hm.sops.secrets."ai/copilot_oauth".path})'
-            '';
+            postBuild =
+              # bash
+              ''
+                wrapProgram $out/bin/nvim \
+                  --run 'export GITHUB_COPILOT_TOKEN=$(cat ${config.hm.sops.secrets."ai/copilot_oauth".path})' \
+                  --run 'export OPENROUTER_API_KEY=$(cat ${config.hm.sops.secrets."ai/openrouter_api_key".path})' \
+                  --run 'export ANTHROPIC_API_KEY=$(cat ${config.hm.sops.secrets."ai/zai_api_key".path})' \
+              '';
           };
         })
       ];
+
       hm = {
         sops = {
           secrets = lib.flattenSecrets {
             ai = {
               copilot_oauth = {};
+              openrouter_api_key = {};
+              zai_api_key = {};
             };
           };
         };
-
         home = {
           packages = [
-            pkgs.nixCats
+            pkgs.editor
           ];
 
           sessionVariables = {
-            EDITOR = lib.getExe pkgs.nixCats;
-            NVIM_APPNAME = "nvim-og";
+            EDITOR = lib.getExe pkgs.editor;
           };
         };
 
@@ -50,7 +55,6 @@
               end_of_line = "lf";
               trim_trailing_whitespace = true;
               insert_final_newline = true;
-              max_line_width = 100;
               indent_style = "space";
               indent_size = 2;
             };

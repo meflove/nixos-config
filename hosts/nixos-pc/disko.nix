@@ -97,28 +97,18 @@
         };
 
         rootFsOptions = {
-          compression = "zstd";
+          compression = "zstd-19";
           atime = "off";
           xattr = "sa";
         };
 
         datasets = {
-          test = {
+          data = {
             type = "zfs_fs";
 
             mountpoint = "/data";
             options = {
-              recordsize = "128K";
-            };
-          };
-
-          test2 = {
-            type = "zfs_fs";
-
-            mountpoint = "/data2";
-            options = {
-              recordsize = "16K";
-              compression = "lz4";
+              mountpoint = "/data";
             };
           };
         };

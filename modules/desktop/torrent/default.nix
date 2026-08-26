@@ -9,16 +9,20 @@
       services.transmission = {
         enable = true;
         package = pkgs.transmission_4;
-        webHome = "${pkgs.flood-for-transmission}";
+        webHome = pkgs.flood-for-transmission;
+
+        performanceNetParameters = true;
+        openPeerPorts = true;
+        openRPCPort = true;
 
         home = "/home/${lib.userName}/Torrents";
-        downloadDirPermissions = "664";
+        downloadDirPermissions = "777";
 
         settings = {
-          download-dir = "${config.services.transmission.home}";
-
           watch-dir-enabled = true;
           trash-original-torrent-files = true;
+
+          download-dir = "${config.services.transmission.home}";
           watch-dir = "${config.services.transmission.home}/torrent_files";
         };
       };

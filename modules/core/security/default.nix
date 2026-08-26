@@ -1,6 +1,14 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = _: {
+    nixosModules.${baseNameOf ./.} = {lib, ...}: {
+      users.users = {
+        ${lib.userName} = {
+          extraGroups = [
+            "wheel"
+          ];
+        };
+      };
+
       services.gnome.gnome-keyring.enable = true;
       security = {
         sudo.enable = false;
@@ -21,6 +29,10 @@
                 # example `"${pkgs.systemd}/bin/shutdown"`, because in the final system it is the symlink
                 # that will be invoked and sudo matches against the invoked command and not the resolved
                 # binary
+                {
+                  command = "${swBin}/btrbk";
+                  options = ["NOPASSWD"];
+                }
                 {
                   command = "${swBin}/nixos";
                   options = ["NOPASSWD"];

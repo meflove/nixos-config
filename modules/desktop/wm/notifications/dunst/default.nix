@@ -26,7 +26,7 @@
 
               # Text
               markup = "full";
-              format = "<small>%a</small>\n<b>%s</b>\n%b";
+              format = "<small>%a</small>\\n<b>%s</b>\\n%b";
               alignment = "left";
               vertical_alignment = "center";
               show_age_threshold = -1;
@@ -45,6 +45,12 @@
               mouse_left_click = "close_current";
               mouse_middle_click = "do_action, close_current";
               mouse_right_click = "close_all";
+            };
+
+            kitty-osc94 = {
+              appname = "kitty";
+              summary = "4;*";
+              skip_display = "yes";
             };
           };
         };

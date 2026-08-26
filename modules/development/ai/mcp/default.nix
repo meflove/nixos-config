@@ -52,14 +52,6 @@
               ];
             };
 
-            huggingface = {
-              type = "http";
-              url = "https://huggingface.co/mcp";
-              headers = {
-                Authorization = "Bearer \${HUGGINGFACE_API_KEY}";
-              };
-            };
-
             mcp-read-website-fast = {
               command = "${lib.getExe' pkgs.bun "bunx"}";
               args = ["-y" "@just-every/mcp-read-website-fast"];

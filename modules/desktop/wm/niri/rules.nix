@@ -7,10 +7,10 @@
       "bottom-right"
     ] (_: rounding);
 
-  # size = height: width: {
-  #   default-column-width.fixed = width;
-  #   default-window-height.fixed = height;
-  # };
+  _size = height: width: {
+    default-column-width.fixed = width;
+    default-window-height.fixed = height;
+  };
 
   makeFloatingWindowRule = app-id: width: height: {
     open-floating = true;
@@ -37,7 +37,7 @@ in
       open-on-workspace = "browser";
       matches = [
         {
-          app-id = "^zen-twilight$";
+          app-id = "^zen-.*$";
         }
       ];
     }
@@ -68,7 +68,7 @@ in
       draw-border-with-background = false;
       matches = [
         {
-          app-id = "^zen-twilight$";
+          app-id = "^zen-.*$";
         }
       ];
     }
@@ -92,11 +92,9 @@ in
 
     # Fullscreen apps
     {
+      open-floating = true;
       open-fullscreen = true;
       matches = [
-        {
-          app-id = "^steam_app.*$";
-        }
         {
           app-id = "^swayimg$";
         }
@@ -121,6 +119,14 @@ in
         {
           app-id = "^steam$";
           title = ''^notificationtoasts_\d+_desktop$'';
+        }
+      ];
+    }
+    {
+      open-on-workspace = "cli";
+      matches = [
+        {
+          app-id = "^steam$";
         }
       ];
     }

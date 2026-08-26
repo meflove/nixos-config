@@ -6,7 +6,6 @@ in
   {
     inherit
       (pkgs.yaziPlugins)
-      # keep-sorted start
       chmod
       full-border
       git
@@ -18,25 +17,21 @@ in
       smart-paste
       toggle-pane
       yatline
-      # keep-sorted end
       ;
-
     inherit
-      (pkgs.unazikx-pkgs.yazi-plugins)
-      # keep-sorted start
+      (pkgs.angeldust-pkgs.yazi-plugins)
       cba-preview
       convert
       djvu-preview
       office
       piper
       torrent-preview
-      # keep-sorted end
       ;
   }
   # custom
   // (
-    makePlugin "parent-arrow" # lua
-    
+    makePlugin "parent-arrow"
+    # lua
     ''
       --- @sync entry
       local function entry(_, job)
@@ -53,8 +48,8 @@ in
     ''
   )
   // (
-    makePlugin "smart-tab" # lua
-    
+    makePlugin "smart-tab"
+    # lua
     ''
       --- @sync entry
       return {

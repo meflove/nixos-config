@@ -1,11 +1,23 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      # inputs,
-      # lib,
       pkgs,
+      lib,
+      config,
       ...
     }: {
+      sops.secrets = {
+        "cachix_auth_token" = {
+          mode = "0644";
+        };
+      };
+      environment = {
+        extraInit = ''
+          if [ -f ${config.sops.secrets."cachix_auth_token".path} ]; then
+            export CACHIX_AUTH_TOKEN=$(cat ${config.sops.secrets."cachix_auth_token".path})
+          fi
+        '';
+      };
       hm = {
         programs.direnv = {
           enable = true;
@@ -23,10 +35,13 @@
           };
         };
 
-        home.packages = [
-          # inputs.devenv.packages.${lib.hostPlatform}.devenv
-          pkgs.devenv
-        ];
+        home.packages = lib.attrValues {
+          inherit
+            (pkgs)
+            devenv
+            cachix
+            ;
+        };
       };
     };
   };

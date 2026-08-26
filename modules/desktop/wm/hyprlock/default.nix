@@ -1,9 +1,22 @@
 {
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {config, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      config,
+      lib,
+      pkgs,
+      ...
+    }: {
+      programs.hyprlock = {
+        enable = true;
+      };
+      services.hypridle.enable = lib.mkForce false;
       hm = {
         programs.hyprlock = {
-          enable = true;
+          inherit
+            (config.programs.hyprlock)
+            enable
+            package
+            ;
           settings = {
             general = {
               hide_cursor = true;
@@ -24,7 +37,7 @@
                 valign = "top";
               }
               {
-                text = ''cmd[update:43200000] date +"%A, %d %B %Y"'';
+                text = ''cmd[update:43200000] ${lib.getExe' pkgs.coreutils "date"} +"%A, %d %B %Y"'';
                 color = "rgb(${config.lib.stylix.colors.base05})";
                 font_size = 25;
                 font_family = config.stylix.fonts.monospace.name;
