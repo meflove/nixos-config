@@ -13,6 +13,7 @@ inputs @ {self, ...}: let
     nix-cachyos-kernel.overlays.default
     angeldust-nix-packages.overlays.default
     nur.overlays.default
+    atuin.overlays.default
 
     (import "${statix}/overlay.nix")
     self.overlays.default

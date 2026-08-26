@@ -6,6 +6,12 @@
       config,
       ...
     }: {
+      environment.sessionVariables = {
+        NUSHELL_EXEC =
+          if config.hm.programs.nushell.enable
+          then "true"
+          else "false";
+      };
       hm = {
         programs = {
           carapace = {
@@ -153,7 +159,7 @@
                   return false
                 }
 
-                # aniwatch
+                ## aniwatch
                 use std/log
                 def aniwatch [url: string] {
                   if $url == "" {
@@ -177,20 +183,45 @@
 
                 ## ll
                 def ll [path: path = ".", --full-paths(-f)] {
-                  let files = if $full_paths {
-                    ls --all --long --full-paths $path
+                  let command = if $full_paths {
+                    { ls --all --long --full-paths $path }
                   } else {
-                    ls --all --long $path
+                    { ls --all --long --short-names $path }
                   }
 
-                  let has_symlinks = ($files | where type == symlink | length) > 0
+                  let has_symlinks = ls --long $path | where type == symlink | is-not-empty
 
                   if $has_symlinks {
-                    $files | select name type target mode user size modified
+                    do $command | select name type target mode user size modified | table --icons
                   } else {
-                    $files | select name type mode user size modified
+                    do $command | select name type mode user size modified | table --icons
                   }
                 }
+
+                ## caffeine mode
+                def --env caffeine [--off(-f)] {
+                  if $off {
+                    if ($env.CAFFEINE_PID? | is-empty) {
+                      print "caffeine already off"
+                      return
+                    }
+
+                    try {
+                      job kill $env.CAFFEINE_PID err> /dev/null
+                      hide-env CAFFEINE_PID
+                      print "caffeine succesfully killed"
+                      return
+                    } catch { return }
+                  }
+
+                  if ($env.CAFFEINE_PID? | is-not-empty) {
+                    print "caffeine already running"
+                    return
+                  }
+
+                  $env.CAFFEINE_PID = (job spawn --description "Caffeine mode" { systemd-inhibit --what=idle:sleep --who="caffeine" --why="Caffeine mode" sleep infinity })
+                }
+
 
                 ## magic-enter
                 def magic-enter-cmd []: nothing -> string {

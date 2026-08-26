@@ -370,6 +370,15 @@
         home-manager.follows = "home-manager";
       };
     };
+    atuin = {
+      type = "github";
+      owner = "atuinsh";
+      repo = "atuin";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-parts.follows = "flake-parts";
+      };
+    };
     fsel = {
       type = "github";
       owner = "Mjoyufull";

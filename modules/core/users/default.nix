@@ -36,6 +36,8 @@
           ${lib.userName} = {
             hashedPasswordFile = config.sops.secrets.pass.path;
 
+            shell = config.hm.programs.fish.package;
+
             home = "/home/" + lib.userName;
             createHome = true;
 

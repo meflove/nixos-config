@@ -6,10 +6,9 @@
       config,
       ...
     }: {
-      users.users.${lib.userName}.shell = config.programs.fish.package;
       programs.fish = {
         enable = true;
-        package = pkgs.master.fish;
+        package = pkgs.fish;
       };
 
       hm = {
@@ -25,10 +24,6 @@
             inherit (config.programs.fish) enable package;
             generateCompletions = true;
 
-            shellInit =
-              # fish
-              ''
-              '';
             loginShellInit =
               # fish
               ''
@@ -37,47 +32,52 @@
                 end
 
               '';
+
             interactiveShellInit =
               # fish
               ''
-                set fish_greeting
-                set NUSHELL_EXEC true
+                # INFO: nushell is the primary shell -- exec into it right away,
+                # unless fish was itself launched from nu/fish (so a plain
+                # `fish` always stays fish). FISH_NO_NU=1 forces fish anywhere.
+                set -l __parent_comm (ps -o comm= -p (ps -o ppid= -p $fish_pid | string trim) | string trim)
 
-                if not $NUSHELL_EXEC
-                  # Atuin
-                  set -x ATUIN_NOBIND true
-                  bind ctrl-r _atuin_search
-                  bind up _atuin_bind_up
-                  bind \eOA _atuin_bind_up
-                  bind \e\[A _atuin_bind_up
-                  if bind -M insert >/dev/null 2>&1
-                    bind -M insert ctrl-r _atuin_search
-                    bind -M insert up _atuin_bind_up
-                    bind -M insert \eOA _atuin_bind_up
-                    bind -M insert \e\[A _atuin_bind_up
-                  end
-
-                  magic-enter-bindings
-
-                  # Zellij
-                  set -x ZELLIJ_CONFIG_DIR "$HOME/.config/zellij"
-                  # set -x ZELLIJ_AUTO_ATTACH true
-
-                  if test "$TERM" = xterm-ghostty; or test "$TERM" = xterm-kitty
-                    eval (${lib.getExe config.hm.programs.zellij.package} setup --generate-auto-start fish | string collect)
-
-                    ${lib.getExe config.hm.programs.fastfetch.package}
-                  else
-                    ${lib.getExe config.hm.programs.fastfetch.package}
-                  end
-
-                  # Wayland vars for root
-                  if test (id -u) -eq 0
-                    set -gx XDG_RUNTIME_DIR /run/user/1000
-                    set -gx WAYLAND_DISPLAY wayland-1
-                  end
-                else
+                if test "$NUSHELL_EXEC" = true; and not contains -- $__parent_comm nu fish; and not set -q FISH_NO_NU
                   exec nu
+                end
+
+                set fish_greeting
+
+                # Atuin
+                set -x ATUIN_NOBIND true
+                bind ctrl-r _atuin_search
+                bind up _atuin_bind_up
+                bind \eOA _atuin_bind_up
+                bind \e\[A _atuin_bind_up
+                if bind -M insert >/dev/null 2>&1
+                  bind -M insert ctrl-r _atuin_search
+                  bind -M insert up _atuin_bind_up
+                  bind -M insert \eOA _atuin_bind_up
+                  bind -M insert \e\[A _atuin_bind_up
+                end
+
+                magic-enter-bindings
+
+                # Zellij
+                set -x ZELLIJ_CONFIG_DIR "$HOME/.config/zellij"
+                # set -x ZELLIJ_AUTO_ATTACH true
+
+                if test "$TERM" = xterm-ghostty; or test "$TERM" = xterm-kitty
+                  eval (${lib.getExe config.hm.programs.zellij.package} setup --generate-auto-start fish | string collect)
+
+                  ${lib.getExe config.hm.programs.fastfetch.package}
+                else
+                  ${lib.getExe config.hm.programs.fastfetch.package}
+                end
+
+                # Wayland vars for root
+                if test (id -u) -eq 0
+                  set -gx XDG_RUNTIME_DIR /run/user/1000
+                  set -gx WAYLAND_DISPLAY wayland-1
                 end
               '';
 
