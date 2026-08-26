@@ -1,8 +1,8 @@
 ---
-name: Mirror to Codeberg
-run-name: mirror to codeberg
+name: Mirror to Codeberg & Tangled
+run-name: mirror to codeberg & tangled
 permissions:
-  contents: write
+  contents: read
 on:
   push:
     branches: [main]
@@ -17,9 +17,10 @@ jobs:
           fetch-depth: 0
       - name: push to codeberg
         env:
-          GIT_SSH_PRIVATE_KEY: ${{ secrets.CODEBERG_SSH_KEY }}
-          GIT_SSH_KNOWN_HOSTS: ${{ secrets.CODEBERG_KNOWN_HOSTS }}
+          GIT_SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_SSH_KEY }}
+          GIT_SSH_KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
         run: |-
+          set +x  # Prevent echoing sensitive data in debug mode
           eval $(ssh-agent -s)
           echo "$GIT_SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add -
           mkdir -p ~/.ssh
@@ -27,4 +28,6 @@ jobs:
           echo "$GIT_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           git remote add codeberg ssh://git@codeberg.org/angeldust/nixos-config.git
+          git remote add tangled git@tangled.org:did:plc:p35cbenhih5vk25dufk3fjns
           git push codeberg main --force
+          git push tangled main --force
