@@ -25,7 +25,7 @@
           iphone
           nvidia
           sound
-          openrgb
+          mouse
           # Networking modules
           firewall
           network-core

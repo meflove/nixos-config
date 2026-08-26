@@ -16,16 +16,22 @@
             };
           };
         };
+        "90-ksm-zero-pages" = {
+          "/sys/kernel/mm/ksm/use_zero_pages" = {
+            "w!" = {
+              argument = "1";
+            };
+          };
+          "/sys/kernel/mm/ksm/advisor_mode" = {
+            "w!" = {
+              argument = "scan-time";
+            };
+          };
+        };
       };
 
       hardware = {
         ksm.enable = true;
-
-        block.scheduler = {
-          "sd[a-z]*" = "bfq";
-          "mmcblk[0-9]*" = "mq-deadline";
-          "nvme[0-9]*" = "none";
-        };
         cpu.intel.updateMicrocode = true;
       };
 
@@ -37,10 +43,10 @@
             ACTION=="add|change", KERNEL=="sd[a-z]*", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="bfq"
 
             # SSD
-            ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="adios"
+            ACTION=="add|change", KERNEL=="sd[a-z]*|mmcblk[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="mq-deadline"
 
             # NVMe SSD
-            ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="adios"
+            ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="none"
           '';
           destination = "/etc/udev/rules.d/60-ioschedulers.rules";
         })
@@ -63,7 +69,7 @@
 
           # Page Trashing
           "vm.dirty_background_bytes" = 256 * 1024 * 1024; # 256MB = 268435456
-          "vm.dirty_bytes" = 1 * 1024 * 1024 * 1024; # 2GB = 2147483648
+          "vm.dirty_bytes" = 1 * 1024 * 1024 * 1024; # 1GB = 1073741824
 
           "vm.dirty_expire_centisecs" = 1500;
           "vm.dirty_writeback_centisecs" = 100;
