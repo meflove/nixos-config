@@ -49,8 +49,9 @@
               export PROTON_ENABLE_WAYLAND=1
             '';
           };
-          extraCompatPackages = [
-            pkgs.proton-ge-bin
+          extraCompatPackages = with pkgs; [
+            proton-ge-bin
+            nur.repos.vladexa.proton-cachyos-v3
           ];
 
           gamescopeSession = {

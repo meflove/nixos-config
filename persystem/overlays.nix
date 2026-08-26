@@ -36,7 +36,6 @@
       # devenv = inputs.devenv.packages.${system}.devenv;  # use prev.devenv to avoid lix-module override issue
 
       # fixes
-      ananicy-cpp = inputs.nixpkgs-ananicy-cpp.legacyPackages.${system}.ananicy-cpp;
       nix = _old.lix;
       nixos-cli = inputs.nixos-cli.packages.${system}.nixos-cli.override {nix = _old.lix;};
       nix-update =
@@ -70,22 +69,6 @@
       fastfetch = pkgs.fastfetch.override {
         zfsSupport = true;
       };
-      # niri-flake pins libdisplay-info 0.2.0 via a stale `assert`, but niri
-      # upstream requires 0.3 (Cargo.toml: `libdisplay-info = "0.3.0"`) and
-      # nixpkgs removed `libdisplay-info_0_2` on 2026-08-04. The niri overlay
-      # rebuilds against the system nixpkgs and hits that throw; shadow it here
-      # with the flake's own derivation, swapping libdisplay-info for the 0.3.
-      niri-unstable =
-        inputs.niri.packages.${system}.niri-unstable.overrideAttrs
-        (_: previousAttrs: {
-          buildInputs =
-            map
-            (input:
-              if pkgs.lib.getName input == "libdisplay-info"
-              then pkgs.libdisplay-info_0_3
-              else input)
-            (previousAttrs.buildInputs or []);
-        });
     };
   };
 }

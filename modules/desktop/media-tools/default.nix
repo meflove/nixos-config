@@ -16,10 +16,7 @@
           imv # Image viewer for Wayland
           gimp
           vlc
-          ;
-        inherit
-          (pkgs.master)
-          frame-media-converter # new package, not in nixpkgs yet, ffmpeg GUI
+          frame-media-converter
           ;
       };
 

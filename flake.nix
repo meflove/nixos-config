@@ -14,12 +14,6 @@
       owner = "NixOS";
       repo = "nixpkgs";
     };
-    nixpkgs-ananicy-cpp = {
-      type = "github";
-      owner = "NixOS";
-      repo = "nixpkgs";
-      rev = "148bab9c1c3c53136ecb44a6ea356a0ed5b39b06";
-    };
     lix = {
       url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
       flake = false;

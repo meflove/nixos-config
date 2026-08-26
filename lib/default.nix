@@ -12,7 +12,7 @@ inputs @ {self, ...}: let
     hyprland.overlays.default
     nix-cachyos-kernel.overlays.default
     angeldust-nix-packages.overlays.default
-    # zellij.overlays.default
+    nur.overlays.default
 
     (import "${statix}/overlay.nix")
     self.overlays.default
