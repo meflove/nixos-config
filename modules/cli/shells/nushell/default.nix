@@ -314,6 +314,69 @@
                 $env.config.completions.external.enable = true
                 $env.config.completions.external.completer = $external_completer
 
+                # git host checker
+                def git-host-root [] {
+                  mut dir = $env.PWD
+                  loop {
+                    if ($dir | path join .git | path exists) or ($dir | path join .jj | path exists) {
+                      return $dir
+                    }
+
+                    let parent = ($dir | path dirname)
+                    if $parent == $dir {
+                      return ""
+                    }
+
+                    $dir = $parent
+                  }
+                }
+
+                def --env detect-git-host [] {
+                  let root = (git-host-root)
+
+                  if $root == "" {
+                    return null
+                  }
+
+                  let cfg = ($root | path join .git config)
+                  let mtime = if ($cfg | path exists) {
+                    ls $cfg | get 0.modified | format date "%s%.9f"
+                  } else {
+                    null
+                  }
+
+                  let cached = ($env | get -o GIT_HOST_CACHE | default {} | get -o $root)
+                  if ($mtime != null and $cached != null and $cached.mtime == $mtime) {
+                    return $cached.host
+                  }
+
+                  let remote = (
+                    git -C $root remote get-url origin
+                    | complete
+                  )
+
+                  if $remote.exit_code != 0 {
+                    return null
+                  }
+
+                  let url = $remote.stdout | str trim
+                  let host = if ($url | str contains "github.com") {
+                    "github"
+                  } else if ($url | str contains "codeberg.org") {
+                    "codeberg"
+                  } else if ($url | str contains "tangled.org") {
+                    "tangled"
+                  } else {
+                    "other"
+                  }
+
+                  if $mtime != null {
+                    $env.GIT_HOST_CACHE = ($env | get -o GIT_HOST_CACHE | default {} | merge {$root: {host: $host, mtime: $mtime}})
+                  }
+
+                  $host
+                }
+
                 # binds
                 $env.config.keybindings ++= [
                   # magic enter
@@ -371,6 +434,24 @@
                     }
                   }
                 ]
+
+                # hooks
+                $env.config.hooks.pre_prompt = (
+                  $env.config.hooks.pre_prompt
+                  | default []
+                  | append {||
+                    let host = (detect-git-host)
+
+                    if $host == null {
+                      try {
+                        hide-env GIT_HOST
+                        return
+                      } catch { return }
+                    } else {
+                      $env.GIT_HOST = $host
+                    }
+                  }
+                )
               '';
           };
         };

@@ -1,8 +1,11 @@
 {
+  flake-file.inputs = {
+    iloader.url = "github:nab138/iloader";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       lib,
+      pkgs,
       ...
     }: {
       services.usbmuxd = {

@@ -1,7 +1,7 @@
 {
-  self,
   inputs,
   overlays,
+  self,
   ...
 }:
 # WARN:
@@ -16,11 +16,11 @@ let
     home-manager.nixosModules.home-manager
     hyprland.nixosModules.default
     nnf.nixosModules.default
-    nixos-hardware.nixosModules.common-cpu-intel-cpu-only
     chaotic.nixosModules.default
     nix-flatpak.nixosModules.nix-flatpak
     nix-index-database.nixosModules.nix-index
     sops-nix.nixosModules.sops
+    nix-secrets.nixosModules.default
     nixos-cli.nixosModules.nixos-cli
     proxy-suite-flake.nixosModules.default
     stylix.nixosModules.default
@@ -41,6 +41,7 @@ let
     chaotic.homeManagerModules.default
     nix-index-database.homeModules.nix-index
     sops-nix.homeManagerModules.sops
+    nix-secrets.homeManagerModules.default
     steam-config-nix.homeModules.default
     angeldust-nix-packages.homeModules.default
   ];
@@ -49,13 +50,13 @@ in
   # touch here only in cases
   rec {
     buildConfiguration = configurationName: {
-      hostName ? throw "Set 'hostName'",
-      userName ? throw "Set 'userName'",
-      hostPlatform ? throw "Set 'hostPlatform'",
-      stateVersion ? "26.05",
-      hostId ? throw "Set 'hostId'",
       extraModules ? [],
       flakeDir ? "/etc/nixos",
+      hostId ? throw "Set 'hostId'",
+      hostName ? throw "Set 'hostName'",
+      hostPlatform ? throw "Set 'hostPlatform'",
+      stateVersion ? "26.05",
+      userName ? throw "Set 'userName'",
     }: let
       specialArgs = {
         inherit
@@ -120,14 +121,7 @@ in
             ++ [
               self.diskoConfigurations.${configurationName}
               (
-                {config, ...}: let
-                  sops-update-keys =
-                    pkgs.writeShellScriptBin "sops-update-keys"
-                    # bash
-                    ''
-                      for file in $(${nxosLib.getExe pkgs.gnugrep} -lr "sops:" secrets/); do ${nxosLib.getExe pkgs.sops} updatekeys -y $file; done
-                    '';
-                in {
+                {config, ...}: {
                   config = {
                     networking = {inherit hostName hostId;};
 
@@ -152,44 +146,12 @@ in
 
                               preferXdgDirectories = true;
                             };
-
-                            sops = let
-                              secretSettings = name: {
-                                sopsFile = ../secrets/ssh-gpg/hosts/${userName}-ssh.yaml;
-                                path = "/home/${userName}/.ssh/id_ed25519${
-                                  if name == "angl_ssh_pub"
-                                  then ".pub"
-                                  else ""
-                                }";
-                              };
-                            in {
-                              age.sshKeyPaths = ["/home/${userName}/.ssh/id_ed25519"];
-                              defaultSopsFile = ../secrets/secrets.yaml;
-                              secrets =
-                                nxosLib.mapAttrs (_: secretSettings)
-                                (nxosLib.genAttrs [
-                                  "angl_ssh_priv"
-                                  "angl_ssh_pub"
-                                ] (x: x));
-                            };
                           }
                         ]
                         ++ homeModules;
                     };
 
-                    sops = {
-                      defaultSopsFile = ../secrets/secrets.yaml;
-                      age = {
-                        sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
-                        keyFile = "/var/lib/sops-nix/key.txt";
-                        generateKey = true;
-                      };
-                    };
-
-                    environment.systemPackages = [sops-update-keys pkgs.sops];
-
                     nixpkgs = {inherit hostPlatform;};
-
                     system = {inherit stateVersion;};
                   };
                 }
@@ -203,5 +165,12 @@ in
     inherit
       nxosLib
       homeLib
+      ;
+
+    # INFO: pure helpers for flake-parts modules (flake-file.inputs config);
+    # imported without pkgs — only functions that do not need it are taken
+    inherit
+      (import ./functions.nix {lib = nxosLib;})
+      mkNativeInputs
       ;
   }

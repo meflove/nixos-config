@@ -4,7 +4,6 @@
       pkgs,
       config,
       lib,
-      inputs,
       ...
     }: let
       gemini-wrapped = pkgs.symlinkJoin {
@@ -13,10 +12,10 @@
         buildInputs = [pkgs.makeWrapper];
         postBuild = ''
           wrapProgram $out/bin/gemini \
-            --run 'export GEMINI_API_KEY=$(cat ${config.hm.sops.secrets."ai/gemini_api_key".path})' \
-            --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.hm.sops.secrets. "github/github_pat".path})' \
-            --run 'export CONTEXT7_API_KEY=$(cat ${config.hm.sops.secrets."mcp/context7_api_key".path})' \
-            --run 'export HUGGINGFACE_API_KEY=$(cat ${config.hm.sops.secrets."mcp/huggingface_api_key".path})' \
+            --run 'export GEMINI_API_KEY=$(cat ${config.nix-secrets.secrets."ai/gemini_api_key".path})' \
+            --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.nix-secrets.secrets."github/github_pat".path})' \
+            --run 'export CONTEXT7_API_KEY=$(cat ${config.nix-secrets.secrets."mcp/context7_api_key".path})' \
+            --run 'export HUGGINGFACE_API_KEY=$(cat ${config.nix-secrets.secrets."mcp/huggingface_api_key".path})' \
         '';
       };
 
@@ -25,6 +24,16 @@
         servers
         |> lib.mapAttrs (_: server: lib.removeAttrs server ["type"]);
     in {
+      nix-secrets = {
+        secrets = lib.flattenSecrets {
+          ai = {
+            gemini_api_key = {
+              owner = lib.userName;
+            };
+          };
+        };
+      };
+
       hm = {
         sops = {
           secrets = lib.flattenSecrets {
@@ -68,7 +77,7 @@
             };
 
             general = {
-              preferredEditor = lib.getExe inputs.angeldust-nixcats.packages.${lib.hostPlatform}.default;
+              preferredEditor = lib.getExe pkgs.editor;
 
               checkpointing = {
                 enabled = false;

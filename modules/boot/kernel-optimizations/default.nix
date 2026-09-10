@@ -1,8 +1,11 @@
 {
+  flake-file.inputs = {
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       lib,
+      pkgs,
       inputs,
       ...
     }: {
@@ -31,6 +34,10 @@
           processorOpt = "x86_64-v3";
           autofdo = true;
           bbr3 = true;
+
+          # FIXME: remove after fix
+          # https://github.com/CachyOS/linux-cachyos/issues/1031
+          structuredExtraConfig.DRM_GUD = lib.kernel.no;
         };
 
         kernelPackages = (pkgs.linuxKernel.packagesFor kernel).extend (final: prev: {

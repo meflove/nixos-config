@@ -1,9 +1,12 @@
 {
+  flake-file.inputs = {
+    zellij.url = "github:a-kenji/zellij-nix";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
+      lib,
       pkgs,
       inputs,
-      lib,
       ...
     }: {
       hm.programs.zellij = {

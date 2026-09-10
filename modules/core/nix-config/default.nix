@@ -1,4 +1,15 @@
 {
+  flake-file.inputs = {
+    lix = {
+      url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
+      flake = false;
+    };
+    lix-module = {
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
+    };
+
+    ncro.url = "github:feel-co/ncro";
+  };
   flake = {lib, ...}: let
     nixosOrgKey = "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=";
 
@@ -72,6 +83,10 @@
         public_key = "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=";
       }
       {
+        url = "https://nix-secrets.cachix.org";
+        public_key = "nix-secrets.cachix.org-1:NSwybk1LexO4kPH755itLM1t2NGegVq9YR22KlG8Vp0=";
+      }
+      {
         url = "https://cache.nixos.org";
         public_key = nixosOrgKey;
       }
@@ -79,8 +94,9 @@
   in {
     nixConfig = {
       extra-substituters = map (cache: cache.url) caches;
-      extra-trusted-public-keys = lib.unique (map (cache: cache.key) caches);
+      extra-trusted-public-keys = lib.unique (map (cache: cache.public_key) caches);
       extra-experimental-features = ["pipe-operators"];
+      allow-import-from-derivation = true;
     };
 
     nixosModules.${baseNameOf ./.} = {
@@ -105,6 +121,20 @@
           '';
         };
       };
+      nix-secrets = {
+        secrets = lib.flattenSecrets {
+          github = {
+            github_pat = {
+              mode = "0444";
+            };
+          };
+        };
+        templates = {
+          "nix-access-tokens.nix".content = ''
+            access-tokens = "github.com=${config.nix-secrets.secrets."github/github_pat"}";
+          '';
+        };
+      };
 
       environment = {
         etc = {
@@ -112,8 +142,8 @@
         };
 
         extraInit = ''
-          if [ -f ${config.sops.secrets."github/github_pat".path} ]; then
-            export GITHUB_TOKEN=$(cat ${config.sops.secrets."github/github_pat".path})
+          if [ -f ${config.nix-secrets.secrets."github/github_pat".path} ]; then
+            export GITHUB_TOKEN=$(cat ${config.nix-secrets.secrets."github/github_pat".path})
           fi
         '';
       };
@@ -165,7 +195,7 @@
         };
 
         extraOptions = ''
-          !include ${config.sops.templates."nix-access-tokens.nix".path}
+          !include ${config.nix-secrets.templates."nix-access-tokens.nix".path}
         '';
       };
 

@@ -1,8 +1,8 @@
 {
-  inputs,
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: let
   cfg = config.programs.fsel;

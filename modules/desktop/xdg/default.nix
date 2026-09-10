@@ -1,9 +1,9 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       config,
       lib,
+      pkgs,
       ...
     }: {
       environment.sessionVariables.TERMINAL = lib.getExe config.hm.programs.kitty.package;

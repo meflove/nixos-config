@@ -1,8 +1,8 @@
 {
   config,
   lib,
-  inputs,
   pkgs,
+  inputs,
   ...
 }: let
   super = "Super";

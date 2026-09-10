@@ -1,4 +1,7 @@
 {
+  flake-file.inputs = {
+    fsel.url = "github:Mjoyufull/fsel";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       config,

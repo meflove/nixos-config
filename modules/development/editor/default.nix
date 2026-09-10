@@ -1,10 +1,20 @@
 {
+  extendedLib,
+  self,
+  ...
+}: {
+  flake-file.inputs = {
+    angeldust-nvimWrap = {
+      url = "git+https://tangled.org/did:plc:tnajjjjypb4b57xv7tjpv3is";
+      inputs = extendedLib.mkNativeInputs [] self.inputs.angeldust-nvimWrap.inputs;
+    };
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      inputs,
+      config,
       lib,
       pkgs,
-      config,
+      inputs,
       ...
     }: {
       nixpkgs.overlays = [
@@ -18,13 +28,25 @@
               # bash
               ''
                 wrapProgram $out/bin/nvim \
-                  --run 'export GITHUB_COPILOT_TOKEN=$(cat ${config.hm.sops.secrets."ai/copilot_oauth".path})' \
-                  --run 'export OPENROUTER_API_KEY=$(cat ${config.hm.sops.secrets."ai/openrouter_api_key".path})' \
-                  --run 'export ANTHROPIC_API_KEY=$(cat ${config.hm.sops.secrets."ai/zai_api_key".path})' \
+                  --run 'export GITHUB_COPILOT_TOKEN=$(cat ${config.nix-secrets.secrets."ai/copilot_oauth".path})' \
+                  --run 'export OPENROUTER_API_KEY=$(cat ${config.nix-secrets.secrets."ai/openrouter_api_key".path})' \
+                  --run 'export ANTHROPIC_API_KEY=$(cat ${config.nix-secrets.secrets."ai/zai_api_key".path})' \
               '';
           };
         })
       ];
+
+      nix-secrets = {
+        secrets = lib.flattenSecrets {
+          ai =
+            lib.genAttrs [
+              "copilot_oauth"
+              "openrouter_api_key"
+              "zai_api_key"
+            ]
+            (_: {owner = lib.userName;});
+        };
+      };
 
       hm = {
         sops = {

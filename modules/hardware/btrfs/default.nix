@@ -1,9 +1,9 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      lib,
       config,
+      lib,
+      pkgs,
       ...
     }: let
       btrfsBalance = import ./btrfs-balance.nix {inherit pkgs lib;};

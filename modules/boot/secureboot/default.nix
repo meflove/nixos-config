@@ -1,8 +1,13 @@
 {
+  flake-file.inputs = {
+    lanzaboote.url = "github:nix-community/lanzaboote";
+    ## Fix build for lanzaboote
+    rust-overlay.url = "github:oxalica/rust-overlay";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       lib,
+      pkgs,
       ...
     }: {
       boot = {

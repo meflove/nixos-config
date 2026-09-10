@@ -1,4 +1,11 @@
 {
+  flake-file.inputs = {
+    nixcord.url = "github:kaylorben/nixcord";
+    system24-theme = {
+      url = "github:refact0r/system24";
+      flake = false;
+    };
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       config,

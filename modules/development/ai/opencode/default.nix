@@ -1,4 +1,7 @@
 {
+  flake-file.inputs = {
+    llm-agents.url = "github:numtide/llm-agents.nix";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       inputs,
@@ -17,15 +20,22 @@
         postBuild = ''
           ln -s $out/bin/opencode2 $out/bin/opencode
           wrapProgram $out/bin/opencode \
-            --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.hm.sops.secrets."ai/zai_api_key".path})' \
-            --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.hm.sops.secrets."github/github_pat".path})' \
-            --run 'export CONTEXT7_API_KEY=$(cat ${config.hm.sops.secrets."mcp/context7_api_key".path})' \
-            --run 'export HUGGINGFACE_API_KEY=$(cat ${config.hm.sops.secrets."mcp/huggingface_api_key".path})' \
+            --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.nix-secrets.secrets."ai/zai_api_key".path})' \
+            --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.nix-secrets.secrets."github/github_pat".path})' \
+            --run 'export CONTEXT7_API_KEY=$(cat ${config.nix-secrets.secrets."mcp/context7_api_key".path})' \
+            --run 'export HUGGINGFACE_API_KEY=$(cat ${config.nix-secrets.secrets."mcp/huggingface_api_key".path})' \
             --set OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS true \
             --set OPENCODE_ENABLE_EXA 1
         '';
       };
     in {
+      nix-secrets = {
+        secrets = lib.flattenSecrets {
+          ai = {
+            zai_api_key = {};
+          };
+        };
+      };
       services.ollama = {
         enable = true;
         loadModels = [

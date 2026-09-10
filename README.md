@@ -1,5 +1,5 @@
 > [!NOTE]
-> **Moved to [Codeberg](https://codeberg.org/angeldust/nixos-config)** — GitHub now serves as a mirror.
+> **Moved to [tangled](https://tangled.org/did:plc:p35cbenhih5vk25dufk3fjns)** — [GitHub](https://github.com/meflove/nixos-config) and [Codeberg](https://codeberg.org/angeldust/nixos-config) now serve as mirrors.
 
 <h1 align="center"> My Nixos Configuration <img src="https://github.com/user-attachments/assets/5f064ed3-b558-426d-afef-d33940636c9d" width="32" alt="nixos"> </h1>
 
@@ -14,18 +14,18 @@ My declarative NixOS configuration, managed with [Nix Flakes](https://nixos.wiki
 
 This configuration is built around a minimalist yet functional environment for development and daily use.
 
-| Component          | Implementation                                                                                                      |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| **System**         | [NixOS Unstable](https://nixos.org/channels/nixos-unstable)                                                         |
-| **Implementation** | [Lix](https://lix.systems/) (modern Nix replacement)                                                                |
-| **Architecture**   | [Flake-parts](https://flake.parts) for modularity                                                                   |
-| **Window Manager** | [Niri](https://github.com/niri-wm/niri) (Wayland with gaming optimizations)                                         |
-| **Bar**            | [Waybar](https://github.com/alexays/waybar)                                                                         |
-| **Terminal**       | [Kitty](https://github.com/kovidgoyal/kitty)                                                                        |
-| **Shell**          | [Nushell](https://nushell.shhttps://opensource.org/license/gpl-3.0/) with starship                                  |
-| **Code Editor**    | [Neovim](https://neovim.io/) with [angeldust-nvimWrap](https://github.com/meflove/angeldust-nvimWrap) configuration |
-| **Security**       | [Secure Boot](https://github.com/nix-community/lanzaboote) + sops-nix                                               |
-| **Gaming**         | Comprehensive gaming stack with optimizations                                                                       |
+| Component          | Implementation                                                                                                                                                 |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **System**         | [NixOS Unstable](https://nixos.org/channels/nixos-unstable)                                                                                                    |
+| **Implementation** | [Lix](https://lix.systems/) (modern Nix replacement)                                                                                                           |
+| **Architecture**   | [Flake-parts](https://flake.parts) for modularity                                                                                                              |
+| **Window Manager** | [Niri](https://github.com/niri-wm/niri) (Wayland with gaming optimizations)                                                                                    |
+| **Bar**            | [Waybar](https://github.com/alexays/waybar)                                                                                                                    |
+| **Terminal**       | [Kitty](https://github.com/kovidgoyal/kitty)                                                                                                                   |
+| **Shell**          | [Nushell](https://www.nushell.sh/) with starship                                                                                                               |
+| **Code Editor**    | [Neovim](https://neovim.io/) with [angeldust-nvimWrap](https://tangled.org/did:plc:tnajjjjypb4b57xv7tjpv3is) configuration                                     |
+| **Security**       | [Secure Boot](https://github.com/nix-community/lanzaboote) + [nix-secrets](https://github.com/unnamed-systems/nix-secrets) (age), sops-nix as a second backend |
+| **Gaming**         | Comprehensive gaming stack with optimizations                                                                                                                  |
 
 ### 🎮 Gaming & Performance Stack
 
@@ -44,7 +44,7 @@ This configuration is built around a minimalist yet functional environment for d
 
 ### 💻 Development Environment
 
-**Neovim Configuration ([angeldust-nvimWrap](https://github.com/meflove/angeldust-nvimWrap)):**
+**Neovim Configuration ([angeldust-nvimWrap](https://tangled.org/did:plc:tnajjjjypb4b57xv7tjpv3is)):**
 A comprehensive Neovim setup using [nix-wrapper-modules](https://birdeehub.github.io/nix-wrapper-modules/wrapperModules/neovim.html) for reproducible, declarative Neovim environments with:
 
 - **Modern Features**: Rose-pine moon theme, Blink.cmp completion
@@ -59,8 +59,8 @@ The configuration uses **flake-parts** for modular architecture with automatic m
 
 ```
 nixos-config/
-├── flake.nix                     # Main entry point (flake-parts)
-├── persystem/                    # Per-system output: devenv shell + git hooks, overlays, treefmt, nixConfig
+├── flake.nix                     # Generated by flake-file — edit flake-file.inputs, regen via nix run .#write-flake
+├── persystem/                    # Per-system output: devenv shell + git hooks, overlays, treefmt, generated files
 ├── hosts/                        # Host-specific configurations
 │   └── nixos-pc/
 │       ├── default.nix           # System configuration with module imports
@@ -72,8 +72,9 @@ nixos-config/
 │   ├── networking/               # Networking (systemd-resolved, systemd-networkd, firewall, zapret)
 │   ├── desktop/                  # GUI services (gaming, flatpak, obs)
 │   ├── cli/                      # Command-line tools and shell config
-│   └── development/              # Dev tools (angeldust-nixCats nvim, git, ai tools)
-├── secrets/                      # Encrypted secrets (sops-nix managed)
+│   └── development/              # Dev tools (angeldust-nvimWrap nvim, git, ai tools)
+├── secrets/                      # Second secrets backend: age-encrypted YAML (sops-nix)
+├── nix-secrets/                  # Primary secrets: one age-encrypted .enc file per secret
 └── lib/                          # Outputs generator thanks to https://github.com/unazikx/flake
 ```
 
@@ -84,14 +85,14 @@ nixos-config/
 **1. Clone the repository:**
 
 ```bash
-git clone https://github.com/meflove/nixos-config.git
+git clone https://tangled.org/did:plc:p35cbenhih5vk25dufk3fjns
 cd nixos-config
 ```
 
 **2. Adapt it to your system:**
 
 - Review and adapt the hardware configuration, especially in `hosts/nixos-pc/*` and `modules/hardware`.
-- Configure sops-nix.
+- Configure the secrets backends (age keys and recipients) — nix-secrets is the primary one, sops-nix is kept as a second option.
 
 **3. Build the configuration:**
 

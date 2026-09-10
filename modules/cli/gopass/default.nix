@@ -1,9 +1,9 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       config,
       lib,
+      pkgs,
       ...
     }: {
       sops = {
@@ -15,8 +15,8 @@
       };
       environment = {
         extraInit = ''
-          if [ -f ${config.sops.secrets.pass.path} ]; then
-            export GOPASS_AGE_PASSWORD=$(cat ${config.sops.secrets.pass.path})
+          if [ -f ${config.nix-secrets.secrets.pass.path} ]; then
+            export GOPASS_AGE_PASSWORD=$(cat ${config.nix-secrets.secrets.pass.path})
           fi
         '';
       };

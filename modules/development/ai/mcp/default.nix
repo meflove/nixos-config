@@ -1,19 +1,34 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      lib,
       config,
+      lib,
+      pkgs,
       ...
     }: {
-      hm = {
-        sops.secrets = lib.flattenSecrets {
-          github = {
-            github_pat = {};
+      nix-secrets.secrets = lib.flattenSecrets {
+        github = {
+          github_pat = {
+            owner = lib.userName;
           };
-          mcp = {
-            context7_api_key = {};
-            huggingface_api_key = {};
+        };
+        mcp =
+          lib.genAttrs [
+            "context7_api_key"
+            "huggingface_api_key"
+          ]
+          (_: {owner = lib.userName;});
+      };
+      hm = {
+        sops = {
+          secrets = lib.flattenSecrets {
+            github = {
+              github_pat = {};
+            };
+            mcp = {
+              context7_api_key = {};
+              huggingface_api_key = {};
+            };
           };
         };
 
@@ -39,7 +54,7 @@
                 "ghcr.io/github/github-mcp-server"
               ];
               env = {
-                GITHUB_PERSONAL_ACCESS_TOKEN.file = config.hm.sops.secrets."github/github_pat".path;
+                GITHUB_PERSONAL_ACCESS_TOKEN.file = config.nix-secrets.secrets."github/github_pat".path;
               };
             };
 

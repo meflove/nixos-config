@@ -1,11 +1,20 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      lib,
       config,
+      lib,
+      pkgs,
       ...
     }: {
+      nix-secrets = {
+        secrets = lib.flattenSecrets {
+          github = {
+            github_pat = {
+              mode = "0444";
+            };
+          };
+        };
+      };
       programs.fish = {
         enable = true;
         package = pkgs.fish;
@@ -166,9 +175,9 @@
               bd = lib.getExe pkgs.blobdrop;
               g = "git";
               j = "jj";
-              nrs = "nixos switch --fallback --option access-tokens=(cat ${config.hm.sops.secrets."github/github_pat".path})";
-              nbs = "nixos boot --fallback --option access-tokens=(cat ${config.hm.sops.secrets."github/github_pat".path})";
-              nfu = "nix flake update --option access-tokens (cat ${config.hm.sops.secrets."github/github_pat".path})";
+              nrs = "nixos switch --fallback --option access-tokens=(cat ${config.nix-secrets.secrets."github/github_pat".path})";
+              nbs = "nixos boot --fallback --option access-tokens=(cat ${config.nix-secrets.secrets."github/github_pat".path})";
+              nfu = "nix flake update --option access-tokens (cat ${config.nix-secrets.secrets."github/github_pat".path})";
               oc = "opencode";
               cl = "claude";
 

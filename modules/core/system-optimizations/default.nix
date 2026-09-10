@@ -1,11 +1,21 @@
 {
+  flake-file.inputs = {
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+  };
   flake = _: {
-    nixosModules.${baseNameOf ./.} = {pkgs, ...}: {
+    nixosModules.${baseNameOf ./.} = {
+      lib,
+      pkgs,
+      inputs,
+      ...
+    }: {
+      imports = lib.optional (lib.hostName == "nixos-pc") inputs.nixos-hardware.nixosModules.common-cpu-intel-cpu-only;
+
       zramSwap = {
         enable = true;
         priority = 100;
         swapDevices = 2;
-        memoryPercent = 100;
+        memoryPercent = 50;
       };
 
       systemd.tmpfiles.settings = {
@@ -53,6 +63,8 @@
       ];
 
       boot = {
+        zswap.enable = false;
+
         extraModprobeConfig = ''
           # HDD optimisations
           options libahci ignore_sss=1

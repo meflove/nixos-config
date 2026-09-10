@@ -1,7 +1,7 @@
 {
   flake = {
-    extendedLib,
     config,
+    extendedLib,
     ...
   }: {
     nixosConfigurations = extendedLib.buildConfiguration (baseNameOf ./.) rec {
@@ -39,14 +39,14 @@
           fastfetch
           fish
           nushell
-          iris
           otter-launcher
           yazi
           zellij
-          gopass
           # Core modules
           easyeffects
           security
+          sops-nix
+          nix-secrets
           ssh-gpg
           system-optimizations
           oom-killer

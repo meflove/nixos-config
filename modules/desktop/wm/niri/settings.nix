@@ -1,8 +1,8 @@
 {
+  config,
+  lib,
   pkgs,
   inputs,
-  lib,
-  config,
   ...
 }: {
   screenshot-path = null;

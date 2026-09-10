@@ -1,9 +1,12 @@
 {
+  flake-file.inputs = {
+    niri.url = "github:epireyn/niri-flake";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       config,
       lib,
+      pkgs,
       inputs,
       ...
     }: {

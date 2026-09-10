@@ -1,4 +1,7 @@
 {
+  flake-file.inputs = {
+    iris.url = "github:versenilvis/iris";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       lib,

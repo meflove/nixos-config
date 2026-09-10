@@ -1,13 +1,35 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       lib,
+      pkgs,
       ...
     }: {
       imports = [
         ./ssh-notifier.nix
       ];
+
+      nix-secrets = {
+        secrets = lib.flattenSecrets {
+          ssh-gpg = {
+            hosts = {
+              nixos-pc = lib.genAttrs [
+                "ssh_pub"
+                "ssh_priv"
+              ] (_: {});
+            };
+            users = {
+              # just to dont forget :)
+              angeldust = lib.genAttrs [
+                "ssh_pub"
+                "ssh_priv"
+                "gpg_pub"
+                "gpg_priv"
+              ] (_: {owner = lib.userName;});
+            };
+          };
+        };
+      };
 
       services = {
         openssh = {

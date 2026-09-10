@@ -1,14 +1,35 @@
-{inputs, ...}: {
+{
+  extendedLib,
+  inputs,
+  self,
+  ...
+}: {
+  flake-file.inputs = {
+    # INFO:
+    # url-style declaration — flake-edit (auto-follow) does not match
+    # attrset-style (type/owner/repo/ref) inputs as follows targets
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs";
+    angeldust-nix-packages = {
+      url = "git+https://tangled.org/did:plc:jv6arfakxixeyppnbxhf6blz";
+      # INFO: keep the subtree on nix-packages' own pinned inputs; dev tooling
+      # (flake-parts, pkgs-by-name, treefmt-nix, import-tree) is deduplicated
+      inputs = extendedLib.mkNativeInputs [] self.inputs.angeldust-nix-packages.inputs;
+    };
+    jonhermansen-nur-packages.url = "github:jonhermansen/nur-packages";
+    chaotic.url = "github:chaotic-cx/nyx";
+    nur.url = "github:nix-community/NUR";
+  };
   flake = _: {
-    overlays.default = _old: pkgs: let
-      inherit (pkgs.stdenv.hostPlatform) system;
+    overlays.default = final: prev: let
+      inherit (prev.stdenv.hostPlatform) system;
 
       branch-config = {
         inherit system;
 
         config = {
           inherit
-            (_old.config)
+            (final.config)
             allowBroken
             allowInsecure
             allowUnfree
@@ -18,7 +39,6 @@
     in {
       # pkgSets
       master = import inputs.nixpkgs-master branch-config;
-      unazikx-pkgs = inputs.unazikx-nix-packages.legacyPackages.${system};
       jonhermansen-nur-pkgs = inputs.jonhermansen-nur-packages.legacyPackages.${system};
       llm-agents = inputs.llm-agents.packages.${system};
       nix-gaming = inputs.nix-gaming.packages.${system};
@@ -36,14 +56,14 @@
       # devenv = inputs.devenv.packages.${system}.devenv;  # use prev.devenv to avoid lix-module override issue
 
       # fixes
-      nix = _old.lix;
-      nixos-cli = inputs.nixos-cli.packages.${system}.nixos-cli.override {nix = _old.lix;};
+      nix = final.lix;
+      nixos-cli = inputs.nixos-cli.packages.${system}.nixos-cli.override {nix = final.lix;};
       nix-update =
         inputs.nix-update.packages.${system}.nix-update.overrideAttrs
         (_finalAttrs: _previousAttrs: {
-          nativBuildInputs = pkgs.lib.attrValues {
+          nativBuildInputs = prev.lib.attrValues {
             inherit
-              (_old)
+              (final)
               lix
               nix-prefetch-git
               ;
@@ -52,11 +72,11 @@
             "--prefix PATH"
             ":"
             (
-              pkgs.lib.makeBinPath
+              prev.lib.makeBinPath
               (
-                pkgs.lib.attrValues {
+                prev.lib.attrValues {
                   inherit
-                    (_old)
+                    (final)
                     lix
                     nixpkgs-review
                     nix-prefetch-git
@@ -66,7 +86,7 @@
             )
           ];
         });
-      fastfetch = pkgs.fastfetch.override {
+      fastfetch = prev.fastfetch.override {
         zfsSupport = true;
       };
     };

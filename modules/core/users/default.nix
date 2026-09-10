@@ -1,9 +1,9 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      lib,
       config,
+      lib,
+      pkgs,
       ...
     }: {
       sops = {
@@ -13,6 +13,12 @@
           };
         };
       };
+      nix-secrets = {
+        secrets = lib.flattenSecrets {
+          pass.neededForUsers = true;
+        };
+      };
+
       services = {
         getty = {
           autologinUser = lib.userName;
@@ -34,7 +40,7 @@
 
         users = {
           ${lib.userName} = {
-            hashedPasswordFile = config.sops.secrets.pass.path;
+            hashedPasswordFile = config.security.nix-secrets.secrets.pass.path;
 
             shell = config.hm.programs.fish.package;
 

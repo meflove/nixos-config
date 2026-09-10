@@ -1,9 +1,12 @@
 {
+  flake-file.inputs = {
+    yazi.url = "github:sxyazi/yazi";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      lib,
       config,
+      lib,
+      pkgs,
       ...
     }: {
       hm = {

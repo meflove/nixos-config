@@ -1,4 +1,7 @@
 {
+  flake-file.inputs = {
+    atuin.url = "github:atuinsh/atuin";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = _: {
       hm.programs.atuin = {

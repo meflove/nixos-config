@@ -1,4 +1,7 @@
 {
+  flake-file.inputs = {
+    nnf.url = "github:thelegy/nixos-nftables-firewall";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = _: {
       networking = {

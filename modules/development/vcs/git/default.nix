@@ -1,8 +1,8 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       lib,
+      pkgs,
       ...
     }: {
       hm = {
@@ -24,9 +24,31 @@
               enable = true;
             };
 
+            includes = [
+              {
+                condition = ''hasconfig:remote.*.url:git@github.com:**/**'';
+                contentSuffix = "github.git";
+                contents = {
+                  user = {
+                    name = "meflove";
+                    email = "meflov3r@icloud.com";
+                    signingkey = "54B1AA165EA2E864";
+                  };
+                };
+              }
+              {
+                condition = ''hasconfig:remote.*.url:git@tangled.org:**/**'';
+                contentSuffix = "tangled.git";
+                contents = {
+                  gpg.format = "ssh";
+                  user.signingkey = "/home/${lib.userName}/.ssh/id_ed25519.pub";
+                };
+              }
+            ];
+
             settings = {
               user = {
-                name = "meflove";
+                name = "angeldust";
                 email = "meflov3r@icloud.com";
                 signingkey = "54B1AA165EA2E864";
               };

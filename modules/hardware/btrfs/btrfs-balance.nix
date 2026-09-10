@@ -1,6 +1,6 @@
 {
-  pkgs,
   lib,
+  pkgs,
 }: let
   deps = lib.attrValues {
     inherit

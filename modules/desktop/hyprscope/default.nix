@@ -1,10 +1,10 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      inputs,
       config,
       lib,
       pkgs,
+      inputs,
       ...
     }: {
       home-manager.sharedModules = [./hm-module.nix {inherit inputs config lib pkgs;}];

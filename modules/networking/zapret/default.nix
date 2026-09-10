@@ -1,7 +1,16 @@
 {
+  flake-file.inputs = {
+    proxy-suite-flake.url = "github:fufsob/proxy-suite-flake";
+    zapret-discord-youtube.url = "github:kartavkun/zapret-discord-youtube";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {config, ...}: {
       sops = {
+        secrets = {
+          tg_ws_proxy = {};
+        };
+      };
+      nix-secrets = {
         secrets = {
           tg_ws_proxy = {};
         };
@@ -16,60 +25,62 @@
           # connect via this link
           # https://t.me/proxy?server=127.0.0.1&port=1443&secret=dda95d4572bdc10eebaa57192dd9384095
           enable = true;
-
-          host = "127.0.0.1";
-          port = 1443;
-
-          secretFile = config.sops.secrets.tg_ws_proxy.path;
+          listener = {
+            address = "127.0.0.1";
+            port = 1443;
+          };
+          secretFile = config.nix-secrets.secrets.tg_ws_proxy.path;
         };
 
         zapret = {
           enable = true;
+          zapret-discord-youtube = {
+            configName = "general (ALT12)";
+            gameFilter = "all";
 
-          configName = "general (ALT12)";
-          gameFilter = "all";
+            excludeDomains = [
+              "chat.z.ai"
+              "z.ai"
+              "api.z.ai"
 
-          listExclude = [
-            "chat.z.ai"
-            "z.ai"
-            "api.z.ai"
+              "jj-vcs.dev"
+              "docs.jj-vcs.dev"
 
-            "jj-vcs.dev"
-            "docs.jj-vcs.dev"
+              "carapace.sh"
 
-            "carapace.sh"
+              "fandom.com"
 
-            "fandom.com"
+              "nushell.sh"
 
-            "nushell.sh"
+              "dl.winehq.org"
 
-            "dl.winehq.org"
+              "static.crates.io"
+              "crates.io"
+              "static.rust-lang.org"
 
-            "static.crates.io"
-            "crates.io"
+              "zellij.dev"
 
-            "zellij.dev"
+              "lazyvim.org"
 
-            "lazyvim.org"
-
-            "nix.dev"
-            "cachix.org"
-            "nixos-cache-proxy.cofob.dev"
-            "nixos.org"
-            "cache.nixos.org"
-            "releases.nixos.org"
-            "cache.nixos.org"
-            "channels.nixos.org"
-            "search.nixos.org"
-            "cache.garnix.io"
-            "garnix-cache.com"
-            "cache.nixos-cuda.org"
-            "git.lix.systems"
-            "m1.ppy.sh"
-            "snix.dev"
-            "dl.genymotion.com"
-            "chaotic.cx"
-          ];
+              "nix.dev"
+              "cachix.org"
+              "nixos-cache-proxy.cofob.dev"
+              "nixos.org"
+              "cache.nixos.org"
+              "releases.nixos.org"
+              "cache.nixos.org"
+              "channels.nixos.org"
+              "search.nixos.org"
+              "cache.garnix.io"
+              "garnix-cache.com"
+              "cache.nixos-cuda.org"
+              "git.lix.systems"
+              "m1.ppy.sh"
+              "snix.dev"
+              "dl.genymotion.com"
+              "chaotic.cx"
+            ];
+          };
         };
       };
     };

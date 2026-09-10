@@ -1,10 +1,16 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       lib,
+      pkgs,
       ...
     }: {
+      nix-secrets = {
+        secrets = {
+          pass = {};
+        };
+      };
+
       environment.systemPackages = lib.attrValues {
         inherit
           (pkgs)

@@ -37,6 +37,23 @@
           '';
         };
       };
+      nix-secrets = {
+        secrets = lib.flattenSecrets {
+          wifi =
+            lib.genAttrs [
+              "Keenetic_home"
+              "iphone_hotspot"
+            ]
+            (_: {owner = "wpa_supplicant";});
+        };
+        templates."wireless.conf" = {
+          content = ''
+            psk_home=${config.nix-secrets.secrets."wifi/Keenetic_home"}
+            psk_iphone_hotspot=${config.nix-secrets.secrets."wifi/iphone_hotspot"}
+          '';
+          owner = "wpa_supplicant";
+        };
+      };
 
       users.users = {
         ${lib.userName} = {
@@ -75,7 +92,7 @@
           enable = true;
           userControlled = true;
           driver = "nl80211";
-          secretsFile = config.sops.templates."wireless.conf".path;
+          secretsFile = config.nix-secrets.templates."wireless.conf".path;
           interfaces = ["wlan0"];
 
           networks = {

@@ -1,9 +1,16 @@
 {
+  flake-file.inputs = {
+    nixos-cli.url = "github:nix-community/nixos-cli";
+    nh.url = "github:nix-community/nh";
+    nix-update.url = "github:Mic92/nix-update";
+    nix-index.url = "github:nix-community/nix-index";
+    nix-index-database.url = "github:nix-community/nix-index-database";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
+      lib,
       pkgs,
       inputs,
-      lib,
       ...
     }: {
       environment = {

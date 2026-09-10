@@ -1,10 +1,13 @@
 {
+  flake-file.inputs = {
+    ghostty.url = "github:ghostty-org/ghostty";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
+      config,
+      lib,
       pkgs,
       inputs,
-      lib,
-      config,
       ...
     }: let
       cursorSmear =

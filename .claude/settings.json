@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "/nix/store/7d87x0m4yvljkkc7hrjaaf2z4a60mn1z-claude-format-hook/bin/claude-format-hook",
+            "type": "command"
+          }
+        ],
+        "matcher": "Edit|MultiEdit|Write"
+      }
+    ]
+  }
+}

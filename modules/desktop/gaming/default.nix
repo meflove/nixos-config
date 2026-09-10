@@ -1,9 +1,18 @@
 {
+  flake-file.inputs = {
+    nix-gaming.url = "github:fufexan/nix-gaming";
+    linuwowo.url = "github:loystonpais/linuwowo";
+    freesmlauncher.url = "github:FreesmTeam/FreesmLauncher";
+    steam-config-nix = {
+      url = "github:different-name/steam-config-nix";
+    };
+    nix-ld.url = "github:nix-community/nix-ld";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      lib,
       config,
+      lib,
+      pkgs,
       ...
     }: let
       # wine = pkgs.wineWow64Packages.stagingFull;
@@ -236,7 +245,7 @@
 
             if [[ -d "$GAME_DIR/game/wine" ]]; then
               [[ -L "$GAME_DIR/game/wine" ]] || rm -rf "$GAME_DIR/game/wine"
-              ln -sfn ${pkgs.angeldust-pkgs.proton-cachyos-linuwux} "$GAME_DIR/game/wine"
+              ln -sfn ${pkgs.angeldust-pkgs.proton-cachyos-linuwux.out} "$GAME_DIR/game/wine"
               echo "Linked Proton-LinUwUx-patch for ${dir}"
             fi
           '';

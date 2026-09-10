@@ -1,13 +1,23 @@
 lib: {
-  imports = [
+  imports = let
+    userHm = [
+      "home-manager"
+      "users"
+      lib.userName
+    ];
+  in [
     # INFO: hm aliases
     (
       lib.mkAliasOptionModule
       ["hm"]
+      userHm
+    )
+    (
+      lib.mkAliasOptionModule
+      ["nix-secrets"]
       [
-        "home-manager"
-        "users"
-        lib.userName
+        "security"
+        "nix-secrets"
       ]
     )
   ];

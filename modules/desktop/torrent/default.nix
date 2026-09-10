@@ -1,9 +1,9 @@
 {
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       config,
       lib,
+      pkgs,
       ...
     }: {
       services.transmission = {

@@ -1,4 +1,11 @@
 {
+  flake-file.inputs = {
+    llm-agents.url = "github:numtide/llm-agents.nix";
+    claude-agents = {
+      url = "github:contains-studio/agents";
+      flake = false;
+    };
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
       pkgs,
@@ -19,16 +26,26 @@
         # --run 'export ANTHROPIC_API_KEY=$(cat ${config.hm.sops.secrets."ai/openrouter_api_key".path})' \
         postBuild = ''
           wrapProgram $out/bin/claude \
-            --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.hm.sops.secrets."ai/zai_api_key".path})' \
-            --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.hm.sops.secrets."github/github_pat".path})' \
-            --run 'export CONTEXT7_API_KEY=$(cat ${config.hm.sops.secrets."mcp/context7_api_key".path})' \
-            --run 'export HUGGINGFACE_API_KEY=$(cat ${config.hm.sops.secrets."mcp/huggingface_api_key".path})' \
+            --run 'export ANTHROPIC_AUTH_TOKEN=$(cat ${config.nix-secrets.secrets."ai/zai_api_key".path})' \
+            --run 'export GITHUB_PERSONAL_ACCESS_TOKEN=$(cat ${config.nix-secrets.secrets."github/github_pat".path})' \
+            --run 'export CONTEXT7_API_KEY=$(cat ${config.nix-secrets.secrets."mcp/context7_api_key".path})' \
+            --run 'export HUGGINGFACE_API_KEY=$(cat ${config.nix-secrets.secrets."mcp/huggingface_api_key".path})' \
         '';
       };
     in {
       imports = [
         ./lsp.nix
       ];
+
+      nix-secrets = {
+        secrets = lib.flattenSecrets {
+          ai = {
+            zai_api_key = {
+              owner = lib.userName;
+            };
+          };
+        };
+      };
 
       hm = {
         sops = {
@@ -75,7 +92,7 @@
               allow = [
                 "$defaults"
                 "Allow running vcs commands (jj, git) that are safe to run without rewriting the repo"
-                "Allow running all find, grep, glob, log commands"
+                "Allow running all find, grep, glob, log and etc. research commands"
               ];
             };
             permissions = {

@@ -1,10 +1,14 @@
 {
+  flake-file.inputs = {
+    stylix.url = "github:nix-community/stylix";
+    nix-cursors.url = "github:LilleAila/nix-cursors";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
-      inputs,
       config,
       lib,
+      pkgs,
+      inputs,
       ...
     }: {
       fonts = {

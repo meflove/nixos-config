@@ -1,27 +1,56 @@
 {inputs, ...}: {
+  flake-file.inputs = {
+    devenv.url = "github:cachix/devenv";
+    devenv-root = {
+      url = "file+file:///dev/null";
+      flake = false;
+    };
+    mk-shell-bin.url = "github:rrbutani/nix-mk-shell-bin";
+    git-hooks.url = "github:cachix/git-hooks.nix";
+    git-hooks-nix.follows = "git-hooks";
+    statix.url = "github:molybdenumsoftware/statix";
+    nix2container.url = "github:nlewo/nix2container";
+    flake-compat.url = "github:NixOS/flake-compat";
+  };
   perSystem = {
-    pkgs,
+    config,
     lib,
+    pkgs,
     ...
   }: {
     devenv.shells.default = {
       name = "nixland";
+      env.REPO_HOST = "github";
 
-      packages = lib.attrValues {
-        inherit
-          (pkgs)
-          glow # for md files
-          sops # secret management
+      packages = let
+        write-all =
+          pkgs.writeShellScriptBin "write-all"
+          # bash
+          ''
+            nix run .#write-flake
+            nix run .#write-files
+            nix fmt
+          '';
+      in
+        lib.attrValues
+        {
+          inherit
+            (pkgs)
+            glow # for md files
+            sops # secret management
 
-          # enterShell deps
-          ncurses
-          ;
-      };
+            # enterShell deps
+            ncurses
+            ;
+          inherit
+            write-all # flake-files and files inputs writer
+            ;
+        };
 
       enterShell =
         # bash
         ''
-          printf "%s⚙  Welcome%s to the %s NixOS %sconfiguration development %sshell!\n" \
+          printf "\n\n%s⚙  Welcome%s to the %s NixOS %sconfiguration development %sshell!\n" \
             "$(tput setaf 3)" \
             "$(tput sgr0)" \
             "$(tput setaf 6)" \
@@ -48,18 +77,15 @@
         package = pkgs.prek;
 
         hooks = {
+          treefmt = {
+            enable = true;
+            package = config.treefmt.build.wrapper;
+          };
+
           # Basic hooks
           shellcheck.enable = true;
           end-of-file-fixer.enable = true;
           detect-private-keys.enable = true;
-
-          # Nix specific hooks
-          alejandra.enable = true;
-          deadnix = {
-            enable = true;
-            settings.noUnderscore = true;
-          };
-          statix.enable = true;
         };
       };
     };

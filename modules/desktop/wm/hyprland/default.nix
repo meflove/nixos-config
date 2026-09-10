@@ -1,9 +1,12 @@
 {
+  flake-file.inputs = {
+    hyprland.url = "github:hyprwm/Hyprland";
+  };
   flake = _: {
     nixosModules.${baseNameOf ./.} = {
-      pkgs,
       config,
       lib,
+      pkgs,
       inputs,
       ...
     }: let
